@@ -1,10 +1,10 @@
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import Head from 'next/head';
-import ClientOnly from '../components/ClientOnly/ClientOnly';
-import VehicleList from '../components/Vehicles/VehicleList/VehicleList';
-import styles from '../styles/Home.module.css';
+import ClientOnly from '../../components/ClientOnly/ClientOnly';
+import DefectList from '../../components/Vehicles/VehicleDefects/DefectList';
+import styles from '../../styles/Home.module.css';
 
-const Home: NextPage = () => {
+const Defects: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,11 +15,11 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <ClientOnly>
-          <VehicleList />
+          <DefectList />
         </ClientOnly>
       </main>
     </div>
   );
 };
 
-export default Home;
+export default Defects;
