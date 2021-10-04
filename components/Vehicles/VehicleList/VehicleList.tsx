@@ -1,132 +1,18 @@
 import VehicleListItem from './VehicleListItem';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { FC } from 'react';
 import Table from '../../Table/Table';
 import TableColumnHeader from '../../Table/TableColumnHeader';
+import { GET_VEHICLE_LIST } from '../../../lib/queries';
+import { Vehicle } from '../Vehicles.types';
+import Button from '../../Table/Button';
 
-const QUERY = gql`
-  query Query {
-    vehicles {
-      id
-      registration
-      make
-      model
-      owner
-      cvrtDueDate
-      thirteenWeekInspectionDueDate
-      tachoCalibrationDueDate
-    }
-  }
-`;
+type VehicleListProps = {
+  setModalState: (state: boolean) => void;
+};
 
-// export type Vehicle = {
-//   id: string;
-//   registration: string;
-//   make: string;
-//   model: string;
-//   depot: string;
-//   owner: string;
-//   fuelCardNumber: string;
-//   tollTagNumber: string;
-//   cvrtDueDate: string;
-//   thirteenWeekInspectionDate: string;
-//   tachoCalibrationDate: string;
-//   defects: Defect[];
-// };
-
-// type Defect = {
-//   id: string;
-//   dateReported: string;
-//   description: string;
-//   status: string;
-// };
-
-// const data: Vehicle[] = [
-//   {
-//     id: '1',
-//     registration: '192-D-9999',
-//     make: 'Opel',
-//     model: 'Movano',
-//     depot: 'Stadium',
-//     owner: 'Dennenhys',
-//     fuelCardNumber: '123456789',
-//     tollTagNumber: '45678',
-//     cvrtDueDate: '12/12/21',
-//     thirteenWeekInspectionDate: '12/12/21',
-//     tachoCalibrationDate: '12/12/21',
-//     defects: [
-//       {
-//         id: '1',
-//         dateReported: '12/11/21',
-//         description: 'This is a test defect',
-//         status: 'Incomplete',
-//       },
-//       {
-//         id: '2',
-//         dateReported: '12/11/21',
-//         description: 'This is a test defect',
-//         status: 'Incomplete',
-//       },
-//     ],
-//   },
-//   {
-//     id: '2',
-//     registration: '201-D-4444',
-//     make: 'Opel',
-//     model: 'Movano',
-//     depot: 'Stadium',
-//     owner: 'Dennenhys',
-//     fuelCardNumber: '123456789',
-//     tollTagNumber: '45678',
-//     cvrtDueDate: '12/12/21',
-//     thirteenWeekInspectionDate: '12/12/21',
-//     tachoCalibrationDate: '12/12/21',
-//     defects: [
-//       {
-//         id: '3',
-//         dateReported: '12/11/21',
-//         description: 'This is a test defect',
-//         status: 'Incomplete',
-//       },
-//       {
-//         id: '4',
-//         dateReported: '12/11/21',
-//         description: 'This is a test defect',
-//         status: 'Incomplete',
-//       },
-//     ],
-//   },
-//   {
-//     id: '3',
-//     registration: '211-D-12345',
-//     make: 'Opel',
-//     model: 'Movano',
-//     depot: 'Stadium',
-//     owner: 'Dennenhys',
-//     fuelCardNumber: '123456789',
-//     tollTagNumber: '45678',
-//     cvrtDueDate: '12/12/21',
-//     thirteenWeekInspectionDate: '12/12/21',
-//     tachoCalibrationDate: '12/12/21',
-//     defects: [
-//       {
-//         id: '5',
-//         dateReported: '12/11/21',
-//         description: 'This is a test defect',
-//         status: 'Incomplete',
-//       },
-//       {
-//         id: '6',
-//         dateReported: '12/11/21',
-//         description: 'This is a test defect',
-//         status: 'Incomplete',
-//       },
-//     ],
-//   },
-// ];
-
-const VehicleList: FC = () => {
-  const { data, loading, error } = useQuery(QUERY);
+const VehicleList: FC<VehicleListProps> = ({ setModalState }) => {
+  const { data, loading, error } = useQuery(GET_VEHICLE_LIST, {});
 
   if (loading) {
     return <div className="h2">Loading...</div>;
@@ -150,19 +36,29 @@ const VehicleList: FC = () => {
           <TableColumnHeader>CVRT Due Date</TableColumnHeader>
           <TableColumnHeader>13 Week Inspection</TableColumnHeader>
           <TableColumnHeader>Tacho Calibration</TableColumnHeader>
-          <th scope="col" className="relative px-6 py-3">
-            <span className="sr-only">Edit</span>
-          </th>
-          <th scope="col" className="relative px-6 py-3">
-            <span className="sr-only">Defects</span>
-          </th>
+          <TableColumnHeader>{}</TableColumnHeader>
+          <TableColumnHeader>{}</TableColumnHeader>
+          <TableColumnHeader>
+            <Button
+              onClick={() => {
+                setModalState(true);
+              }}
+            >
+              Add Vehicle
+            </Button>
+          </TableColumnHeader>
         </tr>
       </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        {data.vehicles.map((vehicle: any) => (
-          <VehicleListItem key={vehicle.id} vehicle={vehicle} />
-        ))}
-      </tbody>
+
+      {data.vehicles.length === 0 ? (
+        <h1 className="text-center">No Vehicles Found</h1>
+      ) : (
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.vehicles.map((vehicle: Vehicle) => (
+            <VehicleListItem key={vehicle.id} vehicle={vehicle} />
+          ))}
+        </tbody>
+      )}
     </Table>
   );
 };

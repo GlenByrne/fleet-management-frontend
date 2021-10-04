@@ -1,54 +1,16 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { GET_VEHICLE_DEFECTS } from '../../../lib/queries';
 import Table from '../../Table/Table';
 import TableColumnHeader from '../../Table/TableColumnHeader';
+import { Defect } from '../Vehicles.types';
 import DefectListItem from './DefectListItem';
-
-const QUERY = gql`
-  query GetVehicleDefects($defectsForVehicleVehicleId: ID!) {
-    defectsForVehicle(vehicleId: $defectsForVehicleVehicleId) {
-      id
-      description
-      dateReported
-      dateCompleted
-      status
-    }
-  }
-`;
-
-// export type Defect = {
-//   id: string;
-//   dateReported: string;
-//   description: string;
-//   status: string;
-// };
-
-// const data: Defect[] = [
-//   {
-//     id: '1',
-//     dateReported: '25/09/21',
-//     description: 'Dents and scratches on both sides of van',
-//     status: 'Incomplete',
-//   },
-//   {
-//     id: '2',
-//     dateReported: '25/09/21',
-//     description: 'Damage to front bumper of van',
-//     status: 'Incomplete',
-//   },
-//   {
-//     id: '3',
-//     dateReported: '25/09/21',
-//     description: 'Engine light on',
-//     status: 'Incomplete',
-//   },
-// ];
 
 const DefectList = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, loading, error } = useQuery(QUERY, {
+  const { data, loading, error } = useQuery(GET_VEHICLE_DEFECTS, {
     variables: { defectsForVehicleVehicleId: id },
   });
 
@@ -73,7 +35,7 @@ const DefectList = () => {
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
-        {data.defectsForVehicle.map((defect: any) => (
+        {data.defectsForVehicle.map((defect: Defect) => (
           <DefectListItem key={defect.id} defect={defect} />
         ))}
       </tbody>

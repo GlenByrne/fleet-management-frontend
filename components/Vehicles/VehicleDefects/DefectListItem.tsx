@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import TableDataItem from '../../Table/TableDataItem';
+import { Defect } from '../Vehicles.types';
 // import { Defect } from './DefectList';
 
 type DefectItemProps = {
-  defect: any;
+  defect: Defect;
 };
 
 const DefectListItem: FC<DefectItemProps> = ({ defect }) => {
