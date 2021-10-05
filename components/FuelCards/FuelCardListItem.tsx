@@ -8,9 +8,13 @@ import { DELETE_FUEL_CARD, GET_FUEL_CARDS } from '../../lib/queries';
 
 type FuelCardListItemProps = {
   fuelCard: FuelCard;
+  setModalState: (state: boolean) => void;
 };
 
-const FuelCardListItem: FC<FuelCardListItemProps> = ({ fuelCard }) => {
+const FuelCardListItem: FC<FuelCardListItemProps> = ({
+  fuelCard,
+  setModalState,
+}) => {
   const [deleteFuelCard] = useMutation(DELETE_FUEL_CARD, {
     refetchQueries: [GET_FUEL_CARDS, 'GetFuelCards'],
   });
@@ -34,7 +38,13 @@ const FuelCardListItem: FC<FuelCardListItemProps> = ({ fuelCard }) => {
         {fuelCard.vehicle != null ? fuelCard.vehicle.registration : 'None'}
       </TableDataItem>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        <Button onClick={() => {}}>Edit</Button>
+        <Button
+          onClick={() => {
+            setModalState(true);
+          }}
+        >
+          Edit
+        </Button>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <Button onClick={deleteCardHandler}>Delete</Button>

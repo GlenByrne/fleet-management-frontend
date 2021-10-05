@@ -71,6 +71,15 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD = gql`
   }
 `;
 
+export const GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD = gql`
+  query GetSelectableItemsForUpdateFuelCard {
+    depots {
+      id
+      name
+    }
+  }
+`;
+
 export const ADD_VEHICLE = gql`
   mutation AddVehicle($addVehicleData: AddVehicleInput!) {
     addVehicle(data: $addVehicleData) {
@@ -183,6 +192,20 @@ export const DELETE_VEHICLE = gql`
     deleteVehicle(data: $deleteVehicleData) {
       id
       registration
+    }
+  }
+`;
+
+export const UPDATE_FUEL_CARD = gql`
+  mutation UpdateFuelCard($updateFuelCardData: UpdateFuelCardInput!) {
+    updateFuelCard(data: $updateFuelCardData) {
+      id
+      cardNumber
+      cardProvider
+      depot {
+        id
+        name
+      }
     }
   }
 `;
