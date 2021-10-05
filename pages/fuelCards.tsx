@@ -1,10 +1,18 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useState } from 'react';
 import ClientOnly from '../components/ClientOnly/ClientOnly';
+import AddFuelCardModal from '../components/FuelCards/AddFuelCardModal';
 import FuelCardList from '../components/FuelCards/FuelCardList';
 import Navbar from '../components/Navigation/Navbar';
 
 const FuelCards: NextPage = () => {
+  const [open, setOpen] = useState(false);
+
+  const addFuelCardModalHandler = (state: boolean) => {
+    setOpen(state);
+  };
+
   return (
     <div>
       <nav>
@@ -18,7 +26,11 @@ const FuelCards: NextPage = () => {
 
       <main>
         <ClientOnly>
-          <FuelCardList />
+          <AddFuelCardModal
+            modalState={open}
+            setModalState={addFuelCardModalHandler}
+          />
+          <FuelCardList setModalState={addFuelCardModalHandler} />
         </ClientOnly>
       </main>
     </div>

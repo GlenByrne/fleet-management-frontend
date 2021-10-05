@@ -49,16 +49,19 @@ const VehicleList: FC<VehicleListProps> = ({ setModalState }) => {
           </TableColumnHeader>
         </tr>
       </thead>
-
-      {data.vehicles.length === 0 ? (
-        <h1 className="text-center">No Vehicles Found</h1>
-      ) : (
-        <tbody className="bg-white divide-y divide-gray-200">
-          {data.vehicles.map((vehicle: Vehicle) => (
+      <tbody className="bg-white divide-y divide-gray-200">
+        {data.vehicles.length > 0 ? (
+          data.vehicles.map((vehicle: Vehicle) => (
             <VehicleListItem key={vehicle.id} vehicle={vehicle} />
-          ))}
-        </tbody>
-      )}
+          ))
+        ) : (
+          <tr>
+            <td colSpan={12} className="text-2xl text-center">
+              No Vehicles Found
+            </td>
+          </tr>
+        )}
+      </tbody>
     </Table>
   );
 };

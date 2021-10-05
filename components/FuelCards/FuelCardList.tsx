@@ -7,7 +7,11 @@ import { FuelCard } from '../Vehicles/Vehicles.types';
 import Button from '../Table/Button';
 import FuelCardListItem from './FuelCardListItem';
 
-const FuelCardList: FC = () => {
+type FuelCardListProps = {
+  setModalState: (state: boolean) => void;
+};
+
+const FuelCardList: FC<FuelCardListProps> = ({ setModalState }) => {
   const { data, loading, error } = useQuery(GET_FUEL_CARDS, {});
 
   if (loading) {
@@ -28,20 +32,30 @@ const FuelCardList: FC = () => {
           <TableColumnHeader>Assigned Vehicle</TableColumnHeader>
           <TableColumnHeader>{}</TableColumnHeader>
           <TableColumnHeader>
-            <Button onClick={() => {}}>Add Card</Button>
+            <Button
+              onClick={() => {
+                setModalState(true);
+              }}
+            >
+              Add Card
+            </Button>
           </TableColumnHeader>
         </tr>
       </thead>
 
-      {data.fuelCards.length === 0 ? (
-        <h1 className="text-center">No Fuel Cards Found</h1>
-      ) : (
-        <tbody className="bg-white divide-y divide-gray-200">
-          {data.fuelCards.map((fuelCard: FuelCard) => (
+      <tbody className="bg-white divide-y divide-gray-200">
+        {data.fuelCards.length > 0 ? (
+          data.fuelCards.map((fuelCard: FuelCard) => (
             <FuelCardListItem key={fuelCard.id} fuelCard={fuelCard} />
-          ))}
-        </tbody>
-      )}
+          ))
+        ) : (
+          <tr>
+            <td colSpan={12} className="text-2xl text-center">
+              No Fuel Cards Found
+            </td>
+          </tr>
+        )}
+      </tbody>
     </Table>
   );
 };

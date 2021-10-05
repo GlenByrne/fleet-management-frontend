@@ -1,10 +1,18 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useState } from 'react';
 import ClientOnly from '../components/ClientOnly/ClientOnly';
 import Navbar from '../components/Navigation/Navbar';
+import AddTollTagModal from '../components/TollTags/AddTollTagModal';
 import TollTagList from '../components/TollTags/TollTagList';
 
 const TollTags: NextPage = () => {
+  const [open, setOpen] = useState(false);
+
+  const addTollTagModalHandler = (state: boolean) => {
+    setOpen(state);
+  };
+
   return (
     <div>
       <nav>
@@ -18,7 +26,11 @@ const TollTags: NextPage = () => {
 
       <main>
         <ClientOnly>
-          <TollTagList />
+          <AddTollTagModal
+            modalState={open}
+            setModalState={addTollTagModalHandler}
+          />
+          <TollTagList setModalState={addTollTagModalHandler} />
         </ClientOnly>
       </main>
     </div>

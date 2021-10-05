@@ -41,7 +41,7 @@ const VehicleListItem: FC<VehicleListItemProps> = ({ vehicle }) => {
         {vehicle.fuelCard != null ? vehicle.fuelCard.cardNumber : ''}
       </TableDataItem>
       <TableDataItem>
-        {vehicle.tollTag != null ? vehicle.tollTag.tollTagNumber : ''}
+        {vehicle.tollTag != null ? vehicle.tollTag.tagNumber : ''}
       </TableDataItem>
       <TableDataItem>{vehicle.cvrtDueDate}</TableDataItem>
       <TableDataItem>{vehicle.thirteenWeekInspectionDueDate}</TableDataItem>

@@ -29,8 +29,8 @@ export type FuelCard = {
 
 export type TollTag = {
   id: string;
-  tollTagNumber: string;
-  tollTagProvider: string;
+  tagNumber: string;
+  tagProvider: string;
   depot: Depot;
   vehicle: Vehicle;
 };

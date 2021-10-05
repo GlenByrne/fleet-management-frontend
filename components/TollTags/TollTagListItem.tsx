@@ -26,8 +26,8 @@ const TollTagListItem: FC<TollTagListItemProps> = ({ tollTag }) => {
 
   return (
     <tr key={tollTag.id}>
-      <TableDataItem>{tollTag.tollTagNumber}</TableDataItem>
-      <TableDataItem>{tollTag.tollTagProvider}</TableDataItem>
+      <TableDataItem>{tollTag.tagNumber}</TableDataItem>
+      <TableDataItem>{tollTag.tagProvider}</TableDataItem>
       <TableDataItem>{tollTag.depot.name}</TableDataItem>
       <TableDataItem>
         {tollTag.vehicle != null ? tollTag.vehicle.registration : 'None'}

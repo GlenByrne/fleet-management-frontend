@@ -53,6 +53,24 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
   }
 `;
 
+export const GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG = gql`
+  query GetSelectableItemsForAddTollTag {
+    depots {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD = gql`
+  query GetSelectableItemsForAddFuelCard {
+    depots {
+      id
+      name
+    }
+  }
+`;
+
 export const ADD_VEHICLE = gql`
   mutation AddVehicle($addVehicleData: AddVehicleInput!) {
     addVehicle(data: $addVehicleData) {
@@ -75,6 +93,34 @@ export const ADD_VEHICLE = gql`
       tollTag {
         id
         tollTagNumber
+      }
+    }
+  }
+`;
+
+export const ADD_TOLL_TAG = gql`
+  mutation AddTollTag($addTollTagData: AddTollTagInput!) {
+    addTollTag(data: $addTollTagData) {
+      id
+      tollTagNumber
+      tollTagProvider
+      depot {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const ADD_FUEL_CARD = gql`
+  mutation AddFuelCard($addFuelCardData: AddFuelCardInput!) {
+    addFuelCard(data: $addFuelCardData) {
+      id
+      cardNumber
+      cardProvider
+      depot {
+        id
+        name
       }
     }
   }

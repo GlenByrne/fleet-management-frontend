@@ -7,7 +7,11 @@ import { TollTag } from '../Vehicles/Vehicles.types';
 import Button from '../Table/Button';
 import TollTagListItem from './TollTagListItem';
 
-const TollTagList: FC = () => {
+type TollTagListProps = {
+  setModalState: (state: boolean) => void;
+};
+
+const TollTagList: FC<TollTagListProps> = ({ setModalState }) => {
   const { data, loading, error } = useQuery(GET_TOLL_TAGS, {});
 
   if (loading) {
@@ -28,20 +32,30 @@ const TollTagList: FC = () => {
           <TableColumnHeader>Assigned Vehicle</TableColumnHeader>
           <TableColumnHeader>{}</TableColumnHeader>
           <TableColumnHeader>
-            <Button onClick={() => {}}>Add Tag</Button>
+            <Button
+              onClick={() => {
+                setModalState(true);
+              }}
+            >
+              Add Tag
+            </Button>
           </TableColumnHeader>
         </tr>
       </thead>
 
-      {data.tollTags.length === 0 ? (
-        <h1 className="text-center">No Toll Tags Found</h1>
-      ) : (
-        <tbody className="bg-white divide-y divide-gray-200">
-          {data.tollTags.map((tollTag: TollTag) => (
+      <tbody className="bg-white divide-y divide-gray-200">
+        {data.tollTags.length > 0 ? (
+          data.tollTags.map((tollTag: TollTag) => (
             <TollTagListItem key={tollTag.id} tollTag={tollTag} />
-          ))}
-        </tbody>
-      )}
+          ))
+        ) : (
+          <tr>
+            <td colSpan={12} className="text-2xl text-center">
+              No Toll Tags Found
+            </td>
+          </tr>
+        )}
+      </tbody>
     </Table>
   );
 };

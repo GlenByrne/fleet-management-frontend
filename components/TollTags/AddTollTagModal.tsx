@@ -3,37 +3,31 @@ import { FC, Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
-  ADD_VEHICLE,
-  GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE,
-  GET_VEHICLE_LIST,
-} from '../../../lib/queries';
-import { Depot, FuelCard, TollTag } from '../Vehicles.types';
+  ADD_TOLL_TAG,
+  GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG,
+  GET_TOLL_TAGS,
+} from '../../lib/queries';
+import { Depot } from '../Vehicles/Vehicles.types';
 
-type AddVehicleModalProps = {
+type AddTollTagModalProps = {
   modalState: boolean;
   setModalState: (status: boolean) => void;
 };
 
-const AddVehicleModal: FC<AddVehicleModalProps> = ({
+const AddTollTagModal: FC<AddTollTagModalProps> = ({
   modalState,
   setModalState,
 }) => {
   const cancelButtonRef = useRef(null);
 
-  let registration: any,
-    make: any,
-    model: any,
-    owner: any,
-    depotId: any,
-    fuelCardId: any,
-    tollTagId: any;
+  let tagNumber: any, tagProvider: any, depotId: any;
 
   const { data, loading, error } = useQuery(
-    GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE
+    GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG
   );
 
-  const [addVehicle] = useMutation(ADD_VEHICLE, {
-    refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
+  const [addTollTag] = useMutation(ADD_TOLL_TAG, {
+    refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
   });
 
   if (loading) {
@@ -86,16 +80,12 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                 onSubmit={(e) => {
                   e.preventDefault();
                   setModalState(false);
-                  addVehicle({
+                  addTollTag({
                     variables: {
-                      addVehicleData: {
-                        registration: registration.value,
-                        make: make.value,
-                        model: model.value,
-                        owner: owner.value,
+                      addTollTagData: {
+                        tagNumber: tagNumber.value,
+                        tagProvider: tagProvider.value,
                         depotId: depotId.value,
-                        fuelCardId: fuelCardId.value,
-                        tollTagId: tollTagId.value,
                       },
                     },
                   });
@@ -109,23 +99,23 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                         as="h3"
                         className="text-lg leading-6 font-medium text-gray-900"
                       >
-                        Add Vehicle
+                        Add Toll Tag
                       </Dialog.Title>
                       <div className="mt-2">
                         <div className="px-4 py-5 bg-white sm:p-6">
                           <div className="grid grid-cols-6 gap-6">
                             <div className="col-span-6 sm:col-span-3">
                               <label
-                                htmlFor="registration"
+                                htmlFor="tagNumber"
                                 className="block text-sm font-medium text-gray-700"
                               >
-                                Registration
+                                Tag Number
                               </label>
                               <input
-                                ref={(value) => (registration = value)}
+                                ref={(value) => (tagNumber = value)}
                                 type="text"
-                                name="registration"
-                                id="registration"
+                                name="tagNumber"
+                                id="tagNumber"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                 required={true}
                               />
@@ -133,50 +123,16 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
 
                             <div className="col-span-6 sm:col-span-3">
                               <label
-                                htmlFor="make"
+                                htmlFor="tagProvider"
                                 className="block text-sm font-medium text-gray-700"
                               >
-                                Make
+                                Tag Provider
                               </label>
                               <input
-                                ref={(value) => (make = value)}
+                                ref={(value) => (tagProvider = value)}
                                 type="text"
-                                name="make"
-                                id="make"
-                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                required={true}
-                              />
-                            </div>
-
-                            <div className="col-span-6 sm:col-span-3">
-                              <label
-                                htmlFor="model"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Model
-                              </label>
-                              <input
-                                ref={(value) => (model = value)}
-                                type="text"
-                                name="model"
-                                id="model"
-                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                required={true}
-                              />
-                            </div>
-
-                            <div className="col-span-6 sm:col-span-3">
-                              <label
-                                htmlFor="model"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Owner
-                              </label>
-                              <input
-                                ref={(value) => (owner = value)}
-                                type="text"
-                                name="owner"
-                                id="owner"
+                                name="tagProvider"
+                                id="tagProvider"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                 required={true}
                               />
@@ -199,69 +155,6 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                 {data.depots.map((depot: Depot) => (
                                   <option key={depot.id} value={depot.id}>
                                     {depot.name}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-
-                            <div className="col-span-6 sm:col-span-3">
-                              <label
-                                htmlFor="fuelCard"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Fuel Card
-                              </label>
-
-                              {data.fuelCardsNotAssigned.length > 0 ? (
-                                <select
-                                  ref={(value) => (fuelCardId = value)}
-                                  id="fuelCard"
-                                  name="fuelCard"
-                                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                  required={true}
-                                >
-                                  {data.fuelCardsNotAssigned.map(
-                                    (fuelCard: FuelCard) => (
-                                      <option
-                                        key={fuelCard.id}
-                                        value={fuelCard.id}
-                                      >
-                                        {fuelCard.cardNumber}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                              ) : (
-                                <select
-                                  id="fuelCard"
-                                  name="fuelCard"
-                                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                  required={true}
-                                >
-                                  <option disabled={true} selected={true}>
-                                    No Unassigned Fuel Cards
-                                  </option>
-                                </select>
-                              )}
-                            </div>
-
-                            <div className="col-span-6 sm:col-span-3">
-                              <label
-                                htmlFor="tollTag"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Toll Tag
-                              </label>
-                              <select
-                                ref={(value) => (tollTagId = value)}
-                                id="tollTag"
-                                name="tollTag"
-                                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                required={true}
-                              >
-                                {data.tollTags.map((tollTag: TollTag) => (
-                                  <option key={tollTag.id} value={tollTag.id}>
-                                    {tollTag.tagNumber}
                                   </option>
                                 ))}
                               </select>
@@ -297,4 +190,4 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
   );
 };
 
-export default AddVehicleModal;
+export default AddTollTagModal;
