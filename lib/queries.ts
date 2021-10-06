@@ -15,7 +15,7 @@ export const GET_VEHICLE_LIST = gql`
         cardNumber
       }
       tollTag {
-        tollTagNumber
+        tagNumber
       }
       cvrtDueDate
       thirteenWeekInspectionDueDate
@@ -44,7 +44,7 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
     }
     tollTags {
       id
-      tollTagNumber
+      tagNumber
     }
     depots {
       id
@@ -80,6 +80,15 @@ export const GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD = gql`
   }
 `;
 
+export const GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG = gql`
+  query GetSelectableItemsForUpdateTollTag {
+    depots {
+      id
+      name
+    }
+  }
+`;
+
 export const ADD_VEHICLE = gql`
   mutation AddVehicle($addVehicleData: AddVehicleInput!) {
     addVehicle(data: $addVehicleData) {
@@ -101,7 +110,7 @@ export const ADD_VEHICLE = gql`
       }
       tollTag {
         id
-        tollTagNumber
+        tagNumber
       }
     }
   }
@@ -111,8 +120,8 @@ export const ADD_TOLL_TAG = gql`
   mutation AddTollTag($addTollTagData: AddTollTagInput!) {
     addTollTag(data: $addTollTagData) {
       id
-      tollTagNumber
-      tollTagProvider
+      tagNumber
+      tagProvider
       depot {
         id
         name
@@ -157,8 +166,8 @@ export const GET_TOLL_TAGS = gql`
   query GetTollTags {
     tollTags {
       id
-      tollTagNumber
-      tollTagProvider
+      tagNumber
+      tagProvider
       depot {
         id
         name
@@ -182,7 +191,7 @@ export const DELETE_FUEL_CARD = gql`
 export const DELETE_TOLL_TAG = gql`
   mutation DeleteTollTag($deleteTollTagData: DeleteTollTagInput!) {
     deleteTollTag(data: $deleteTollTagData) {
-      tollTagNumber
+      tagNumber
     }
   }
 `;
@@ -202,6 +211,20 @@ export const UPDATE_FUEL_CARD = gql`
       id
       cardNumber
       cardProvider
+      depot {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const UPDATE_TOLL_TAG = gql`
+  mutation UpdateTollTag($updateTollTagData: UpdateTollTagInput!) {
+    updateTollTag(data: $updateTollTagData) {
+      id
+      tagNumber
+      tagProvider
       depot {
         id
         name

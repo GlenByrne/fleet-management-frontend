@@ -7,9 +7,13 @@ import { TollTag } from '../Vehicles/Vehicles.types';
 
 type TollTagListItemProps = {
   tollTag: TollTag;
+  setModalState: (state: boolean) => void;
 };
 
-const TollTagListItem: FC<TollTagListItemProps> = ({ tollTag }) => {
+const TollTagListItem: FC<TollTagListItemProps> = ({
+  tollTag,
+  setModalState,
+}) => {
   const [deleteTollTag] = useMutation(DELETE_TOLL_TAG, {
     refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
   });
@@ -33,7 +37,13 @@ const TollTagListItem: FC<TollTagListItemProps> = ({ tollTag }) => {
         {tollTag.vehicle != null ? tollTag.vehicle.registration : 'None'}
       </TableDataItem>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        <Button onClick={() => {}}>Edit</Button>
+        <Button
+          onClick={() => {
+            setModalState(true);
+          }}
+        >
+          Edit
+        </Button>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <Button onClick={deleteTagHandler}>Delete</Button>

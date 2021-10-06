@@ -1,17 +1,24 @@
 import { useQuery } from '@apollo/client';
-import { FC } from 'react';
+import { FC, Fragment, useState } from 'react';
 import Table from '../Table/Table';
 import TableColumnHeader from '../Table/TableColumnHeader';
 import { GET_TOLL_TAGS } from '../../lib/queries';
 import { TollTag } from '../Vehicles/Vehicles.types';
 import Button from '../Table/Button';
 import TollTagListItem from './TollTagListItem';
+import UpdateTollTagModal from './UpdateTollTagModal';
 
 type TollTagListProps = {
   setModalState: (state: boolean) => void;
 };
 
 const TollTagList: FC<TollTagListProps> = ({ setModalState }) => {
+  const [open, setOpen] = useState(false);
+
+  const updateTollTagModalHandler = (state: boolean) => {
+    setOpen(state);
+  };
+
   const { data, loading, error } = useQuery(GET_TOLL_TAGS, {});
 
   if (loading) {
@@ -46,7 +53,17 @@ const TollTagList: FC<TollTagListProps> = ({ setModalState }) => {
       <tbody className="bg-white divide-y divide-gray-200">
         {data.tollTags.length > 0 ? (
           data.tollTags.map((tollTag: TollTag) => (
-            <TollTagListItem key={tollTag.id} tollTag={tollTag} />
+            <Fragment key={tollTag.id}>
+              <TollTagListItem
+                tollTag={tollTag}
+                setModalState={updateTollTagModalHandler}
+              />
+              <UpdateTollTagModal
+                modalState={open}
+                setModalState={updateTollTagModalHandler}
+                tollTag={tollTag}
+              />
+            </Fragment>
           ))
         ) : (
           <tr>
