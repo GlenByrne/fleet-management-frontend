@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { GET_VEHICLE_DEFECTS } from '../../../lib/queries';
 import Table from '../../Table/Table';
 import TableColumnHeader from '../../Table/TableColumnHeader';
-import { Defect } from '../Vehicles.types';
+import { Defect } from '../../../lib/types';
 import DefectListItem from './DefectListItem';
 
 const DefectList = () => {

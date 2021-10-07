@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Button from '../Table/Button';
 import TableDataItem from '../Table/TableDataItem';
-import { FuelCard } from '../Vehicles/Vehicles.types';
+import { FuelCard } from '../../lib/types';
 import { useMutation } from '@apollo/client';
 import { DELETE_FUEL_CARD, GET_FUEL_CARDS } from '../../lib/queries';
 

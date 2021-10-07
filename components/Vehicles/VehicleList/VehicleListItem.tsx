@@ -1,16 +1,20 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import Button from '../../Table/Button';
 import TableDataItem from '../../Table/TableDataItem';
 import { useRouter } from 'next/router';
-import { Vehicle } from '../Vehicles.types';
+import { Vehicle } from '../../../lib/types';
 import { useMutation } from '@apollo/client';
 import { DELETE_VEHICLE, GET_VEHICLE_LIST } from '../../../lib/queries';
 
 type VehicleListItemProps = {
   vehicle: Vehicle;
+  setModalState: (state: boolean) => void;
 };
 
-const VehicleListItem: FC<VehicleListItemProps> = ({ vehicle }) => {
+const VehicleListItem: FC<VehicleListItemProps> = ({
+  vehicle,
+  setModalState,
+}) => {
   const router = useRouter();
   const [deleteVehicle] = useMutation(DELETE_VEHICLE, {
     refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
@@ -47,7 +51,13 @@ const VehicleListItem: FC<VehicleListItemProps> = ({ vehicle }) => {
       <TableDataItem>{vehicle.thirteenWeekInspectionDueDate}</TableDataItem>
       <TableDataItem>{vehicle.tachoCalibrationDueDate}</TableDataItem>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        <Button onClick={() => {}}>Edit</Button>
+        <Button
+          onClick={() => {
+            setModalState(true);
+          }}
+        >
+          Edit
+        </Button>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <Button onClick={deleteVehicleHandler}>Delete</Button>

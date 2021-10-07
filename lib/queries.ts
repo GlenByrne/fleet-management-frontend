@@ -53,6 +53,23 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
   }
 `;
 
+export const GET_SELECTABLE_ITEMS_FOR_UPDATE_VEHICLE = gql`
+  query GetSelectableItemsForUpdateVehicle {
+    fuelCardsNotAssigned {
+      id
+      cardNumber
+    }
+    tollTags {
+      id
+      tagNumber
+    }
+    depots {
+      id
+      name
+    }
+  }
+`;
+
 export const GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG = gql`
   query GetSelectableItemsForAddTollTag {
     depots {
@@ -228,6 +245,33 @@ export const UPDATE_TOLL_TAG = gql`
       depot {
         id
         name
+      }
+    }
+  }
+`;
+
+export const UPDATE_VEHICLE = gql`
+  mutation UpdateVehicle($updateVehicleData: UpdateVehicleInput!) {
+    updateVehicle(data: $updateVehicleData) {
+      id
+      registration
+      make
+      model
+      owner
+      cvrtDueDate
+      thirteenWeekInspectionDueDate
+      tachoCalibrationDueDate
+      depot {
+        id
+        name
+      }
+      fuelCard {
+        id
+        cardNumber
+      }
+      tollTag {
+        id
+        tagNumber
       }
     }
   }

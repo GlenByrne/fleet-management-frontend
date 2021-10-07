@@ -42,3 +42,8 @@ export type Defect = {
   id: string;
   status: string;
 };
+
+export type NavbarOption = {
+  name: string;
+  href: string;
+};

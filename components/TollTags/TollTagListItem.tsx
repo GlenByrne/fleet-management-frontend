@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { DELETE_TOLL_TAG, GET_TOLL_TAGS } from '../../lib/queries';
 import Button from '../Table/Button';
 import TableDataItem from '../Table/TableDataItem';
-import { TollTag } from '../Vehicles/Vehicles.types';
+import { TollTag } from '../../lib/types';
 
 type TollTagListItemProps = {
   tollTag: TollTag;

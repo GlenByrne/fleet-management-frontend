@@ -3,7 +3,7 @@ import { FC, Fragment, useState } from 'react';
 import Table from '../Table/Table';
 import TableColumnHeader from '../Table/TableColumnHeader';
 import { GET_TOLL_TAGS } from '../../lib/queries';
-import { TollTag } from '../Vehicles/Vehicles.types';
+import { TollTag } from '../../lib/types';
 import Button from '../Table/Button';
 import TollTagListItem from './TollTagListItem';
 import UpdateTollTagModal from './UpdateTollTagModal';
@@ -19,6 +19,25 @@ const TollTagList: FC<TollTagListProps> = ({ setModalState }) => {
     setOpen(state);
   };
 
+  const headings = [
+    { child: 'Tag Number' },
+    { child: 'Provider' },
+    { child: 'Depot' },
+    { child: 'Assigned Vehicle' },
+    { child: '' },
+    {
+      child: (
+        <Button
+          onClick={() => {
+            setModalState(true);
+          }}
+        >
+          Add Tag
+        </Button>
+      ),
+    },
+  ];
+
   const { data, loading, error } = useQuery(GET_TOLL_TAGS, {});
 
   if (loading) {
@@ -33,20 +52,11 @@ const TollTagList: FC<TollTagListProps> = ({ setModalState }) => {
     <Table>
       <thead className="bg-gray-50">
         <tr>
-          <TableColumnHeader>Tag Number</TableColumnHeader>
-          <TableColumnHeader>Provider</TableColumnHeader>
-          <TableColumnHeader>Depot</TableColumnHeader>
-          <TableColumnHeader>Assigned Vehicle</TableColumnHeader>
-          <TableColumnHeader>{}</TableColumnHeader>
-          <TableColumnHeader>
-            <Button
-              onClick={() => {
-                setModalState(true);
-              }}
-            >
-              Add Tag
-            </Button>
-          </TableColumnHeader>
+          {headings.map((heading, index) => {
+            return (
+              <TableColumnHeader key={index}>{heading.child}</TableColumnHeader>
+            );
+          })}
         </tr>
       </thead>
 

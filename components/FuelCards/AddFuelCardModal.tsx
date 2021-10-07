@@ -7,7 +7,7 @@ import {
   GET_FUEL_CARDS,
   GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD,
 } from '../../lib/queries';
-import { Depot } from '../Vehicles/Vehicles.types';
+import { Depot } from '../../lib/types';
 
 type AddFuelCardModalProps = {
   modalState: boolean;

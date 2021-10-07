@@ -4,7 +4,7 @@ import { useState } from 'react';
 import ClientOnly from '../components/ClientOnly/ClientOnly';
 import AddFuelCardModal from '../components/FuelCards/AddFuelCardModal';
 import FuelCardList from '../components/FuelCards/FuelCardList';
-import Navbar from '../components/Navigation/Navbar';
+import Navbar from '../components/Navigation/Navbar/Navbar';
 
 const FuelCards: NextPage = () => {
   const [open, setOpen] = useState(false);

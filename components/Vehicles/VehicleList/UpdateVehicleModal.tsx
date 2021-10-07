@@ -3,20 +3,22 @@ import { FC, Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
-  ADD_VEHICLE,
-  GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE,
+  UPDATE_VEHICLE,
+  GET_SELECTABLE_ITEMS_FOR_UPDATE_VEHICLE,
   GET_VEHICLE_LIST,
 } from '../../../lib/queries';
-import { Depot, FuelCard, TollTag } from '../../../lib/types';
+import { Depot, FuelCard, TollTag, Vehicle } from '../../../lib/types';
 
-type AddVehicleModalProps = {
+type UpdateVehicleModalProps = {
   modalState: boolean;
   setModalState: (status: boolean) => void;
+  vehicle: Vehicle;
 };
 
-const AddVehicleModal: FC<AddVehicleModalProps> = ({
+const UpdateVehicleModal: FC<UpdateVehicleModalProps> = ({
   modalState,
   setModalState,
+  vehicle,
 }) => {
   const cancelButtonRef = useRef(null);
 
@@ -29,10 +31,10 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
     tollTagId: any;
 
   const { data, loading, error } = useQuery(
-    GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE
+    GET_SELECTABLE_ITEMS_FOR_UPDATE_VEHICLE
   );
 
-  const [addVehicle] = useMutation(ADD_VEHICLE, {
+  const [updateVehicle] = useMutation(UPDATE_VEHICLE, {
     refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
   });
 
@@ -86,9 +88,9 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                 onSubmit={(e) => {
                   e.preventDefault();
                   setModalState(false);
-                  addVehicle({
+                  updateVehicle({
                     variables: {
-                      addVehicleData: {
+                      updateVehicleData: {
                         registration: registration.value,
                         make: make.value,
                         model: model.value,
@@ -109,7 +111,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                         as="h3"
                         className="text-lg leading-6 font-medium text-gray-900"
                       >
-                        Add Vehicle
+                        Update Vehicle
                       </Dialog.Title>
                       <div className="mt-2">
                         <div className="px-4 py-5 bg-white sm:p-6">
@@ -127,6 +129,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                 name="registration"
                                 id="registration"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                defaultValue={vehicle.registration}
                                 required={true}
                               />
                             </div>
@@ -144,6 +147,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                 name="make"
                                 id="make"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                defaultValue={vehicle.make}
                                 required={true}
                               />
                             </div>
@@ -161,6 +165,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                 name="model"
                                 id="model"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                defaultValue={vehicle.model}
                                 required={true}
                               />
                             </div>
@@ -178,6 +183,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                 name="owner"
                                 id="owner"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                defaultValue={vehicle.owner}
                                 required={true}
                               />
                             </div>
@@ -194,6 +200,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                 id="depot"
                                 name="depot"
                                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                defaultValue={vehicle.depot.id}
                                 required={true}
                               >
                                 {data.depots.map((depot: Depot) => (
@@ -204,7 +211,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                               </select>
                             </div>
 
-                            <div className="col-span-6 sm:col-span-3">
+                            {/* <div className="col-span-6 sm:col-span-3">
                               <label
                                 htmlFor="fuelCard"
                                 className="block text-sm font-medium text-gray-700"
@@ -218,6 +225,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                   id="fuelCard"
                                   name="fuelCard"
                                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                  defaultValue={vehicle.fuelCard.id}
                                   required={true}
                                 >
                                   {data.fuelCardsNotAssigned.map(
@@ -236,6 +244,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                   id="fuelCard"
                                   name="fuelCard"
                                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                  defaultValue={vehicle.fuelCard.id}
                                   required={true}
                                 >
                                   <option disabled={true} selected={true}>
@@ -257,6 +266,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                 id="tollTag"
                                 name="tollTag"
                                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                defaultValue={vehicle.tollTag.id}
                                 required={true}
                               >
                                 {data.tollTags.map((tollTag: TollTag) => (
@@ -265,7 +275,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                                   </option>
                                 ))}
                               </select>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -277,7 +287,7 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
                     type="submit"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
                   >
-                    Add
+                    Save
                   </button>
                   <button
                     type="button"
@@ -297,4 +307,4 @@ const AddVehicleModal: FC<AddVehicleModalProps> = ({
   );
 };
 
-export default AddVehicleModal;
+export default UpdateVehicleModal;

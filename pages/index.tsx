@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import ClientOnly from '../components/ClientOnly/ClientOnly';
-import Navbar from '../components/Navigation/Navbar';
+import Navbar from '../components/Navigation/Navbar/Navbar';
 import AddVehicleModal from '../components/Vehicles/VehicleList/AddVehicleModal';
 import VehicleList from '../components/Vehicles/VehicleList/VehicleList';
 import styles from '../styles/Home.module.css';

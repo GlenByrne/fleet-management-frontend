@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import ClientOnly from '../components/ClientOnly/ClientOnly';
-import Navbar from '../components/Navigation/Navbar';
+import Navbar from '../components/Navigation/Navbar/Navbar';
 import AddTollTagModal from '../components/TollTags/AddTollTagModal';
 import TollTagList from '../components/TollTags/TollTagList';
 

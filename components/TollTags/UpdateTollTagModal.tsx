@@ -7,7 +7,7 @@ import {
   GET_TOLL_TAGS,
   GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG,
 } from '../../lib/queries';
-import { Depot, TollTag } from '../Vehicles/Vehicles.types';
+import { Depot, TollTag } from '../../lib/types';
 
 type UpdateTollTagModalProps = {
   modalState: boolean;

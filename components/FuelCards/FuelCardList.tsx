@@ -3,7 +3,7 @@ import { FC, Fragment, useState } from 'react';
 import Table from '../Table/Table';
 import TableColumnHeader from '../Table/TableColumnHeader';
 import { GET_FUEL_CARDS } from '../../lib/queries';
-import { FuelCard } from '../Vehicles/Vehicles.types';
+import { FuelCard } from '../../lib/types';
 import Button from '../Table/Button';
 import FuelCardListItem from './FuelCardListItem';
 import UpdateFuelCardModal from './UpdateFuelCardModal';
@@ -18,6 +18,25 @@ const FuelCardList: FC<FuelCardListProps> = ({ setModalState }) => {
   const updateFuelCardModalHandler = (state: boolean) => {
     setOpen(state);
   };
+
+  const headings = [
+    { child: 'Card Number' },
+    { child: 'Provider' },
+    { child: 'Depot' },
+    { child: 'Assigned Vehicle' },
+    { child: '' },
+    {
+      child: (
+        <Button
+          onClick={() => {
+            setModalState(true);
+          }}
+        >
+          Add Card
+        </Button>
+      ),
+    },
+  ];
 
   const { data, loading, error } = useQuery(GET_FUEL_CARDS, {});
 
@@ -34,20 +53,13 @@ const FuelCardList: FC<FuelCardListProps> = ({ setModalState }) => {
       <Table>
         <thead className="bg-gray-50">
           <tr>
-            <TableColumnHeader>Card Number</TableColumnHeader>
-            <TableColumnHeader>Provider</TableColumnHeader>
-            <TableColumnHeader>Depot</TableColumnHeader>
-            <TableColumnHeader>Assigned Vehicle</TableColumnHeader>
-            <TableColumnHeader>{}</TableColumnHeader>
-            <TableColumnHeader>
-              <Button
-                onClick={() => {
-                  setModalState(true);
-                }}
-              >
-                Add Card
-              </Button>
-            </TableColumnHeader>
+            {headings.map((heading, index) => {
+              return (
+                <TableColumnHeader key={index}>
+                  {heading.child}
+                </TableColumnHeader>
+              );
+            })}
           </tr>
         </thead>
 
