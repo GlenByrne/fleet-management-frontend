@@ -1,42 +1,51 @@
-import { FC } from 'react';
-import Button from '../../Table/Button';
-import TableDataItem from '../../Table/TableDataItem';
+import { FC, Fragment } from 'react';
+import Button from './Button';
+import TableDataItem from './TableItem';
 import { useRouter } from 'next/router';
-import { Vehicle } from '../../../lib/types';
+import { Vehicle } from '../../lib/types';
 import { useMutation } from '@apollo/client';
-import { DELETE_VEHICLE, GET_VEHICLE_LIST } from '../../../lib/queries';
+import { DELETE_VEHICLE, GET_VEHICLE_LIST } from '../../lib/queries';
 
-type VehicleListItemProps = {
-  vehicle: Vehicle;
+type TableRowProps<T, K> = {
+  item: T;
+  tableData: K;
   setModalState: (state: boolean) => void;
 };
 
-const VehicleListItem: FC<VehicleListItemProps> = ({
-  vehicle,
+interface IdObj {
+  id: string | number;
+}
+
+const TableRow = <T extends IdObj, K extends object>({
+  item,
+  tableData,
   setModalState,
-}) => {
-  const router = useRouter();
-  const [deleteVehicle] = useMutation(DELETE_VEHICLE, {
-    refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
-  });
+}: TableRowProps<T, K>) => {
+  // const router = useRouter();
+  // const [deleteVehicle] = useMutation(DELETE_VEHICLE, {
+  //   refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
+  // });
 
-  const showDefectsHandler = () => {
-    router.push('/defects/' + vehicle.id);
-  };
+  //   const showDefectsHandler = () => {
+  //     router.push('/defects/' + vehicle.id);
+  //   };
 
-  const deleteVehicleHandler = () => {
-    deleteVehicle({
-      variables: {
-        deleteVehicleData: {
-          id: vehicle.id,
-        },
-      },
-    });
-  };
+  //   const deleteVehicleHandler = () => {
+  //     deleteVehicle({
+  //       variables: {
+  //         deleteVehicleData: {
+  //           id: vehicle.id,
+  //         },
+  //       },
+  //     });
+  //   };
 
   return (
-    <tr key={vehicle.id}>
-      <TableDataItem>{vehicle.registration}</TableDataItem>
+    <tr key={item.id}>
+      {Object.keys(tableData).map((key) => {
+        return <Fragment key={key}>{(tableData as any)[key]}</Fragment>;
+      })}
+      {/* <TableDataItem>{vehicle.registration}</TableDataItem>
       <TableDataItem>{vehicle.make}</TableDataItem>
       <TableDataItem>{vehicle.model}</TableDataItem>
       <TableDataItem>{vehicle.depot.name}</TableDataItem>
@@ -64,9 +73,9 @@ const VehicleListItem: FC<VehicleListItemProps> = ({
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <Button onClick={showDefectsHandler}>Defects</Button>
-      </td>
+      </td> */}
     </tr>
   );
 };
 
-export default VehicleListItem;
+export default TableRow;

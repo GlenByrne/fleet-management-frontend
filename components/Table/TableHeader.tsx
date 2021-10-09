@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
 
-type TableColumnHeaderProps = {
+type TableHeaderProps = {
   children: ReactNode;
 };
 
-const TableColumnHeader: FC<TableColumnHeaderProps> = ({ children }) => {
+const TableHeader: FC<TableHeaderProps> = ({ children }) => {
   return (
     <th
       scope="col"
@@ -15,4 +15,4 @@ const TableColumnHeader: FC<TableColumnHeaderProps> = ({ children }) => {
   );
 };
 
-export default TableColumnHeader;
+export default TableHeader;

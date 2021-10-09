@@ -1,24 +1,46 @@
-import { FC, ReactNode } from 'react';
+import { Fragment } from 'react';
+import TableHeader from './TableHeader';
+import TableLayout from './TableLayout';
 
-type TableProps = {
-  children: ReactNode;
+type TableProps<T> = {
+  renderItem: (item: T) => React.ReactNode;
+  data: T[] | undefined;
+  columnHeaders: string[];
 };
 
-const Table: FC<TableProps> = ({ children }) => {
+interface IdObj {
+  id: string | number;
+}
+
+const Table = <T extends IdObj>({
+  data,
+  renderItem,
+  columnHeaders,
+}: TableProps<T>): JSX.Element => {
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-col">
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                {children}
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <TableLayout>
+      <thead className="bg-gray-50">
+        <tr>
+          {columnHeaders.map((columnHeader, index) => {
+            return <TableHeader key={index}>{columnHeader}</TableHeader>;
+          })}
+        </tr>
+      </thead>
+
+      <tbody className="bg-white divide-y divide-gray-200">
+        {data !== undefined && data.length > 0 ? (
+          data.map((item) => (
+            <Fragment key={item.id}>{renderItem(item)}</Fragment>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={12} className="text-2xl text-center">
+              No Items Found
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </TableLayout>
   );
 };
 

@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
 
-type TableDataItemProps = {
+type TableItemProps = {
   children: ReactNode;
 };
 
-const TableDataItem: FC<TableDataItemProps> = ({ children }) => {
+const TableItem: FC<TableItemProps> = ({ children }) => {
   return (
     <td className="px-6 py-4 whitespace-nowrap">
       <div className="flex items-center">
@@ -16,4 +16,4 @@ const TableDataItem: FC<TableDataItemProps> = ({ children }) => {
   );
 };
 
-export default TableDataItem;
+export default TableItem;

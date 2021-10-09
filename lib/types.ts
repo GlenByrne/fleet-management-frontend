@@ -47,3 +47,8 @@ export type NavbarOption = {
   name: string;
   href: string;
 };
+
+export type TableData = {
+  data: string | number | Date;
+  wrapper: JSX.Element;
+};
