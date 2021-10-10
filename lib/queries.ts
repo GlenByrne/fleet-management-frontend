@@ -276,3 +276,10 @@ export const UPDATE_VEHICLE = gql`
     }
   }
 `;
+
+// AddForm {
+//   inputs[]{
+//     jsx
+//   }
+//   heading
+// }

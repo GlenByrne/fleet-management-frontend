@@ -1,3 +1,5 @@
+import { DocumentNode } from 'graphql';
+
 export type Vehicle = {
   id: string;
   registration: string;
@@ -51,4 +53,23 @@ export type NavbarOption = {
 export type TableData = {
   data: string | number | Date;
   wrapper: JSX.Element;
+};
+
+export type ModalMutations = {
+  add: DocumentNode;
+  get: DocumentNode;
+  getSelectable: DocumentNode;
+};
+
+export interface IdObj {
+  id: string | number;
+}
+
+export interface SelectObject {
+  id: string | number;
+  name: string;
+}
+
+export type SelectableItem = {
+  depots: Depot[];
 };

@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { FC, Fragment, useState } from 'react';
 import TableColumnHeader from '../Table/TableHeader';
-import { GET_TOLL_TAGS } from '../../lib/queries';
+import { ADD_TOLL_TAG, GET_TOLL_TAGS } from '../../lib/queries';
 import { TableData, TollTag } from '../../lib/types';
 import Button from '../Table/Button';
 import UpdateTollTagModal from './UpdateTollTagModal';

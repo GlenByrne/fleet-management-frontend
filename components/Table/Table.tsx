@@ -1,16 +1,13 @@
-import { Fragment } from 'react';
+import { Fragment, ReactNode } from 'react';
+import { IdObj } from '../../lib/types';
 import TableHeader from './TableHeader';
 import TableLayout from './TableLayout';
 
 type TableProps<T> = {
-  renderItem: (item: T) => React.ReactNode;
+  renderItem: (item: T) => ReactNode;
   data: T[] | undefined;
   columnHeaders: string[];
 };
-
-interface IdObj {
-  id: string | number;
-}
 
 const Table = <T extends IdObj>({
   data,
