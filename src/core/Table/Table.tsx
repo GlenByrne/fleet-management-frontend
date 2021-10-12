@@ -1,5 +1,5 @@
 import { Fragment, ReactNode } from 'react';
-import { IdObj } from '../../constants/types';
+import { IdObj } from 'constants/types';
 import TableHeader from './TableHeader';
 import TableLayout from './TableLayout';
 

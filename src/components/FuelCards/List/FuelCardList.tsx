@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { FC, useState } from 'react';
-import { GET_FUEL_CARDS } from 'constants/queries';
+import { DELETE_FUEL_CARD, GET_FUEL_CARDS } from 'constants/queries';
 import { FuelCard } from 'constants/types';
 import TableRow from 'core/Table/TableRow';
 import Table from 'core/Table/Table';
@@ -42,6 +42,20 @@ const getTableData = (fuelCard: FuelCard) => {
 };
 
 const FuelCardList: FC = () => {
+  const [deleteFuelCard] = useMutation(DELETE_FUEL_CARD, {
+    refetchQueries: [GET_FUEL_CARDS, 'GetFuelCards'],
+  });
+
+  const deleteCardHandler = (id: string) => {
+    deleteFuelCard({
+      variables: {
+        deleteFuelCardData: {
+          id: id,
+        },
+      },
+    });
+  };
+
   const [open, setOpen] = useState(false);
 
   const updateFuelCardModalHandler = (state: boolean) => {
@@ -68,6 +82,7 @@ const FuelCardList: FC = () => {
             item={item}
             tableData={getTableData(item)}
             setModalState={updateFuelCardModalHandler}
+            deleteItemHandler={deleteCardHandler}
           />
         );
       }}

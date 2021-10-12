@@ -18,7 +18,7 @@ const Home: NextPage = () => {
         modalState={open}
         setModalState={addVehicleModalHandler}
       />
-      <Button onClick={() => addVehicleModalHandler(true)}>Add Card</Button>
+      <Button onClick={() => addVehicleModalHandler(true)}>Add Vehicle</Button>
       <VehicleList />
     </Layout>
   );

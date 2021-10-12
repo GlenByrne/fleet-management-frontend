@@ -62,14 +62,10 @@ export type ModalMutations = {
 };
 
 export interface IdObj {
-  id: string | number;
+  id: string;
 }
 
 export type Option = {
   id: string | number;
   value: string;
 };
-
-// const getOptions = <T extends unknown>(items: T) => {
-//   const
-// };

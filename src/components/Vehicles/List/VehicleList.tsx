@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { FC, useState } from 'react';
-import { GET_VEHICLE_LIST } from '../../../constants/queries';
+import { DELETE_VEHICLE, GET_VEHICLE_LIST } from '../../../constants/queries';
 import { Vehicle } from '../../../constants/types';
 import TableItem from '../../../core/Table/TableItem';
 import Table from '../../../core/Table/Table';
@@ -66,6 +66,20 @@ const getTableData = (vehicle: Vehicle) => {
 };
 
 const VehicleList: FC = () => {
+  const [deleteVehicle] = useMutation(DELETE_VEHICLE, {
+    refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
+  });
+
+  const deleteVehicleHandler = (id: string) => {
+    deleteVehicle({
+      variables: {
+        deleteVehicleData: {
+          id: id,
+        },
+      },
+    });
+  };
+
   const [open, setOpen] = useState(false);
 
   const updateVehicleModalHandler = (state: boolean) => {
@@ -92,6 +106,7 @@ const VehicleList: FC = () => {
             item={item}
             tableData={getTableData(item)}
             setModalState={updateVehicleModalHandler}
+            deleteItemHandler={deleteVehicleHandler}
           />
         );
       }}
