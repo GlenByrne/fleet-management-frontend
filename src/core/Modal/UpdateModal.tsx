@@ -1,21 +1,22 @@
 import { FormEventHandler, Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { IdObj } from 'constants/types';
 
-type EditModalProps<T> = {
+type UpdateModalProps<T> = {
   modalState: boolean;
-  setModalState: (status: boolean) => void;
+  setModalState: (state: boolean) => void;
   heading: string;
   submitHandler: FormEventHandler;
   inputs: T;
 };
 
-const EditModal = <T extends object>({
+const UpdateModal = <T extends object>({
   modalState,
   setModalState,
   heading,
   submitHandler,
   inputs,
-}: EditModalProps<T>) => {
+}: UpdateModalProps<T>) => {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -88,7 +89,7 @@ const EditModal = <T extends object>({
                     type="submit"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
                   >
-                    Add
+                    Save
                   </button>
                   <button
                     type="button"
@@ -108,4 +109,4 @@ const EditModal = <T extends object>({
   );
 };
 
-export default EditModal;
+export default UpdateModal;

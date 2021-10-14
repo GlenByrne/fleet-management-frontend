@@ -1,5 +1,29 @@
 import { gql } from '@apollo/client';
 
+export const GET_VEHICLE = gql`
+  query GetVehicle {
+    vehicle {
+      id
+      registration
+      make
+      model
+      owner
+      depot {
+        name
+      }
+      fuelCard {
+        cardNumber
+      }
+      tollTag {
+        tagNumber
+      }
+      cvrtDueDate
+      thirteenWeekInspectionDueDate
+      tachoCalibrationDueDate
+    }
+  }
+`;
+
 export const GET_VEHICLE_LIST = gql`
   query GetVehicleList {
     vehicles {
@@ -53,9 +77,31 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
   }
 `;
 
-export const GET_SELECTABLE_ITEMS_FOR_UPDATE_VEHICLE = gql`
-  query GetSelectableItemsForUpdateVehicle {
-    fuelCardsNotAssigned {
+export const GET_ITEMS_FOR_UPDATE_VEHICLE = gql`
+  query GetItemsForUpdateVehicle($vehicleId: ID!) {
+    vehicle(vehicleId: $vehicleId) {
+      id
+      registration
+      make
+      model
+      owner
+      cvrtDueDate
+      thirteenWeekInspectionDueDate
+      tachoCalibrationDueDate
+      depot {
+        id
+        name
+      }
+      fuelCard {
+        id
+        cardNumber
+      }
+      tollTag {
+        id
+        tagNumber
+      }
+    }
+    currentFuelCardAndUnassigned(vehicleId: $vehicleId) {
       id
       cardNumber
     }
@@ -276,10 +322,3 @@ export const UPDATE_VEHICLE = gql`
     }
   }
 `;
-
-// AddForm {
-//   inputs[]{
-//     jsx
-//   }
-//   heading
-// }

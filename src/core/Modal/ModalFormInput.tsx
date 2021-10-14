@@ -5,10 +5,11 @@ type ModalFormInputProps = {
   name: string;
   type: string;
   required: boolean;
+  defaultValue?: string;
 };
 
 const ModalFormInput = forwardRef<HTMLInputElement, ModalFormInputProps>(
-  ({ label, name, type, required }, ref) => {
+  ({ label, name, type, required, defaultValue }, ref) => {
     return (
       <div className="col-span-6 sm:col-span-3">
         <label
@@ -22,6 +23,7 @@ const ModalFormInput = forwardRef<HTMLInputElement, ModalFormInputProps>(
           type={type}
           name={name}
           id={name}
+          defaultValue={defaultValue}
           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           required={required}
         />

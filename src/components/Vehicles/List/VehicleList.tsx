@@ -1,10 +1,16 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { FC, useState } from 'react';
-import { DELETE_VEHICLE, GET_VEHICLE_LIST } from '../../../constants/queries';
-import { Vehicle } from '../../../constants/types';
-import TableItem from '../../../core/Table/TableItem';
-import Table from '../../../core/Table/Table';
-import TableRow from '../../../core/Table/TableRow';
+import { FC, Fragment, useState } from 'react';
+import { DELETE_VEHICLE, GET_VEHICLE_LIST } from 'constants/queries';
+import { Vehicle } from 'constants/types';
+import TableItem from 'core/Table/TableItem';
+import Table from 'core/Table/Table';
+import TableRow from 'core/Table/TableRow';
+import UpdateVehicleModal from '../Modal/Update/UpdateVehicleModal';
+
+type VehicleListProps = {
+  updateVehicleModalHandler: (state: boolean) => void;
+  changeCurrentVehicle: (vehicleId: string) => void;
+};
 
 interface VehicleData {
   vehicles: Vehicle[];
@@ -65,7 +71,10 @@ const getTableData = (vehicle: Vehicle) => {
   return tableData;
 };
 
-const VehicleList: FC = () => {
+const VehicleList: FC<VehicleListProps> = ({
+  updateVehicleModalHandler,
+  changeCurrentVehicle,
+}) => {
   const [deleteVehicle] = useMutation(DELETE_VEHICLE, {
     refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
   });
@@ -78,12 +87,6 @@ const VehicleList: FC = () => {
         },
       },
     });
-  };
-
-  const [open, setOpen] = useState(false);
-
-  const updateVehicleModalHandler = (state: boolean) => {
-    setOpen(state);
   };
 
   const { data, loading, error } = useQuery<VehicleData>(GET_VEHICLE_LIST, {});
@@ -100,13 +103,14 @@ const VehicleList: FC = () => {
     <Table
       columnHeaders={headers}
       data={data?.vehicles}
-      renderItem={(item) => {
+      renderItem={(vehicle) => {
         return (
           <TableRow
-            item={item}
-            tableData={getTableData(item)}
+            item={vehicle}
+            tableData={getTableData(vehicle)}
             setModalState={updateVehicleModalHandler}
             deleteItemHandler={deleteVehicleHandler}
+            // changeCurrentItem={changeCurrentVehicle}
           />
         );
       }}

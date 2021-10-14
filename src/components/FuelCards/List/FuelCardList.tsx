@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { FC, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
 import { DELETE_FUEL_CARD, GET_FUEL_CARDS } from 'constants/queries';
 import { FuelCard } from 'constants/types';
 import TableRow from 'core/Table/TableRow';
 import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
+import UpdateFuelCardModal from '../Modal/Update/UpdateFuelCardModal';
 
 interface FuelCardData {
   fuelCards: FuelCard[];

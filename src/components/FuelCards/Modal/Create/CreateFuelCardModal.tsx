@@ -8,6 +8,7 @@ import {
 import { Depot, Option } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
+import UpdateModal from 'core/Modal/UpdateModal';
 import AddModal from 'core/Modal/AddModal';
 
 interface SelectableItems {
@@ -15,8 +16,8 @@ interface SelectableItems {
 }
 
 type CreateFuelCardInputs = {
-  tagNumber: JSX.Element;
-  tagProvider: JSX.Element;
+  cardNumber: JSX.Element;
+  cardProvider: JSX.Element;
   depot: JSX.Element;
 };
 
@@ -45,7 +46,7 @@ const CreateFuelCardModal: FC<CreateFuelCardModalProps> = ({
 
   const getCreateFuelCardInputs = (depots: Option[] | undefined) => {
     const inputs: CreateFuelCardInputs = {
-      tagNumber: (
+      cardNumber: (
         <ModalFormInput
           label="Card Number"
           name="cardNumber"
@@ -54,7 +55,7 @@ const CreateFuelCardModal: FC<CreateFuelCardModalProps> = ({
           required={true}
         />
       ),
-      tagProvider: (
+      cardProvider: (
         <ModalFormInput
           label="Card Provider"
           name="cardProvider"
@@ -110,7 +111,7 @@ const CreateFuelCardModal: FC<CreateFuelCardModalProps> = ({
       modalState={modalState}
       setModalState={setModalState}
       submitHandler={submitHandler}
-      heading="Add Toll Tag"
+      heading="Add Fuel Card"
       inputs={inputs}
     />
   );

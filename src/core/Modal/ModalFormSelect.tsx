@@ -6,11 +6,12 @@ type ModalFormSelectProps = {
   name: string;
   required: boolean;
   options: Option[] | undefined;
+  defaultValue?: string;
 };
 
 const ModalFormSelect = forwardRef(
   (
-    { label, name, required, options }: ModalFormSelectProps,
+    { label, name, required, options, defaultValue }: ModalFormSelectProps,
     ref: Ref<HTMLSelectElement>
   ) => {
     return (
@@ -27,6 +28,7 @@ const ModalFormSelect = forwardRef(
           name={name}
           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           required={required}
+          defaultValue={defaultValue}
         >
           {options != null ? (
             options.map((option: Option) => {

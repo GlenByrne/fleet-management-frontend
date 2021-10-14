@@ -55,12 +55,6 @@ export type TableData = {
   wrapper: JSX.Element;
 };
 
-export type ModalMutations = {
-  add: DocumentNode;
-  get: DocumentNode;
-  getSelectable: DocumentNode;
-};
-
 export interface IdObj {
   id: string;
 }
@@ -68,4 +62,19 @@ export interface IdObj {
 export type Option = {
   id: string | number;
   value: string;
+};
+
+export type UpdateVehicleModalData = {
+  id: string;
+  registration: string;
+  make: string;
+  model: string;
+  owner: string;
+  cvrtDueDate: Date;
+  tachoCalibrationDueDate: Date;
+  thirteenWeekInspectionDueDate: Date;
+  defects: Defect[];
+  depot: Depot;
+  fuelCard: FuelCard;
+  tollTag: TollTag;
 };
