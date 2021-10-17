@@ -7,7 +7,7 @@ type LayoutProps = {
   children: ReactNode;
 };
 
-const Layout: FC<LayoutProps> = ({ children }) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <Fragment>
       <Head>

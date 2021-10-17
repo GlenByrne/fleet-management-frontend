@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 type ModalFormInputProps = {
   label: string;

@@ -12,7 +12,7 @@ type MobileNavbarOptionsProps = {
   navigation: NavbarOption[];
 };
 
-const MobileNavbarOptions: FC<MobileNavbarOptionsProps> = ({ navigation }) => {
+const MobileNavbarOptions = ({ navigation }: MobileNavbarOptionsProps) => {
   const router = useRouter();
 
   return (

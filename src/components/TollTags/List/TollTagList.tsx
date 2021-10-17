@@ -46,10 +46,10 @@ const getTableData = (tollTag: TollTag) => {
   return tableData;
 };
 
-const TollTagList: FC<TollTagListProps> = ({
+const TollTagList = ({
   updateTollTagModalHandler,
   changeCurrentTollTag,
-}) => {
+}: TollTagListProps) => {
   const [deleteTollTag] = useMutation(DELETE_TOLL_TAG, {
     refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
   });

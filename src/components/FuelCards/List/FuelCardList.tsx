@@ -46,10 +46,10 @@ const getTableData = (fuelCard: FuelCard) => {
   return tableData;
 };
 
-const FuelCardList: FC<FuelCardListProps> = ({
+const FuelCardList = ({
   updateFuelCardModalHandler,
   changeCurrentFuelCard,
-}) => {
+}: FuelCardListProps) => {
   const [deleteFuelCard] = useMutation(DELETE_FUEL_CARD, {
     refetchQueries: [GET_FUEL_CARDS, 'GetFuelCards'],
   });

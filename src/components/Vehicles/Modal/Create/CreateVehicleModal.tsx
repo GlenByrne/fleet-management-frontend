@@ -59,10 +59,10 @@ const getTollTagOptions = (tollTags: TollTag[] | undefined) => {
   return options;
 };
 
-const CreateVehicleModal: FC<CreateVehicleModalProps> = ({
+const CreateVehicleModal = ({
   modalState,
   setModalState,
-}) => {
+}: CreateVehicleModalProps) => {
   const registrationInputRef = useRef<HTMLInputElement>(null);
   const makeInputRef = useRef<HTMLInputElement>(null);
   const modelInputRef = useRef<HTMLInputElement>(null);

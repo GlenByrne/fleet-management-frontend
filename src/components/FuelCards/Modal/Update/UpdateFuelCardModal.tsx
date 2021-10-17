@@ -33,11 +33,11 @@ const getDepotOptions = (depots: Depot[] | undefined) => {
   );
 };
 
-const UpdateFuelCardModal: FC<UpdateFuelCardModalProps> = ({
+const UpdateFuelCardModal = ({
   modalState,
   modalStateHandler,
   fuelCard,
-}) => {
+}: UpdateFuelCardModalProps) => {
   const cardNumberInputRef = useRef<HTMLInputElement>(null);
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);

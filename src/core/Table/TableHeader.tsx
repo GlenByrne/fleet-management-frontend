@@ -4,7 +4,7 @@ type TableHeaderProps = {
   children: ReactNode;
 };
 
-const TableHeader: FC<TableHeaderProps> = ({ children }) => {
+const TableHeader = ({ children }: TableHeaderProps) => {
   return (
     <th
       scope="col"

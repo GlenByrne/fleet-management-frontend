@@ -1,10 +1,10 @@
 import { FC, ReactNode, useEffect, useState } from 'react';
 
-type Props = {
+type ClientOnlyProps = {
   children: ReactNode;
 };
 
-const ClientOnly: FC<Props> = ({ children, ...delegated }) => {
+const ClientOnly = ({ children, ...delegated }: ClientOnlyProps) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {

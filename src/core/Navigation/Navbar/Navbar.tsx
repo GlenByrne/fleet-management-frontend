@@ -1,4 +1,3 @@
-import { FC, Fragment } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { NavbarOption } from '../../../constants/types';
 import ProfileDropdown from './ProfileDropdown';
@@ -14,7 +13,7 @@ const navigation: NavbarOption[] = [
   { name: 'Toll Tags', href: '/tollTags' },
 ];
 
-const Navbar: FC = () => {
+const Navbar = () => {
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (

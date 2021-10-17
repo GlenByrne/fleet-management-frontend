@@ -1,7 +1,7 @@
 import { BellIcon } from '@heroicons/react/outline';
 import { FC } from 'react';
 
-const NotificationButton: FC = () => {
+const NotificationButton = () => {
   return (
     <button
       type="button"

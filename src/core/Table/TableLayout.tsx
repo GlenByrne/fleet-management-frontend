@@ -4,7 +4,7 @@ type TableLayoutProps = {
   children: ReactNode;
 };
 
-const TableLayout: FC<TableLayoutProps> = ({ children }) => {
+const TableLayout = ({ children }: TableLayoutProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex flex-col">

@@ -33,11 +33,11 @@ const getDepotOptions = (depots: Depot[] | undefined) => {
   );
 };
 
-const UpdateTollTagModal: FC<UpdateTollTagModalProps> = ({
+const UpdateTollTagModal = ({
   modalState,
   modalStateHandler,
   tollTag,
-}) => {
+}: UpdateTollTagModalProps) => {
   const tagNumberInputRef = useRef<HTMLInputElement>(null);
   const tagProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);

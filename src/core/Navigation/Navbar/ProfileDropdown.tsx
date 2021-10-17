@@ -11,7 +11,7 @@ const classNames = (...classes: any) => {
   return classes.filter(Boolean).join(' ');
 };
 
-const ProfileDropdown: FC = () => {
+const ProfileDropdown = () => {
   return (
     <Menu as="div" className="ml-3 relative">
       <div>

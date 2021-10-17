@@ -6,7 +6,7 @@ type DefectItemProps = {
   defect: Defect;
 };
 
-const DefectListItem: FC<DefectItemProps> = ({ defect }) => {
+const DefectListItem = ({ defect }: DefectItemProps) => {
   return (
     <div></div>
     // <tr key={defect.id}>

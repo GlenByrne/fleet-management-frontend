@@ -71,10 +71,10 @@ const getTableData = (vehicle: Vehicle) => {
   return tableData;
 };
 
-const VehicleList: FC<VehicleListProps> = ({
+const VehicleList = ({
   updateVehicleModalHandler,
   changeCurrentVehicle,
-}) => {
+}: VehicleListProps) => {
   const [deleteVehicle] = useMutation(DELETE_VEHICLE, {
     refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
   });

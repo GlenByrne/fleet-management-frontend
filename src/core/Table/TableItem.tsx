@@ -4,7 +4,7 @@ type TableItemProps = {
   children: ReactNode;
 };
 
-const TableItem: FC<TableItemProps> = ({ children }) => {
+const TableItem = ({ children }: TableItemProps) => {
   return (
     <td className="px-6 py-4 whitespace-nowrap">
       <div className="flex items-center">

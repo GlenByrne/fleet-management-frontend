@@ -31,10 +31,10 @@ const getDepotOptions = (depots: Depot[] | undefined) => {
   );
 };
 
-const CreateTollTagModal: FC<CreateTollTagModalProps> = ({
+const CreateTollTagModal = ({
   modalState,
   setModalState,
-}) => {
+}: CreateTollTagModalProps) => {
   const tagNumberInputRef = useRef<HTMLInputElement>(null);
   const tagProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);

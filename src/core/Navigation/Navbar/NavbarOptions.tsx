@@ -11,7 +11,7 @@ type NavbarOptionsProps = {
   navigation: NavbarOption[];
 };
 
-const NavbarOptions: FC<NavbarOptionsProps> = ({ navigation }) => {
+const NavbarOptions = ({ navigation }: NavbarOptionsProps) => {
   const router = useRouter();
 
   return (

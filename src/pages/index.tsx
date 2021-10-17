@@ -56,12 +56,13 @@ const Home: NextPage = () => {
         name: vehicle.depot.name,
       },
       fuelCard: {
-        id: vehicle.fuelCard.id,
-        cardNumber: vehicle.fuelCard.cardNumber,
+        id: vehicle.fuelCard === null ? '' : vehicle.fuelCard.id,
+        cardNumber:
+          vehicle.fuelCard === null ? '' : vehicle.fuelCard.cardNumber,
       },
       tollTag: {
-        id: vehicle.tollTag.id,
-        tagNumber: vehicle.tollTag.tagNumber,
+        id: vehicle.tollTag === null ? '' : vehicle.tollTag.id,
+        tagNumber: vehicle.tollTag === null ? '' : vehicle.tollTag.tagNumber,
       },
     };
     setCurrentVehicle(chosenVehicle);

@@ -57,10 +57,12 @@ const getFuelCardOptions = (
     (fuelCard) => ({ value: fuelCard.id, label: fuelCard.cardNumber } as Option)
   );
 
-  options?.unshift(
-    { value: '', label: 'None' },
-    { value: vehicle.fuelCard.id, label: vehicle.fuelCard.cardNumber }
-  );
+  vehicle.fuelCard.id === ''
+    ? options?.unshift({ value: '', label: 'None' })
+    : options?.unshift(
+        { value: '', label: 'None' },
+        { value: vehicle.fuelCard.id, label: vehicle.fuelCard.cardNumber }
+      );
 
   return options;
 };
@@ -73,19 +75,21 @@ const getTollTagOptions = (
     (tollTag) => ({ value: tollTag.id, label: tollTag.tagNumber } as Option)
   );
 
-  options?.unshift(
-    { value: '', label: 'None' },
-    { value: vehicle.tollTag.id, label: vehicle.tollTag.tagNumber }
-  );
+  vehicle.tollTag.id === ''
+    ? options?.unshift({ value: '', label: 'None' })
+    : options?.unshift(
+        { value: '', label: 'None' },
+        { value: vehicle.tollTag.id, label: vehicle.tollTag.tagNumber }
+      );
 
   return options;
 };
 
-const UpdateVehicleModal: FC<UpdateVehicleModalProps> = ({
+const UpdateVehicleModal = ({
   modalState,
   modelStateHandler,
   vehicle,
-}) => {
+}: UpdateVehicleModalProps) => {
   // const [registration, setRegistration] = useState<string>(
   //   vehicle.registration
   // );
