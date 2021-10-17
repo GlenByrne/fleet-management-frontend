@@ -33,12 +33,15 @@ export const GET_VEHICLE_LIST = gql`
       model
       owner
       depot {
+        id
         name
       }
       fuelCard {
+        id
         cardNumber
       }
       tollTag {
+        id
         tagNumber
       }
       cvrtDueDate
@@ -66,7 +69,7 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
       id
       cardNumber
     }
-    tollTags {
+    tollTagsNotAssigned {
       id
       tagNumber
     }
@@ -78,34 +81,12 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
 `;
 
 export const GET_ITEMS_FOR_UPDATE_VEHICLE = gql`
-  query GetItemsForUpdateVehicle($vehicleId: ID!) {
-    vehicle(vehicleId: $vehicleId) {
-      id
-      registration
-      make
-      model
-      owner
-      cvrtDueDate
-      thirteenWeekInspectionDueDate
-      tachoCalibrationDueDate
-      depot {
-        id
-        name
-      }
-      fuelCard {
-        id
-        cardNumber
-      }
-      tollTag {
-        id
-        tagNumber
-      }
-    }
-    currentFuelCardAndUnassigned(vehicleId: $vehicleId) {
+  query GetItemsForUpdateVehicle {
+    fuelCardsNotAssigned {
       id
       cardNumber
     }
-    tollTags {
+    tollTagsNotAssigned {
       id
       tagNumber
     }

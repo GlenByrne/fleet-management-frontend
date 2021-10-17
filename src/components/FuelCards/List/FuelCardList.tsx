@@ -5,7 +5,11 @@ import { FuelCard } from 'constants/types';
 import TableRow from 'core/Table/TableRow';
 import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
-import UpdateFuelCardModal from '../Modal/Update/UpdateFuelCardModal';
+
+type FuelCardListProps = {
+  updateFuelCardModalHandler: (state: boolean) => void;
+  changeCurrentFuelCard: (fuelCard: FuelCard) => void;
+};
 
 interface FuelCardData {
   fuelCards: FuelCard[];
@@ -42,7 +46,10 @@ const getTableData = (fuelCard: FuelCard) => {
   return tableData;
 };
 
-const FuelCardList: FC = () => {
+const FuelCardList: FC<FuelCardListProps> = ({
+  updateFuelCardModalHandler,
+  changeCurrentFuelCard,
+}) => {
   const [deleteFuelCard] = useMutation(DELETE_FUEL_CARD, {
     refetchQueries: [GET_FUEL_CARDS, 'GetFuelCards'],
   });
@@ -55,12 +62,6 @@ const FuelCardList: FC = () => {
         },
       },
     });
-  };
-
-  const [open, setOpen] = useState(false);
-
-  const updateFuelCardModalHandler = (state: boolean) => {
-    setOpen(state);
   };
 
   const { data, loading, error } = useQuery<FuelCardData>(GET_FUEL_CARDS, {});
@@ -84,6 +85,7 @@ const FuelCardList: FC = () => {
             tableData={getTableData(item)}
             setModalState={updateFuelCardModalHandler}
             deleteItemHandler={deleteCardHandler}
+            changeCurrentItem={changeCurrentFuelCard}
           />
         );
       }}

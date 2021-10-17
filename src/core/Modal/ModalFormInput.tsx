@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { ChangeEvent, FC, forwardRef } from 'react';
 
 type ModalFormInputProps = {
   label: string;
@@ -6,6 +6,8 @@ type ModalFormInputProps = {
   type: string;
   required: boolean;
   defaultValue?: string;
+  // value?: string;
+  // onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const ModalFormInput = forwardRef<HTMLInputElement, ModalFormInputProps>(
@@ -18,6 +20,15 @@ const ModalFormInput = forwardRef<HTMLInputElement, ModalFormInputProps>(
         >
           {label}
         </label>
+        {/* <input
+        type={type}
+        name={name}
+        id={name}
+        value={value}
+        onChange={onChange}
+        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        required={required}
+      /> */}
         <input
           ref={ref}
           type={type}

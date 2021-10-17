@@ -6,12 +6,12 @@ import {
   GET_FUEL_CARDS,
   GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD,
 } from 'constants/queries';
-import { Depot, Option, FuelCard } from 'constants/types';
+import { Depot, Option, FuelCardUpdateModalItem } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import UpdateModal from 'core/Modal/UpdateModal';
 
-interface SelectableItems {
+interface UpdateFuelCardData {
   depots: Depot[] | undefined;
 }
 
@@ -23,19 +23,19 @@ type UpdateFuelCardInputs = {
 
 type UpdateFuelCardModalProps = {
   modalState: boolean;
-  setModalState: (status: boolean) => void;
-  fuelCard: FuelCard;
+  modalStateHandler: (status: boolean) => void;
+  fuelCard: FuelCardUpdateModalItem;
 };
 
 const getDepotOptions = (depots: Depot[] | undefined) => {
   return depots?.map(
-    (depot) => ({ id: depot.id, value: depot.name } as Option)
+    (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
 };
 
 const UpdateFuelCardModal: FC<UpdateFuelCardModalProps> = ({
   modalState,
-  setModalState,
+  modalStateHandler,
   fuelCard,
 }) => {
   const cardNumberInputRef = useRef<HTMLInputElement>(null);
@@ -85,20 +85,23 @@ const UpdateFuelCardModal: FC<UpdateFuelCardModalProps> = ({
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    setModalState(false);
+    modalStateHandler(false);
     updateFuelCard({
       variables: {
         updateFuelCardData: {
           id: fuelCard.id,
           cardNumber: cardNumberInputRef.current?.value,
           cardProvider: cardProviderInputRef.current?.value,
-          depotId: depotIdInputRef.current?.value,
+          depotId:
+            depotIdInputRef.current?.value === ''
+              ? null
+              : depotIdInputRef.current?.value,
         },
       },
     });
   };
 
-  const { data, loading, error } = useQuery<SelectableItems>(
+  const { data, loading, error } = useQuery<UpdateFuelCardData>(
     GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD
   );
 
@@ -115,7 +118,7 @@ const UpdateFuelCardModal: FC<UpdateFuelCardModalProps> = ({
   return (
     <UpdateModal
       modalState={modalState}
-      setModalState={setModalState}
+      setModalState={modalStateHandler}
       submitHandler={submitHandler}
       heading="Update Fuel Card"
       inputs={inputs}

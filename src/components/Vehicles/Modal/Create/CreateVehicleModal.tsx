@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { FC, FormEventHandler, useRef } from 'react';
+import { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 import {
   ADD_VEHICLE,
   GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE,
@@ -13,7 +13,7 @@ import AddModal from 'core/Modal/AddModal';
 interface SelectableItems {
   depots: Depot[] | undefined;
   fuelCardsNotAssigned: FuelCard[] | undefined;
-  tollTags: TollTag[] | undefined;
+  tollTagsNotAssigned: TollTag[] | undefined;
 }
 
 type CreateVehicleInputs = {
@@ -32,21 +32,31 @@ type CreateVehicleModalProps = {
 };
 
 const getDepotOptions = (depots: Depot[] | undefined) => {
-  return depots?.map(
-    (depot) => ({ id: depot.id, value: depot.name } as Option)
+  const options = depots?.map(
+    (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
+
+  return options;
 };
 
 const getFuelCardOptions = (fuelCards: FuelCard[] | undefined) => {
-  return fuelCards?.map(
-    (fuelCard) => ({ id: fuelCard.id, value: fuelCard.cardNumber } as Option)
+  const options = fuelCards?.map(
+    (fuelCard) => ({ value: fuelCard.id, label: fuelCard.cardNumber } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
+
+  return options;
 };
 
 const getTollTagOptions = (tollTags: TollTag[] | undefined) => {
-  return tollTags?.map(
-    (tollTag) => ({ id: tollTag.id, value: tollTag.tagNumber } as Option)
+  const options = tollTags?.map(
+    (tollTag) => ({ value: tollTag.id, label: tollTag.tagNumber } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
+
+  return options;
 };
 
 const CreateVehicleModal: FC<CreateVehicleModalProps> = ({
@@ -121,7 +131,7 @@ const CreateVehicleModal: FC<CreateVehicleModalProps> = ({
           label="Fuel Card"
           name="fuelCard"
           ref={fuelCardIdInputRef}
-          required={true}
+          required={false}
           options={fuelCards}
         />
       ),
@@ -130,7 +140,7 @@ const CreateVehicleModal: FC<CreateVehicleModalProps> = ({
           label="Toll Tag"
           name="tollTag"
           ref={tollTagIdInputRef}
-          required={true}
+          required={false}
           options={tollTags}
         />
       ),
@@ -172,7 +182,7 @@ const CreateVehicleModal: FC<CreateVehicleModalProps> = ({
   const inputs = getCreateVehicleInputs(
     getDepotOptions(data?.depots),
     getFuelCardOptions(data?.fuelCardsNotAssigned),
-    getTollTagOptions(data?.tollTags)
+    getTollTagOptions(data?.tollTagsNotAssigned)
   );
 
   return (

@@ -6,6 +6,11 @@ import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
 import TableRow from 'core/Table/TableRow';
 
+type TollTagListProps = {
+  updateTollTagModalHandler: (state: boolean) => void;
+  changeCurrentTollTag: (tollTag: TollTag) => void;
+};
+
 interface TollTagData {
   tollTags: TollTag[];
 }
@@ -41,7 +46,10 @@ const getTableData = (tollTag: TollTag) => {
   return tableData;
 };
 
-const TollTagList: FC = () => {
+const TollTagList: FC<TollTagListProps> = ({
+  updateTollTagModalHandler,
+  changeCurrentTollTag,
+}) => {
   const [deleteTollTag] = useMutation(DELETE_TOLL_TAG, {
     refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
   });
@@ -54,12 +62,6 @@ const TollTagList: FC = () => {
         },
       },
     });
-  };
-
-  const [open, setOpen] = useState(false);
-
-  const updateTollTagModalHandler = (state: boolean) => {
-    setOpen(state);
   };
 
   const { data, loading, error } = useQuery<TollTagData>(GET_TOLL_TAGS, {});
@@ -83,6 +85,7 @@ const TollTagList: FC = () => {
             tableData={getTableData(item)}
             setModalState={updateTollTagModalHandler}
             deleteItemHandler={deleteTagHandler}
+            changeCurrentItem={changeCurrentTollTag}
           />
         );
       }}

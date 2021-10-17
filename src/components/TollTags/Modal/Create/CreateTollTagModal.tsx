@@ -27,7 +27,7 @@ type CreateTollTagModalProps = {
 
 const getDepotOptions = (depots: Depot[] | undefined) => {
   return depots?.map(
-    (depot) => ({ id: depot.id, value: depot.name } as Option)
+    (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
 };
 

@@ -9,7 +9,7 @@ import UpdateVehicleModal from '../Modal/Update/UpdateVehicleModal';
 
 type VehicleListProps = {
   updateVehicleModalHandler: (state: boolean) => void;
-  changeCurrentVehicle: (vehicleId: string) => void;
+  changeCurrentVehicle: (vehicle: Vehicle) => void;
 };
 
 interface VehicleData {
@@ -48,7 +48,7 @@ const getTableData = (vehicle: Vehicle) => {
   const tableData: VehicleTableData = {
     registration: <TableItem>{vehicle.registration}</TableItem>,
     make: <TableItem>{vehicle.make}</TableItem>,
-    model: <TableItem>{vehicle.registration}</TableItem>,
+    model: <TableItem>{vehicle.model}</TableItem>,
     depot: <TableItem>{vehicle.depot.name}</TableItem>,
     owner: <TableItem>{vehicle.owner}</TableItem>,
     fuelCard: (
@@ -110,7 +110,7 @@ const VehicleList: FC<VehicleListProps> = ({
             tableData={getTableData(vehicle)}
             setModalState={updateVehicleModalHandler}
             deleteItemHandler={deleteVehicleHandler}
-            // changeCurrentItem={changeCurrentVehicle}
+            changeCurrentItem={changeCurrentVehicle}
           />
         );
       }}

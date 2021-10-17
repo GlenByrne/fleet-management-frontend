@@ -7,7 +7,7 @@ type TableRowProps<T, K> = {
   tableData: K;
   setModalState: (state: boolean) => void;
   deleteItemHandler: (id: string) => void;
-  // changeCurrentItem: (id: string) => void;
+  changeCurrentItem: (item: T) => void;
 };
 
 const TableRow = <T extends IdObj, K extends object>({
@@ -15,8 +15,8 @@ const TableRow = <T extends IdObj, K extends object>({
   tableData,
   setModalState,
   deleteItemHandler,
-}: // changeCurrentItem,
-TableRowProps<T, K>) => {
+  changeCurrentItem,
+}: TableRowProps<T, K>) => {
   // const router = useRouter();
 
   //   const showDefectsHandler = () => {
@@ -31,7 +31,7 @@ TableRowProps<T, K>) => {
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <Button
           onClick={() => {
-            // changeCurrentItem(item.id);
+            changeCurrentItem(item);
             setModalState(true);
           }}
         >

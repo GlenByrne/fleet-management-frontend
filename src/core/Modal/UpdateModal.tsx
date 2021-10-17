@@ -1,6 +1,5 @@
 import { FormEventHandler, Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { IdObj } from 'constants/types';
 
 type UpdateModalProps<T> = {
   modalState: boolean;

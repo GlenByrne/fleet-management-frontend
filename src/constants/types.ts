@@ -1,5 +1,3 @@
-import { DocumentNode } from 'graphql';
-
 export type Vehicle = {
   id: string;
   registration: string;
@@ -60,8 +58,8 @@ export interface IdObj {
 }
 
 export type Option = {
-  id: string | number;
   value: string;
+  label: string;
 };
 
 export type UpdateVehicleModalData = {
@@ -77,4 +75,47 @@ export type UpdateVehicleModalData = {
   depot: Depot;
   fuelCard: FuelCard;
   tollTag: TollTag;
+};
+
+export type VehicleUpdateModalItem = {
+  id: string;
+  registration: string;
+  make: string;
+  model: string;
+  owner: string;
+  cvrtDueDate: Date;
+  tachoCalibrationDueDate: Date;
+  thirteenWeekInspectionDueDate: Date;
+  depot: {
+    id: string;
+    name: string;
+  };
+  fuelCard: {
+    id: string;
+    cardNumber: string;
+  };
+  tollTag: {
+    id: string;
+    tagNumber: string;
+  };
+};
+
+export type FuelCardUpdateModalItem = {
+  id: string;
+  cardNumber: string;
+  cardProvider: string;
+  depot: {
+    id: string;
+    name: string;
+  };
+};
+
+export type TollTagUpdateModalItem = {
+  id: string;
+  tagNumber: string;
+  tagProvider: string;
+  depot: {
+    id: string;
+    name: string;
+  };
 };

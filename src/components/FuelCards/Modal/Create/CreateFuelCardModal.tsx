@@ -8,7 +8,6 @@ import {
 import { Depot, Option } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
-import UpdateModal from 'core/Modal/UpdateModal';
 import AddModal from 'core/Modal/AddModal';
 
 interface SelectableItems {
@@ -28,7 +27,7 @@ type CreateFuelCardModalProps = {
 
 const getDepotOptions = (depots: Depot[] | undefined) => {
   return depots?.map(
-    (depot) => ({ id: depot.id, value: depot.name } as Option)
+    (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
 };
 
