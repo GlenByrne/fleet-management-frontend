@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { FC, Fragment, useState } from 'react';
-import { DELETE_VEHICLE, GET_VEHICLE_LIST } from 'constants/queries';
-import { Vehicle } from 'constants/types';
+import { DELETE_VEHICLE, GET_VEHICLES } from 'constants/queries';
+import { DeleteVehicle, GetVehicles, Vehicle } from 'constants/types';
 import TableItem from 'core/Table/TableItem';
 import Table from 'core/Table/Table';
 import TableRow from 'core/Table/TableRow';
@@ -75,8 +75,25 @@ const VehicleList = ({
   updateVehicleModalHandler,
   changeCurrentVehicle,
 }: VehicleListProps) => {
-  const [deleteVehicle] = useMutation(DELETE_VEHICLE, {
-    refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
+  const [deleteVehicle] = useMutation<DeleteVehicle>(DELETE_VEHICLE, {
+    update: (cache, { data: mutationReturn }) => {
+      const currentVehicles = cache.readQuery<GetVehicles>({
+        query: GET_VEHICLES,
+      });
+
+      const newVehicles = currentVehicles?.vehicles.filter(
+        (vehicle) => vehicle.id !== mutationReturn?.deleteVehicle.id
+      );
+
+      cache.writeQuery({
+        query: GET_VEHICLES,
+        data: { vehicles: newVehicles },
+      });
+
+      cache.evict({
+        id: mutationReturn?.deleteVehicle.id,
+      });
+    },
   });
 
   const deleteVehicleHandler = (id: string) => {
@@ -89,7 +106,7 @@ const VehicleList = ({
     });
   };
 
-  const { data, loading, error } = useQuery<VehicleData>(GET_VEHICLE_LIST, {});
+  const { data, loading, error } = useQuery<VehicleData>(GET_VEHICLES, {});
 
   if (loading) {
     return <div className="h2">Loading...</div>;

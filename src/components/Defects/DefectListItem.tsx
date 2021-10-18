@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { Defect } from '../../constants/types';
 // import { Defect } from './DefectList';
 

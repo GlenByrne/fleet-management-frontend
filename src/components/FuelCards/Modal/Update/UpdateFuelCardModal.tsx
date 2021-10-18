@@ -42,9 +42,7 @@ const UpdateFuelCardModal = ({
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateFuelCard] = useMutation(UPDATE_FUEL_CARD, {
-    refetchQueries: [GET_FUEL_CARDS, 'GetFuelCards'],
-  });
+  const [updateFuelCard] = useMutation(UPDATE_FUEL_CARD);
 
   const getUpdateFuelCardInputs = (depots: Option[] | undefined) => {
     const inputs: UpdateFuelCardInputs = {
@@ -106,11 +104,11 @@ const UpdateFuelCardModal = ({
   );
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
-    return <div className="h2">Error</div>;
+    return <div></div>;
   }
 
   const inputs = getUpdateFuelCardInputs(getDepotOptions(data?.depots));

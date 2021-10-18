@@ -5,7 +5,13 @@ import {
   GET_FUEL_CARDS,
   GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD,
 } from 'constants/queries';
-import { Depot, Option } from 'constants/types';
+import {
+  AddFuelCard,
+  Depot,
+  FuelCard,
+  GetFuelCards,
+  Option,
+} from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import AddModal from 'core/Modal/AddModal';
@@ -39,8 +45,21 @@ const CreateFuelCardModal = ({
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [addFuelCard] = useMutation(ADD_FUEL_CARD, {
-    refetchQueries: [GET_FUEL_CARDS, 'GetFuelCards'],
+  const [addFuelCard] = useMutation<AddFuelCard>(ADD_FUEL_CARD, {
+    update: (cache, { data: mutationReturn }) => {
+      const newFuelCard = mutationReturn?.addFuelCard;
+
+      const currentFuelCards = cache.readQuery<GetFuelCards>({
+        query: GET_FUEL_CARDS,
+      });
+
+      if (currentFuelCards && newFuelCard) {
+        cache.writeQuery({
+          query: GET_FUEL_CARDS,
+          data: { fuelCards: [...currentFuelCards.fuelCards, newFuelCard] },
+        });
+      }
+    },
   });
 
   const getCreateFuelCardInputs = (depots: Option[] | undefined) => {
@@ -96,11 +115,11 @@ const CreateFuelCardModal = ({
   );
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
-    return <div className="h2">Error</div>;
+    return <div></div>;
   }
 
   const inputs = getCreateFuelCardInputs(getDepotOptions(data?.depots));

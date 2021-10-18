@@ -3,7 +3,6 @@ import { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
   UPDATE_VEHICLE,
-  GET_VEHICLE_LIST,
   GET_ITEMS_FOR_UPDATE_VEHICLE,
 } from 'constants/queries';
 import {
@@ -90,44 +89,6 @@ const UpdateVehicleModal = ({
   modelStateHandler,
   vehicle,
 }: UpdateVehicleModalProps) => {
-  // const [registration, setRegistration] = useState<string>(
-  //   vehicle.registration
-  // );
-  // const [make, setMake] = useState<string>(vehicle.make);
-  // const [model, setModel] = useState<string>(vehicle.model);
-  // const [owner, setOwner] = useState<string>(vehicle.owner);
-  // const [depotId, setDepotId] = useState<string>(vehicle.depot.id);
-  // const [fuelCardId, setFuelCardId] = useState<string>(vehicle.fuelCard.id);
-  // const [tollTagId, setTollTagId] = useState<string>(vehicle.tollTag.id);
-
-  // const registrationChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setRegistration(event.target.value);
-  // };
-
-  // const makeChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setMake(event.target.value);
-  // };
-
-  // const modelChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setModel(event.target.value);
-  // };
-
-  // const ownerChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setOwner(event.target.value);
-  // };
-
-  // const depotIdChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-  //   setDepotId(event.target.value);
-  // };
-
-  // const fuelCardIdChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-  //   setFuelCardId(event.target.value);
-  // };
-
-  // const tollTagIdChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-  //   setTollTagId(event.target.value);
-  // };
-
   const registrationInputRef = useRef<HTMLInputElement>(null);
   const makeInputRef = useRef<HTMLInputElement>(null);
   const modelInputRef = useRef<HTMLInputElement>(null);
@@ -136,24 +97,22 @@ const UpdateVehicleModal = ({
   const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
   const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateVehicle] = useMutation(UPDATE_VEHICLE, {
-    refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
-  });
+  const [updateVehicle] = useMutation(UPDATE_VEHICLE);
 
   const { data, loading, error } = useQuery<UpdateVehicleData>(
     GET_ITEMS_FOR_UPDATE_VEHICLE
   );
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
-    return <div className="h2">Error</div>;
+    return <div></div>;
   }
 
   if (!data) {
-    return <div className="h2">Error</div>;
+    return <div></div>;
   }
 
   const getUpdateVehicleInputs = (
@@ -170,8 +129,6 @@ const UpdateVehicleModal = ({
           ref={registrationInputRef}
           required={true}
           defaultValue={vehicle.registration}
-          // value={registration}
-          // onChange={registrationChangeHandler}
         />
       ),
       make: (
@@ -182,8 +139,6 @@ const UpdateVehicleModal = ({
           ref={makeInputRef}
           required={true}
           defaultValue={vehicle.make}
-          // value={make}
-          // onChange={makeChangeHandler}
         />
       ),
       model: (
@@ -194,8 +149,6 @@ const UpdateVehicleModal = ({
           ref={modelInputRef}
           required={true}
           defaultValue={vehicle.model}
-          // value={model}
-          // onChange={modelChangeHandler}
         />
       ),
       owner: (
@@ -206,8 +159,6 @@ const UpdateVehicleModal = ({
           ref={ownerInputRef}
           required={true}
           defaultValue={vehicle.owner}
-          // value={owner}
-          // onChange={ownerChangeHandler}
         />
       ),
       depot: (
@@ -218,8 +169,6 @@ const UpdateVehicleModal = ({
           options={depots}
           ref={depotIdInputRef}
           defaultValue={vehicle.depot != null ? vehicle.depot.id : undefined}
-          // value={depotId}
-          // onChange={depotIdChangeHandler}
         />
       ),
       fuelCard: (
@@ -232,8 +181,6 @@ const UpdateVehicleModal = ({
           defaultValue={
             vehicle.fuelCard != null ? vehicle.fuelCard.id : undefined
           }
-          // value={fuelCardId}
-          // onChange={fuelCardIdChangeHandler}
         />
       ),
       tollTag: (
@@ -246,8 +193,6 @@ const UpdateVehicleModal = ({
           defaultValue={
             vehicle.tollTag != null ? vehicle.tollTag.id : undefined
           }
-          // value={tollTagId}
-          // onChange={tollTagIdChangeHandler}
         />
       ),
     };
@@ -260,16 +205,6 @@ const UpdateVehicleModal = ({
     modelStateHandler(false);
     updateVehicle({
       variables: {
-        // updateVehicleData: {
-        //   id: vehicle.id,
-        //   registration: registration,
-        //   make: make,
-        //   model: model,
-        //   owner: owner,
-        //   depotId: depotId,
-        //   fuelCardId: fuelCardId,
-        //   tollTagId: tollTagId,
-        // },
         updateVehicleData: {
           id: vehicle.id,
           registration: registrationInputRef.current?.value,

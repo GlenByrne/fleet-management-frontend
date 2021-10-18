@@ -5,7 +5,7 @@ import {
   GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG,
   GET_TOLL_TAGS,
 } from 'constants/queries';
-import { Depot, Option } from 'constants/types';
+import { AddTollTag, Depot, GetTollTags, Option } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import AddModal from 'core/Modal/AddModal';
@@ -39,8 +39,25 @@ const CreateTollTagModal = ({
   const tagProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [addTollTag] = useMutation(ADD_TOLL_TAG, {
-    refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
+  // const [addTollTag] = useMutation(ADD_TOLL_TAG, {
+  //   refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
+  // });
+
+  const [addTollTag] = useMutation<AddTollTag>(ADD_TOLL_TAG, {
+    update: (cache, { data: mutationReturn }) => {
+      const newTollTag = mutationReturn?.addTollTag;
+
+      const currentTollTags = cache.readQuery<GetTollTags>({
+        query: GET_TOLL_TAGS,
+      });
+
+      if (currentTollTags && newTollTag) {
+        cache.writeQuery({
+          query: GET_TOLL_TAGS,
+          data: { tollTags: [...currentTollTags.tollTags, newTollTag] },
+        });
+      }
+    },
   });
 
   const getCreateTollTagInputs = (depots: Option[] | undefined) => {
@@ -96,11 +113,11 @@ const CreateTollTagModal = ({
   );
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
-    return <div className="h2">Error</div>;
+    return <div></div>;
   }
 
   const inputs = getCreateTollTagInputs(getDepotOptions(data?.depots));

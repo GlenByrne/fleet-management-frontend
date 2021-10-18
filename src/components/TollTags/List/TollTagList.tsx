@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { FC, useState } from 'react';
 import { DELETE_TOLL_TAG, GET_TOLL_TAGS } from 'constants/queries';
-import { TollTag } from 'constants/types';
+import { DeleteTollTag, GetTollTags, TollTag } from 'constants/types';
 import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
 import TableRow from 'core/Table/TableRow';
@@ -50,8 +50,25 @@ const TollTagList = ({
   updateTollTagModalHandler,
   changeCurrentTollTag,
 }: TollTagListProps) => {
-  const [deleteTollTag] = useMutation(DELETE_TOLL_TAG, {
-    refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
+  const [deleteTollTag] = useMutation<DeleteTollTag>(DELETE_TOLL_TAG, {
+    update: (cache, { data: mutationReturn }) => {
+      const currentTollTags = cache.readQuery<GetTollTags>({
+        query: GET_TOLL_TAGS,
+      });
+
+      const newTollTags = currentTollTags?.tollTags.filter(
+        (tollTag) => tollTag.id !== mutationReturn?.deleteTollTag.id
+      );
+
+      cache.writeQuery({
+        query: GET_TOLL_TAGS,
+        data: { tollTags: newTollTags },
+      });
+
+      cache.evict({
+        id: mutationReturn?.deleteTollTag.id,
+      });
+    },
   });
 
   const deleteTagHandler = (id: string) => {

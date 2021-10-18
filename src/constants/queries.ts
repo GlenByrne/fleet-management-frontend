@@ -9,12 +9,15 @@ export const GET_VEHICLE = gql`
       model
       owner
       depot {
+        id
         name
       }
       fuelCard {
+        id
         cardNumber
       }
       tollTag {
+        id
         tagNumber
       }
       cvrtDueDate
@@ -24,8 +27,8 @@ export const GET_VEHICLE = gql`
   }
 `;
 
-export const GET_VEHICLE_LIST = gql`
-  query GetVehicleList {
+export const GET_VEHICLES = gql`
+  query GetVehicles {
     vehicles {
       id
       registration
@@ -170,6 +173,10 @@ export const ADD_TOLL_TAG = gql`
         id
         name
       }
+      vehicle {
+        id
+        registration
+      }
     }
   }
 `;
@@ -183,6 +190,10 @@ export const ADD_FUEL_CARD = gql`
       depot {
         id
         name
+      }
+      vehicle {
+        id
+        registration
       }
     }
   }
@@ -227,6 +238,7 @@ export const GET_TOLL_TAGS = gql`
 export const DELETE_FUEL_CARD = gql`
   mutation DeleteFuelCard($deleteFuelCardData: DeleteFuelCardInput!) {
     deleteFuelCard(data: $deleteFuelCardData) {
+      id
       cardNumber
     }
   }
@@ -235,6 +247,7 @@ export const DELETE_FUEL_CARD = gql`
 export const DELETE_TOLL_TAG = gql`
   mutation DeleteTollTag($deleteTollTagData: DeleteTollTagInput!) {
     deleteTollTag(data: $deleteTollTagData) {
+      id
       tagNumber
     }
   }

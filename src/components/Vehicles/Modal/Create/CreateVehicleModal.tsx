@@ -3,9 +3,16 @@ import { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 import {
   ADD_VEHICLE,
   GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE,
-  GET_VEHICLE_LIST,
+  GET_VEHICLES,
 } from 'constants/queries';
-import { Depot, FuelCard, Option, TollTag } from 'constants/types';
+import {
+  AddVehicle,
+  Depot,
+  FuelCard,
+  GetVehicles,
+  Option,
+  TollTag,
+} from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import AddModal from 'core/Modal/AddModal';
@@ -71,8 +78,21 @@ const CreateVehicleModal = ({
   const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
   const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [addVehicle] = useMutation(ADD_VEHICLE, {
-    refetchQueries: [GET_VEHICLE_LIST, 'GetVehicleList'],
+  const [addVehicle] = useMutation<AddVehicle>(ADD_VEHICLE, {
+    update: (cache, { data: mutationReturn }) => {
+      const newVehicle = mutationReturn?.addVehicle;
+
+      const currentVehicles = cache.readQuery<GetVehicles>({
+        query: GET_VEHICLES,
+      });
+
+      if (currentVehicles && newVehicle) {
+        cache.writeQuery({
+          query: GET_VEHICLES,
+          data: { vehicles: [...currentVehicles.vehicles, newVehicle] },
+        });
+      }
+    },
   });
 
   const getCreateVehicleInputs = (
@@ -159,9 +179,18 @@ const CreateVehicleModal = ({
           make: makeInputRef.current?.value,
           model: modelInputRef.current?.value,
           owner: ownerInputRef.current?.value,
-          depotId: depotIdInputRef.current?.value,
-          fuelCardId: fuelCardIdInputRef.current?.value,
-          tollTagId: tollTagIdInputRef.current?.value,
+          depotId:
+            depotIdInputRef.current?.value === ''
+              ? null
+              : depotIdInputRef.current?.value,
+          fuelCardId:
+            fuelCardIdInputRef.current?.value === ''
+              ? null
+              : fuelCardIdInputRef.current?.value,
+          tollTagId:
+            tollTagIdInputRef.current?.value === ''
+              ? null
+              : tollTagIdInputRef.current?.value,
         },
       },
     });
@@ -172,11 +201,15 @@ const CreateVehicleModal = ({
   );
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
-    return <div className="h2">Error</div>;
+    return <div></div>;
+  }
+
+  if (!data) {
+    return <div></div>;
   }
 
   const inputs = getCreateVehicleInputs(

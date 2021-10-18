@@ -42,9 +42,7 @@ const UpdateTollTagModal = ({
   const tagProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateTollTag] = useMutation(UPDATE_TOLL_TAG, {
-    refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
-  });
+  const [updateTollTag] = useMutation(UPDATE_TOLL_TAG);
 
   const getUpdateTollTagInputs = (depots: Option[] | undefined) => {
     const inputs: UpdateTollTagInputs = {
@@ -106,11 +104,11 @@ const UpdateTollTagModal = ({
   );
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
-    return <div className="h2">Error</div>;
+    return <div></div>;
   }
 
   const inputs = getUpdateTollTagInputs(getDepotOptions(data?.depots));

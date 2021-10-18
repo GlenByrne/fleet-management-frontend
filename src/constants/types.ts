@@ -119,3 +119,39 @@ export type TollTagUpdateModalItem = {
     name: string;
   };
 };
+
+export type AddFuelCard = {
+  addFuelCard: FuelCard;
+};
+
+export type GetFuelCards = {
+  fuelCards: FuelCard[];
+};
+
+export type DeleteFuelCard = {
+  deleteFuelCard: FuelCard;
+};
+
+export type AddTollTag = {
+  addTollTag: TollTag;
+};
+
+export type GetTollTags = {
+  tollTags: TollTag[];
+};
+
+export type DeleteTollTag = {
+  deleteTollTag: TollTag;
+};
+
+export type AddVehicle = {
+  addVehicle: Vehicle;
+};
+
+export type GetVehicles = {
+  vehicles: Vehicle[];
+};
+
+export type DeleteVehicle = {
+  deleteVehicle: Vehicle;
+};

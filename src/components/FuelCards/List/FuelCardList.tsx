@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { FC, Fragment, useState } from 'react';
 import { DELETE_FUEL_CARD, GET_FUEL_CARDS } from 'constants/queries';
-import { FuelCard } from 'constants/types';
+import { DeleteFuelCard, FuelCard, GetFuelCards } from 'constants/types';
 import TableRow from 'core/Table/TableRow';
 import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
@@ -50,8 +49,25 @@ const FuelCardList = ({
   updateFuelCardModalHandler,
   changeCurrentFuelCard,
 }: FuelCardListProps) => {
-  const [deleteFuelCard] = useMutation(DELETE_FUEL_CARD, {
-    refetchQueries: [GET_FUEL_CARDS, 'GetFuelCards'],
+  const [deleteFuelCard] = useMutation<DeleteFuelCard>(DELETE_FUEL_CARD, {
+    update: (cache, { data: mutationReturn }) => {
+      const currentFuelCards = cache.readQuery<GetFuelCards>({
+        query: GET_FUEL_CARDS,
+      });
+
+      const newFuelCards = currentFuelCards?.fuelCards.filter(
+        (fuelCard) => fuelCard.id !== mutationReturn?.deleteFuelCard.id
+      );
+
+      cache.writeQuery({
+        query: GET_FUEL_CARDS,
+        data: { fuelCards: newFuelCards },
+      });
+
+      cache.evict({
+        id: mutationReturn?.deleteFuelCard.id,
+      });
+    },
   });
 
   const deleteCardHandler = (id: string) => {
