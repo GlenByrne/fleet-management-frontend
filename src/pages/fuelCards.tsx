@@ -4,8 +4,9 @@ import FuelCardList from 'components/FuelCards/List/FuelCardList';
 import Button from '../core/Table/Button';
 import Layout from 'core/Layout/Layout';
 import CreateFuelCardModal from 'components/FuelCards/Modal/Create/CreateFuelCardModal';
-import { FuelCard, FuelCardUpdateModalItem } from 'constants/types';
+import { FuelCardUpdateModalItem } from 'constants/types';
 import UpdateFuelCardModal from 'components/FuelCards/Modal/Update/UpdateFuelCardModal';
+import { FuelCard } from 'generated/graphql';
 
 const FuelCards: NextPage = () => {
   const [open, setOpen] = useState(false);
@@ -35,8 +36,8 @@ const FuelCards: NextPage = () => {
       cardNumber: fuelCard.cardNumber,
       cardProvider: fuelCard.cardProvider,
       depot: {
-        id: fuelCard.depot.id,
-        name: fuelCard.depot.name,
+        id: fuelCard.depot != null ? fuelCard.depot.id : '',
+        name: fuelCard.depot != null ? fuelCard.depot.name : '',
       },
     };
     setCurrentFuelCard(chosenFuelCard);

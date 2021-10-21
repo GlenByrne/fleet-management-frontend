@@ -1,24 +1,15 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { FC, FormEventHandler, useRef } from 'react';
-import {
-  ADD_FUEL_CARD,
-  GET_FUEL_CARDS,
-  GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD,
-} from 'constants/queries';
-import {
-  AddFuelCard,
-  Depot,
-  FuelCard,
-  GetFuelCards,
-  Option,
-} from 'constants/types';
+import { FormEventHandler, useRef } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import AddModal from 'core/Modal/AddModal';
-
-interface SelectableItems {
-  depots: Depot[];
-}
+import {
+  Depot,
+  GetFuelCardsDocument,
+  GetFuelCardsQuery,
+  useAddFuelCardMutation,
+  useGetSelectableItemsForAddFuelCardQuery,
+} from 'generated/graphql';
+import { Option } from 'constants/types';
 
 type CreateFuelCardInputs = {
   cardNumber: JSX.Element;
@@ -31,7 +22,7 @@ type CreateFuelCardModalProps = {
   setModalState: (state: boolean) => void;
 };
 
-const getDepotOptions = (depots: Depot[] | undefined) => {
+const getDepotOptions = (depots: Depot[]) => {
   return depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
@@ -45,18 +36,33 @@ const CreateFuelCardModal = ({
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [addFuelCard] = useMutation<AddFuelCard>(ADD_FUEL_CARD, {
+  // const [addFuelCard] = useMutation<AddFuelCard>(ADD_FUEL_CARD, {
+  //   update: (cache, { data: mutationReturn }) => {
+  //     const newFuelCard = mutationReturn?.addFuelCard;
+
+  //     const currentFuelCards = cache.readQuery<GetFuelCards>({
+  //       query: GET_FUEL_CARDS,
+  //     });
+
+  //     if (currentFuelCards && newFuelCard) {
+  //       cache.writeQuery({
+  //         query: GET_FUEL_CARDS,
+  //         data: { fuelCards: [...currentFuelCards.fuelCards, newFuelCard] },
+  //       });
+  //     }
+  //   },
+  // });
+
+  const [addFuelCard] = useAddFuelCardMutation({
     update: (cache, { data: mutationReturn }) => {
       const newFuelCard = mutationReturn?.addFuelCard;
-
-      const currentFuelCards = cache.readQuery<GetFuelCards>({
-        query: GET_FUEL_CARDS,
+      const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
+        query: GetFuelCardsDocument,
       });
-
       if (currentFuelCards && newFuelCard) {
         cache.writeQuery({
-          query: GET_FUEL_CARDS,
-          data: { fuelCards: [...currentFuelCards.fuelCards, newFuelCard] },
+          query: GetFuelCardsDocument,
+          data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
         });
       }
     },
@@ -102,17 +108,24 @@ const CreateFuelCardModal = ({
     addFuelCard({
       variables: {
         addFuelCardData: {
-          cardNumber: cardNumberInputRef.current?.value,
-          cardProvider: cardProviderInputRef.current?.value,
-          depotId: depotIdInputRef.current?.value,
+          cardNumber:
+            cardNumberInputRef.current?.value != null
+              ? cardNumberInputRef.current.value
+              : '',
+          cardProvider:
+            cardProviderInputRef.current?.value != null
+              ? cardProviderInputRef.current.value
+              : '',
+          depotId:
+            depotIdInputRef.current?.value != null
+              ? depotIdInputRef.current.value
+              : '',
         },
       },
     });
   };
 
-  const { data, loading, error } = useQuery<SelectableItems>(
-    GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD
-  );
+  const { data, loading, error } = useGetSelectableItemsForAddFuelCardQuery();
 
   if (loading) {
     return <div></div>;
@@ -122,7 +135,13 @@ const CreateFuelCardModal = ({
     return <div></div>;
   }
 
-  const inputs = getCreateFuelCardInputs(getDepotOptions(data?.depots));
+  if (!data) {
+    return <div></div>;
+  }
+
+  const inputs = getCreateFuelCardInputs(
+    getDepotOptions(data.depots as Depot[])
+  );
 
   return (
     <AddModal

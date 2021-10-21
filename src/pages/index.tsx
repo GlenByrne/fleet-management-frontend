@@ -5,7 +5,8 @@ import Layout from 'core/Layout/Layout';
 import Button from 'core/Table/Button';
 import CreateVehicleModal from 'components/Vehicles/Modal/Create/CreateVehicleModal';
 import UpdateVehicleModal from 'components/Vehicles/Modal/Update/UpdateVehicleModal';
-import { Vehicle, VehicleUpdateModalItem } from 'constants/types';
+import { VehicleUpdateModalItem } from 'constants/types';
+import { Vehicle } from 'generated/graphql';
 
 const Home: NextPage = () => {
   const [open, setOpen] = useState(false);
@@ -52,17 +53,16 @@ const Home: NextPage = () => {
       tachoCalibrationDueDate: vehicle.tachoCalibrationDueDate,
       thirteenWeekInspectionDueDate: vehicle.thirteenWeekInspectionDueDate,
       depot: {
-        id: vehicle.depot.id,
-        name: vehicle.depot.name,
+        id: vehicle.depot != null ? vehicle.depot.id : '',
+        name: vehicle.depot != null ? vehicle.depot.name : '',
       },
       fuelCard: {
-        id: vehicle.fuelCard === null ? '' : vehicle.fuelCard.id,
-        cardNumber:
-          vehicle.fuelCard === null ? '' : vehicle.fuelCard.cardNumber,
+        id: vehicle.fuelCard == null ? '' : vehicle.fuelCard.id,
+        cardNumber: vehicle.fuelCard == null ? '' : vehicle.fuelCard.cardNumber,
       },
       tollTag: {
-        id: vehicle.tollTag === null ? '' : vehicle.tollTag.id,
-        tagNumber: vehicle.tollTag === null ? '' : vehicle.tollTag.tagNumber,
+        id: vehicle.tollTag == null ? '' : vehicle.tollTag.id,
+        tagNumber: vehicle.tollTag == null ? '' : vehicle.tollTag.tagNumber,
       },
     };
     setCurrentVehicle(chosenVehicle);

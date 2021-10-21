@@ -1,5 +1,5 @@
-import { Defect } from '../../constants/types';
 // import { Defect } from './DefectList';
+import { Defect } from 'generated/graphql';
 
 type DefectItemProps = {
   defect: Defect;

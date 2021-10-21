@@ -1,19 +1,14 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { FC, FormEventHandler, useRef } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import {
-  GET_TOLL_TAGS,
-  GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG,
-  UPDATE_TOLL_TAG,
-} from 'constants/queries';
-import { Depot, Option, TollTagUpdateModalItem } from 'constants/types';
+import { FormEventHandler, useRef } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import UpdateModal from 'core/Modal/UpdateModal';
-
-interface UpdateTollTagData {
-  depots: Depot[] | undefined;
-}
+import {
+  Depot,
+  useGetSelectableItemsForUpdateTollTagQuery,
+  useUpdateTollTagMutation,
+} from 'generated/graphql';
+import { Option, TollTagUpdateModalItem } from 'constants/types';
 
 type UpdateTollTagInputs = {
   tagNumber: JSX.Element;
@@ -27,7 +22,7 @@ type UpdateTollTagModalProps = {
   tollTag: TollTagUpdateModalItem;
 };
 
-const getDepotOptions = (depots: Depot[] | undefined) => {
+const getDepotOptions = (depots: Depot[]) => {
   return depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
@@ -42,9 +37,9 @@ const UpdateTollTagModal = ({
   const tagProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateTollTag] = useMutation(UPDATE_TOLL_TAG);
+  const [updateTollTag] = useUpdateTollTagMutation();
 
-  const getUpdateTollTagInputs = (depots: Option[] | undefined) => {
+  const getUpdateTollTagInputs = (depots: Option[]) => {
     const inputs: UpdateTollTagInputs = {
       tagNumber: (
         <ModalFormInput
@@ -88,20 +83,24 @@ const UpdateTollTagModal = ({
       variables: {
         updateTollTagData: {
           id: tollTag.id,
-          tagNumber: tagNumberInputRef.current?.value,
-          tagProvider: tagProviderInputRef.current?.value,
+          tagNumber:
+            tagNumberInputRef.current?.value != null
+              ? tagNumberInputRef.current.value
+              : '',
+          tagProvider:
+            tagProviderInputRef.current?.value != null
+              ? tagProviderInputRef.current.value
+              : '',
           depotId:
-            depotIdInputRef.current?.value === ''
-              ? null
-              : depotIdInputRef.current?.value,
+            depotIdInputRef.current?.value != null
+              ? depotIdInputRef.current.value
+              : '',
         },
       },
     });
   };
 
-  const { data, loading, error } = useQuery<UpdateTollTagData>(
-    GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG
-  );
+  const { data, loading, error } = useGetSelectableItemsForUpdateTollTagQuery();
 
   if (loading) {
     return <div></div>;
@@ -111,7 +110,13 @@ const UpdateTollTagModal = ({
     return <div></div>;
   }
 
-  const inputs = getUpdateTollTagInputs(getDepotOptions(data?.depots));
+  if (!data) {
+    return <div></div>;
+  }
+
+  const inputs = getUpdateTollTagInputs(
+    getDepotOptions(data.depots as Depot[])
+  );
 
   return (
     <UpdateModal

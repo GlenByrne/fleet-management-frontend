@@ -1,27 +1,23 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
-import {
-  ADD_VEHICLE,
-  GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE,
-  GET_VEHICLES,
-} from 'constants/queries';
-import {
-  AddVehicle,
-  Depot,
-  FuelCard,
-  GetVehicles,
-  Option,
-  TollTag,
-} from 'constants/types';
+import { FormEventHandler, useRef } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import AddModal from 'core/Modal/AddModal';
+import {
+  Depot,
+  FuelCard,
+  GetVehiclesDocument,
+  GetVehiclesQuery,
+  TollTag,
+  useAddVehicleMutation,
+  useGetSelectableItemsForAddVehicleQuery,
+} from 'generated/graphql';
+import { Option } from 'constants/types';
 
-interface SelectableItems {
-  depots: Depot[] | undefined;
-  fuelCardsNotAssigned: FuelCard[] | undefined;
-  tollTagsNotAssigned: TollTag[] | undefined;
-}
+// interface SelectableItems {
+//   depots: Depot[] | undefined;
+//   fuelCardsNotAssigned: FuelCard[] | undefined;
+//   tollTagsNotAssigned: TollTag[] | undefined;
+// }
 
 type CreateVehicleInputs = {
   registration: JSX.Element;
@@ -38,7 +34,7 @@ type CreateVehicleModalProps = {
   setModalState: (state: boolean) => void;
 };
 
-const getDepotOptions = (depots: Depot[] | undefined) => {
+const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
@@ -46,7 +42,7 @@ const getDepotOptions = (depots: Depot[] | undefined) => {
   return options;
 };
 
-const getFuelCardOptions = (fuelCards: FuelCard[] | undefined) => {
+const getFuelCardOptions = (fuelCards: FuelCard[]) => {
   const options = fuelCards?.map(
     (fuelCard) => ({ value: fuelCard.id, label: fuelCard.cardNumber } as Option)
   );
@@ -56,7 +52,7 @@ const getFuelCardOptions = (fuelCards: FuelCard[] | undefined) => {
   return options;
 };
 
-const getTollTagOptions = (tollTags: TollTag[] | undefined) => {
+const getTollTagOptions = (tollTags: TollTag[]) => {
   const options = tollTags?.map(
     (tollTag) => ({ value: tollTag.id, label: tollTag.tagNumber } as Option)
   );
@@ -78,22 +74,39 @@ const CreateVehicleModal = ({
   const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
   const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [addVehicle] = useMutation<AddVehicle>(ADD_VEHICLE, {
+  const [addVehicle] = useAddVehicleMutation({
     update: (cache, { data: mutationReturn }) => {
       const newVehicle = mutationReturn?.addVehicle;
 
-      const currentVehicles = cache.readQuery<GetVehicles>({
-        query: GET_VEHICLES,
+      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
+        query: GetVehiclesDocument,
       });
 
       if (currentVehicles && newVehicle) {
         cache.writeQuery({
-          query: GET_VEHICLES,
-          data: { vehicles: [...currentVehicles.vehicles, newVehicle] },
+          query: GetVehiclesDocument,
+          data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
         });
       }
     },
   });
+
+  // const [addVehicle] = useMutation<AddVehicle>(ADD_VEHICLE, {
+  //   update: (cache, { data: mutationReturn }) => {
+  //     const newVehicle = mutationReturn?.addVehicle;
+
+  //     const currentVehicles = cache.readQuery<GetVehicles>({
+  //       query: GET_VEHICLES,
+  //     });
+
+  //     if (currentVehicles && newVehicle) {
+  //       cache.writeQuery({
+  //         query: GET_VEHICLES,
+  //         data: { vehicles: [...currentVehicles.vehicles, newVehicle] },
+  //       });
+  //     }
+  //   },
+  // });
 
   const getCreateVehicleInputs = (
     depots: Option[] | undefined,
@@ -175,14 +188,26 @@ const CreateVehicleModal = ({
     addVehicle({
       variables: {
         addVehicleData: {
-          registration: registrationInputRef.current?.value,
-          make: makeInputRef.current?.value,
-          model: modelInputRef.current?.value,
-          owner: ownerInputRef.current?.value,
+          registration:
+            registrationInputRef.current?.value != null
+              ? registrationInputRef.current.value
+              : '',
+          make:
+            makeInputRef.current?.value != null
+              ? makeInputRef.current.value
+              : '',
+          model:
+            modelInputRef.current?.value != null
+              ? modelInputRef.current.value
+              : '',
+          owner:
+            ownerInputRef.current?.value != null
+              ? ownerInputRef.current.value
+              : '',
           depotId:
-            depotIdInputRef.current?.value === ''
-              ? null
-              : depotIdInputRef.current?.value,
+            depotIdInputRef.current?.value != null
+              ? depotIdInputRef.current.value
+              : '',
           fuelCardId:
             fuelCardIdInputRef.current?.value === ''
               ? null
@@ -196,9 +221,7 @@ const CreateVehicleModal = ({
     });
   };
 
-  const { data, loading, error } = useQuery<SelectableItems>(
-    GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE
-  );
+  const { data, loading, error } = useGetSelectableItemsForAddVehicleQuery();
 
   if (loading) {
     return <div></div>;
@@ -213,9 +236,9 @@ const CreateVehicleModal = ({
   }
 
   const inputs = getCreateVehicleInputs(
-    getDepotOptions(data?.depots),
-    getFuelCardOptions(data?.fuelCardsNotAssigned),
-    getTollTagOptions(data?.tollTagsNotAssigned)
+    getDepotOptions(data.depots as Depot[]),
+    getFuelCardOptions(data.fuelCardsNotAssigned as FuelCard[]),
+    getTollTagOptions(data.tollTagsNotAssigned as TollTag[])
   );
 
   return (

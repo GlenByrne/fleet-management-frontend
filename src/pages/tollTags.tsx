@@ -4,8 +4,9 @@ import TollTagList from 'components/TollTags/List/TollTagList';
 import Layout from 'core/Layout/Layout';
 import Button from 'core/Table/Button';
 import CreateTollTagModal from 'components/TollTags/Modal/Create/CreateTollTagModal';
-import { TollTag, TollTagUpdateModalItem } from 'constants/types';
+import { TollTagUpdateModalItem } from 'constants/types';
 import UpdateTollTagModal from 'components/TollTags/Modal/Update/UpdateTollTagModal';
+import { TollTag } from 'generated/graphql';
 
 const TollTags: NextPage = () => {
   const [open, setOpen] = useState(false);
@@ -34,8 +35,8 @@ const TollTags: NextPage = () => {
       tagNumber: tollTag.tagNumber,
       tagProvider: tollTag.tagProvider,
       depot: {
-        id: tollTag.depot.id,
-        name: tollTag.depot.name,
+        id: tollTag.depot != null ? tollTag.depot.id : '',
+        name: tollTag.depot != null ? tollTag.depot.name : '',
       },
     };
     setCurrentTollTag(chosenTollTag);

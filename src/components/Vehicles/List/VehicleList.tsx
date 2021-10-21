@@ -1,20 +1,18 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { FC, Fragment, useState } from 'react';
-import { DELETE_VEHICLE, GET_VEHICLES } from 'constants/queries';
-import { DeleteVehicle, GetVehicles, Vehicle } from 'constants/types';
 import TableItem from 'core/Table/TableItem';
 import Table from 'core/Table/Table';
 import TableRow from 'core/Table/TableRow';
-import UpdateVehicleModal from '../Modal/Update/UpdateVehicleModal';
+import {
+  GetVehiclesDocument,
+  GetVehiclesQuery,
+  useDeleteVehicleMutation,
+  useGetVehiclesQuery,
+  Vehicle,
+} from 'generated/graphql';
 
 type VehicleListProps = {
   updateVehicleModalHandler: (state: boolean) => void;
   changeCurrentVehicle: (vehicle: Vehicle) => void;
 };
-
-interface VehicleData {
-  vehicles: Vehicle[];
-}
 
 type VehicleTableData = {
   registration: JSX.Element;
@@ -49,7 +47,11 @@ const getTableData = (vehicle: Vehicle) => {
     registration: <TableItem>{vehicle.registration}</TableItem>,
     make: <TableItem>{vehicle.make}</TableItem>,
     model: <TableItem>{vehicle.model}</TableItem>,
-    depot: <TableItem>{vehicle.depot.name}</TableItem>,
+    depot: (
+      <TableItem>
+        {vehicle.depot?.name != null ? vehicle.depot?.name : 'None'}
+      </TableItem>
+    ),
     owner: <TableItem>{vehicle.owner}</TableItem>,
     fuelCard: (
       <TableItem>
@@ -75,18 +77,20 @@ const VehicleList = ({
   updateVehicleModalHandler,
   changeCurrentVehicle,
 }: VehicleListProps) => {
-  const [deleteVehicle] = useMutation<DeleteVehicle>(DELETE_VEHICLE, {
+  const [deleteVehicle] = useDeleteVehicleMutation({
     update: (cache, { data: mutationReturn }) => {
-      const currentVehicles = cache.readQuery<GetVehicles>({
-        query: GET_VEHICLES,
+      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
+        query: GetVehiclesDocument,
       });
 
-      const newVehicles = currentVehicles?.vehicles.filter(
-        (vehicle) => vehicle.id !== mutationReturn?.deleteVehicle.id
+      const newVehicles = currentVehicles?.vehicles?.filter((vehicle) =>
+        vehicle != null
+          ? vehicle.id !== mutationReturn?.deleteVehicle.id
+          : currentVehicles.vehicles
       );
 
       cache.writeQuery({
-        query: GET_VEHICLES,
+        query: GetVehiclesDocument,
         data: { vehicles: newVehicles },
       });
 
@@ -95,6 +99,26 @@ const VehicleList = ({
       });
     },
   });
+  // const [deleteVehicle] = useMutation<DeleteVehicle>(DELETE_VEHICLE, {
+  //   update: (cache, { data: mutationReturn }) => {
+  //     const currentVehicles = cache.readQuery<GetVehicles>({
+  //       query: GET_VEHICLES,
+  //     });
+
+  //     const newVehicles = currentVehicles?.vehicles.filter(
+  //       (vehicle) => vehicle.id !== mutationReturn?.deleteVehicle.id
+  //     );
+
+  //     cache.writeQuery({
+  //       query: GET_VEHICLES,
+  //       data: { vehicles: newVehicles },
+  //     });
+
+  //     cache.evict({
+  //       id: mutationReturn?.deleteVehicle.id,
+  //     });
+  //   },
+  // });
 
   const deleteVehicleHandler = (id: string) => {
     deleteVehicle({
@@ -106,7 +130,8 @@ const VehicleList = ({
     });
   };
 
-  const { data, loading, error } = useQuery<VehicleData>(GET_VEHICLES, {});
+  const { data, loading, error } = useGetVehiclesQuery();
+  // const { data, loading, error } = useQuery<VehicleData>(GET_VEHICLES, {});
 
   if (loading) {
     return <div className="h2">Loading...</div>;
@@ -116,10 +141,14 @@ const VehicleList = ({
     return <div className="h2">Error</div>;
   }
 
+  if (!data) {
+    return <div></div>;
+  }
+
   return (
     <Table
       columnHeaders={headers}
-      data={data?.vehicles}
+      data={data.vehicles as Vehicle[]}
       renderItem={(vehicle) => {
         return (
           <TableRow

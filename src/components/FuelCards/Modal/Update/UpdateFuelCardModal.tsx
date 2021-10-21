@@ -1,15 +1,13 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { FC, FormEventHandler, useRef } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import {
-  UPDATE_FUEL_CARD,
-  GET_FUEL_CARDS,
-  GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD,
-} from 'constants/queries';
-import { Depot, Option, FuelCardUpdateModalItem } from 'constants/types';
+import { FormEventHandler, useRef } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import UpdateModal from 'core/Modal/UpdateModal';
+import {
+  Depot,
+  useGetSelectableItemsForUpdateFuelCardQuery,
+  useUpdateFuelCardMutation,
+} from 'generated/graphql';
+import { FuelCardUpdateModalItem, Option } from 'constants/types';
 
 interface UpdateFuelCardData {
   depots: Depot[] | undefined;
@@ -27,7 +25,7 @@ type UpdateFuelCardModalProps = {
   fuelCard: FuelCardUpdateModalItem;
 };
 
-const getDepotOptions = (depots: Depot[] | undefined) => {
+const getDepotOptions = (depots: Depot[]) => {
   return depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
@@ -42,9 +40,9 @@ const UpdateFuelCardModal = ({
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateFuelCard] = useMutation(UPDATE_FUEL_CARD);
+  const [updateFuelCard] = useUpdateFuelCardMutation();
 
-  const getUpdateFuelCardInputs = (depots: Option[] | undefined) => {
+  const getUpdateFuelCardInputs = (depots: Option[]) => {
     const inputs: UpdateFuelCardInputs = {
       cardNumber: (
         <ModalFormInput
@@ -88,20 +86,25 @@ const UpdateFuelCardModal = ({
       variables: {
         updateFuelCardData: {
           id: fuelCard.id,
-          cardNumber: cardNumberInputRef.current?.value,
-          cardProvider: cardProviderInputRef.current?.value,
+          cardNumber:
+            cardNumberInputRef.current?.value != null
+              ? cardNumberInputRef.current.value
+              : '',
+          cardProvider:
+            cardProviderInputRef.current?.value != null
+              ? cardProviderInputRef.current.value
+              : '',
           depotId:
-            depotIdInputRef.current?.value === ''
-              ? null
-              : depotIdInputRef.current?.value,
+            depotIdInputRef.current?.value != null
+              ? depotIdInputRef.current.value
+              : '',
         },
       },
     });
   };
 
-  const { data, loading, error } = useQuery<UpdateFuelCardData>(
-    GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD
-  );
+  const { data, loading, error } =
+    useGetSelectableItemsForUpdateFuelCardQuery();
 
   if (loading) {
     return <div></div>;
@@ -111,7 +114,13 @@ const UpdateFuelCardModal = ({
     return <div></div>;
   }
 
-  const inputs = getUpdateFuelCardInputs(getDepotOptions(data?.depots));
+  if (!data) {
+    return <div></div>;
+  }
+
+  const inputs = getUpdateFuelCardInputs(
+    getDepotOptions(data.depots as Depot[])
+  );
 
   return (
     <UpdateModal

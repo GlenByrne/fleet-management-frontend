@@ -1,26 +1,15 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import {
-  UPDATE_VEHICLE,
-  GET_ITEMS_FOR_UPDATE_VEHICLE,
-} from 'constants/queries';
-import {
-  Depot,
-  FuelCard,
-  Option,
-  TollTag,
-  VehicleUpdateModalItem,
-} from 'constants/types';
+import { FormEventHandler, useRef } from 'react';
+import { Option, VehicleUpdateModalItem } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import UpdateModal from 'core/Modal/UpdateModal';
-
-interface UpdateVehicleData {
-  depots: Depot[] | undefined;
-  fuelCardsNotAssigned: FuelCard[] | undefined;
-  tollTagsNotAssigned: TollTag[] | undefined;
-}
+import {
+  Depot,
+  FuelCard,
+  TollTag,
+  useGetItemsForUpdateVehicleQuery,
+  useUpdateVehicleMutation,
+} from 'generated/graphql';
 
 type UpdateVehicleInputs = {
   registration?: JSX.Element;
@@ -38,7 +27,7 @@ type UpdateVehicleModalProps = {
   vehicle: VehicleUpdateModalItem;
 };
 
-const getDepotOptions = (depots: Depot[] | undefined) => {
+const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
@@ -49,12 +38,14 @@ const getDepotOptions = (depots: Depot[] | undefined) => {
 };
 
 const getFuelCardOptions = (
-  fuelCards: FuelCard[] | undefined,
+  fuelCards: FuelCard[],
   vehicle: VehicleUpdateModalItem
 ) => {
   const options = fuelCards?.map(
     (fuelCard) => ({ value: fuelCard.id, label: fuelCard.cardNumber } as Option)
   );
+
+  // options.filter((fuelcard) => fuelcard.value !== vehicle.fuelCard.id);
 
   vehicle.fuelCard.id === ''
     ? options?.unshift({ value: '', label: 'None' })
@@ -67,12 +58,14 @@ const getFuelCardOptions = (
 };
 
 const getTollTagOptions = (
-  tollTags: TollTag[] | undefined,
+  tollTags: TollTag[],
   vehicle: VehicleUpdateModalItem
 ) => {
   const options = tollTags?.map(
     (tollTag) => ({ value: tollTag.id, label: tollTag.tagNumber } as Option)
   );
+
+  // options.filter((tollTag) => tollTag.value !== vehicle.tollTag.id);
 
   vehicle.tollTag.id === ''
     ? options?.unshift({ value: '', label: 'None' })
@@ -97,11 +90,9 @@ const UpdateVehicleModal = ({
   const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
   const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateVehicle] = useMutation(UPDATE_VEHICLE);
+  const [updateVehicle] = useUpdateVehicleMutation();
 
-  const { data, loading, error } = useQuery<UpdateVehicleData>(
-    GET_ITEMS_FOR_UPDATE_VEHICLE
-  );
+  const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
 
   if (loading) {
     return <div></div>;
@@ -116,9 +107,9 @@ const UpdateVehicleModal = ({
   }
 
   const getUpdateVehicleInputs = (
-    depots: Option[] | undefined,
-    fuelCards: Option[] | undefined,
-    tollTags: Option[] | undefined
+    depots: Option[],
+    fuelCards: Option[],
+    tollTags: Option[]
   ) => {
     const inputs: UpdateVehicleInputs = {
       registration: (
@@ -207,14 +198,26 @@ const UpdateVehicleModal = ({
       variables: {
         updateVehicleData: {
           id: vehicle.id,
-          registration: registrationInputRef.current?.value,
-          make: makeInputRef.current?.value,
-          model: modelInputRef.current?.value,
-          owner: ownerInputRef.current?.value,
+          registration:
+            registrationInputRef.current?.value != null
+              ? registrationInputRef.current.value
+              : '',
+          make:
+            makeInputRef.current?.value != null
+              ? makeInputRef.current.value
+              : '',
+          model:
+            modelInputRef.current?.value != null
+              ? modelInputRef.current.value
+              : '',
+          owner:
+            ownerInputRef.current?.value != null
+              ? ownerInputRef.current.value
+              : '',
           depotId:
-            depotIdInputRef.current?.value === ''
-              ? null
-              : depotIdInputRef.current?.value,
+            depotIdInputRef.current?.value != null
+              ? depotIdInputRef.current.value
+              : '',
           fuelCardId:
             fuelCardIdInputRef.current?.value === ''
               ? null
@@ -229,9 +232,9 @@ const UpdateVehicleModal = ({
   };
 
   const inputs = getUpdateVehicleInputs(
-    getDepotOptions(data?.depots),
-    getFuelCardOptions(data?.fuelCardsNotAssigned, vehicle),
-    getTollTagOptions(data?.tollTagsNotAssigned, vehicle)
+    getDepotOptions(data.depots as Depot[]),
+    getFuelCardOptions(data.fuelCardsNotAssigned as FuelCard[], vehicle),
+    getTollTagOptions(data.tollTagsNotAssigned as TollTag[], vehicle)
   );
 
   return (

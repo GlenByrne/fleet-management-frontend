@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_VEHICLE = gql`
-  query GetVehicle {
-    vehicle {
+  query GetVehicle($vehicleId: ID!) {
+    vehicle(vehicleId: $vehicleId) {
       id
       registration
       make

@@ -1,18 +1,16 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { FC, FormEventHandler, useRef } from 'react';
-import {
-  ADD_TOLL_TAG,
-  GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG,
-  GET_TOLL_TAGS,
-} from 'constants/queries';
-import { AddTollTag, Depot, GetTollTags, Option } from 'constants/types';
+import { FormEventHandler, useRef } from 'react';
+import { Option } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import AddModal from 'core/Modal/AddModal';
-
-interface SelectableItems {
-  depots: Depot[];
-}
+import {
+  Depot,
+  GetTollTagsDocument,
+  GetTollTagsQuery,
+  useAddTollTagMutation,
+  useGetSelectableItemsForAddTollTagQuery,
+} from 'generated/graphql';
 
 type CreateTollTagInputs = {
   tagNumber: JSX.Element;
@@ -25,7 +23,7 @@ type CreateTollTagModalProps = {
   setModalState: (state: boolean) => void;
 };
 
-const getDepotOptions = (depots: Depot[] | undefined) => {
+const getDepotOptions = (depots: Depot[]) => {
   return depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
@@ -39,28 +37,39 @@ const CreateTollTagModal = ({
   const tagProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  // const [addTollTag] = useMutation(ADD_TOLL_TAG, {
-  //   refetchQueries: [GET_TOLL_TAGS, 'GetTollTags'],
+  // const [addTollTag] = useMutation<AddTollTag>(ADD_TOLL_TAG, {
+  //   update: (cache, { data: mutationReturn }) => {
+  //     const newTollTag = mutationReturn?.addTollTag;
+
+  //     const currentTollTags = cache.readQuery<GetTollTags>({
+  //       query: GET_TOLL_TAGS,
+  //     });
+
+  //     if (currentTollTags && newTollTag) {
+  //       cache.writeQuery({
+  //         query: GET_TOLL_TAGS,
+  //         data: { tollTags: [...currentTollTags.tollTags, newTollTag] },
+  //       });
+  //     }
+  //   },
   // });
 
-  const [addTollTag] = useMutation<AddTollTag>(ADD_TOLL_TAG, {
+  const [addTollTag] = useAddTollTagMutation({
     update: (cache, { data: mutationReturn }) => {
       const newTollTag = mutationReturn?.addTollTag;
-
-      const currentTollTags = cache.readQuery<GetTollTags>({
-        query: GET_TOLL_TAGS,
+      const currentTollTags = cache.readQuery<GetTollTagsQuery>({
+        query: GetTollTagsDocument,
       });
-
       if (currentTollTags && newTollTag) {
         cache.writeQuery({
-          query: GET_TOLL_TAGS,
-          data: { tollTags: [...currentTollTags.tollTags, newTollTag] },
+          query: GetTollTagsDocument,
+          data: { tollTags: [{ ...currentTollTags.tollTags }, newTollTag] },
         });
       }
     },
   });
 
-  const getCreateTollTagInputs = (depots: Option[] | undefined) => {
+  const getCreateTollTagInputs = (depots: Option[]) => {
     const inputs: CreateTollTagInputs = {
       tagNumber: (
         <ModalFormInput
@@ -100,17 +109,24 @@ const CreateTollTagModal = ({
     addTollTag({
       variables: {
         addTollTagData: {
-          tagNumber: tagNumberInputRef.current?.value,
-          tagProvider: tagProviderInputRef.current?.value,
-          depotId: depotIdInputRef.current?.value,
+          tagNumber:
+            tagNumberInputRef.current?.value != null
+              ? tagNumberInputRef.current.value
+              : '',
+          tagProvider:
+            tagProviderInputRef.current?.value != null
+              ? tagProviderInputRef.current.value
+              : '',
+          depotId:
+            depotIdInputRef.current?.value != null
+              ? depotIdInputRef.current.value
+              : '',
         },
       },
     });
   };
 
-  const { data, loading, error } = useQuery<SelectableItems>(
-    GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG
-  );
+  const { data, loading, error } = useGetSelectableItemsForAddTollTagQuery();
 
   if (loading) {
     return <div></div>;
@@ -120,7 +136,13 @@ const CreateTollTagModal = ({
     return <div></div>;
   }
 
-  const inputs = getCreateTollTagInputs(getDepotOptions(data?.depots));
+  if (!data) {
+    return <div></div>;
+  }
+
+  const inputs = getCreateTollTagInputs(
+    getDepotOptions(data.depots as Depot[])
+  );
 
   return (
     <AddModal
