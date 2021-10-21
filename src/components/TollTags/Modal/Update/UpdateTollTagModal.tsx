@@ -5,6 +5,9 @@ import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import UpdateModal from 'core/Modal/UpdateModal';
 import {
   Depot,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetVehiclesDocument,
   useGetSelectableItemsForUpdateTollTagQuery,
   useUpdateTollTagMutation,
 } from 'generated/graphql';
@@ -37,7 +40,13 @@ const UpdateTollTagModal = ({
   const tagProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateTollTag] = useUpdateTollTagMutation();
+  const [updateTollTag] = useUpdateTollTagMutation({
+    refetchQueries: [
+      { query: GetVehiclesDocument },
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
+  });
 
   const getUpdateTollTagInputs = (depots: Option[]) => {
     const inputs: UpdateTollTagInputs = {

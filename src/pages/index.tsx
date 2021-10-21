@@ -6,13 +6,14 @@ import Button from 'core/Table/Button';
 import CreateVehicleModal from 'components/Vehicles/Modal/Create/CreateVehicleModal';
 import UpdateVehicleModal from 'components/Vehicles/Modal/Update/UpdateVehicleModal';
 import { VehicleUpdateModalItem } from 'constants/types';
-import { Vehicle } from 'generated/graphql';
+import { Vehicle, VehicleType } from 'generated/graphql';
 
 const Home: NextPage = () => {
   const [open, setOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [currentVehicle, setCurrentVehicle] = useState<VehicleUpdateModalItem>({
     id: '',
+    type: VehicleType.Van,
     registration: '',
     make: '',
     model: '',
@@ -45,6 +46,7 @@ const Home: NextPage = () => {
   const changeCurrentVehicle = (vehicle: Vehicle) => {
     const chosenVehicle: VehicleUpdateModalItem = {
       id: vehicle.id,
+      type: vehicle.type,
       registration: vehicle.registration,
       make: vehicle.make,
       model: vehicle.model,

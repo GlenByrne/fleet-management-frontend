@@ -6,12 +6,18 @@ import UpdateModal from 'core/Modal/UpdateModal';
 import {
   Depot,
   FuelCard,
+  GetFuelCardsDocument,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetTollTagsDocument,
   TollTag,
   useGetItemsForUpdateVehicleQuery,
   useUpdateVehicleMutation,
+  VehicleType,
 } from 'generated/graphql';
 
 type UpdateVehicleInputs = {
+  type?: JSX.Element;
   registration?: JSX.Element;
   make?: JSX.Element;
   model?: JSX.Element;
@@ -77,11 +83,31 @@ const getTollTagOptions = (
   return options;
 };
 
+const getVehicleTypeOptions = () => {
+  const options: Option[] = [
+    {
+      value: VehicleType.Van,
+      label: VehicleType.Van,
+    },
+    {
+      value: VehicleType.Truck,
+      label: VehicleType.Truck,
+    },
+    {
+      value: VehicleType.Trailer,
+      label: VehicleType.Trailer,
+    },
+  ];
+
+  return options;
+};
+
 const UpdateVehicleModal = ({
   modalState,
   modelStateHandler,
   vehicle,
 }: UpdateVehicleModalProps) => {
+  const typeInputRef = useRef<HTMLSelectElement>(null);
   const registrationInputRef = useRef<HTMLInputElement>(null);
   const makeInputRef = useRef<HTMLInputElement>(null);
   const modelInputRef = useRef<HTMLInputElement>(null);
@@ -90,7 +116,14 @@ const UpdateVehicleModal = ({
   const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
   const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateVehicle] = useUpdateVehicleMutation();
+  const [updateVehicle] = useUpdateVehicleMutation({
+    refetchQueries: [
+      { query: GetTollTagsDocument },
+      { query: GetFuelCardsDocument },
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
+  });
 
   const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
 
@@ -109,9 +142,24 @@ const UpdateVehicleModal = ({
   const getUpdateVehicleInputs = (
     depots: Option[],
     fuelCards: Option[],
-    tollTags: Option[]
+    tollTags: Option[],
+    vehicleTypes: Option[]
   ) => {
     const inputs: UpdateVehicleInputs = {
+      type: (
+        <ModalFormSelect
+          label="Type"
+          name="type"
+          required={true}
+          options={vehicleTypes}
+          ref={typeInputRef}
+          defaultValue={
+            vehicle.type != null
+              ? (vehicle.type as VehicleType)
+              : VehicleType.Van
+          }
+        />
+      ),
       registration: (
         <ModalFormInput
           label="Registration"
@@ -198,6 +246,10 @@ const UpdateVehicleModal = ({
       variables: {
         updateVehicleData: {
           id: vehicle.id,
+          type:
+            typeInputRef.current?.value != null
+              ? (typeInputRef.current.value as VehicleType)
+              : VehicleType.Van,
           registration:
             registrationInputRef.current?.value != null
               ? registrationInputRef.current.value
@@ -234,7 +286,8 @@ const UpdateVehicleModal = ({
   const inputs = getUpdateVehicleInputs(
     getDepotOptions(data.depots as Depot[]),
     getFuelCardOptions(data.fuelCardsNotAssigned as FuelCard[], vehicle),
-    getTollTagOptions(data.tollTagsNotAssigned as TollTag[], vehicle)
+    getTollTagOptions(data.tollTagsNotAssigned as TollTag[], vehicle),
+    getVehicleTypeOptions()
   );
 
   return (

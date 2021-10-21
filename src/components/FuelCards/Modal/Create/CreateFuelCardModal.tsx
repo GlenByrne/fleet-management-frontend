@@ -6,6 +6,9 @@ import {
   Depot,
   GetFuelCardsDocument,
   GetFuelCardsQuery,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetSelectableItemsForAddVehicleQuery,
   useAddFuelCardMutation,
   useGetSelectableItemsForAddFuelCardQuery,
 } from 'generated/graphql';
@@ -59,13 +62,33 @@ const CreateFuelCardModal = ({
       const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
         query: GetFuelCardsDocument,
       });
+
+      // const currentUnassignedFuelCards =
+      //   cache.readQuery<GetSelectableItemsForAddVehicleQuery>({
+      //     query: GetSelectableItemsForAddVehicleDocument,
+      //   });
+
       if (currentFuelCards && newFuelCard) {
         cache.writeQuery({
           query: GetFuelCardsDocument,
           data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
         });
       }
+
+      // cache.writeQuery({
+      //   query: GetSelectableItemsForAddVehicleDocument,
+      //   data: {
+      //     fuelCardsNotAssigned: [
+      //       { ...currentUnassignedFuelCards?.fuelCardsNotAssigned },
+      //       newFuelCard,
+      //     ],
+      //   },
+      // });
     },
+    refetchQueries: [
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
   });
 
   const getCreateFuelCardInputs = (depots: Option[] | undefined) => {

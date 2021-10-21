@@ -4,8 +4,11 @@ import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
 import TableRow from 'core/Table/TableRow';
 import {
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
   GetTollTagsDocument,
   GetTollTagsQuery,
+  GetVehiclesDocument,
   TollTag,
   useDeleteTollTagMutation,
   useGetTollTagsQuery,
@@ -90,6 +93,11 @@ const TollTagList = ({
         id: mutationReturn?.deleteTollTag.id,
       });
     },
+    refetchQueries: [
+      { query: GetVehiclesDocument },
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
   });
 
   const deleteTagHandler = (id: string) => {

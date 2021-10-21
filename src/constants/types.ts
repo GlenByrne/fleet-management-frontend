@@ -1,3 +1,5 @@
+import { VehicleType } from 'generated/graphql';
+
 export type NavbarOption = {
   name: string;
   href: string;
@@ -19,6 +21,7 @@ export type Option = {
 
 export type VehicleUpdateModalItem = {
   id: string;
+  type: VehicleType;
   registration: string;
   make: string;
   model: string;

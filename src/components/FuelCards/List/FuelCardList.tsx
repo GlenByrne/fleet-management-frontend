@@ -5,6 +5,9 @@ import {
   FuelCard,
   GetFuelCardsDocument,
   GetFuelCardsQuery,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetVehiclesDocument,
   useDeleteFuelCardMutation,
   useGetFuelCardsQuery,
 } from 'generated/graphql';
@@ -88,6 +91,11 @@ const FuelCardList = ({
         id: mutationReturn?.deleteFuelCard.id,
       });
     },
+    refetchQueries: [
+      { query: GetVehiclesDocument },
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
   });
 
   const deleteCardHandler = (id: string) => {

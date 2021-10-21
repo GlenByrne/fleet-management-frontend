@@ -6,6 +6,8 @@ import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import AddModal from 'core/Modal/AddModal';
 import {
   Depot,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
   GetTollTagsDocument,
   GetTollTagsQuery,
   useAddTollTagMutation,
@@ -67,6 +69,10 @@ const CreateTollTagModal = ({
         });
       }
     },
+    refetchQueries: [
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
   });
 
   const getCreateTollTagInputs = (depots: Option[]) => {

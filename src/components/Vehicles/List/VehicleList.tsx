@@ -2,6 +2,10 @@ import TableItem from 'core/Table/TableItem';
 import Table from 'core/Table/Table';
 import TableRow from 'core/Table/TableRow';
 import {
+  GetFuelCardsDocument,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetTollTagsDocument,
   GetVehiclesDocument,
   GetVehiclesQuery,
   useDeleteVehicleMutation,
@@ -16,6 +20,7 @@ type VehicleListProps = {
 
 type VehicleTableData = {
   registration: JSX.Element;
+  type: JSX.Element;
   make: JSX.Element;
   model: JSX.Element;
   depot: JSX.Element;
@@ -29,6 +34,7 @@ type VehicleTableData = {
 
 const headers: string[] = [
   'Registration',
+  'Type',
   'Make',
   'Model',
   'Depot',
@@ -45,6 +51,7 @@ const headers: string[] = [
 const getTableData = (vehicle: Vehicle) => {
   const tableData: VehicleTableData = {
     registration: <TableItem>{vehicle.registration}</TableItem>,
+    type: <TableItem>{vehicle.type}</TableItem>,
     make: <TableItem>{vehicle.make}</TableItem>,
     model: <TableItem>{vehicle.model}</TableItem>,
     depot: (
@@ -98,6 +105,12 @@ const VehicleList = ({
         id: mutationReturn?.deleteVehicle.id,
       });
     },
+    refetchQueries: [
+      { query: GetTollTagsDocument },
+      { query: GetFuelCardsDocument },
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
   });
   // const [deleteVehicle] = useMutation<DeleteVehicle>(DELETE_VEHICLE, {
   //   update: (cache, { data: mutationReturn }) => {

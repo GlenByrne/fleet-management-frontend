@@ -4,6 +4,9 @@ import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import UpdateModal from 'core/Modal/UpdateModal';
 import {
   Depot,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetVehiclesDocument,
   useGetSelectableItemsForUpdateFuelCardQuery,
   useUpdateFuelCardMutation,
 } from 'generated/graphql';
@@ -40,7 +43,13 @@ const UpdateFuelCardModal = ({
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  const [updateFuelCard] = useUpdateFuelCardMutation();
+  const [updateFuelCard] = useUpdateFuelCardMutation({
+    refetchQueries: [
+      { query: GetVehiclesDocument },
+      { query: GetSelectableItemsForAddVehicleDocument },
+      { query: GetItemsForUpdateVehicleDocument },
+    ],
+  });
 
   const getUpdateFuelCardInputs = (depots: Option[]) => {
     const inputs: UpdateFuelCardInputs = {

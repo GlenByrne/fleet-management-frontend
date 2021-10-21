@@ -4,6 +4,7 @@ export const GET_VEHICLE = gql`
   query GetVehicle($vehicleId: ID!) {
     vehicle(vehicleId: $vehicleId) {
       id
+      type
       registration
       make
       model
@@ -31,6 +32,7 @@ export const GET_VEHICLES = gql`
   query GetVehicles {
     vehicles {
       id
+      type
       registration
       make
       model
@@ -140,6 +142,7 @@ export const ADD_VEHICLE = gql`
   mutation AddVehicle($addVehicleData: AddVehicleInput!) {
     addVehicle(data: $addVehicleData) {
       id
+      type
       registration
       make
       model
@@ -240,6 +243,10 @@ export const DELETE_FUEL_CARD = gql`
     deleteFuelCard(data: $deleteFuelCardData) {
       id
       cardNumber
+      vehicle {
+        id
+        registration
+      }
     }
   }
 `;
@@ -294,6 +301,7 @@ export const UPDATE_VEHICLE = gql`
   mutation UpdateVehicle($updateVehicleData: UpdateVehicleInput!) {
     updateVehicle(data: $updateVehicleData) {
       id
+      type
       registration
       make
       model
