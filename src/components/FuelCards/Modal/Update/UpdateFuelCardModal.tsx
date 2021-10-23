@@ -1,7 +1,7 @@
 import { FormEventHandler, useRef } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
-import UpdateModal from 'core/Modal/UpdateModal';
+import { Dialog } from '@headlessui/react';
 import {
   Depot,
   GetItemsForUpdateVehicleDocument,
@@ -11,16 +11,8 @@ import {
   useUpdateFuelCardMutation,
 } from 'generated/graphql';
 import { FuelCardUpdateModalItem, Option } from 'constants/types';
-
-interface UpdateFuelCardData {
-  depots: Depot[] | undefined;
-}
-
-type UpdateFuelCardInputs = {
-  cardNumber: JSX.Element;
-  cardProvider: JSX.Element;
-  depot: JSX.Element;
-};
+import Modal from 'core/Modal/Modal';
+import { TruckIcon } from '@heroicons/react/outline';
 
 type UpdateFuelCardModalProps = {
   modalState: boolean;
@@ -43,6 +35,8 @@ const UpdateFuelCardModal = ({
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
+  const cancelButtonRef = useRef(null);
+
   const [updateFuelCard] = useUpdateFuelCardMutation({
     refetchQueries: [
       { query: GetVehiclesDocument },
@@ -50,43 +44,6 @@ const UpdateFuelCardModal = ({
       { query: GetItemsForUpdateVehicleDocument },
     ],
   });
-
-  const getUpdateFuelCardInputs = (depots: Option[]) => {
-    const inputs: UpdateFuelCardInputs = {
-      cardNumber: (
-        <ModalFormInput
-          label="Card Number"
-          name="cardNumber"
-          type="text"
-          ref={cardNumberInputRef}
-          required={true}
-          defaultValue={fuelCard.cardNumber}
-        />
-      ),
-      cardProvider: (
-        <ModalFormInput
-          label="Card Provider"
-          name="cardProvider"
-          type="text"
-          ref={cardProviderInputRef}
-          required={true}
-          defaultValue={fuelCard.cardProvider}
-        />
-      ),
-      depot: (
-        <ModalFormSelect
-          label="Depot"
-          name="depot"
-          ref={depotIdInputRef}
-          required={true}
-          options={depots}
-          defaultValue={fuelCard.depot.id}
-        />
-      ),
-    };
-
-    return inputs;
-  };
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
@@ -127,18 +84,74 @@ const UpdateFuelCardModal = ({
     return <div></div>;
   }
 
-  const inputs = getUpdateFuelCardInputs(
-    getDepotOptions(data.depots as Depot[])
-  );
-
   return (
-    <UpdateModal
+    <Modal
       modalState={modalState}
+      cancelButtonRef={cancelButtonRef}
       setModalState={modalStateHandler}
-      submitHandler={submitHandler}
-      heading="Update Fuel Card"
-      inputs={inputs}
-    />
+    >
+      <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+        <form onSubmit={submitHandler}>
+          <div className="sm:flex sm:items-start">
+            <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+              <TruckIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+            </div>
+            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <Dialog.Title
+                as="h3"
+                className="text-lg leading-6 font-medium text-gray-900"
+              >
+                Update Toll Tag
+              </Dialog.Title>
+              <div className="mt-2">
+                <ModalFormInput
+                  label="Card Number"
+                  name="cardNumber"
+                  type="text"
+                  ref={cardNumberInputRef}
+                  required={true}
+                  defaultValue={fuelCard.cardNumber}
+                />
+
+                <ModalFormInput
+                  label="Card Provider"
+                  name="cardProvider"
+                  type="text"
+                  ref={cardProviderInputRef}
+                  required={true}
+                  defaultValue={fuelCard.cardProvider}
+                />
+
+                <ModalFormSelect
+                  label="Depot"
+                  name="depot"
+                  ref={depotIdInputRef}
+                  required={true}
+                  options={getDepotOptions(data.depots as Depot[])}
+                  defaultValue={fuelCard.depot.id}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+            <button
+              type="submit"
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+              onClick={() => modalStateHandler(false)}
+              ref={cancelButtonRef}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </Modal>
   );
 };
 

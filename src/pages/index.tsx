@@ -78,7 +78,7 @@ const Home: NextPage = () => {
       />
       <UpdateVehicleModal
         modalState={updateModalOpen}
-        modelStateHandler={updateVehicleModalHandler}
+        setModalState={updateVehicleModalHandler}
         vehicle={currentVehicle}
       />
       <Button onClick={() => addVehicleModalHandler(true)}>Add Vehicle</Button>

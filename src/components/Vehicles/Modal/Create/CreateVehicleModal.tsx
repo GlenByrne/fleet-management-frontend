@@ -1,7 +1,7 @@
 import { FormEventHandler, useRef } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
-import AddModal from 'core/Modal/AddModal';
+import { Dialog } from '@headlessui/react';
 import {
   Depot,
   FuelCard,
@@ -17,23 +17,8 @@ import {
   VehicleType,
 } from 'generated/graphql';
 import { Option } from 'constants/types';
-
-// interface SelectableItems {
-//   depots: Depot[] | undefined;
-//   fuelCardsNotAssigned: FuelCard[] | undefined;
-//   tollTagsNotAssigned: TollTag[] | undefined;
-// }
-
-type CreateVehicleInputs = {
-  type: JSX.Element;
-  registration: JSX.Element;
-  make: JSX.Element;
-  model: JSX.Element;
-  owner: JSX.Element;
-  depot: JSX.Element;
-  fuelCard: JSX.Element;
-  tollTag: JSX.Element;
-};
+import Modal from 'core/Modal/Modal';
+import { TruckIcon } from '@heroicons/react/outline';
 
 type CreateVehicleModalProps = {
   modalState: boolean;
@@ -100,6 +85,8 @@ const CreateVehicleModal = ({
   const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
   const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
 
+  const cancelButtonRef = useRef(null);
+
   const [addVehicle] = useAddVehicleMutation({
     update: (cache, { data: mutationReturn }) => {
       const newVehicle = mutationReturn?.addVehicle;
@@ -122,107 +109,6 @@ const CreateVehicleModal = ({
       { query: GetItemsForUpdateVehicleDocument },
     ],
   });
-
-  // const [addVehicle] = useMutation<AddVehicle>(ADD_VEHICLE, {
-  //   update: (cache, { data: mutationReturn }) => {
-  //     const newVehicle = mutationReturn?.addVehicle;
-
-  //     const currentVehicles = cache.readQuery<GetVehicles>({
-  //       query: GET_VEHICLES,
-  //     });
-
-  //     if (currentVehicles && newVehicle) {
-  //       cache.writeQuery({
-  //         query: GET_VEHICLES,
-  //         data: { vehicles: [...currentVehicles.vehicles, newVehicle] },
-  //       });
-  //     }
-  //   },
-  // });
-
-  const getCreateVehicleInputs = (
-    depots: Option[] | undefined,
-    fuelCards: Option[] | undefined,
-    tollTags: Option[] | undefined,
-    vehicleTypes: Option[]
-  ) => {
-    const inputs: CreateVehicleInputs = {
-      type: (
-        <ModalFormSelect
-          label="Type"
-          name="type"
-          required={true}
-          options={vehicleTypes}
-          ref={typeInputRef}
-        />
-      ),
-      registration: (
-        <ModalFormInput
-          label="Registration"
-          name="registration"
-          type="text"
-          ref={registrationInputRef}
-          required={true}
-        />
-      ),
-      make: (
-        <ModalFormInput
-          label="Make"
-          name="make"
-          type="text"
-          ref={makeInputRef}
-          required={true}
-        />
-      ),
-      model: (
-        <ModalFormInput
-          label="Model"
-          name="model"
-          type="text"
-          ref={modelInputRef}
-          required={true}
-        />
-      ),
-      owner: (
-        <ModalFormInput
-          label="Owner"
-          name="owner"
-          type="text"
-          ref={ownerInputRef}
-          required={true}
-        />
-      ),
-      depot: (
-        <ModalFormSelect
-          label="Depot"
-          name="depot"
-          ref={depotIdInputRef}
-          required={true}
-          options={depots}
-        />
-      ),
-      fuelCard: (
-        <ModalFormSelect
-          label="Fuel Card"
-          name="fuelCard"
-          ref={fuelCardIdInputRef}
-          required={false}
-          options={fuelCards}
-        />
-      ),
-      tollTag: (
-        <ModalFormSelect
-          label="Toll Tag"
-          name="tollTag"
-          ref={tollTagIdInputRef}
-          required={false}
-          options={tollTags}
-        />
-      ),
-    };
-
-    return inputs;
-  };
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
@@ -281,21 +167,115 @@ const CreateVehicleModal = ({
     return <div></div>;
   }
 
-  const inputs = getCreateVehicleInputs(
-    getDepotOptions(data.depots as Depot[]),
-    getFuelCardOptions(data.fuelCardsNotAssigned as FuelCard[]),
-    getTollTagOptions(data.tollTagsNotAssigned as TollTag[]),
-    getVehicleTypeOptions()
-  );
-
   return (
-    <AddModal
+    <Modal
       modalState={modalState}
+      cancelButtonRef={cancelButtonRef}
       setModalState={setModalState}
-      submitHandler={submitHandler}
-      heading="Add Toll Tag"
-      inputs={inputs}
-    />
+    >
+      <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+        <form onSubmit={submitHandler}>
+          <div className="sm:flex sm:items-start">
+            <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+              <TruckIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+            </div>
+            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <Dialog.Title
+                as="h3"
+                className="text-lg leading-6 font-medium text-gray-900"
+              >
+                Add Vehicle
+              </Dialog.Title>
+              <div className="mt-2">
+                <ModalFormSelect
+                  label="Type"
+                  name="type"
+                  required={true}
+                  options={getVehicleTypeOptions()}
+                  ref={typeInputRef}
+                />
+
+                <ModalFormInput
+                  label="Registration"
+                  name="registration"
+                  type="text"
+                  ref={registrationInputRef}
+                  required={true}
+                />
+
+                <ModalFormInput
+                  label="Make"
+                  name="make"
+                  type="text"
+                  ref={makeInputRef}
+                  required={true}
+                />
+
+                <ModalFormInput
+                  label="Model"
+                  name="model"
+                  type="text"
+                  ref={modelInputRef}
+                  required={true}
+                />
+
+                <ModalFormInput
+                  label="Owner"
+                  name="owner"
+                  type="text"
+                  ref={ownerInputRef}
+                  required={true}
+                />
+
+                <ModalFormSelect
+                  label="Depot"
+                  name="depot"
+                  ref={depotIdInputRef}
+                  required={true}
+                  options={getDepotOptions(data.depots as Depot[])}
+                />
+
+                <ModalFormSelect
+                  label="Fuel Card"
+                  name="fuelCard"
+                  ref={fuelCardIdInputRef}
+                  required={false}
+                  options={getFuelCardOptions(
+                    data.fuelCardsNotAssigned as FuelCard[]
+                  )}
+                />
+
+                <ModalFormSelect
+                  label="Toll Tag"
+                  name="tollTag"
+                  ref={tollTagIdInputRef}
+                  required={false}
+                  options={getTollTagOptions(
+                    data.tollTagsNotAssigned as TollTag[]
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+            <button
+              type="submit"
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+              onClick={() => setModalState(false)}
+              ref={cancelButtonRef}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </Modal>
   );
 };
 

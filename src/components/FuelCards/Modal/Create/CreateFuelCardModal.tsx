@@ -1,24 +1,19 @@
 import { FormEventHandler, useRef } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
-import AddModal from 'core/Modal/AddModal';
+import { Dialog } from '@headlessui/react';
 import {
   Depot,
   GetFuelCardsDocument,
   GetFuelCardsQuery,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
-  GetSelectableItemsForAddVehicleQuery,
   useAddFuelCardMutation,
   useGetSelectableItemsForAddFuelCardQuery,
 } from 'generated/graphql';
 import { Option } from 'constants/types';
-
-type CreateFuelCardInputs = {
-  cardNumber: JSX.Element;
-  cardProvider: JSX.Element;
-  depot: JSX.Element;
-};
+import Modal from 'core/Modal/Modal';
+import { TruckIcon } from '@heroicons/react/outline';
 
 type CreateFuelCardModalProps = {
   modalState: boolean;
@@ -39,22 +34,7 @@ const CreateFuelCardModal = ({
   const cardProviderInputRef = useRef<HTMLInputElement>(null);
   const depotIdInputRef = useRef<HTMLSelectElement>(null);
 
-  // const [addFuelCard] = useMutation<AddFuelCard>(ADD_FUEL_CARD, {
-  //   update: (cache, { data: mutationReturn }) => {
-  //     const newFuelCard = mutationReturn?.addFuelCard;
-
-  //     const currentFuelCards = cache.readQuery<GetFuelCards>({
-  //       query: GET_FUEL_CARDS,
-  //     });
-
-  //     if (currentFuelCards && newFuelCard) {
-  //       cache.writeQuery({
-  //         query: GET_FUEL_CARDS,
-  //         data: { fuelCards: [...currentFuelCards.fuelCards, newFuelCard] },
-  //       });
-  //     }
-  //   },
-  // });
+  const cancelButtonRef = useRef(null);
 
   const [addFuelCard] = useAddFuelCardMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -63,67 +43,18 @@ const CreateFuelCardModal = ({
         query: GetFuelCardsDocument,
       });
 
-      // const currentUnassignedFuelCards =
-      //   cache.readQuery<GetSelectableItemsForAddVehicleQuery>({
-      //     query: GetSelectableItemsForAddVehicleDocument,
-      //   });
-
       if (currentFuelCards && newFuelCard) {
         cache.writeQuery({
           query: GetFuelCardsDocument,
           data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
         });
       }
-
-      // cache.writeQuery({
-      //   query: GetSelectableItemsForAddVehicleDocument,
-      //   data: {
-      //     fuelCardsNotAssigned: [
-      //       { ...currentUnassignedFuelCards?.fuelCardsNotAssigned },
-      //       newFuelCard,
-      //     ],
-      //   },
-      // });
     },
     refetchQueries: [
       { query: GetSelectableItemsForAddVehicleDocument },
       { query: GetItemsForUpdateVehicleDocument },
     ],
   });
-
-  const getCreateFuelCardInputs = (depots: Option[] | undefined) => {
-    const inputs: CreateFuelCardInputs = {
-      cardNumber: (
-        <ModalFormInput
-          label="Card Number"
-          name="cardNumber"
-          type="text"
-          ref={cardNumberInputRef}
-          required={true}
-        />
-      ),
-      cardProvider: (
-        <ModalFormInput
-          label="Card Provider"
-          name="cardProvider"
-          type="text"
-          ref={cardProviderInputRef}
-          required={true}
-        />
-      ),
-      depot: (
-        <ModalFormSelect
-          label="Depot"
-          name="depot"
-          ref={depotIdInputRef}
-          required={true}
-          options={depots}
-        />
-      ),
-    };
-
-    return inputs;
-  };
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
@@ -162,18 +93,71 @@ const CreateFuelCardModal = ({
     return <div></div>;
   }
 
-  const inputs = getCreateFuelCardInputs(
-    getDepotOptions(data.depots as Depot[])
-  );
-
   return (
-    <AddModal
+    <Modal
       modalState={modalState}
+      cancelButtonRef={cancelButtonRef}
       setModalState={setModalState}
-      submitHandler={submitHandler}
-      heading="Add Fuel Card"
-      inputs={inputs}
-    />
+    >
+      <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+        <form onSubmit={submitHandler}>
+          <div className="sm:flex sm:items-start">
+            <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+              <TruckIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+            </div>
+            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <Dialog.Title
+                as="h3"
+                className="text-lg leading-6 font-medium text-gray-900"
+              >
+                Add Fuel Card
+              </Dialog.Title>
+              <div className="mt-2">
+                <ModalFormInput
+                  label="Card Number"
+                  name="cardNumber"
+                  type="text"
+                  ref={cardNumberInputRef}
+                  required={true}
+                />
+
+                <ModalFormInput
+                  label="Card Provider"
+                  name="cardProvider"
+                  type="text"
+                  ref={cardProviderInputRef}
+                  required={true}
+                />
+
+                <ModalFormSelect
+                  label="Depot"
+                  name="depot"
+                  ref={depotIdInputRef}
+                  required={true}
+                  options={getDepotOptions(data.depots as Depot[])}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+            <button
+              type="submit"
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+              onClick={() => setModalState(false)}
+              ref={cancelButtonRef}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </Modal>
   );
 };
 
