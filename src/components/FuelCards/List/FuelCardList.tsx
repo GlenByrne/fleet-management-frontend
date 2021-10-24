@@ -11,10 +11,11 @@ import {
   useDeleteFuelCardMutation,
   useGetFuelCardsQuery,
 } from 'generated/graphql';
+import { FuelCardUpdateModalItem } from 'constants/types';
+import { currentFuelCardVar } from 'constants/apollo-client';
 
 type FuelCardListProps = {
   updateFuelCardModalHandler: (state: boolean) => void;
-  changeCurrentFuelCard: (fuelCard: FuelCard) => void;
 };
 
 type FuelCardTableData = {
@@ -37,7 +38,11 @@ const getTableData = (fuelCard: FuelCard) => {
   const tableData: FuelCardTableData = {
     cardNumber: <TableItem>{fuelCard.cardNumber}</TableItem>,
     cardProvider: <TableItem>{fuelCard.cardProvider}</TableItem>,
-    depot: <TableItem>{fuelCard.depot?.name}</TableItem>,
+    depot: (
+      <TableItem>
+        {fuelCard.depot != null ? fuelCard.depot.name : 'None'}
+      </TableItem>
+    ),
     vehicle: (
       <TableItem>
         {fuelCard.vehicle != null ? fuelCard.vehicle.registration : 'None'}
@@ -48,31 +53,7 @@ const getTableData = (fuelCard: FuelCard) => {
   return tableData;
 };
 
-const FuelCardList = ({
-  updateFuelCardModalHandler,
-  changeCurrentFuelCard,
-}: FuelCardListProps) => {
-  // const [deleteFuelCard] = useMutation<DeleteFuelCard>(DELETE_FUEL_CARD, {
-  //   update: (cache, { data: mutationReturn }) => {
-  //     const currentFuelCards = cache.readQuery<GetFuelCards>({
-  //       query: GET_FUEL_CARDS,
-  //     });
-
-  //     const newFuelCards = currentFuelCards?.fuelCards.filter(
-  //       (fuelCard) => fuelCard.id !== mutationReturn?.deleteFuelCard.id
-  //     );
-
-  //     cache.writeQuery({
-  //       query: GET_FUEL_CARDS,
-  //       data: { fuelCards: newFuelCards },
-  //     });
-
-  //     cache.evict({
-  //       id: mutationReturn?.deleteFuelCard.id,
-  //     });
-  //   },
-  // });
-
+const FuelCardList = ({ updateFuelCardModalHandler }: FuelCardListProps) => {
   const [deleteFuelCard] = useDeleteFuelCardMutation({
     update: (cache, { data: mutationReturn }) => {
       const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
@@ -106,6 +87,19 @@ const FuelCardList = ({
         },
       },
     });
+  };
+
+  const changeCurrentFuelCard = (fuelCard: FuelCard) => {
+    const chosenFuelCard: FuelCardUpdateModalItem = {
+      id: fuelCard.id,
+      cardNumber: fuelCard.cardNumber,
+      cardProvider: fuelCard.cardProvider,
+      depot: {
+        id: fuelCard.depot != null ? fuelCard.depot.id : '',
+        name: fuelCard.depot != null ? fuelCard.depot.name : '',
+      },
+    };
+    currentFuelCardVar(chosenFuelCard);
   };
 
   const { data, loading, error } = useGetFuelCardsQuery();

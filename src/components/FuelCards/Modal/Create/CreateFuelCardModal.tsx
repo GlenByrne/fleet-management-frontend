@@ -1,4 +1,4 @@
-import { FormEventHandler, useRef } from 'react';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
@@ -21,18 +21,33 @@ type CreateFuelCardModalProps = {
 };
 
 const getDepotOptions = (depots: Depot[]) => {
-  return depots?.map(
+  const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
+
+  return options;
 };
 
 const CreateFuelCardModal = ({
   modalState,
   setModalState,
 }: CreateFuelCardModalProps) => {
-  const cardNumberInputRef = useRef<HTMLInputElement>(null);
-  const cardProviderInputRef = useRef<HTMLInputElement>(null);
-  const depotIdInputRef = useRef<HTMLSelectElement>(null);
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardProvider, setCardProvider] = useState('');
+  const [depot, setDepot] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
+
+  const changeCardNumber = (event: FormEvent<HTMLInputElement>) => {
+    setCardNumber(event.currentTarget.value);
+  };
+
+  const changeCardProvider = (event: FormEvent<HTMLInputElement>) => {
+    setCardProvider(event.currentTarget.value);
+  };
 
   const cancelButtonRef = useRef(null);
 
@@ -62,18 +77,9 @@ const CreateFuelCardModal = ({
     addFuelCard({
       variables: {
         addFuelCardData: {
-          cardNumber:
-            cardNumberInputRef.current?.value != null
-              ? cardNumberInputRef.current.value
-              : '',
-          cardProvider:
-            cardProviderInputRef.current?.value != null
-              ? cardProviderInputRef.current.value
-              : '',
-          depotId:
-            depotIdInputRef.current?.value != null
-              ? depotIdInputRef.current.value
-              : '',
+          cardNumber: cardNumber != null ? cardNumber : '',
+          cardProvider: cardProvider != null ? cardProvider : '',
+          depotId: depot.value != null ? depot.value : '',
         },
       },
     });
@@ -117,7 +123,8 @@ const CreateFuelCardModal = ({
                   label="Card Number"
                   name="cardNumber"
                   type="text"
-                  ref={cardNumberInputRef}
+                  value={cardNumber}
+                  onChange={changeCardNumber}
                   required={true}
                 />
 
@@ -125,15 +132,16 @@ const CreateFuelCardModal = ({
                   label="Card Provider"
                   name="cardProvider"
                   type="text"
-                  ref={cardProviderInputRef}
+                  value={cardProvider}
+                  onChange={changeCardProvider}
                   required={true}
                 />
 
                 <ModalFormSelect
                   label="Depot"
                   name="depot"
-                  ref={depotIdInputRef}
-                  required={true}
+                  selected={depot}
+                  onChange={setDepot}
                   options={getDepotOptions(data.depots as Depot[])}
                 />
               </div>

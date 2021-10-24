@@ -12,10 +12,11 @@ import {
   useGetVehiclesQuery,
   Vehicle,
 } from 'generated/graphql';
+import { VehicleUpdateModalItem } from 'constants/types';
+import { currentVehicleVar } from 'constants/apollo-client';
 
 type VehicleListProps = {
   updateVehicleModalHandler: (state: boolean) => void;
-  changeCurrentVehicle: (vehicle: Vehicle) => void;
 };
 
 type VehicleTableData = {
@@ -80,10 +81,7 @@ const getTableData = (vehicle: Vehicle) => {
   return tableData;
 };
 
-const VehicleList = ({
-  updateVehicleModalHandler,
-  changeCurrentVehicle,
-}: VehicleListProps) => {
+const VehicleList = ({ updateVehicleModalHandler }: VehicleListProps) => {
   const [deleteVehicle] = useDeleteVehicleMutation({
     update: (cache, { data: mutationReturn }) => {
       const currentVehicles = cache.readQuery<GetVehiclesQuery>({
@@ -112,26 +110,6 @@ const VehicleList = ({
       { query: GetItemsForUpdateVehicleDocument },
     ],
   });
-  // const [deleteVehicle] = useMutation<DeleteVehicle>(DELETE_VEHICLE, {
-  //   update: (cache, { data: mutationReturn }) => {
-  //     const currentVehicles = cache.readQuery<GetVehicles>({
-  //       query: GET_VEHICLES,
-  //     });
-
-  //     const newVehicles = currentVehicles?.vehicles.filter(
-  //       (vehicle) => vehicle.id !== mutationReturn?.deleteVehicle.id
-  //     );
-
-  //     cache.writeQuery({
-  //       query: GET_VEHICLES,
-  //       data: { vehicles: newVehicles },
-  //     });
-
-  //     cache.evict({
-  //       id: mutationReturn?.deleteVehicle.id,
-  //     });
-  //   },
-  // });
 
   const deleteVehicleHandler = (id: string) => {
     deleteVehicle({
@@ -143,8 +121,34 @@ const VehicleList = ({
     });
   };
 
+  const changeCurrentVehicle = (vehicle: Vehicle) => {
+    const chosenVehicle: VehicleUpdateModalItem = {
+      id: vehicle.id,
+      type: vehicle.type,
+      registration: vehicle.registration,
+      make: vehicle.make,
+      model: vehicle.model,
+      owner: vehicle.owner,
+      cvrtDueDate: vehicle.cvrtDueDate,
+      tachoCalibrationDueDate: vehicle.tachoCalibrationDueDate,
+      thirteenWeekInspectionDueDate: vehicle.thirteenWeekInspectionDueDate,
+      depot: {
+        id: vehicle.depot != null ? vehicle.depot.id : '',
+        name: vehicle.depot != null ? vehicle.depot.name : '',
+      },
+      fuelCard: {
+        id: vehicle.fuelCard == null ? '' : vehicle.fuelCard.id,
+        cardNumber: vehicle.fuelCard == null ? '' : vehicle.fuelCard.cardNumber,
+      },
+      tollTag: {
+        id: vehicle.tollTag == null ? '' : vehicle.tollTag.id,
+        tagNumber: vehicle.tollTag == null ? '' : vehicle.tollTag.tagNumber,
+      },
+    };
+    currentVehicleVar(chosenVehicle);
+  };
+
   const { data, loading, error } = useGetVehiclesQuery();
-  // const { data, loading, error } = useQuery<VehicleData>(GET_VEHICLES, {});
 
   if (loading) {
     return <div className="h2">Loading...</div>;

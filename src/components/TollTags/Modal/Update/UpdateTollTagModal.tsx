@@ -1,5 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { FormEventHandler, useRef } from 'react';
+import {
+  FormEvent,
+  FormEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
@@ -11,30 +17,56 @@ import {
   useGetSelectableItemsForUpdateTollTagQuery,
   useUpdateTollTagMutation,
 } from 'generated/graphql';
-import { Option, TollTagUpdateModalItem } from 'constants/types';
+import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { currentTollTagVar } from 'constants/apollo-client';
 
 type UpdateTollTagModalProps = {
   modalState: boolean;
-  modalStateHandler: (status: boolean) => void;
-  tollTag: TollTagUpdateModalItem;
+  setModalState: (status: boolean) => void;
 };
 
 const getDepotOptions = (depots: Depot[]) => {
-  return depots?.map(
+  const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
+
+  return options;
 };
 
 const UpdateTollTagModal = ({
   modalState,
-  modalStateHandler,
-  tollTag,
+  setModalState,
 }: UpdateTollTagModalProps) => {
-  const tagNumberInputRef = useRef<HTMLInputElement>(null);
-  const tagProviderInputRef = useRef<HTMLInputElement>(null);
-  const depotIdInputRef = useRef<HTMLSelectElement>(null);
+  const currentTag = useReactiveVar(currentTollTagVar);
+
+  const [tagNumber, setTagNumber] = useState('');
+  const [tagProvider, setTagProvider] = useState('');
+  const [depot, setDepot] = useState<Option>({
+    value: 'None',
+    label: '',
+  });
+
+  useEffect(() => {
+    setTagNumber(currentTag.tagNumber);
+    setTagProvider(currentTag.tagProvider);
+    setDepot({
+      value: currentTag.depot.id,
+      label: currentTag.depot.name,
+    });
+  }, [currentTag]);
+
+  const changeTagNumber = (event: FormEvent<HTMLInputElement>) => {
+    setTagNumber(event.currentTarget.value);
+  };
+
+  const changeTagProvider = (event: FormEvent<HTMLInputElement>) => {
+    setTagProvider(event.currentTarget.value);
+  };
 
   const cancelButtonRef = useRef(null);
 
@@ -48,23 +80,14 @@ const UpdateTollTagModal = ({
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    modalStateHandler(false);
+    setModalState(false);
     updateTollTag({
       variables: {
         updateTollTagData: {
-          id: tollTag.id,
-          tagNumber:
-            tagNumberInputRef.current?.value != null
-              ? tagNumberInputRef.current.value
-              : '',
-          tagProvider:
-            tagProviderInputRef.current?.value != null
-              ? tagProviderInputRef.current.value
-              : '',
-          depotId:
-            depotIdInputRef.current?.value != null
-              ? depotIdInputRef.current.value
-              : '',
+          id: currentTag.id,
+          tagNumber: tagNumber != null ? tagNumber : '',
+          tagProvider: tagProvider != null ? tagProvider : '',
+          depotId: depot.value != null ? depot.value : '',
         },
       },
     });
@@ -88,7 +111,7 @@ const UpdateTollTagModal = ({
     <Modal
       modalState={modalState}
       cancelButtonRef={cancelButtonRef}
-      setModalState={modalStateHandler}
+      setModalState={setModalState}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
         <form onSubmit={submitHandler}>
@@ -108,27 +131,26 @@ const UpdateTollTagModal = ({
                   label="Tag Number"
                   name="tagNumber"
                   type="text"
-                  ref={tagNumberInputRef}
+                  value={tagNumber}
+                  onChange={changeTagNumber}
                   required={true}
-                  defaultValue={tollTag.tagNumber}
                 />
 
                 <ModalFormInput
                   label="Tag Provider"
                   name="tagProvider"
                   type="text"
-                  ref={tagProviderInputRef}
+                  value={tagProvider}
+                  onChange={changeTagProvider}
                   required={true}
-                  defaultValue={tollTag.tagProvider}
                 />
 
                 <ModalFormSelect
                   label="Depot"
                   name="depot"
-                  ref={depotIdInputRef}
-                  required={true}
+                  selected={depot}
+                  onChange={setDepot}
                   options={getDepotOptions(data.depots as Depot[])}
-                  defaultValue={tollTag.depot.id}
                 />
               </div>
             </div>
@@ -143,7 +165,7 @@ const UpdateTollTagModal = ({
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => modalStateHandler(false)}
+              onClick={() => setModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { FormEventHandler, useRef } from 'react';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Option } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
@@ -22,18 +22,33 @@ type CreateTollTagModalProps = {
 };
 
 const getDepotOptions = (depots: Depot[]) => {
-  return depots?.map(
+  const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
+
+  return options;
 };
 
 const CreateTollTagModal = ({
   modalState,
   setModalState,
 }: CreateTollTagModalProps) => {
-  const tagNumberInputRef = useRef<HTMLInputElement>(null);
-  const tagProviderInputRef = useRef<HTMLInputElement>(null);
-  const depotIdInputRef = useRef<HTMLSelectElement>(null);
+  const [tagNumber, setTagNumber] = useState('');
+  const [tagProvider, setTagProvider] = useState('');
+  const [depot, setDepot] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
+
+  const changeTagNumber = (event: FormEvent<HTMLInputElement>) => {
+    setTagNumber(event.currentTarget.value);
+  };
+
+  const changeTagProvider = (event: FormEvent<HTMLInputElement>) => {
+    setTagProvider(event.currentTarget.value);
+  };
 
   const cancelButtonRef = useRef(null);
 
@@ -62,18 +77,9 @@ const CreateTollTagModal = ({
     addTollTag({
       variables: {
         addTollTagData: {
-          tagNumber:
-            tagNumberInputRef.current?.value != null
-              ? tagNumberInputRef.current.value
-              : '',
-          tagProvider:
-            tagProviderInputRef.current?.value != null
-              ? tagProviderInputRef.current.value
-              : '',
-          depotId:
-            depotIdInputRef.current?.value != null
-              ? depotIdInputRef.current.value
-              : '',
+          tagNumber: tagNumber != null ? tagNumber : '',
+          tagProvider: tagProvider != null ? tagProvider : '',
+          depotId: depot.value != null ? depot.value : '',
         },
       },
     });
@@ -117,7 +123,8 @@ const CreateTollTagModal = ({
                   label="Tag Number"
                   name="tagNumber"
                   type="text"
-                  ref={tagNumberInputRef}
+                  value={tagNumber}
+                  onChange={changeTagNumber}
                   required={true}
                 />
 
@@ -125,15 +132,16 @@ const CreateTollTagModal = ({
                   label="Tag Provider"
                   name="tagProvider"
                   type="text"
-                  ref={tagProviderInputRef}
+                  value={tagProvider}
+                  onChange={changeTagProvider}
                   required={true}
                 />
 
                 <ModalFormSelect
                   label="Depot"
                   name="depot"
-                  ref={depotIdInputRef}
-                  required={true}
+                  selected={depot}
+                  onChange={setDepot}
                   options={getDepotOptions(data.depots as Depot[])}
                 />
               </div>

@@ -1,4 +1,10 @@
-import { FormEventHandler, useRef } from 'react';
+import {
+  FormEvent,
+  FormEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
@@ -10,30 +16,56 @@ import {
   useGetSelectableItemsForUpdateFuelCardQuery,
   useUpdateFuelCardMutation,
 } from 'generated/graphql';
-import { FuelCardUpdateModalItem, Option } from 'constants/types';
+import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { currentFuelCardVar } from 'constants/apollo-client';
 
 type UpdateFuelCardModalProps = {
   modalState: boolean;
-  modalStateHandler: (status: boolean) => void;
-  fuelCard: FuelCardUpdateModalItem;
+  setModalState: (status: boolean) => void;
 };
 
 const getDepotOptions = (depots: Depot[]) => {
-  return depots?.map(
+  const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
+
+  return options;
 };
 
 const UpdateFuelCardModal = ({
   modalState,
-  modalStateHandler,
-  fuelCard,
+  setModalState,
 }: UpdateFuelCardModalProps) => {
-  const cardNumberInputRef = useRef<HTMLInputElement>(null);
-  const cardProviderInputRef = useRef<HTMLInputElement>(null);
-  const depotIdInputRef = useRef<HTMLSelectElement>(null);
+  const currentCard = useReactiveVar(currentFuelCardVar);
+
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardProvider, setCardProvider] = useState('');
+  const [depot, setDepot] = useState<Option>({
+    value: '',
+    label: '',
+  });
+
+  useEffect(() => {
+    setCardNumber(currentCard.cardNumber);
+    setCardProvider(currentCard.cardProvider);
+    setDepot({
+      value: currentCard.depot.id,
+      label: currentCard.depot.name,
+    });
+  }, [currentCard]);
+
+  const changeCardNumber = (event: FormEvent<HTMLInputElement>) => {
+    setCardNumber(event.currentTarget.value);
+  };
+
+  const changeCardProvider = (event: FormEvent<HTMLInputElement>) => {
+    setCardProvider(event.currentTarget.value);
+  };
 
   const cancelButtonRef = useRef(null);
 
@@ -47,23 +79,14 @@ const UpdateFuelCardModal = ({
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    modalStateHandler(false);
+    setModalState(false);
     updateFuelCard({
       variables: {
         updateFuelCardData: {
-          id: fuelCard.id,
-          cardNumber:
-            cardNumberInputRef.current?.value != null
-              ? cardNumberInputRef.current.value
-              : '',
-          cardProvider:
-            cardProviderInputRef.current?.value != null
-              ? cardProviderInputRef.current.value
-              : '',
-          depotId:
-            depotIdInputRef.current?.value != null
-              ? depotIdInputRef.current.value
-              : '',
+          id: currentCard.id,
+          cardNumber: cardNumber != null ? cardNumber : '',
+          cardProvider: cardProvider != null ? cardProvider : '',
+          depotId: depot.value != null ? depot.value : '',
         },
       },
     });
@@ -88,7 +111,7 @@ const UpdateFuelCardModal = ({
     <Modal
       modalState={modalState}
       cancelButtonRef={cancelButtonRef}
-      setModalState={modalStateHandler}
+      setModalState={setModalState}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
         <form onSubmit={submitHandler}>
@@ -101,34 +124,33 @@ const UpdateFuelCardModal = ({
                 as="h3"
                 className="text-lg leading-6 font-medium text-gray-900"
               >
-                Update Toll Tag
+                Update Fuel Card
               </Dialog.Title>
               <div className="mt-2">
                 <ModalFormInput
                   label="Card Number"
                   name="cardNumber"
                   type="text"
-                  ref={cardNumberInputRef}
+                  value={cardNumber}
+                  onChange={changeCardNumber}
                   required={true}
-                  defaultValue={fuelCard.cardNumber}
                 />
 
                 <ModalFormInput
                   label="Card Provider"
                   name="cardProvider"
                   type="text"
-                  ref={cardProviderInputRef}
+                  value={cardProvider}
+                  onChange={changeCardProvider}
                   required={true}
-                  defaultValue={fuelCard.cardProvider}
                 />
 
                 <ModalFormSelect
                   label="Depot"
                   name="depot"
-                  ref={depotIdInputRef}
-                  required={true}
+                  selected={depot}
+                  onChange={setDepot}
                   options={getDepotOptions(data.depots as Depot[])}
-                  defaultValue={fuelCard.depot.id}
                 />
               </div>
             </div>
@@ -143,7 +165,7 @@ const UpdateFuelCardModal = ({
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => modalStateHandler(false)}
+              onClick={() => setModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

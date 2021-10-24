@@ -1,4 +1,10 @@
-import { FormEventHandler, useRef } from 'react';
+import {
+  FormEvent,
+  FormEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Option, VehicleUpdateModalItem } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
@@ -17,17 +23,20 @@ import {
 } from 'generated/graphql';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { currentVehicleVar } from 'constants/apollo-client';
 
 type UpdateVehicleModalProps = {
   modalState: boolean;
   setModalState: (state: boolean) => void;
-  vehicle: VehicleUpdateModalItem;
 };
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
 
   return options;
 };
@@ -90,16 +99,76 @@ const getVehicleTypeOptions = () => {
 const UpdateVehicleModal = ({
   modalState,
   setModalState,
-  vehicle,
 }: UpdateVehicleModalProps) => {
-  const typeInputRef = useRef<HTMLSelectElement>(null);
-  const registrationInputRef = useRef<HTMLInputElement>(null);
-  const makeInputRef = useRef<HTMLInputElement>(null);
-  const modelInputRef = useRef<HTMLInputElement>(null);
-  const ownerInputRef = useRef<HTMLInputElement>(null);
-  const depotIdInputRef = useRef<HTMLSelectElement>(null);
-  const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
-  const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
+  const currentVehicle = useReactiveVar(currentVehicleVar);
+
+  const [type, setType] = useState<Option>({
+    value: '',
+    label: '',
+  });
+  const [registration, setRegistration] = useState('');
+  const [make, setMake] = useState('');
+  const [model, setModel] = useState('');
+  const [owner, setOwner] = useState('');
+  const [depot, setDepot] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
+  const [fuelCard, setFuelCard] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
+  const [tollTag, setTollTag] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
+
+  useEffect(() => {
+    setType({
+      value: currentVehicle.type,
+      label: currentVehicle.type,
+    });
+    setRegistration(currentVehicle.registration);
+    setMake(currentVehicle.make);
+    setModel(currentVehicle.model);
+    setOwner(currentVehicle.owner);
+    setDepot({
+      value: currentVehicle.depot.id != null ? currentVehicle.depot.id : '',
+      label:
+        currentVehicle.depot.name != null ? currentVehicle.depot.name : 'None',
+    });
+    setFuelCard({
+      value:
+        currentVehicle.fuelCard.id != null ? currentVehicle.fuelCard.id : '',
+      label:
+        currentVehicle.fuelCard.cardNumber != null
+          ? currentVehicle.fuelCard.id
+          : 'None',
+    });
+    setTollTag({
+      value: currentVehicle.tollTag.id != null ? currentVehicle.tollTag.id : '',
+      label:
+        currentVehicle.tollTag.tagNumber != null
+          ? currentVehicle.tollTag.tagNumber
+          : 'None',
+    });
+  }, [currentVehicle]);
+
+  const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
+    setRegistration(event.currentTarget.value);
+  };
+
+  const changeMake = (event: FormEvent<HTMLInputElement>) => {
+    setMake(event.currentTarget.value);
+  };
+
+  const changeModel = (event: FormEvent<HTMLInputElement>) => {
+    setModel(event.currentTarget.value);
+  };
+
+  const changeOwner = (event: FormEvent<HTMLInputElement>) => {
+    setOwner(event.currentTarget.value);
+  };
 
   const cancelButtonRef = useRef(null);
 
@@ -111,6 +180,27 @@ const UpdateVehicleModal = ({
       { query: GetItemsForUpdateVehicleDocument },
     ],
   });
+
+  const submitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    setModalState(false);
+    updateVehicle({
+      variables: {
+        updateVehicleData: {
+          id: currentVehicle.id,
+          type:
+            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
+          registration: registration != null ? registration : '',
+          make: make != null ? make : '',
+          model: model != null ? model : '',
+          owner: owner != null ? owner : '',
+          depotId: depot.value != null ? depot.value : '',
+          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+          tollTagId: tollTag.value === '' ? null : tollTag.value,
+        },
+      },
+    });
+  };
 
   const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
 
@@ -125,50 +215,6 @@ const UpdateVehicleModal = ({
   if (!data) {
     return <div></div>;
   }
-
-  const submitHandler: FormEventHandler = (e) => {
-    e.preventDefault();
-    setModalState(false);
-    updateVehicle({
-      variables: {
-        updateVehicleData: {
-          id: vehicle.id,
-          type:
-            typeInputRef.current?.value != null
-              ? (typeInputRef.current.value as VehicleType)
-              : VehicleType.Van,
-          registration:
-            registrationInputRef.current?.value != null
-              ? registrationInputRef.current.value
-              : '',
-          make:
-            makeInputRef.current?.value != null
-              ? makeInputRef.current.value
-              : '',
-          model:
-            modelInputRef.current?.value != null
-              ? modelInputRef.current.value
-              : '',
-          owner:
-            ownerInputRef.current?.value != null
-              ? ownerInputRef.current.value
-              : '',
-          depotId:
-            depotIdInputRef.current?.value != null
-              ? depotIdInputRef.current.value
-              : '',
-          fuelCardId:
-            fuelCardIdInputRef.current?.value === ''
-              ? null
-              : fuelCardIdInputRef.current?.value,
-          tollTagId:
-            tollTagIdInputRef.current?.value === ''
-              ? null
-              : tollTagIdInputRef.current?.value,
-        },
-      },
-    });
-  };
 
   return (
     <Modal
@@ -193,89 +239,75 @@ const UpdateVehicleModal = ({
                 <ModalFormSelect
                   label="Type"
                   name="type"
-                  required={true}
+                  selected={type}
+                  onChange={setType}
                   options={getVehicleTypeOptions()}
-                  ref={typeInputRef}
-                  defaultValue={
-                    vehicle.type != null
-                      ? (vehicle.type as VehicleType)
-                      : VehicleType.Van
-                  }
                 />
 
                 <ModalFormInput
                   label="Registration"
                   name="registration"
                   type="text"
-                  ref={registrationInputRef}
+                  value={registration}
+                  onChange={changeRegistration}
                   required={true}
-                  defaultValue={vehicle.registration}
                 />
 
                 <ModalFormInput
                   label="Make"
                   name="make"
                   type="text"
-                  ref={makeInputRef}
+                  value={make}
+                  onChange={changeMake}
                   required={true}
-                  defaultValue={vehicle.make}
                 />
 
                 <ModalFormInput
                   label="Model"
                   name="model"
                   type="text"
-                  ref={modelInputRef}
+                  value={model}
+                  onChange={changeModel}
                   required={true}
-                  defaultValue={vehicle.model}
                 />
 
                 <ModalFormInput
                   label="Owner"
                   name="owner"
                   type="text"
-                  ref={ownerInputRef}
+                  value={owner}
+                  onChange={changeOwner}
                   required={true}
-                  defaultValue={vehicle.owner}
                 />
 
                 <ModalFormSelect
                   label="Depot"
                   name="depot"
-                  required={true}
+                  selected={depot}
+                  onChange={setDepot}
                   options={getDepotOptions(data.depots as Depot[])}
-                  ref={depotIdInputRef}
-                  defaultValue={
-                    vehicle.depot != null ? vehicle.depot.id : undefined
-                  }
                 />
 
                 <ModalFormSelect
                   label="Fuel Card"
                   name="fuelCard"
-                  required={false}
+                  selected={fuelCard}
+                  onChange={setFuelCard}
                   options={getFuelCardOptions(
                     data.fuelCardsNotAssigned as FuelCard[],
-                    vehicle
+                    currentVehicle
                   )}
-                  ref={fuelCardIdInputRef}
-                  defaultValue={
-                    vehicle.fuelCard != null ? vehicle.fuelCard.id : undefined
-                  }
                 />
 
                 <ModalFormSelect
                   label="Toll Tag"
                   name="tollTag"
-                  required={false}
+                  selected={tollTag}
+                  onChange={setTollTag}
                   options={getTollTagOptions(
                     data.tollTagsNotAssigned as TollTag[],
-                    vehicle
+                    currentVehicle
                   )}
-                  ref={tollTagIdInputRef}
-                  defaultValue={
-                    vehicle.tollTag != null ? vehicle.tollTag.id : undefined
-                  }
                 />
               </div>
             </div>

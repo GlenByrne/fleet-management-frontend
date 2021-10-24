@@ -1,4 +1,4 @@
-import { FormEventHandler, useRef } from 'react';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
@@ -29,6 +29,8 @@ const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
     (depot) => ({ value: depot.id, label: depot.name } as Option)
   );
+
+  options?.unshift({ value: '', label: 'None' });
 
   return options;
 };
@@ -76,16 +78,42 @@ const CreateVehicleModal = ({
   modalState,
   setModalState,
 }: CreateVehicleModalProps) => {
-  const typeInputRef = useRef<HTMLSelectElement>(null);
-  const registrationInputRef = useRef<HTMLInputElement>(null);
-  const makeInputRef = useRef<HTMLInputElement>(null);
-  const modelInputRef = useRef<HTMLInputElement>(null);
-  const ownerInputRef = useRef<HTMLInputElement>(null);
-  const depotIdInputRef = useRef<HTMLSelectElement>(null);
-  const fuelCardIdInputRef = useRef<HTMLSelectElement>(null);
-  const tollTagIdInputRef = useRef<HTMLSelectElement>(null);
+  const [type, setType] = useState<Option>({
+    value: VehicleType.Van,
+    label: VehicleType.Van,
+  });
+  const [registration, setRegistration] = useState('');
+  const [make, setMake] = useState('');
+  const [model, setModel] = useState('');
+  const [owner, setOwner] = useState('');
+  const [depot, setDepot] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
+  const [fuelCard, setFuelCard] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
+  const [tollTag, setTollTag] = useState<Option>({
+    value: '',
+    label: 'None',
+  });
 
-  const cancelButtonRef = useRef(null);
+  const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
+    setRegistration(event.currentTarget.value);
+  };
+
+  const changeMake = (event: FormEvent<HTMLInputElement>) => {
+    setMake(event.currentTarget.value);
+  };
+
+  const changeModel = (event: FormEvent<HTMLInputElement>) => {
+    setModel(event.currentTarget.value);
+  };
+
+  const changeOwner = (event: FormEvent<HTMLInputElement>) => {
+    setOwner(event.currentTarget.value);
+  };
 
   const [addVehicle] = useAddVehicleMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -110,6 +138,8 @@ const CreateVehicleModal = ({
     ],
   });
 
+  const cancelButtonRef = useRef(null);
+
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     setModalState(false);
@@ -117,37 +147,14 @@ const CreateVehicleModal = ({
       variables: {
         addVehicleData: {
           type:
-            typeInputRef.current?.value != null
-              ? (typeInputRef.current.value as VehicleType)
-              : VehicleType.Van,
-          registration:
-            registrationInputRef.current?.value != null
-              ? registrationInputRef.current.value
-              : '',
-          make:
-            makeInputRef.current?.value != null
-              ? makeInputRef.current.value
-              : '',
-          model:
-            modelInputRef.current?.value != null
-              ? modelInputRef.current.value
-              : '',
-          owner:
-            ownerInputRef.current?.value != null
-              ? ownerInputRef.current.value
-              : '',
-          depotId:
-            depotIdInputRef.current?.value != null
-              ? depotIdInputRef.current.value
-              : '',
-          fuelCardId:
-            fuelCardIdInputRef.current?.value === ''
-              ? null
-              : fuelCardIdInputRef.current?.value,
-          tollTagId:
-            tollTagIdInputRef.current?.value === ''
-              ? null
-              : tollTagIdInputRef.current?.value,
+            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
+          registration: registration != null ? registration : '',
+          make: make != null ? make : '',
+          model: model != null ? model : '',
+          owner: owner != null ? owner : '',
+          depotId: depot.value != null ? depot.value : '',
+          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+          tollTagId: tollTag.value === '' ? null : tollTag.value,
         },
       },
     });
@@ -190,16 +197,17 @@ const CreateVehicleModal = ({
                 <ModalFormSelect
                   label="Type"
                   name="type"
-                  required={true}
+                  selected={type}
+                  onChange={setType}
                   options={getVehicleTypeOptions()}
-                  ref={typeInputRef}
                 />
 
                 <ModalFormInput
                   label="Registration"
                   name="registration"
                   type="text"
-                  ref={registrationInputRef}
+                  value={registration}
+                  onChange={changeRegistration}
                   required={true}
                 />
 
@@ -207,7 +215,8 @@ const CreateVehicleModal = ({
                   label="Make"
                   name="make"
                   type="text"
-                  ref={makeInputRef}
+                  value={make}
+                  onChange={changeMake}
                   required={true}
                 />
 
@@ -215,7 +224,8 @@ const CreateVehicleModal = ({
                   label="Model"
                   name="model"
                   type="text"
-                  ref={modelInputRef}
+                  value={model}
+                  onChange={changeModel}
                   required={true}
                 />
 
@@ -223,23 +233,24 @@ const CreateVehicleModal = ({
                   label="Owner"
                   name="owner"
                   type="text"
-                  ref={ownerInputRef}
+                  value={owner}
+                  onChange={changeOwner}
                   required={true}
                 />
 
                 <ModalFormSelect
                   label="Depot"
                   name="depot"
-                  ref={depotIdInputRef}
-                  required={true}
+                  selected={depot}
+                  onChange={setDepot}
                   options={getDepotOptions(data.depots as Depot[])}
                 />
 
                 <ModalFormSelect
                   label="Fuel Card"
                   name="fuelCard"
-                  ref={fuelCardIdInputRef}
-                  required={false}
+                  selected={fuelCard}
+                  onChange={setFuelCard}
                   options={getFuelCardOptions(
                     data.fuelCardsNotAssigned as FuelCard[]
                   )}
@@ -248,8 +259,8 @@ const CreateVehicleModal = ({
                 <ModalFormSelect
                   label="Toll Tag"
                   name="tollTag"
-                  ref={tollTagIdInputRef}
-                  required={false}
+                  selected={tollTag}
+                  onChange={setTollTag}
                   options={getTollTagOptions(
                     data.tollTagsNotAssigned as TollTag[]
                   )}

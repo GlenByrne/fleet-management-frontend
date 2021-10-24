@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { FC, useState } from 'react';
+import { currentTollTagVar } from 'constants/apollo-client';
+import { TollTagUpdateModalItem } from 'constants/types';
 import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
 import TableRow from 'core/Table/TableRow';
@@ -16,7 +16,6 @@ import {
 
 type TollTagListProps = {
   updateTollTagModalHandler: (state: boolean) => void;
-  changeCurrentTollTag: (tollTag: TollTag) => void;
 };
 
 type TollTagTableData = {
@@ -39,7 +38,11 @@ const getTableData = (tollTag: TollTag) => {
   const tableData: TollTagTableData = {
     tagNumber: <TableItem>{tollTag.tagNumber}</TableItem>,
     tagProvider: <TableItem>{tollTag.tagProvider}</TableItem>,
-    depot: <TableItem>{tollTag.depot?.name}</TableItem>,
+    depot: (
+      <TableItem>
+        {tollTag.depot != null ? tollTag.depot.name : 'None'}
+      </TableItem>
+    ),
     vehicle: (
       <TableItem>
         {tollTag.vehicle != null ? tollTag.vehicle.registration : 'None'}
@@ -50,31 +53,7 @@ const getTableData = (tollTag: TollTag) => {
   return tableData;
 };
 
-const TollTagList = ({
-  updateTollTagModalHandler,
-  changeCurrentTollTag,
-}: TollTagListProps) => {
-  // const [deleteTollTag] = useMutation<DeleteTollTag>(DELETE_TOLL_TAG, {
-  //   update: (cache, { data: mutationReturn }) => {
-  //     const currentTollTags = cache.readQuery<GetTollTags>({
-  //       query: GET_TOLL_TAGS,
-  //     });
-
-  //     const newTollTags = currentTollTags?.tollTags.filter(
-  //       (tollTag) => tollTag.id !== mutationReturn?.deleteTollTag.id
-  //     );
-
-  //     cache.writeQuery({
-  //       query: GET_TOLL_TAGS,
-  //       data: { tollTags: newTollTags },
-  //     });
-
-  //     cache.evict({
-  //       id: mutationReturn?.deleteTollTag.id,
-  //     });
-  //   },
-  // });
-
+const TollTagList = ({ updateTollTagModalHandler }: TollTagListProps) => {
   const [deleteTollTag] = useDeleteTollTagMutation({
     update: (cache, { data: mutationReturn }) => {
       const currentTollTags = cache.readQuery<GetTollTagsQuery>({
@@ -108,6 +87,19 @@ const TollTagList = ({
         },
       },
     });
+  };
+
+  const changeCurrentTollTag = (tollTag: TollTag) => {
+    const chosenTollTag: TollTagUpdateModalItem = {
+      id: tollTag.id,
+      tagNumber: tollTag.tagNumber,
+      tagProvider: tollTag.tagProvider,
+      depot: {
+        id: tollTag.depot != null ? tollTag.depot.id : '',
+        name: tollTag.depot != null ? tollTag.depot.name : '',
+      },
+    };
+    currentTollTagVar(chosenTollTag);
   };
 
   const { data, loading, error } = useGetTollTagsQuery();
