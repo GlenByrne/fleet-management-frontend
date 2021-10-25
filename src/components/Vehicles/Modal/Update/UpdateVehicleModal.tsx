@@ -100,7 +100,20 @@ const UpdateVehicleModal = ({
   modalState,
   setModalState,
 }: UpdateVehicleModalProps) => {
+  const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
+
   const currentVehicle = useReactiveVar(currentVehicleVar);
+
+  const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
+  const [depotOptions, setDepotOptions] = useState(
+    getDepotOptions(data?.depots as Depot[])
+  );
+  const [fuelCardOptions, setFuelCardOptions] = useState(
+    getFuelCardOptions(data?.fuelCardsNotAssigned as FuelCard[], currentVehicle)
+  );
+  const [tollTagOptions, setTollTagOptions] = useState(
+    getTollTagOptions(data?.tollTagsNotAssigned as TollTag[], currentVehicle)
+  );
 
   const [type, setType] = useState<Option>({
     value: '',
@@ -124,6 +137,18 @@ const UpdateVehicleModal = ({
   });
 
   useEffect(() => {
+    setTypeOptions(getVehicleTypeOptions());
+    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
+    setFuelCardOptions(
+      getFuelCardOptions(
+        data?.fuelCardsNotAssigned as FuelCard[],
+        currentVehicle
+      )
+    );
+    setTollTagOptions(
+      getTollTagOptions(data?.tollTagsNotAssigned as TollTag[], currentVehicle)
+    );
+
     setType({
       value: currentVehicle.type,
       label: currentVehicle.type,
@@ -152,7 +177,7 @@ const UpdateVehicleModal = ({
           ? currentVehicle.tollTag.tagNumber
           : 'None',
     });
-  }, [currentVehicle]);
+  }, [currentVehicle, data]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
     setRegistration(event.currentTarget.value);
@@ -201,8 +226,6 @@ const UpdateVehicleModal = ({
       },
     });
   };
-
-  const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
 
   if (loading) {
     return <div></div>;
@@ -286,7 +309,7 @@ const UpdateVehicleModal = ({
                     name="type"
                     selected={type}
                     onChange={setType}
-                    options={getVehicleTypeOptions()}
+                    options={typeOptions}
                   />
                 </div>
 
@@ -296,7 +319,7 @@ const UpdateVehicleModal = ({
                     name="depot"
                     selected={depot}
                     onChange={setDepot}
-                    options={getDepotOptions(data.depots as Depot[])}
+                    options={depotOptions}
                   />
                 </div>
 
@@ -306,10 +329,7 @@ const UpdateVehicleModal = ({
                     name="fuelCard"
                     selected={fuelCard}
                     onChange={setFuelCard}
-                    options={getFuelCardOptions(
-                      data.fuelCardsNotAssigned as FuelCard[],
-                      currentVehicle
-                    )}
+                    options={fuelCardOptions}
                   />
                 </div>
 
@@ -319,10 +339,7 @@ const UpdateVehicleModal = ({
                     name="tollTag"
                     selected={tollTag}
                     onChange={setTollTag}
-                    options={getTollTagOptions(
-                      data.tollTagsNotAssigned as TollTag[],
-                      currentVehicle
-                    )}
+                    options={tollTagOptions}
                   />
                 </div>
               </div>
