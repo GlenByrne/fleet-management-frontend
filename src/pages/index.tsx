@@ -2,49 +2,45 @@ import { NextPage } from 'next';
 import { useState } from 'react';
 import VehicleList from '../components/Vehicles/List/VehicleList';
 import Layout from 'core/Layout/Layout';
-import Button from 'core/Table/Button';
 import CreateVehicleModal from 'components/Vehicles/Modal/Create/CreateVehicleModal';
 import UpdateVehicleModal from 'components/Vehicles/Modal/Update/UpdateVehicleModal';
+import DeleteVehicleModal from 'components/Vehicles/Modal/Delete/DeleteVehicleModal';
 
 const Home: NextPage = () => {
-  const [open, setOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-
-  const people = [
-    { id: 1, label: 'Wade Cooper' },
-    { id: 2, label: 'Arlene Mccoy' },
-    { id: 3, label: 'Devon Webb' },
-    { id: 4, label: 'Tom Cook' },
-    { id: 5, label: 'Tanya Fox' },
-    { id: 6, label: 'Hellen Schmidt' },
-    { id: 7, label: 'Caroline Schultz' },
-    { id: 8, label: 'Mason Heaney' },
-    { id: 9, label: 'Claudie Smitham' },
-    { id: 10, label: 'Emil Schaefer' },
-  ];
-
-  const [selected, setSelected] = useState(people[3]);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const addVehicleModalHandler = (state: boolean) => {
-    setOpen(state);
+    setAddModalOpen(state);
   };
 
   const updateVehicleModalHandler = (state: boolean) => {
     setUpdateModalOpen(state);
   };
 
+  const deleteVehicleModalHandler = (state: boolean) => {
+    setDeleteModalOpen(state);
+  };
+
   return (
-    <Layout>
+    <Layout quickAction={addVehicleModalHandler} quickActionLabel="New Vehicle">
       <CreateVehicleModal
-        modalState={open}
+        modalState={addModalOpen}
         setModalState={addVehicleModalHandler}
       />
       <UpdateVehicleModal
         modalState={updateModalOpen}
         setModalState={updateVehicleModalHandler}
       />
-      <Button onClick={() => addVehicleModalHandler(true)}>Add Vehicle</Button>
-      <VehicleList updateVehicleModalHandler={updateVehicleModalHandler} />
+      <DeleteVehicleModal
+        modalState={deleteModalOpen}
+        setModalState={deleteVehicleModalHandler}
+      />
+      <VehicleList
+        updateVehicleModalHandler={updateVehicleModalHandler}
+        deleteVehicleModalHandler={deleteVehicleModalHandler}
+      />
     </Layout>
   );
 };

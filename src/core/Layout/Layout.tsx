@@ -1,13 +1,15 @@
-import { FC, Fragment, ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import Head from 'next/head';
 import Navbar from 'core/Navigation/Navbar/Navbar';
 import ClientOnly from 'core/ClientOnly/ClientOnly';
 
 type LayoutProps = {
   children: ReactNode;
+  quickAction: (state: boolean) => void;
+  quickActionLabel: string;
 };
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, quickAction, quickActionLabel }: LayoutProps) => {
   return (
     <Fragment>
       <Head>
@@ -17,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
       </Head>
 
       <nav>
-        <Navbar />
+        <Navbar quickAction={quickAction} quickActionLabel={quickActionLabel} />
       </nav>
 
       <main>

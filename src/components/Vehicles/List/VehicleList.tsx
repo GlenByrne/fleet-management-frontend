@@ -1,22 +1,13 @@
 import TableItem from 'core/Table/TableItem';
 import Table from 'core/Table/Table';
 import TableRow from 'core/Table/TableRow';
-import {
-  GetFuelCardsDocument,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  GetTollTagsDocument,
-  GetVehiclesDocument,
-  GetVehiclesQuery,
-  useDeleteVehicleMutation,
-  useGetVehiclesQuery,
-  Vehicle,
-} from 'generated/graphql';
+import { useGetVehiclesQuery, Vehicle } from 'generated/graphql';
 import { VehicleUpdateModalItem } from 'constants/types';
 import { currentVehicleVar } from 'constants/apollo-client';
 
 type VehicleListProps = {
   updateVehicleModalHandler: (state: boolean) => void;
+  deleteVehicleModalHandler: (state: boolean) => void;
 };
 
 type VehicleTableData = {
@@ -81,46 +72,10 @@ const getTableData = (vehicle: Vehicle) => {
   return tableData;
 };
 
-const VehicleList = ({ updateVehicleModalHandler }: VehicleListProps) => {
-  const [deleteVehicle] = useDeleteVehicleMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
-        query: GetVehiclesDocument,
-      });
-
-      const newVehicles = currentVehicles?.vehicles?.filter((vehicle) =>
-        vehicle != null
-          ? vehicle.id !== mutationReturn?.deleteVehicle.id
-          : currentVehicles.vehicles
-      );
-
-      cache.writeQuery({
-        query: GetVehiclesDocument,
-        data: { vehicles: newVehicles },
-      });
-
-      cache.evict({
-        id: mutationReturn?.deleteVehicle.id,
-      });
-    },
-    refetchQueries: [
-      { query: GetTollTagsDocument },
-      { query: GetFuelCardsDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
-    ],
-  });
-
-  const deleteVehicleHandler = (id: string) => {
-    deleteVehicle({
-      variables: {
-        deleteVehicleData: {
-          id: id,
-        },
-      },
-    });
-  };
-
+const VehicleList = ({
+  updateVehicleModalHandler,
+  deleteVehicleModalHandler,
+}: VehicleListProps) => {
   const changeCurrentVehicle = (vehicle: Vehicle) => {
     const chosenVehicle: VehicleUpdateModalItem = {
       id: vehicle.id,
@@ -171,8 +126,8 @@ const VehicleList = ({ updateVehicleModalHandler }: VehicleListProps) => {
           <TableRow
             item={vehicle}
             tableData={getTableData(vehicle)}
-            setModalState={updateVehicleModalHandler}
-            deleteItemHandler={deleteVehicleHandler}
+            setUpdateModalState={updateVehicleModalHandler}
+            setDeleteModalState={deleteVehicleModalHandler}
             changeCurrentItem={changeCurrentVehicle}
           />
         );

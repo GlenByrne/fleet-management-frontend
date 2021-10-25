@@ -1,17 +1,16 @@
 import { Menu, Transition } from '@headlessui/react';
-import { FC, Fragment } from 'react';
+import { NavbarOption } from 'constants/types';
+import { Fragment } from 'react';
 
-const menuOptions = [
-  { name: 'Your Profile' },
-  { name: 'Settings' },
-  { name: 'Sign Out' },
-];
+type ProfileDropdownProps = {
+  userNavigation: NavbarOption[];
+};
 
 const classNames = (...classes: any) => {
   return classes.filter(Boolean).join(' ');
 };
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ({ userNavigation }: ProfileDropdownProps) => {
   return (
     <Menu as="div" className="ml-3 relative">
       <div>
@@ -26,7 +25,7 @@ const ProfileDropdown = () => {
       </div>
       <Transition
         as={Fragment}
-        enter="transition ease-out duration-100"
+        enter="transition ease-out duration-200"
         enterFrom="transform opacity-0 scale-95"
         enterTo="transform opacity-100 scale-100"
         leave="transition ease-in duration-75"
@@ -34,7 +33,7 @@ const ProfileDropdown = () => {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-          {menuOptions.map((item, index) => {
+          {userNavigation.map((item, index) => {
             return (
               <Menu.Item key={index}>
                 {({ active }) => (

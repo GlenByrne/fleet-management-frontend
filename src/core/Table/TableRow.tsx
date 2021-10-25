@@ -1,20 +1,21 @@
 import { Fragment } from 'react';
 import Button from './Button';
 import { IdObj } from '../../constants/types';
+import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
 
 type TableRowProps<T, K> = {
   item: T;
   tableData: K;
-  setModalState: (state: boolean) => void;
-  deleteItemHandler: (id: string) => void;
+  setUpdateModalState: (state: boolean) => void;
+  setDeleteModalState: (state: boolean) => void;
   changeCurrentItem: (item: T) => void;
 };
 
 const TableRow = <T extends IdObj, K extends object>({
   item,
   tableData,
-  setModalState,
-  deleteItemHandler,
+  setUpdateModalState,
+  setDeleteModalState,
   changeCurrentItem,
 }: TableRowProps<T, K>) => {
   // const router = useRouter();
@@ -32,14 +33,21 @@ const TableRow = <T extends IdObj, K extends object>({
         <Button
           onClick={() => {
             changeCurrentItem(item);
-            setModalState(true);
+            setUpdateModalState(true);
           }}
         >
-          Edit
+          <PencilIcon className="h-6 w-6" aria-hidden="true" />
         </Button>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        <Button onClick={() => deleteItemHandler(item.id)}>Delete</Button>
+        <Button
+          onClick={() => {
+            changeCurrentItem(item);
+            setDeleteModalState(true);
+          }}
+        >
+          <TrashIcon className="h-6 w-6" aria-hidden="true" />
+        </Button>
       </td>
     </tr>
   );

@@ -7,9 +7,10 @@ import Layout from 'core/Layout/Layout';
 
 const Defects: NextPage = () => {
   return (
-    <Layout>
-      <DefectList />
-    </Layout>
+    <div></div>
+    // <Layout>
+    //   <DefectList />
+    // </Layout>
   );
 };
 

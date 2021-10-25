@@ -1,21 +1,13 @@
 import TableRow from 'core/Table/TableRow';
 import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
-import {
-  FuelCard,
-  GetFuelCardsDocument,
-  GetFuelCardsQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  GetVehiclesDocument,
-  useDeleteFuelCardMutation,
-  useGetFuelCardsQuery,
-} from 'generated/graphql';
+import { FuelCard, useGetFuelCardsQuery } from 'generated/graphql';
 import { FuelCardUpdateModalItem } from 'constants/types';
 import { currentFuelCardVar } from 'constants/apollo-client';
 
 type FuelCardListProps = {
   updateFuelCardModalHandler: (state: boolean) => void;
+  deleteFuelCardModalHandler: (state: boolean) => void;
 };
 
 type FuelCardTableData = {
@@ -53,42 +45,10 @@ const getTableData = (fuelCard: FuelCard) => {
   return tableData;
 };
 
-const FuelCardList = ({ updateFuelCardModalHandler }: FuelCardListProps) => {
-  const [deleteFuelCard] = useDeleteFuelCardMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
-        query: GetFuelCardsDocument,
-      });
-      const newFuelCards = currentFuelCards?.fuelCards?.filter((fuelCard) =>
-        fuelCard != null
-          ? fuelCard.id !== mutationReturn?.deleteFuelCard.id
-          : currentFuelCards.fuelCards
-      );
-      cache.writeQuery({
-        query: GetFuelCardsDocument,
-        data: { fuelCards: newFuelCards },
-      });
-      cache.evict({
-        id: mutationReturn?.deleteFuelCard.id,
-      });
-    },
-    refetchQueries: [
-      { query: GetVehiclesDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
-    ],
-  });
-
-  const deleteCardHandler = (id: string) => {
-    deleteFuelCard({
-      variables: {
-        deleteFuelCardData: {
-          id: id,
-        },
-      },
-    });
-  };
-
+const FuelCardList = ({
+  updateFuelCardModalHandler,
+  deleteFuelCardModalHandler,
+}: FuelCardListProps) => {
   const changeCurrentFuelCard = (fuelCard: FuelCard) => {
     const chosenFuelCard: FuelCardUpdateModalItem = {
       id: fuelCard.id,
@@ -125,8 +85,8 @@ const FuelCardList = ({ updateFuelCardModalHandler }: FuelCardListProps) => {
           <TableRow
             item={item}
             tableData={getTableData(item)}
-            setModalState={updateFuelCardModalHandler}
-            deleteItemHandler={deleteCardHandler}
+            setUpdateModalState={updateFuelCardModalHandler}
+            setDeleteModalState={deleteFuelCardModalHandler}
             changeCurrentItem={changeCurrentFuelCard}
           />
         );

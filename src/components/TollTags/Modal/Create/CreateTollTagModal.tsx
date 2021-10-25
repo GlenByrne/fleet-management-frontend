@@ -1,5 +1,10 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { FormEvent, FormEventHandler, useRef, useState } from 'react';
+import {
+  FormEvent,
+  FormEventHandler,
+  useRef,
+  useState,
+  useEffect,
+} from 'react';
 import { Option } from 'constants/types';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
@@ -35,12 +40,22 @@ const CreateTollTagModal = ({
   modalState,
   setModalState,
 }: CreateTollTagModalProps) => {
+  const { data, loading, error } = useGetSelectableItemsForAddTollTagQuery();
+
+  const [depotOptions, setDepotOptions] = useState(
+    getDepotOptions(data?.depots as Depot[])
+  );
+
   const [tagNumber, setTagNumber] = useState('');
   const [tagProvider, setTagProvider] = useState('');
   const [depot, setDepot] = useState<Option>({
     value: '',
     label: 'None',
   });
+
+  useEffect(() => {
+    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
+  }, [data]);
 
   const changeTagNumber = (event: FormEvent<HTMLInputElement>) => {
     setTagNumber(event.currentTarget.value);
@@ -85,8 +100,6 @@ const CreateTollTagModal = ({
     });
   };
 
-  const { data, loading, error } = useGetSelectableItemsForAddTollTagQuery();
-
   if (loading) {
     return <div></div>;
   }
@@ -118,32 +131,38 @@ const CreateTollTagModal = ({
               >
                 Add Toll Tag
               </Dialog.Title>
-              <div className="mt-2">
-                <ModalFormInput
-                  label="Tag Number"
-                  name="tagNumber"
-                  type="text"
-                  value={tagNumber}
-                  onChange={changeTagNumber}
-                  required={true}
-                />
+              <div className="grid grid-cols-6 gap-6 mt-2">
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Tag Number"
+                    name="tagNumber"
+                    type="text"
+                    value={tagNumber}
+                    onChange={changeTagNumber}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormInput
-                  label="Tag Provider"
-                  name="tagProvider"
-                  type="text"
-                  value={tagProvider}
-                  onChange={changeTagProvider}
-                  required={true}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Tag Provider"
+                    name="tagProvider"
+                    type="text"
+                    value={tagProvider}
+                    onChange={changeTagProvider}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormSelect
-                  label="Depot"
-                  name="depot"
-                  selected={depot}
-                  onChange={setDepot}
-                  options={getDepotOptions(data.depots as Depot[])}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormSelect
+                    label="Depot"
+                    name="depot"
+                    selected={depot}
+                    onChange={setDepot}
+                    options={depotOptions}
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -3,19 +3,11 @@ import { TollTagUpdateModalItem } from 'constants/types';
 import Table from 'core/Table/Table';
 import TableItem from 'core/Table/TableItem';
 import TableRow from 'core/Table/TableRow';
-import {
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  GetTollTagsDocument,
-  GetTollTagsQuery,
-  GetVehiclesDocument,
-  TollTag,
-  useDeleteTollTagMutation,
-  useGetTollTagsQuery,
-} from 'generated/graphql';
+import { TollTag, useGetTollTagsQuery } from 'generated/graphql';
 
 type TollTagListProps = {
   updateTollTagModalHandler: (state: boolean) => void;
+  deleteTollTagModalHandler: (state: boolean) => void;
 };
 
 type TollTagTableData = {
@@ -53,42 +45,10 @@ const getTableData = (tollTag: TollTag) => {
   return tableData;
 };
 
-const TollTagList = ({ updateTollTagModalHandler }: TollTagListProps) => {
-  const [deleteTollTag] = useDeleteTollTagMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentTollTags = cache.readQuery<GetTollTagsQuery>({
-        query: GetTollTagsDocument,
-      });
-      const newTollTags = currentTollTags?.tollTags?.filter((tollTag) =>
-        tollTag != null
-          ? tollTag.id !== mutationReturn?.deleteTollTag.id
-          : currentTollTags.tollTags
-      );
-      cache.writeQuery({
-        query: GetTollTagsDocument,
-        data: { tollTags: newTollTags },
-      });
-      cache.evict({
-        id: mutationReturn?.deleteTollTag.id,
-      });
-    },
-    refetchQueries: [
-      { query: GetVehiclesDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
-    ],
-  });
-
-  const deleteTagHandler = (id: string) => {
-    deleteTollTag({
-      variables: {
-        deleteTollTagData: {
-          id: id,
-        },
-      },
-    });
-  };
-
+const TollTagList = ({
+  updateTollTagModalHandler,
+  deleteTollTagModalHandler,
+}: TollTagListProps) => {
   const changeCurrentTollTag = (tollTag: TollTag) => {
     const chosenTollTag: TollTagUpdateModalItem = {
       id: tollTag.id,
@@ -125,8 +85,8 @@ const TollTagList = ({ updateTollTagModalHandler }: TollTagListProps) => {
           <TableRow
             item={item}
             tableData={getTableData(item)}
-            setModalState={updateTollTagModalHandler}
-            deleteItemHandler={deleteTagHandler}
+            setUpdateModalState={updateTollTagModalHandler}
+            setDeleteModalState={deleteTollTagModalHandler}
             changeCurrentItem={changeCurrentTollTag}
           />
         );

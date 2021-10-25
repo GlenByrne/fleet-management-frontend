@@ -42,7 +42,13 @@ const UpdateTollTagModal = ({
   modalState,
   setModalState,
 }: UpdateTollTagModalProps) => {
+  const { data, loading, error } = useGetSelectableItemsForUpdateTollTagQuery();
+
   const currentTag = useReactiveVar(currentTollTagVar);
+
+  const [depotOptions, setDepotOptions] = useState(
+    getDepotOptions(data?.depots as Depot[])
+  );
 
   const [tagNumber, setTagNumber] = useState('');
   const [tagProvider, setTagProvider] = useState('');
@@ -52,13 +58,15 @@ const UpdateTollTagModal = ({
   });
 
   useEffect(() => {
+    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
+
     setTagNumber(currentTag.tagNumber);
     setTagProvider(currentTag.tagProvider);
     setDepot({
       value: currentTag.depot.id,
       label: currentTag.depot.name,
     });
-  }, [currentTag]);
+  }, [currentTag, data]);
 
   const changeTagNumber = (event: FormEvent<HTMLInputElement>) => {
     setTagNumber(event.currentTarget.value);
@@ -93,8 +101,6 @@ const UpdateTollTagModal = ({
     });
   };
 
-  const { data, loading, error } = useGetSelectableItemsForUpdateTollTagQuery();
-
   if (loading) {
     return <div></div>;
   }
@@ -126,32 +132,38 @@ const UpdateTollTagModal = ({
               >
                 Update Toll Tag
               </Dialog.Title>
-              <div className="mt-2">
-                <ModalFormInput
-                  label="Tag Number"
-                  name="tagNumber"
-                  type="text"
-                  value={tagNumber}
-                  onChange={changeTagNumber}
-                  required={true}
-                />
+              <div className="grid grid-cols-6 gap-6 mt-2">
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Tag Number"
+                    name="tagNumber"
+                    type="text"
+                    value={tagNumber}
+                    onChange={changeTagNumber}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormInput
-                  label="Tag Provider"
-                  name="tagProvider"
-                  type="text"
-                  value={tagProvider}
-                  onChange={changeTagProvider}
-                  required={true}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Tag Provider"
+                    name="tagProvider"
+                    type="text"
+                    value={tagProvider}
+                    onChange={changeTagProvider}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormSelect
-                  label="Depot"
-                  name="depot"
-                  selected={depot}
-                  onChange={setDepot}
-                  options={getDepotOptions(data.depots as Depot[])}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormSelect
+                    label="Depot"
+                    name="depot"
+                    selected={depot}
+                    onChange={setDepot}
+                    options={depotOptions}
+                  />
+                </div>
               </div>
             </div>
           </div>

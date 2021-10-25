@@ -1,4 +1,10 @@
-import { FormEvent, FormEventHandler, useRef, useState } from 'react';
+import {
+  FormEvent,
+  FormEventHandler,
+  useRef,
+  useState,
+  useEffect,
+} from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
@@ -34,12 +40,22 @@ const CreateFuelCardModal = ({
   modalState,
   setModalState,
 }: CreateFuelCardModalProps) => {
+  const { data, loading, error } = useGetSelectableItemsForAddFuelCardQuery();
+
+  const [depotOptions, setDepotOptions] = useState(
+    getDepotOptions(data?.depots as Depot[])
+  );
+
   const [cardNumber, setCardNumber] = useState('');
   const [cardProvider, setCardProvider] = useState('');
   const [depot, setDepot] = useState<Option>({
     value: '',
     label: 'None',
   });
+
+  useEffect(() => {
+    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
+  }, [data]);
 
   const changeCardNumber = (event: FormEvent<HTMLInputElement>) => {
     setCardNumber(event.currentTarget.value);
@@ -85,8 +101,6 @@ const CreateFuelCardModal = ({
     });
   };
 
-  const { data, loading, error } = useGetSelectableItemsForAddFuelCardQuery();
-
   if (loading) {
     return <div></div>;
   }
@@ -118,32 +132,38 @@ const CreateFuelCardModal = ({
               >
                 Add Fuel Card
               </Dialog.Title>
-              <div className="mt-2">
-                <ModalFormInput
-                  label="Card Number"
-                  name="cardNumber"
-                  type="text"
-                  value={cardNumber}
-                  onChange={changeCardNumber}
-                  required={true}
-                />
+              <div className="grid grid-cols-6 gap-6 mt-2">
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Card Number"
+                    name="cardNumber"
+                    type="text"
+                    value={cardNumber}
+                    onChange={changeCardNumber}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormInput
-                  label="Card Provider"
-                  name="cardProvider"
-                  type="text"
-                  value={cardProvider}
-                  onChange={changeCardProvider}
-                  required={true}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Card Provider"
+                    name="cardProvider"
+                    type="text"
+                    value={cardProvider}
+                    onChange={changeCardProvider}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormSelect
-                  label="Depot"
-                  name="depot"
-                  selected={depot}
-                  onChange={setDepot}
-                  options={getDepotOptions(data.depots as Depot[])}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormSelect
+                    label="Depot"
+                    name="depot"
+                    selected={depot}
+                    onChange={setDepot}
+                    options={depotOptions}
+                  />
+                </div>
               </div>
             </div>
           </div>
