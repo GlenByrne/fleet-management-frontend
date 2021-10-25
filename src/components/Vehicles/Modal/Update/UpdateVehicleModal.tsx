@@ -142,7 +142,7 @@ const UpdateVehicleModal = ({
         currentVehicle.fuelCard.id != null ? currentVehicle.fuelCard.id : '',
       label:
         currentVehicle.fuelCard.cardNumber != null
-          ? currentVehicle.fuelCard.id
+          ? currentVehicle.fuelCard.cardNumber
           : 'None',
     });
     setTollTag({
@@ -235,80 +235,96 @@ const UpdateVehicleModal = ({
               >
                 Update Vehicle
               </Dialog.Title>
-              <div className="mt-2">
-                <ModalFormSelect
-                  label="Type"
-                  name="type"
-                  selected={type}
-                  onChange={setType}
-                  options={getVehicleTypeOptions()}
-                />
+              <div className="grid grid-cols-6 gap-6 mt-2">
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Registration"
+                    name="registration"
+                    type="text"
+                    value={registration}
+                    onChange={changeRegistration}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormInput
-                  label="Registration"
-                  name="registration"
-                  type="text"
-                  value={registration}
-                  onChange={changeRegistration}
-                  required={true}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Make"
+                    name="make"
+                    type="text"
+                    value={make}
+                    onChange={changeMake}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormInput
-                  label="Make"
-                  name="make"
-                  type="text"
-                  value={make}
-                  onChange={changeMake}
-                  required={true}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Model"
+                    name="model"
+                    type="text"
+                    value={model}
+                    onChange={changeModel}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormInput
-                  label="Model"
-                  name="model"
-                  type="text"
-                  value={model}
-                  onChange={changeModel}
-                  required={true}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormInput
+                    label="Owner"
+                    name="owner"
+                    type="text"
+                    value={owner}
+                    onChange={changeOwner}
+                    required={true}
+                  />
+                </div>
 
-                <ModalFormInput
-                  label="Owner"
-                  name="owner"
-                  type="text"
-                  value={owner}
-                  onChange={changeOwner}
-                  required={true}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormSelect
+                    label="Type"
+                    name="type"
+                    selected={type}
+                    onChange={setType}
+                    options={getVehicleTypeOptions()}
+                  />
+                </div>
 
-                <ModalFormSelect
-                  label="Depot"
-                  name="depot"
-                  selected={depot}
-                  onChange={setDepot}
-                  options={getDepotOptions(data.depots as Depot[])}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormSelect
+                    label="Depot"
+                    name="depot"
+                    selected={depot}
+                    onChange={setDepot}
+                    options={getDepotOptions(data.depots as Depot[])}
+                  />
+                </div>
 
-                <ModalFormSelect
-                  label="Fuel Card"
-                  name="fuelCard"
-                  selected={fuelCard}
-                  onChange={setFuelCard}
-                  options={getFuelCardOptions(
-                    data.fuelCardsNotAssigned as FuelCard[],
-                    currentVehicle
-                  )}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormSelect
+                    label="Fuel Card"
+                    name="fuelCard"
+                    selected={fuelCard}
+                    onChange={setFuelCard}
+                    options={getFuelCardOptions(
+                      data.fuelCardsNotAssigned as FuelCard[],
+                      currentVehicle
+                    )}
+                  />
+                </div>
 
-                <ModalFormSelect
-                  label="Toll Tag"
-                  name="tollTag"
-                  selected={tollTag}
-                  onChange={setTollTag}
-                  options={getTollTagOptions(
-                    data.tollTagsNotAssigned as TollTag[],
-                    currentVehicle
-                  )}
-                />
+                <div className="col-span-6 sm:col-span-3">
+                  <ModalFormSelect
+                    label="Toll Tag"
+                    name="tollTag"
+                    selected={tollTag}
+                    onChange={setTollTag}
+                    options={getTollTagOptions(
+                      data.tollTagsNotAssigned as TollTag[],
+                      currentVehicle
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
