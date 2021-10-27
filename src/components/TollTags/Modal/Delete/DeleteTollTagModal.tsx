@@ -11,18 +11,15 @@ import {
   useDeleteTollTagMutation,
 } from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
-import { currentTollTagVar } from 'constants/apollo-client';
+import {
+  currentTollTagVar,
+  deleteTollTagModalStateVar,
+} from 'constants/apollo-client';
 
-type DeleteTollTagModalProps = {
-  modalState: boolean;
-  setModalState: (state: boolean) => void;
-};
-
-const DeleteTollTagModal = ({
-  modalState,
-  setModalState,
-}: DeleteTollTagModalProps) => {
+const DeleteTollTagModal = () => {
   const currentTag = useReactiveVar(currentTollTagVar);
+
+  const currentModalStateVar = useReactiveVar(deleteTollTagModalStateVar);
 
   const [deleteTollTag] = useDeleteTollTagMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -50,6 +47,7 @@ const DeleteTollTagModal = ({
   });
 
   const deleteTagHandler = (id: string) => {
+    deleteTollTagModalStateVar(false);
     deleteTollTag({
       variables: {
         deleteTollTagData: {
@@ -60,10 +58,11 @@ const DeleteTollTagModal = ({
   };
 
   const cancelButtonRef = useRef(null);
+
   return (
     <Modal
-      modalState={modalState}
-      setModalState={setModalState}
+      modalState={currentModalStateVar}
+      setModalState={deleteTollTagModalStateVar}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -94,17 +93,14 @@ const DeleteTollTagModal = ({
           <button
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-            onClick={() => {
-              deleteTagHandler(currentTag.id);
-              setModalState(false);
-            }}
+            onClick={() => deleteTagHandler(currentTag.id)}
           >
             Delete
           </button>
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => setModalState(false)}
+            onClick={() => deleteTollTagModalStateVar(false)}
             ref={cancelButtonRef}
           >
             Cancel

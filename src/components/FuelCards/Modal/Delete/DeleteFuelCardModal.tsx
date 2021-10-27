@@ -11,18 +11,15 @@ import {
   useDeleteFuelCardMutation,
 } from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
-import { currentFuelCardVar } from 'constants/apollo-client';
+import {
+  currentFuelCardVar,
+  deleteFuelCardModalStateVar,
+} from 'constants/apollo-client';
 
-type DeleteFuelCardModalProps = {
-  modalState: boolean;
-  setModalState: (state: boolean) => void;
-};
-
-const DeleteFuelCardModal = ({
-  modalState,
-  setModalState,
-}: DeleteFuelCardModalProps) => {
+const DeleteFuelCardModal = () => {
   const currentCard = useReactiveVar(currentFuelCardVar);
+
+  const currentModalStateVar = useReactiveVar(deleteFuelCardModalStateVar);
 
   const [deleteFuelCard] = useDeleteFuelCardMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -50,6 +47,7 @@ const DeleteFuelCardModal = ({
   });
 
   const deleteCardHandler = (id: string) => {
+    deleteFuelCardModalStateVar(false);
     deleteFuelCard({
       variables: {
         deleteFuelCardData: {
@@ -58,11 +56,13 @@ const DeleteFuelCardModal = ({
       },
     });
   };
+
   const cancelButtonRef = useRef(null);
+
   return (
     <Modal
-      modalState={modalState}
-      setModalState={setModalState}
+      modalState={currentModalStateVar}
+      setModalState={deleteFuelCardModalStateVar}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -93,17 +93,14 @@ const DeleteFuelCardModal = ({
           <button
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-            onClick={() => {
-              deleteCardHandler(currentCard.id);
-              setModalState(false);
-            }}
+            onClick={() => deleteCardHandler(currentCard.id)}
           >
             Delete
           </button>
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => setModalState(false)}
+            onClick={() => deleteFuelCardModalStateVar(false)}
             ref={cancelButtonRef}
           >
             Cancel

@@ -1,73 +1,12 @@
-import TableItem from 'core/Table/TableItem';
-import Table from 'core/Table/Table';
-import TableRow from 'core/Table/TableRow';
 import { useGetVehiclesQuery, Vehicle } from 'generated/graphql';
 import { VehicleUpdateModalItem } from 'constants/types';
-import { currentVehicleVar } from 'constants/apollo-client';
-import StackedList from './StackedList';
+import {
+  addVehicleModalStateVar,
+  currentVehicleVar,
+} from 'constants/apollo-client';
 import Loading from 'core/Loading';
-
-type VehicleTableData = {
-  registration: JSX.Element;
-  type: JSX.Element;
-  make: JSX.Element;
-  model: JSX.Element;
-  depot: JSX.Element;
-  owner: JSX.Element;
-  fuelCard?: JSX.Element;
-  tollTag?: JSX.Element;
-  cvrt: JSX.Element;
-  thirteenWeek: JSX.Element;
-  tachoCalibration: JSX.Element;
-};
-
-const headers: string[] = [
-  'Registration',
-  'Type',
-  'Make',
-  'Model',
-  'Depot',
-  'Owner',
-  'Fuel Card',
-  'Toll Tag',
-  'CVRT',
-  '13 Week',
-  'Tacho Calibration',
-  '',
-  '',
-];
-
-const getTableData = (vehicle: Vehicle) => {
-  const tableData: VehicleTableData = {
-    registration: <TableItem>{vehicle.registration}</TableItem>,
-    type: <TableItem>{vehicle.type}</TableItem>,
-    make: <TableItem>{vehicle.make}</TableItem>,
-    model: <TableItem>{vehicle.model}</TableItem>,
-    depot: (
-      <TableItem>
-        {vehicle.depot?.name != null ? vehicle.depot?.name : 'None'}
-      </TableItem>
-    ),
-    owner: <TableItem>{vehicle.owner}</TableItem>,
-    fuelCard: (
-      <TableItem>
-        {vehicle.fuelCard != null ? vehicle.fuelCard.cardNumber : 'None'}
-      </TableItem>
-    ),
-    tollTag: (
-      <TableItem>
-        {vehicle.tollTag != null ? vehicle.tollTag.tagNumber : 'None'}
-      </TableItem>
-    ),
-    cvrt: <TableItem>{vehicle.cvrtDueDate}</TableItem>,
-    thirteenWeek: (
-      <TableItem>{vehicle.thirteenWeekInspectionDueDate}</TableItem>
-    ),
-    tachoCalibration: <TableItem>{vehicle.tachoCalibrationDueDate}</TableItem>,
-  };
-
-  return tableData;
-};
+import NoVehiclesAddButton from './NoVehiclesAddButton';
+import VehicleListItem from './VehicleListItem';
 
 const VehicleList = () => {
   const changeCurrentVehicle = (vehicle: Vehicle) => {
@@ -111,26 +50,22 @@ const VehicleList = () => {
     return <div></div>;
   }
 
-  return (
-    // <Table
-    //   columnHeaders={headers}
-    //   data={data.vehicles as Vehicle[]}
-    //   renderItem={(vehicle) => {
-    //     return (
-    //       <TableRow
-    //         item={vehicle}
-    //         tableData={getTableData(vehicle)}
-    //         setUpdateModalState={updateVehicleModalHandler}
-    //         setDeleteModalState={deleteVehicleModalHandler}
-    //         changeCurrentItem={changeCurrentVehicle}
-    //       />
-    //     );
-    //   }}
-    // />
-    <StackedList
-      vehicles={data.vehicles as Vehicle[]}
-      changeCurrentVehicle={changeCurrentVehicle}
-    />
+  const vehicles = data.vehicles as Vehicle[];
+
+  return vehicles.length > 0 ? (
+    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul role="list" className="divide-y divide-gray-200">
+        {vehicles.map((vehicle) => (
+          <VehicleListItem
+            key={vehicle.id}
+            vehicle={vehicle}
+            changeCurrentVehicle={changeCurrentVehicle}
+          />
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <NoVehiclesAddButton onClick={addVehicleModalStateVar} />
   );
 };
 

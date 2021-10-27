@@ -20,11 +20,8 @@ import {
 import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
-
-type CreateFuelCardModalProps = {
-  modalState: boolean;
-  setModalState: (state: boolean) => void;
-};
+import { useReactiveVar } from '@apollo/client';
+import { addFuelCardModalStateVar } from 'constants/apollo-client';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -36,11 +33,10 @@ const getDepotOptions = (depots: Depot[]) => {
   return options;
 };
 
-const CreateFuelCardModal = ({
-  modalState,
-  setModalState,
-}: CreateFuelCardModalProps) => {
+const CreateFuelCardModal = () => {
   const { data, loading, error } = useGetSelectableItemsForAddFuelCardQuery();
+
+  const currentModalStateVar = useReactiveVar(addFuelCardModalStateVar);
 
   const [depotOptions, setDepotOptions] = useState(
     getDepotOptions(data?.depots as Depot[])
@@ -89,13 +85,9 @@ const CreateFuelCardModal = ({
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    setModalState(false);
-    setCardNumber('');
-    setCardProvider('');
-    setDepot({
-      value: '',
-      label: 'None',
-    });
+
+    addFuelCardModalStateVar(false);
+
     addFuelCard({
       variables: {
         addFuelCardData: {
@@ -104,6 +96,13 @@ const CreateFuelCardModal = ({
           depotId: depot.value != null ? depot.value : '',
         },
       },
+    });
+
+    setCardNumber('');
+    setCardProvider('');
+    setDepot({
+      value: '',
+      label: 'None',
     });
   };
 
@@ -121,9 +120,9 @@ const CreateFuelCardModal = ({
 
   return (
     <Modal
-      modalState={modalState}
+      modalState={currentModalStateVar}
+      setModalState={addFuelCardModalStateVar}
       cancelButtonRef={cancelButtonRef}
-      setModalState={setModalState}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
         <form onSubmit={submitHandler}>
@@ -183,7 +182,7 @@ const CreateFuelCardModal = ({
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => setModalState(false)}
+              onClick={() => addFuelCardModalStateVar(false)}
               ref={cancelButtonRef}
             >
               Cancel

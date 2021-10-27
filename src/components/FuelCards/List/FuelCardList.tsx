@@ -1,54 +1,13 @@
-import TableRow from 'core/Table/TableRow';
-import Table from 'core/Table/Table';
-import TableItem from 'core/Table/TableItem';
 import { FuelCard, useGetFuelCardsQuery } from 'generated/graphql';
 import { FuelCardUpdateModalItem } from 'constants/types';
-import { currentFuelCardVar } from 'constants/apollo-client';
+import {
+  addFuelCardModalStateVar,
+  currentFuelCardVar,
+} from 'constants/apollo-client';
+import FuelCardListItem from './FuelCardListItem';
+import NoFuelCardAddButton from './NoFuelCardAddButton';
 
-type FuelCardListProps = {
-  updateFuelCardModalHandler: (state: boolean) => void;
-  deleteFuelCardModalHandler: (state: boolean) => void;
-};
-
-type FuelCardTableData = {
-  cardNumber: JSX.Element;
-  cardProvider: JSX.Element;
-  depot: JSX.Element;
-  vehicle?: JSX.Element;
-};
-
-const headers: string[] = [
-  'Card Number',
-  'Provider',
-  'Depot',
-  'Vehicle',
-  '',
-  '',
-];
-
-const getTableData = (fuelCard: FuelCard) => {
-  const tableData: FuelCardTableData = {
-    cardNumber: <TableItem>{fuelCard.cardNumber}</TableItem>,
-    cardProvider: <TableItem>{fuelCard.cardProvider}</TableItem>,
-    depot: (
-      <TableItem>
-        {fuelCard.depot != null ? fuelCard.depot.name : 'None'}
-      </TableItem>
-    ),
-    vehicle: (
-      <TableItem>
-        {fuelCard.vehicle != null ? fuelCard.vehicle.registration : 'None'}
-      </TableItem>
-    ),
-  };
-
-  return tableData;
-};
-
-const FuelCardList = ({
-  updateFuelCardModalHandler,
-  deleteFuelCardModalHandler,
-}: FuelCardListProps) => {
+const FuelCardList = () => {
   const changeCurrentFuelCard = (fuelCard: FuelCard) => {
     const chosenFuelCard: FuelCardUpdateModalItem = {
       id: fuelCard.id,
@@ -76,22 +35,22 @@ const FuelCardList = ({
     return <div></div>;
   }
 
-  return (
-    <Table
-      columnHeaders={headers}
-      data={data.fuelCards as FuelCard[]}
-      renderItem={(item: FuelCard) => {
-        return (
-          <TableRow
-            item={item}
-            tableData={getTableData(item)}
-            setUpdateModalState={updateFuelCardModalHandler}
-            setDeleteModalState={deleteFuelCardModalHandler}
-            changeCurrentItem={changeCurrentFuelCard}
+  const fuelCards = data.fuelCards as FuelCard[];
+
+  return fuelCards.length > 0 ? (
+    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul role="list" className="divide-y divide-gray-200">
+        {fuelCards.map((fuelCard) => (
+          <FuelCardListItem
+            key={fuelCard.id}
+            fuelCard={fuelCard}
+            changeCurrentFuelCard={changeCurrentFuelCard}
           />
-        );
-      }}
-    />
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <NoFuelCardAddButton onClick={addFuelCardModalStateVar} />
   );
 };
 

@@ -169,6 +169,23 @@ const CreateVehicleModal = () => {
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     addVehicleModalStateVar(false);
+
+    addVehicle({
+      variables: {
+        addVehicleData: {
+          type:
+            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
+          registration: registration != null ? registration : '',
+          make: make != null ? make : '',
+          model: model != null ? model : '',
+          owner: owner != null ? owner : '',
+          depotId: depot.value != null ? depot.value : '',
+          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+          tollTagId: tollTag.value === '' ? null : tollTag.value,
+        },
+      },
+    });
+
     setType({
       value: VehicleType.Van,
       label: VehicleType.Van,
@@ -188,22 +205,6 @@ const CreateVehicleModal = () => {
     setTollTag({
       value: '',
       label: 'None',
-    });
-
-    addVehicle({
-      variables: {
-        addVehicleData: {
-          type:
-            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
-          registration: registration != null ? registration : '',
-          make: make != null ? make : '',
-          model: model != null ? model : '',
-          owner: owner != null ? owner : '',
-          depotId: depot.value != null ? depot.value : '',
-          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
-          tollTagId: tollTag.value === '' ? null : tollTag.value,
-        },
-      },
     });
   };
 

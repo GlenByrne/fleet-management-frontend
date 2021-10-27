@@ -59,9 +59,20 @@ export const currentTollTagVar =
 export const currentVehicleVar =
   makeVar<VehicleUpdateModalItem>(initialVehicle);
 
+// Vehicle Modals states
 export const addVehicleModalStateVar = makeVar(false);
 export const updateVehicleModalStateVar = makeVar(false);
 export const deleteVehicleModalStateVar = makeVar(false);
+
+// Fuel Card Modals states
+export const addFuelCardModalStateVar = makeVar(false);
+export const updateFuelCardModalStateVar = makeVar(false);
+export const deleteFuelCardModalStateVar = makeVar(false);
+
+// Toll Tag Modals states
+export const addTollTagModalStateVar = makeVar(false);
+export const updateTollTagModalStateVar = makeVar(false);
+export const deleteTollTagModalStateVar = makeVar(false);
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
