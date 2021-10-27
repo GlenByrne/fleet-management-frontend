@@ -6,6 +6,7 @@ import {
 } from 'constants/apollo-client';
 import FuelCardListItem from './FuelCardListItem';
 import NoFuelCardAddButton from './NoFuelCardAddButton';
+import Loading from 'core/Loading';
 
 const FuelCardList = () => {
   const changeCurrentFuelCard = (fuelCard: FuelCard) => {
@@ -24,7 +25,7 @@ const FuelCardList = () => {
   const { data, loading, error } = useGetFuelCardsQuery();
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {

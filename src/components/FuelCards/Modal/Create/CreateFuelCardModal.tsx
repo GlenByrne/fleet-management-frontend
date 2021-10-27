@@ -90,7 +90,7 @@ const CreateFuelCardModal = () => {
 
     addFuelCard({
       variables: {
-        addFuelCardData: {
+        data: {
           cardNumber: cardNumber != null ? cardNumber : '',
           cardProvider: cardProvider != null ? cardProvider : '',
           depotId: depot.value != null ? depot.value : '',

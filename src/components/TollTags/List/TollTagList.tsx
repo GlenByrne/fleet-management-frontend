@@ -3,6 +3,7 @@ import {
   currentTollTagVar,
 } from 'constants/apollo-client';
 import { TollTagUpdateModalItem } from 'constants/types';
+import Loading from 'core/Loading';
 import { TollTag, useGetTollTagsQuery } from 'generated/graphql';
 import NoTollTagAddButton from './NoTollTagAddButton';
 import TollTagListItem from './TollTagListItem';
@@ -24,7 +25,7 @@ const TollTagList = () => {
   const { data, loading, error } = useGetTollTagsQuery();
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {

@@ -57,13 +57,70 @@ export const GET_VEHICLES = gql`
 `;
 
 export const GET_VEHICLE_DEFECTS = gql`
-  query GetVehicleDefects($defectsForVehicleVehicleId: ID!) {
-    defectsForVehicle(vehicleId: $defectsForVehicleVehicleId) {
+  query GetVehicleDefects($vehicleId: ID!) {
+    defectsForVehicle(vehicleId: $vehicleId) {
       id
       description
       dateReported
       dateCompleted
       status
+    }
+  }
+`;
+
+export const GET_FUEL_CARDS = gql`
+  query GetFuelCards {
+    fuelCards {
+      id
+      cardNumber
+      cardProvider
+      depot {
+        id
+        name
+      }
+      vehicle {
+        id
+        registration
+      }
+    }
+  }
+`;
+
+export const GET_TOLL_TAGS = gql`
+  query GetTollTags {
+    tollTags {
+      id
+      tagNumber
+      tagProvider
+      depot {
+        id
+        name
+      }
+      vehicle {
+        id
+        registration
+      }
+    }
+  }
+`;
+
+export const GET_DEPOTS = gql`
+  query GetDepots {
+    depots {
+      id
+      name
+      vehicles {
+        id
+        registration
+      }
+      fuelCards {
+        id
+        cardNumber
+      }
+      tollTags {
+        id
+        tagNumber
+      }
     }
   }
 `;
@@ -139,8 +196,8 @@ export const GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG = gql`
 `;
 
 export const ADD_VEHICLE = gql`
-  mutation AddVehicle($addVehicleData: AddVehicleInput!) {
-    addVehicle(data: $addVehicleData) {
+  mutation AddVehicle($data: AddVehicleInput!) {
+    addVehicle(data: $data) {
       id
       type
       registration
@@ -151,8 +208,8 @@ export const ADD_VEHICLE = gql`
       thirteenWeekInspectionDueDate
       tachoCalibrationDueDate
       depot {
-        name
         id
+        name
       }
       fuelCard {
         id
@@ -167,93 +224,62 @@ export const ADD_VEHICLE = gql`
 `;
 
 export const ADD_TOLL_TAG = gql`
-  mutation AddTollTag($addTollTagData: AddTollTagInput!) {
-    addTollTag(data: $addTollTagData) {
+  mutation AddTollTag($data: AddTollTagInput!) {
+    addTollTag(data: $data) {
       id
       tagNumber
       tagProvider
-      depot {
-        id
-        name
-      }
       vehicle {
         id
         registration
+      }
+      depot {
+        id
+        name
       }
     }
   }
 `;
 
 export const ADD_FUEL_CARD = gql`
-  mutation AddFuelCard($addFuelCardData: AddFuelCardInput!) {
-    addFuelCard(data: $addFuelCardData) {
+  mutation AddFuelCard($data: AddFuelCardInput!) {
+    addFuelCard(data: $data) {
       id
       cardNumber
       cardProvider
-      depot {
-        id
-        name
-      }
       vehicle {
         id
         registration
+      }
+      depot {
+        id
+        name
       }
     }
   }
 `;
 
-export const GET_FUEL_CARDS = gql`
-  query GetFuelCards {
-    fuelCards {
+export const ADD_DEPOT_CARD = gql`
+  mutation AddDepot($data: AddDepotInput!) {
+    addDepot(data: $data) {
       id
-      cardNumber
-      cardProvider
-      depot {
-        id
-        name
-      }
-      vehicle {
-        id
-        registration
-      }
-    }
-  }
-`;
-
-export const GET_TOLL_TAGS = gql`
-  query GetTollTags {
-    tollTags {
-      id
-      tagNumber
-      tagProvider
-      depot {
-        id
-        name
-      }
-      vehicle {
-        id
-        registration
-      }
+      name
     }
   }
 `;
 
 export const DELETE_FUEL_CARD = gql`
-  mutation DeleteFuelCard($deleteFuelCardData: DeleteFuelCardInput!) {
-    deleteFuelCard(data: $deleteFuelCardData) {
+  mutation DeleteFuelCard($data: DeleteFuelCardInput!) {
+    deleteFuelCard(data: $data) {
       id
       cardNumber
-      vehicle {
-        id
-        registration
-      }
     }
   }
 `;
 
 export const DELETE_TOLL_TAG = gql`
-  mutation DeleteTollTag($deleteTollTagData: DeleteTollTagInput!) {
-    deleteTollTag(data: $deleteTollTagData) {
+  mutation DeleteTollTag($data: DeleteTollTagInput!) {
+    deleteTollTag(data: $data) {
       id
       tagNumber
     }
@@ -261,17 +287,26 @@ export const DELETE_TOLL_TAG = gql`
 `;
 
 export const DELETE_VEHICLE = gql`
-  mutation DeleteVehicle($deleteVehicleData: DeleteVehicleInput!) {
-    deleteVehicle(data: $deleteVehicleData) {
+  mutation DeleteVehicle($data: DeleteVehicleInput!) {
+    deleteVehicle(data: $data) {
       id
       registration
     }
   }
 `;
 
+export const DELETE_DEPOT = gql`
+  mutation DeleteDepot($data: DeleteDepotInput!) {
+    deleteDepot(data: $data) {
+      id
+      name
+    }
+  }
+`;
+
 export const UPDATE_FUEL_CARD = gql`
-  mutation UpdateFuelCard($updateFuelCardData: UpdateFuelCardInput!) {
-    updateFuelCard(data: $updateFuelCardData) {
+  mutation UpdateFuelCard($data: UpdateFuelCardInput!) {
+    updateFuelCard(data: $data) {
       id
       cardNumber
       cardProvider
@@ -284,8 +319,8 @@ export const UPDATE_FUEL_CARD = gql`
 `;
 
 export const UPDATE_TOLL_TAG = gql`
-  mutation UpdateTollTag($updateTollTagData: UpdateTollTagInput!) {
-    updateTollTag(data: $updateTollTagData) {
+  mutation UpdateTollTag($data: UpdateTollTagInput!) {
+    updateTollTag(data: $data) {
       id
       tagNumber
       tagProvider
@@ -298,8 +333,8 @@ export const UPDATE_TOLL_TAG = gql`
 `;
 
 export const UPDATE_VEHICLE = gql`
-  mutation UpdateVehicle($updateVehicleData: UpdateVehicleInput!) {
-    updateVehicle(data: $updateVehicleData) {
+  mutation UpdateVehicle($data: UpdateVehicleInput!) {
+    updateVehicle(data: $data) {
       id
       type
       registration
@@ -321,6 +356,15 @@ export const UPDATE_VEHICLE = gql`
         id
         tagNumber
       }
+    }
+  }
+`;
+
+export const UPDATE_DEPOT = gql`
+  mutation UpdateDepot($data: UpdateDepotInput!) {
+    updateDepot(data: $data) {
+      id
+      name
     }
   }
 `;

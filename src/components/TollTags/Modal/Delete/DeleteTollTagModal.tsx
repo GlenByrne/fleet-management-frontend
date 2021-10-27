@@ -50,7 +50,7 @@ const DeleteTollTagModal = () => {
     deleteTollTagModalStateVar(false);
     deleteTollTag({
       variables: {
-        deleteTollTagData: {
+        data: {
           id: id,
         },
       },

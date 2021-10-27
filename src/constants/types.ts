@@ -62,3 +62,8 @@ export type TollTagUpdateModalItem = {
     name: string;
   };
 };
+
+export type DepotUpdateModalItem = {
+  id: string;
+  name: string;
+};

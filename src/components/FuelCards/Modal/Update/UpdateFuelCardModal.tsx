@@ -88,7 +88,7 @@ const UpdateFuelCardModal = () => {
     updateFuelCardModalStateVar(false);
     updateFuelCard({
       variables: {
-        updateFuelCardData: {
+        data: {
           id: currentCard.id,
           cardNumber: cardNumber != null ? cardNumber : '',
           cardProvider: cardProvider != null ? cardProvider : '',

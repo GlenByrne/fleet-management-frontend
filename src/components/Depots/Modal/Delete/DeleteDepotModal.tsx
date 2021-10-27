@@ -1,59 +1,54 @@
+import { useReactiveVar } from '@apollo/client';
 import { ExclamationIcon } from '@heroicons/react/solid';
+import {
+  currentDepotVar,
+  deleteDepotModalStateVar,
+} from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';
-import { useRef } from 'react';
 import Modal from 'core/Modal/Modal';
 import {
-  GetVehiclesDocument,
-  GetVehiclesQuery,
+  GetDepotsDocument,
+  GetDepotsQuery,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
-  useDeleteVehicleMutation,
-  GetTollTagsDocument,
-  GetFuelCardsDocument,
+  GetVehiclesDocument,
+  useDeleteDepotMutation,
 } from 'generated/graphql';
-import { useReactiveVar } from '@apollo/client';
-import {
-  currentVehicleVar,
-  deleteVehicleModalStateVar,
-} from 'constants/apollo-client';
+import { useRef } from 'react';
 
-const DeleteVehicleModal = () => {
-  const currentVehicle = useReactiveVar(currentVehicleVar);
+const DeleteDepotModal = () => {
+  const currentDepot = useReactiveVar(currentDepotVar);
 
-  const currentModalStateVar = useReactiveVar(deleteVehicleModalStateVar);
+  const currentModalStateVar = useReactiveVar(deleteDepotModalStateVar);
 
-  const [deleteVehicle] = useDeleteVehicleMutation({
+  const [deleteDepot] = useDeleteDepotMutation({
     update: (cache, { data: mutationReturn }) => {
-      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
-        query: GetVehiclesDocument,
+      const currentDepots = cache.readQuery<GetDepotsQuery>({
+        query: GetDepotsDocument,
       });
-
-      const newVehicles = currentVehicles?.vehicles?.filter((vehicle) =>
-        vehicle != null
-          ? vehicle.id !== mutationReturn?.deleteVehicle.id
-          : currentVehicles.vehicles
+      const newDepots = currentDepots?.depots?.filter((depot) =>
+        depot != null
+          ? depot.id !== mutationReturn?.deleteDepot.id
+          : currentDepots.depots
       );
-
       cache.writeQuery({
-        query: GetVehiclesDocument,
-        data: { vehicles: newVehicles },
+        query: GetDepotsDocument,
+        data: { depots: newDepots },
       });
-
       cache.evict({
-        id: mutationReturn?.deleteVehicle.id,
+        id: mutationReturn?.deleteDepot.id,
       });
     },
     refetchQueries: [
-      { query: GetTollTagsDocument },
-      { query: GetFuelCardsDocument },
+      { query: GetVehiclesDocument },
       { query: GetSelectableItemsForAddVehicleDocument },
       { query: GetItemsForUpdateVehicleDocument },
     ],
   });
 
-  const deleteVehicleHandler = (id: string) => {
-    deleteVehicleModalStateVar(false);
-    deleteVehicle({
+  const deleteDepotHandler = (id: string) => {
+    deleteDepotModalStateVar(false);
+    deleteDepot({
       variables: {
         data: {
           id: id,
@@ -67,7 +62,7 @@ const DeleteVehicleModal = () => {
   return (
     <Modal
       modalState={currentModalStateVar}
-      setModalState={deleteVehicleModalStateVar}
+      setModalState={deleteDepotModalStateVar}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -83,13 +78,13 @@ const DeleteVehicleModal = () => {
               as="h3"
               className="text-lg leading-6 font-medium text-gray-900"
             >
-              Delete Vehicle: {currentVehicle.registration}
+              Delete Depot: {currentDepot.name}
             </Dialog.Title>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
-                Are you sure you want to delete this vehicle? This will remove
-                the vehicle from the list and disconnect any fuel card or toll
-                tag connected to it.
+                Are you sure you want to delete this depot? This will remove the
+                depot from the list and disconnect any vehicles, card, and tags
+                that are connected to it.
               </p>
             </div>
           </div>
@@ -98,16 +93,14 @@ const DeleteVehicleModal = () => {
           <button
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-            onClick={() => {
-              deleteVehicleHandler(currentVehicle.id);
-            }}
+            onClick={() => deleteDepotHandler(currentDepot.id)}
           >
             Delete
           </button>
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => deleteVehicleModalStateVar(false)}
+            onClick={() => deleteDepotModalStateVar(false)}
             ref={cancelButtonRef}
           >
             Cancel
@@ -118,4 +111,4 @@ const DeleteVehicleModal = () => {
   );
 };
 
-export default DeleteVehicleModal;
+export default DeleteDepotModal;

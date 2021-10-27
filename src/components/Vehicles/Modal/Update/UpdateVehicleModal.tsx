@@ -207,7 +207,7 @@ const UpdateVehicleModal = () => {
     updateVehicleModalStateVar(false);
     updateVehicle({
       variables: {
-        updateVehicleData: {
+        data: {
           id: currentVehicle.id,
           type:
             type.value != null ? (type.value as VehicleType) : VehicleType.Van,

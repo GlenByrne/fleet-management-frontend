@@ -87,7 +87,7 @@ const UpdateTollTagModal = () => {
     updateTollTagModalStateVar(false);
     updateTollTag({
       variables: {
-        updateTollTagData: {
+        data: {
           id: currentTag.id,
           tagNumber: tagNumber != null ? tagNumber : '',
           tagProvider: tagProvider != null ? tagProvider : '',

@@ -172,7 +172,7 @@ const CreateVehicleModal = () => {
 
     addVehicle({
       variables: {
-        addVehicleData: {
+        data: {
           type:
             type.value != null ? (type.value as VehicleType) : VehicleType.Van,
           registration: registration != null ? registration : '',

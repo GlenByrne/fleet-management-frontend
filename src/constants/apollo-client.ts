@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache, makeVar } from '@apollo/client';
 import { VehicleType } from 'generated/graphql';
 import {
+  DepotUpdateModalItem,
   FuelCardUpdateModalItem,
   TollTagUpdateModalItem,
   VehicleUpdateModalItem,
@@ -50,6 +51,11 @@ const initialVehicle: VehicleUpdateModalItem = {
   },
 };
 
+const initialDepot: DepotUpdateModalItem = {
+  id: '',
+  name: '',
+};
+
 export const currentFuelCardVar =
   makeVar<FuelCardUpdateModalItem>(initialFuelCard);
 
@@ -58,6 +64,8 @@ export const currentTollTagVar =
 
 export const currentVehicleVar =
   makeVar<VehicleUpdateModalItem>(initialVehicle);
+
+export const currentDepotVar = makeVar<DepotUpdateModalItem>(initialDepot);
 
 // Vehicle Modals states
 export const addVehicleModalStateVar = makeVar(false);
@@ -73,6 +81,11 @@ export const deleteFuelCardModalStateVar = makeVar(false);
 export const addTollTagModalStateVar = makeVar(false);
 export const updateTollTagModalStateVar = makeVar(false);
 export const deleteTollTagModalStateVar = makeVar(false);
+
+// Depot Modals states
+export const addDepotModalStateVar = makeVar(false);
+export const updateDepotModalStateVar = makeVar(false);
+export const deleteDepotModalStateVar = makeVar(false);
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -93,6 +106,11 @@ const client = new ApolloClient({
           currentVehicle: {
             read() {
               return currentVehicleVar();
+            },
+          },
+          currentDepot: {
+            read() {
+              return currentDepotVar();
             },
           },
         },

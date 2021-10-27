@@ -50,7 +50,7 @@ const DeleteFuelCardModal = () => {
     deleteFuelCardModalStateVar(false);
     deleteFuelCard({
       variables: {
-        deleteFuelCardData: {
+        data: {
           id: id,
         },
       },

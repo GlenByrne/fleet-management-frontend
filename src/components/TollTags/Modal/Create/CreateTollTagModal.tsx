@@ -89,7 +89,7 @@ const CreateTollTagModal = () => {
 
     addTollTag({
       variables: {
-        addTollTagData: {
+        data: {
           tagNumber: tagNumber != null ? tagNumber : '',
           tagProvider: tagProvider != null ? tagProvider : '',
           depotId: depot.value != null ? depot.value : '',
