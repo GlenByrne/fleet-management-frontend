@@ -90,6 +90,12 @@ const CreateFuelCardModal = ({
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     setModalState(false);
+    setCardNumber('');
+    setCardProvider('');
+    setDepot({
+      value: '',
+      label: 'None',
+    });
     addFuelCard({
       variables: {
         addFuelCardData: {

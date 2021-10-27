@@ -4,11 +4,8 @@ import TableRow from 'core/Table/TableRow';
 import { useGetVehiclesQuery, Vehicle } from 'generated/graphql';
 import { VehicleUpdateModalItem } from 'constants/types';
 import { currentVehicleVar } from 'constants/apollo-client';
-
-type VehicleListProps = {
-  updateVehicleModalHandler: (state: boolean) => void;
-  deleteVehicleModalHandler: (state: boolean) => void;
-};
+import StackedList from './StackedList';
+import Loading from 'core/Loading';
 
 type VehicleTableData = {
   registration: JSX.Element;
@@ -72,10 +69,7 @@ const getTableData = (vehicle: Vehicle) => {
   return tableData;
 };
 
-const VehicleList = ({
-  updateVehicleModalHandler,
-  deleteVehicleModalHandler,
-}: VehicleListProps) => {
+const VehicleList = () => {
   const changeCurrentVehicle = (vehicle: Vehicle) => {
     const chosenVehicle: VehicleUpdateModalItem = {
       id: vehicle.id,
@@ -106,7 +100,7 @@ const VehicleList = ({
   const { data, loading, error } = useGetVehiclesQuery();
 
   if (loading) {
-    return <div className="h2">Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
@@ -118,20 +112,24 @@ const VehicleList = ({
   }
 
   return (
-    <Table
-      columnHeaders={headers}
-      data={data.vehicles as Vehicle[]}
-      renderItem={(vehicle) => {
-        return (
-          <TableRow
-            item={vehicle}
-            tableData={getTableData(vehicle)}
-            setUpdateModalState={updateVehicleModalHandler}
-            setDeleteModalState={deleteVehicleModalHandler}
-            changeCurrentItem={changeCurrentVehicle}
-          />
-        );
-      }}
+    // <Table
+    //   columnHeaders={headers}
+    //   data={data.vehicles as Vehicle[]}
+    //   renderItem={(vehicle) => {
+    //     return (
+    //       <TableRow
+    //         item={vehicle}
+    //         tableData={getTableData(vehicle)}
+    //         setUpdateModalState={updateVehicleModalHandler}
+    //         setDeleteModalState={deleteVehicleModalHandler}
+    //         changeCurrentItem={changeCurrentVehicle}
+    //       />
+    //     );
+    //   }}
+    // />
+    <StackedList
+      vehicles={data.vehicles as Vehicle[]}
+      changeCurrentVehicle={changeCurrentVehicle}
     />
   );
 };

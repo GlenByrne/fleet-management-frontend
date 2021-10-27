@@ -89,6 +89,12 @@ const CreateTollTagModal = ({
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     setModalState(false);
+    setTagNumber('');
+    setTagProvider('');
+    setDepot({
+      value: '',
+      label: 'None',
+    });
     addTollTag({
       variables: {
         addTollTagData: {

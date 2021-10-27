@@ -24,12 +24,10 @@ import {
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
-import { currentVehicleVar } from 'constants/apollo-client';
-
-type UpdateVehicleModalProps = {
-  modalState: boolean;
-  setModalState: (state: boolean) => void;
-};
+import {
+  currentVehicleVar,
+  updateVehicleModalStateVar,
+} from 'constants/apollo-client';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -96,13 +94,11 @@ const getVehicleTypeOptions = () => {
   return options;
 };
 
-const UpdateVehicleModal = ({
-  modalState,
-  setModalState,
-}: UpdateVehicleModalProps) => {
+const UpdateVehicleModal = () => {
   const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
 
   const currentVehicle = useReactiveVar(currentVehicleVar);
+  const currentModalStateVar = useReactiveVar(updateVehicleModalStateVar);
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
@@ -208,7 +204,7 @@ const UpdateVehicleModal = ({
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    setModalState(false);
+    updateVehicleModalStateVar(false);
     updateVehicle({
       variables: {
         updateVehicleData: {
@@ -241,9 +237,9 @@ const UpdateVehicleModal = ({
 
   return (
     <Modal
-      modalState={modalState}
+      modalState={currentModalStateVar}
+      setModalState={updateVehicleModalStateVar}
       cancelButtonRef={cancelButtonRef}
-      setModalState={setModalState}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
         <form onSubmit={submitHandler}>
@@ -355,7 +351,7 @@ const UpdateVehicleModal = ({
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => setModalState(false)}
+              onClick={() => updateVehicleModalStateVar(false)}
               ref={cancelButtonRef}
             >
               Cancel

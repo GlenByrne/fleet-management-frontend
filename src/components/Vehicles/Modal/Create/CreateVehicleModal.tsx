@@ -25,11 +25,8 @@ import {
 import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
-
-type CreateVehicleModalProps = {
-  modalState: boolean;
-  setModalState: (state: boolean) => void;
-};
+import { addVehicleModalStateVar } from 'constants/apollo-client';
+import { useReactiveVar } from '@apollo/client';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -80,11 +77,10 @@ const getVehicleTypeOptions = () => {
   return options;
 };
 
-const CreateVehicleModal = ({
-  modalState,
-  setModalState,
-}: CreateVehicleModalProps) => {
+const CreateVehicleModal = () => {
   const { data, loading, error } = useGetSelectableItemsForAddVehicleQuery();
+
+  const currentModalStateVar = useReactiveVar(addVehicleModalStateVar);
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
@@ -98,8 +94,8 @@ const CreateVehicleModal = ({
   );
 
   const [type, setType] = useState<Option>({
-    value: '',
-    label: '',
+    value: VehicleType.Van,
+    label: VehicleType.Van,
   });
   const [registration, setRegistration] = useState('');
   const [make, setMake] = useState('');
@@ -172,7 +168,28 @@ const CreateVehicleModal = ({
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    setModalState(false);
+    addVehicleModalStateVar(false);
+    setType({
+      value: VehicleType.Van,
+      label: VehicleType.Van,
+    });
+    setRegistration('');
+    setMake('');
+    setModel('');
+    setOwner('');
+    setDepot({
+      value: '',
+      label: 'None',
+    });
+    setFuelCard({
+      value: '',
+      label: 'None',
+    });
+    setTollTag({
+      value: '',
+      label: 'None',
+    });
+
     addVehicle({
       variables: {
         addVehicleData: {
@@ -204,9 +221,9 @@ const CreateVehicleModal = ({
 
   return (
     <Modal
-      modalState={modalState}
+      modalState={currentModalStateVar}
+      setModalState={addVehicleModalStateVar}
       cancelButtonRef={cancelButtonRef}
-      setModalState={setModalState}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
         <form onSubmit={submitHandler}>
@@ -318,7 +335,7 @@ const CreateVehicleModal = ({
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => setModalState(false)}
+              onClick={() => addVehicleModalStateVar(false)}
               ref={cancelButtonRef}
             >
               Cancel

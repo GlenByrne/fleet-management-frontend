@@ -59,6 +59,10 @@ export const currentTollTagVar =
 export const currentVehicleVar =
   makeVar<VehicleUpdateModalItem>(initialVehicle);
 
+export const addVehicleModalStateVar = makeVar(false);
+export const updateVehicleModalStateVar = makeVar(false);
+export const deleteVehicleModalStateVar = makeVar(false);
+
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
   cache: new InMemoryCache({

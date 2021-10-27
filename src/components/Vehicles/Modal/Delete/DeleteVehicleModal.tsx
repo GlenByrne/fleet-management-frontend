@@ -12,18 +12,15 @@ import {
   GetFuelCardsDocument,
 } from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
-import { currentVehicleVar } from 'constants/apollo-client';
+import {
+  currentVehicleVar,
+  deleteVehicleModalStateVar,
+} from 'constants/apollo-client';
 
-type DeleteVehicleModalProps = {
-  modalState: boolean;
-  setModalState: (state: boolean) => void;
-};
-
-const DeleteVehicleModal = ({
-  modalState,
-  setModalState,
-}: DeleteVehicleModalProps) => {
+const DeleteVehicleModal = () => {
   const currentVehicle = useReactiveVar(currentVehicleVar);
+
+  const currentModalStateVar = useReactiveVar(deleteVehicleModalStateVar);
 
   const [deleteVehicle] = useDeleteVehicleMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -55,6 +52,7 @@ const DeleteVehicleModal = ({
   });
 
   const deleteVehicleHandler = (id: string) => {
+    deleteVehicleModalStateVar(false);
     deleteVehicle({
       variables: {
         deleteVehicleData: {
@@ -65,10 +63,11 @@ const DeleteVehicleModal = ({
   };
 
   const cancelButtonRef = useRef(null);
+
   return (
     <Modal
-      modalState={modalState}
-      setModalState={setModalState}
+      modalState={currentModalStateVar}
+      setModalState={deleteVehicleModalStateVar}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -101,7 +100,6 @@ const DeleteVehicleModal = ({
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
             onClick={() => {
               deleteVehicleHandler(currentVehicle.id);
-              setModalState(false);
             }}
           >
             Delete
@@ -109,7 +107,7 @@ const DeleteVehicleModal = ({
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => setModalState(false)}
+            onClick={() => deleteVehicleModalStateVar(false)}
             ref={cancelButtonRef}
           >
             Cancel
