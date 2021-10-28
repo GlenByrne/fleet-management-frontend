@@ -368,3 +368,16 @@ export const UPDATE_DEPOT = gql`
     }
   }
 `;
+
+export const LOGIN = gql`
+  mutation Login($data: LoginInput!) {
+    login(data: $data) {
+      user {
+        id
+        email
+        name
+      }
+      token
+    }
+  }
+`;
