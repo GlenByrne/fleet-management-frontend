@@ -1,6 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { useRouter } from 'next/router';
-import { NavbarOption } from '../../../constants/types';
+import { NavbarOption, UserNavbarOption } from '../../../constants/types';
 import Link from 'next/link';
 import MobileUserNavigation from './MobileUserNavigation';
 import MobileNotificationButton from './MobileNotificationButton';
@@ -11,7 +11,7 @@ const classNames = (...classes: any) => {
 
 type MobileNavbarOptionsProps = {
   navigation: NavbarOption[];
-  userNavigation: NavbarOption[];
+  userNavigation: UserNavbarOption[];
 };
 
 const MobileNavbarOptions = ({

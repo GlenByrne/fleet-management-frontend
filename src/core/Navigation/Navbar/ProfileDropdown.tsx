@@ -1,9 +1,9 @@
 import { Menu, Transition } from '@headlessui/react';
-import { NavbarOption } from 'constants/types';
+import { UserNavbarOption } from 'constants/types';
 import { Fragment } from 'react';
 
 type ProfileDropdownProps = {
-  userNavigation: NavbarOption[];
+  userNavigation: UserNavbarOption[];
 };
 
 const classNames = (...classes: any) => {
@@ -38,7 +38,8 @@ const ProfileDropdown = ({ userNavigation }: ProfileDropdownProps) => {
               <Menu.Item key={index}>
                 {({ active }) => (
                   <a
-                    href="#"
+                    href={item.href}
+                    onClick={item.onClick}
                     className={classNames(
                       active ? 'bg-gray-100' : '',
                       'block px-4 py-2 text-sm text-gray-700'

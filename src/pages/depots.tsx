@@ -8,7 +8,11 @@ import DepotList from 'components/Depots/List/DepotList';
 
 const Depots: NextPage = () => {
   return (
-    <Layout quickAction={addDepotModalStateVar} quickActionLabel="New Depot">
+    <Layout
+      hasQuickActionButton={true}
+      quickAction={addDepotModalStateVar}
+      quickActionLabel="New Depot"
+    >
       <CreateDepotModal />
       <UpdateDepotModal />
       <DeleteDepotModal />

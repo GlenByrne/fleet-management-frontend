@@ -8,7 +8,11 @@ import { addFuelCardModalStateVar } from 'constants/apollo-client';
 
 const FuelCards: NextPage = () => {
   return (
-    <Layout quickAction={addFuelCardModalStateVar} quickActionLabel="New Card">
+    <Layout
+      hasQuickActionButton={true}
+      quickAction={addFuelCardModalStateVar}
+      quickActionLabel="New Card"
+    >
       <CreateFuelCardModal />
       <UpdateFuelCardModal />
       <DeleteFuelCardModal />

@@ -8,7 +8,11 @@ import { addTollTagModalStateVar } from 'constants/apollo-client';
 
 const TollTags: NextPage = () => {
   return (
-    <Layout quickAction={addTollTagModalStateVar} quickActionLabel="New Tag">
+    <Layout
+      hasQuickActionButton={true}
+      quickAction={addTollTagModalStateVar}
+      quickActionLabel="New Tag"
+    >
       <CreateTollTagModal />
       <UpdateTollTagModal />
       <DeleteTollTagModal />

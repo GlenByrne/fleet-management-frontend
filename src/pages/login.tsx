@@ -1,8 +1,58 @@
 import { useLoginMutation } from 'generated/graphql';
+import { useState } from 'react';
 import { NextPage } from 'next';
+import { FormEventHandler, FormEvent } from 'react';
+import { useRouter } from 'next/router';
+import { currentUserVar } from 'constants/apollo-client';
 
 const Login: NextPage = () => {
-  const [login] = useLoginMutation();
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [login] = useLoginMutation({
+    update: (_, { data: mutationReturn }) => {
+      const user = mutationReturn?.login.user;
+
+      if (user != null) {
+        currentUserVar({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          password: '',
+        });
+      }
+    },
+    onCompleted: ({ login }) => {
+      if (login.token) {
+        localStorage.setItem('token', login.token);
+        router.push('/vehicles');
+        setEmail('');
+        setPassword('');
+      }
+    },
+  });
+
+  const submitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    login({
+      variables: {
+        data: {
+          email: email,
+          password: password,
+        },
+      },
+    });
+  };
+
+  const changeEmail = (event: FormEvent<HTMLInputElement>) => {
+    setEmail(event.currentTarget.value);
+  };
+
+  const changePassword = (event: FormEvent<HTMLInputElement>) => {
+    setPassword(event.currentTarget.value);
+  };
 
   return (
     <>
@@ -37,7 +87,7 @@ const Login: NextPage = () => {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" onSubmit={submitHandler}>
               <div>
                 <label
                   htmlFor="email"
@@ -51,6 +101,8 @@ const Login: NextPage = () => {
                     name="email"
                     type="email"
                     autoComplete="email"
+                    value={email}
+                    onChange={changeEmail}
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -70,6 +122,8 @@ const Login: NextPage = () => {
                     name="password"
                     type="password"
                     autoComplete="current-password"
+                    value={password}
+                    onChange={changePassword}
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />

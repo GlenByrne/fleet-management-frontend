@@ -1,15 +1,32 @@
-import { Fragment, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Head from 'next/head';
 import Navbar from 'core/Navigation/Navbar/Navbar';
 import ClientOnly from 'core/ClientOnly/ClientOnly';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 type LayoutProps = {
   children: ReactNode;
-  quickAction: (state: boolean) => void;
-  quickActionLabel: string;
+  hasQuickActionButton: boolean;
+  quickAction?: (state: boolean) => void;
+  quickActionLabel?: string;
 };
 
-const Layout = ({ children, quickAction, quickActionLabel }: LayoutProps) => {
+const Layout = ({
+  children,
+  hasQuickActionButton,
+  quickAction,
+  quickActionLabel,
+}: LayoutProps) => {
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
+
   return (
     <div className="min-h-full">
       <Head>
@@ -19,7 +36,11 @@ const Layout = ({ children, quickAction, quickActionLabel }: LayoutProps) => {
       </Head>
 
       <nav>
-        <Navbar quickAction={quickAction} quickActionLabel={quickActionLabel} />
+        <Navbar
+          hasQuickActionButton={hasQuickActionButton}
+          quickAction={quickAction}
+          quickActionLabel={quickActionLabel}
+        />
       </nav>
 
       <header className="bg-white shadow">
@@ -28,11 +49,9 @@ const Layout = ({ children, quickAction, quickActionLabel }: LayoutProps) => {
         </div>
       </header>
       <main>
-        <ClientOnly>
-          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            {children}
-          </div>
-        </ClientOnly>
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <ClientOnly>{children}</ClientOnly>
+        </div>
       </main>
     </div>
   );

@@ -1,8 +1,8 @@
 import { Disclosure } from '@headlessui/react';
-import { NavbarOption } from 'constants/types';
+import { NavbarOption, UserNavbarOption } from 'constants/types';
 
 type MobileUserNavigationProps = {
-  userNavigation: NavbarOption[];
+  userNavigation: UserNavbarOption[];
 };
 
 const MobileUserNavigation = ({
@@ -15,6 +15,7 @@ const MobileUserNavigation = ({
           key={item.name}
           as="a"
           href={item.href}
+          onClick={item.onClick}
           className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
         >
           {item.name}

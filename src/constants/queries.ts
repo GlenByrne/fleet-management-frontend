@@ -376,6 +376,7 @@ export const LOGIN = gql`
         id
         email
         name
+        role
       }
       token
     }

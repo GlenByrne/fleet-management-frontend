@@ -5,7 +5,7 @@ import {
   makeVar,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { VehicleType } from 'generated/graphql';
+import { Role, User, VehicleType } from 'generated/graphql';
 import {
   DepotUpdateModalItem,
   FuelCardUpdateModalItem,
@@ -57,6 +57,14 @@ const initialVehicle: VehicleUpdateModalItem = {
   },
 };
 
+const initialUser: User = {
+  id: '',
+  email: '',
+  password: '',
+  role: Role.User,
+  name: '',
+};
+
 const initialDepot: DepotUpdateModalItem = {
   id: '',
   name: '',
@@ -72,6 +80,10 @@ export const currentVehicleVar =
   makeVar<VehicleUpdateModalItem>(initialVehicle);
 
 export const currentDepotVar = makeVar<DepotUpdateModalItem>(initialDepot);
+
+export const currentUserVar = makeVar<User>(initialUser);
+
+export const hasAccessVar = makeVar(false);
 
 // Vehicle Modals states
 export const addVehicleModalStateVar = makeVar(false);

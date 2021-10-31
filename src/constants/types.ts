@@ -5,6 +5,12 @@ export type NavbarOption = {
   href: string;
 };
 
+export type UserNavbarOption = {
+  name: string;
+  href?: string;
+  onClick?: () => void;
+};
+
 export type TableData = {
   data: string | number | Date;
   wrapper: JSX.Element;
