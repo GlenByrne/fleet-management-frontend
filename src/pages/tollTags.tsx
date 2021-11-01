@@ -4,7 +4,11 @@ import Layout from 'core/Layout/Layout';
 import CreateTollTagModal from 'components/TollTags/Modal/Create/CreateTollTagModal';
 import UpdateTollTagModal from 'components/TollTags/Modal/Update/UpdateTollTagModal';
 import DeleteTollTagModal from 'components/TollTags/Modal/Delete/DeleteTollTagModal';
-import { addTollTagModalStateVar } from 'constants/apollo-client';
+import {
+  addTollTagModalStateVar,
+  currentUserVar,
+} from 'constants/apollo-client';
+import { useGetCurrentUserQuery } from 'generated/graphql';
 
 const TollTags: NextPage = () => {
   return (

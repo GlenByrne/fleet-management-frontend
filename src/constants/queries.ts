@@ -369,6 +369,25 @@ export const UPDATE_DEPOT = gql`
   }
 `;
 
+export const GET_CURRENT_USER = gql`
+  query GetCurrentUser {
+    me {
+      id
+      name
+      email
+      role
+      company {
+        id
+        name
+      }
+      depot {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const LOGIN = gql`
   mutation Login($data: LoginInput!) {
     login(data: $data) {
@@ -377,6 +396,52 @@ export const LOGIN = gql`
         email
         name
         role
+        company {
+          id
+          name
+        }
+        depot {
+          id
+          name
+        }
+      }
+      token
+    }
+  }
+`;
+
+export const REGISTER = gql`
+  mutation Register($data: RegisterInput!) {
+    register(data: $data) {
+      user {
+        id
+        name
+        email
+        role
+        company {
+          id
+          name
+        }
+        depot {
+          id
+          name
+        }
+      }
+      token
+    }
+  }
+`;
+
+export const ADD_COMPANY = gql`
+  mutation AddCompany($data: AddCompanyInput!) {
+    addCompany(data: $data) {
+      company {
+        id
+        name
+      }
+      user {
+        id
+        name
       }
       token
     }

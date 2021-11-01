@@ -1,21 +1,28 @@
-import { useLoginMutation } from 'generated/graphql';
+import {
+  useAddCompanyMutation,
+  useLoginMutation,
+  useRegisterMutation,
+} from 'generated/graphql';
 import { useState } from 'react';
 import { NextPage } from 'next';
 import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
-import { currentUserVar } from 'constants/apollo-client';
 import Link from 'next/link';
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
   const router = useRouter();
+  const [companyName, setCompanyName] = useState('');
+  const [adminName, setAdminName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [login] = useLoginMutation({
-    onCompleted: ({ login }) => {
-      if (login.token) {
-        localStorage.setItem('token', login.token);
+  const [addCompany] = useAddCompanyMutation({
+    onCompleted: ({ addCompany }) => {
+      if (addCompany.token) {
+        localStorage.setItem('token', addCompany.token);
         router.push('/vehicles');
+        setCompanyName('');
+        setAdminName('');
         setEmail('');
         setPassword('');
       }
@@ -24,14 +31,24 @@ const Login: NextPage = () => {
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    login({
+    addCompany({
       variables: {
         data: {
+          name: companyName,
+          adminName: adminName,
           email: email,
           password: password,
         },
       },
     });
+  };
+
+  const changeCompanyName = (event: FormEvent<HTMLInputElement>) => {
+    setCompanyName(event.currentTarget.value);
+  };
+
+  const changeAdminName = (event: FormEvent<HTMLInputElement>) => {
+    setAdminName(event.currentTarget.value);
   };
 
   const changeEmail = (event: FormEvent<HTMLInputElement>) => {
@@ -60,13 +77,13 @@ const Login: NextPage = () => {
             alt="Workflow"
           />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Create an account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
-            <Link href="/register">
+            <Link href="/login">
               <a className="font-medium text-indigo-600 hover:text-indigo-500">
-                create an account
+                sign in to your account
               </a>
             </Link>
           </p>
@@ -75,6 +92,48 @@ const Login: NextPage = () => {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={submitHandler}>
+              <div>
+                <label
+                  htmlFor="companyName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Company Name
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="companyName"
+                    name="companyName"
+                    type="companyName"
+                    autoComplete="companyName"
+                    value={companyName}
+                    onChange={changeCompanyName}
+                    required
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="adminName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Admin Account Name
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="adminName"
+                    name="adminName"
+                    type="adminName"
+                    autoComplete="adminName"
+                    value={adminName}
+                    onChange={changeAdminName}
+                    required
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+
               <div>
                 <label
                   htmlFor="email"
@@ -117,37 +176,12 @@ const Login: NextPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-900"
-                  >
-                    Remember me
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <Link href="#">
-                    <a className="font-medium text-indigo-600 hover:text-indigo-500">
-                      Forgot your password?
-                    </a>
-                  </Link>
-                </div>
-              </div>
-
               <div>
                 <button
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  Sign in
+                  Create Account
                 </button>
               </div>
             </form>
@@ -158,4 +192,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Register;

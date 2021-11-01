@@ -10,6 +10,7 @@ import {
   DepotUpdateModalItem,
   FuelCardUpdateModalItem,
   TollTagUpdateModalItem,
+  UserDisplayDetails,
   VehicleUpdateModalItem,
 } from './types';
 
@@ -57,14 +58,6 @@ const initialVehicle: VehicleUpdateModalItem = {
   },
 };
 
-const initialUser: User = {
-  id: '',
-  email: '',
-  password: '',
-  role: Role.User,
-  name: '',
-};
-
 const initialDepot: DepotUpdateModalItem = {
   id: '',
   name: '',
@@ -81,7 +74,7 @@ export const currentVehicleVar =
 
 export const currentDepotVar = makeVar<DepotUpdateModalItem>(initialDepot);
 
-export const currentUserVar = makeVar<User>(initialUser);
+export const currentUserVar = makeVar<UserDisplayDetails | null>(null);
 
 export const hasAccessVar = makeVar(false);
 

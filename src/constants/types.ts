@@ -1,4 +1,4 @@
-import { VehicleType } from 'generated/graphql';
+import { Role, VehicleType } from 'generated/graphql';
 
 export type NavbarOption = {
   name: string;
@@ -72,4 +72,20 @@ export type TollTagUpdateModalItem = {
 export type DepotUpdateModalItem = {
   id: string;
   name: string;
+};
+
+export type UserDisplayDetails = {
+  id: string;
+  email: string;
+  password: string;
+  role: Role;
+  name: string;
+  company: {
+    id: string;
+    name: string;
+  };
+  depot: {
+    id: string;
+    name: string;
+  } | null;
 };

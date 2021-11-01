@@ -4,7 +4,11 @@ import Layout from 'core/Layout/Layout';
 import CreateFuelCardModal from 'components/FuelCards/Modal/Create/CreateFuelCardModal';
 import UpdateFuelCardModal from 'components/FuelCards/Modal/Update/UpdateFuelCardModal';
 import DeleteFuelCardModal from 'components/FuelCards/Modal/Delete/DeleteFuelCardModal';
-import { addFuelCardModalStateVar } from 'constants/apollo-client';
+import {
+  addFuelCardModalStateVar,
+  currentUserVar,
+} from 'constants/apollo-client';
+import { useGetCurrentUserQuery } from 'generated/graphql';
 
 const FuelCards: NextPage = () => {
   return (
