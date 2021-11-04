@@ -5,18 +5,39 @@ import CreateVehicleModal from 'components/Vehicles/Modal/Create/CreateVehicleMo
 import UpdateVehicleModal from 'components/Vehicles/Modal/Update/UpdateVehicleModal';
 import DeleteVehicleModal from 'components/Vehicles/Modal/Delete/DeleteVehicleModal';
 import { addVehicleModalStateVar } from 'constants/apollo-client';
+import { FormEvent, FormEventHandler, useState } from 'react';
+import { useGetVehiclesQuery } from 'generated/graphql';
 
 const Vehicles: NextPage = () => {
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
+  const { data, loading, error, refetch } = useGetVehiclesQuery();
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const submitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      data: {
+        searchCriteria: searchCriteria,
+      },
+    });
+  };
+
   return (
     <Layout
       hasQuickActionButton={true}
       quickAction={addVehicleModalStateVar}
       quickActionLabel="New Vehicle"
+      pageSearchable={true}
+      searchSubmitHandler={submitHandler}
+      setSearchCriteria={changeSearchCriteria}
     >
       <CreateVehicleModal />
       <UpdateVehicleModal />
       <DeleteVehicleModal />
-      <VehicleList />
+      <VehicleList data={data} loading={loading} error={error} />
     </Layout>
   );
 };

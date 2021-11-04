@@ -1,11 +1,22 @@
-import { useGetUsersQuery, UsersPayload } from 'generated/graphql';
+import {
+  GetUsersQuery,
+  useGetUsersQuery,
+  UsersPayload,
+} from 'generated/graphql';
 import Loading from 'core/Loading';
 import UserListItem from './UserListItem';
 import NoUsersAddButton from './NoUsersAddButton';
 import { addUserModalStateVar, currentUserVar } from 'constants/apollo-client';
 import { UserUpdateModalItem } from 'constants/types';
+import { ApolloError } from '@apollo/client';
 
-const UserList = () => {
+type UserListProps = {
+  data: GetUsersQuery | undefined;
+  loading: boolean;
+  error: ApolloError | undefined;
+};
+
+const UserList = ({ data, loading, error }: UserListProps) => {
   const changeCurrentUser = (user: UsersPayload) => {
     const chosenUser: UserUpdateModalItem = {
       id: user.id,
@@ -19,8 +30,6 @@ const UserList = () => {
     };
     currentUserVar(chosenUser);
   };
-
-  const { data, loading, error } = useGetUsersQuery();
 
   if (loading) {
     return <Loading />;

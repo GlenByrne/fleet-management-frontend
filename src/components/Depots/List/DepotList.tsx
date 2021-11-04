@@ -1,14 +1,21 @@
+import { ApolloError } from '@apollo/client';
 import {
   addDepotModalStateVar,
   currentDepotVar,
 } from 'constants/apollo-client';
 import { DepotUpdateModalItem } from 'constants/types';
 import Loading from 'core/Loading';
-import { Depot, useGetDepotsQuery } from 'generated/graphql';
+import { Depot, GetDepotsQuery } from 'generated/graphql';
 import DepotListItem from './DepotListItem';
 import NoDepotAddButton from './NoDepotAddButton';
 
-const DepotList = () => {
+type DepotListProps = {
+  data: GetDepotsQuery | undefined;
+  loading: boolean;
+  error: ApolloError | undefined;
+};
+
+const DepotList = ({ data, loading, error }: DepotListProps) => {
   const changeCurrentDepot = (depot: Depot) => {
     const chosenDepot: DepotUpdateModalItem = {
       id: depot.id,
@@ -17,8 +24,6 @@ const DepotList = () => {
 
     currentDepotVar(chosenDepot);
   };
-
-  const { data, loading, error } = useGetDepotsQuery();
 
   if (loading) {
     return <Loading />;

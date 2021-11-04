@@ -4,10 +4,7 @@ import { NavbarOption, UserNavbarOption } from '../../../constants/types';
 import Link from 'next/link';
 import MobileUserNavigation from './MobileUserNavigation';
 import MobileNotificationButton from './MobileNotificationButton';
-
-const classNames = (...classes: any) => {
-  return classes.filter(Boolean).join(' ');
-};
+import classNames from 'utilities/classNames';
 
 type MobileNavbarOptionsProps = {
   navigation: NavbarOption[];

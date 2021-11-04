@@ -29,8 +29,8 @@ export const GET_VEHICLE = gql`
 `;
 
 export const GET_VEHICLES = gql`
-  query GetVehicles {
-    vehicles {
+  query GetVehicles($data: VehicleInputFilter) {
+    vehicles(data: $data) {
       id
       type
       registration
@@ -69,8 +69,8 @@ export const GET_VEHICLE_DEFECTS = gql`
 `;
 
 export const GET_FUEL_CARDS = gql`
-  query GetFuelCards {
-    fuelCards {
+  query GetFuelCards($data: FuelCardInputFilter) {
+    fuelCards(data: $data) {
       id
       cardNumber
       cardProvider
@@ -87,8 +87,8 @@ export const GET_FUEL_CARDS = gql`
 `;
 
 export const GET_TOLL_TAGS = gql`
-  query GetTollTags {
-    tollTags {
+  query GetTollTags($data: TollTagInputFilter) {
+    tollTags(data: $data) {
       id
       tagNumber
       tagProvider
@@ -105,8 +105,8 @@ export const GET_TOLL_TAGS = gql`
 `;
 
 export const GET_DEPOTS = gql`
-  query GetDepots {
-    depots {
+  query GetDepots($data: DepotInputFilter) {
+    depots(data: $data) {
       id
       name
       vehicles {
@@ -467,8 +467,8 @@ export const ADD_COMPANY = gql`
 `;
 
 export const GET_USERS = gql`
-  query GetUsers {
-    users {
+  query GetUsers($data: UsersInputFilter) {
+    users(data: $data) {
       id
       name
       email

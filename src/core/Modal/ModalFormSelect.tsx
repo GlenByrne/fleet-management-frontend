@@ -3,6 +3,7 @@ import { Option } from 'constants/types';
 import { Listbox, Portal, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { usePopper, Modifier } from 'react-popper';
+import classNames from 'utilities/classNames';
 
 type ModalFormSelectProps = {
   label: string;
@@ -11,10 +12,6 @@ type ModalFormSelectProps = {
   selected: Option;
   onChange: (value: SetStateAction<Option>) => void;
 };
-
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ');
-}
 
 const ModalFormSelect = ({
   label,

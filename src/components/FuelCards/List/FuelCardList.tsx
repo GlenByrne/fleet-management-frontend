@@ -1,4 +1,4 @@
-import { FuelCard, useGetFuelCardsQuery } from 'generated/graphql';
+import { FuelCard, GetFuelCardsQuery } from 'generated/graphql';
 import { FuelCardUpdateModalItem } from 'constants/types';
 import {
   addFuelCardModalStateVar,
@@ -7,8 +7,15 @@ import {
 import FuelCardListItem from './FuelCardListItem';
 import NoFuelCardAddButton from './NoFuelCardAddButton';
 import Loading from 'core/Loading';
+import { ApolloError } from '@apollo/client';
 
-const FuelCardList = () => {
+type FuelCardListProps = {
+  data: GetFuelCardsQuery | undefined;
+  loading: boolean;
+  error: ApolloError | undefined;
+};
+
+const FuelCardList = ({ data, loading, error }: FuelCardListProps) => {
   const changeCurrentFuelCard = (fuelCard: FuelCard) => {
     const chosenFuelCard: FuelCardUpdateModalItem = {
       id: fuelCard.id,
@@ -21,8 +28,6 @@ const FuelCardList = () => {
     };
     currentFuelCardVar(chosenFuelCard);
   };
-
-  const { data, loading, error } = useGetFuelCardsQuery();
 
   if (loading) {
     return <Loading />;

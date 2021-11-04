@@ -1,4 +1,4 @@
-import { useGetVehiclesQuery, Vehicle } from 'generated/graphql';
+import { GetVehiclesQuery, Vehicle } from 'generated/graphql';
 import { VehicleUpdateModalItem } from 'constants/types';
 import {
   addVehicleModalStateVar,
@@ -7,8 +7,15 @@ import {
 import Loading from 'core/Loading';
 import NoVehiclesAddButton from './NoVehiclesAddButton';
 import VehicleListItem from './VehicleListItem';
+import { ApolloError } from '@apollo/client';
 
-const VehicleList = () => {
+type VehicleListProps = {
+  data: GetVehiclesQuery | undefined;
+  loading: boolean;
+  error: ApolloError | undefined;
+};
+
+const VehicleList = ({ data, loading, error }: VehicleListProps) => {
   const changeCurrentVehicle = (vehicle: Vehicle) => {
     const chosenVehicle: VehicleUpdateModalItem = {
       id: vehicle.id,
@@ -35,8 +42,6 @@ const VehicleList = () => {
     };
     currentVehicleVar(chosenVehicle);
   };
-
-  const { data, loading, error } = useGetVehiclesQuery();
 
   if (loading) {
     return <Loading />;

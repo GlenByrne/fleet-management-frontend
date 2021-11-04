@@ -1,13 +1,10 @@
 import { Menu, Transition } from '@headlessui/react';
 import { UserNavbarOption } from 'constants/types';
 import { Fragment } from 'react';
+import classNames from 'utilities/classNames';
 
 type ProfileDropdownProps = {
   userNavigation: UserNavbarOption[];
-};
-
-const classNames = (...classes: any) => {
-  return classes.filter(Boolean).join(' ');
 };
 
 const ProfileDropdown = ({ userNavigation }: ProfileDropdownProps) => {

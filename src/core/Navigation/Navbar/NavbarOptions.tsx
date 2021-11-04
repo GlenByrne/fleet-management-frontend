@@ -2,10 +2,7 @@ import { FC } from 'react';
 import { NavbarOption } from '../../../constants/types';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
-const classNames = (...classes: any) => {
-  return classes.filter(Boolean).join(' ');
-};
+import classNames from 'utilities/classNames';
 
 type NavbarOptionsProps = {
   navigation: NavbarOption[];

@@ -1,8 +1,10 @@
 import { Role, VehicleType } from 'generated/graphql';
+import { ReactNode } from 'markdown-to-jsx/node_modules/@types/react';
 
 export type NavbarOption = {
   name: string;
   href: string;
+  icon: any;
 };
 
 export type UserNavbarOption = {

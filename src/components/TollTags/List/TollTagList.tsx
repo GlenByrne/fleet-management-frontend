@@ -1,14 +1,21 @@
+import { ApolloError } from '@apollo/client';
 import {
   addTollTagModalStateVar,
   currentTollTagVar,
 } from 'constants/apollo-client';
 import { TollTagUpdateModalItem } from 'constants/types';
 import Loading from 'core/Loading';
-import { TollTag, useGetTollTagsQuery } from 'generated/graphql';
+import { GetTollTagsQuery, TollTag } from 'generated/graphql';
 import NoTollTagAddButton from './NoTollTagAddButton';
 import TollTagListItem from './TollTagListItem';
 
-const TollTagList = () => {
+type TollTagListProps = {
+  data: GetTollTagsQuery | undefined;
+  loading: boolean;
+  error: ApolloError | undefined;
+};
+
+const TollTagList = ({ data, loading, error }: TollTagListProps) => {
   const changeCurrentTollTag = (tollTag: TollTag) => {
     const chosenTollTag: TollTagUpdateModalItem = {
       id: tollTag.id,
@@ -21,8 +28,6 @@ const TollTagList = () => {
     };
     currentTollTagVar(chosenTollTag);
   };
-
-  const { data, loading, error } = useGetTollTagsQuery();
 
   if (loading) {
     return <Loading />;

@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 
 const Home: NextPage = () => {
   return (
-    <Layout hasQuickActionButton={false}>
+    <Layout hasQuickActionButton={false} pageSearchable={false}>
       <div></div>
     </Layout>
   );

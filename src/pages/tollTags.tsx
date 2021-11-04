@@ -5,18 +5,39 @@ import CreateTollTagModal from 'components/TollTags/Modal/Create/CreateTollTagMo
 import UpdateTollTagModal from 'components/TollTags/Modal/Update/UpdateTollTagModal';
 import DeleteTollTagModal from 'components/TollTags/Modal/Delete/DeleteTollTagModal';
 import { addTollTagModalStateVar } from 'constants/apollo-client';
+import { FormEvent, FormEventHandler, useState } from 'react';
+import { useGetTollTagsQuery } from 'generated/graphql';
 
 const TollTags: NextPage = () => {
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
+  const { data, loading, error, refetch } = useGetTollTagsQuery();
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const submitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      data: {
+        searchCriteria: searchCriteria,
+      },
+    });
+  };
+
   return (
     <Layout
       hasQuickActionButton={true}
       quickAction={addTollTagModalStateVar}
       quickActionLabel="New Tag"
+      pageSearchable={true}
+      searchSubmitHandler={submitHandler}
+      setSearchCriteria={changeSearchCriteria}
     >
       <CreateTollTagModal />
       <UpdateTollTagModal />
       <DeleteTollTagModal />
-      <TollTagList />
+      <TollTagList data={data} loading={loading} error={error} />
     </Layout>
   );
 };
