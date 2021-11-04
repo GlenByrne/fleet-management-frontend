@@ -35,7 +35,7 @@ const CreateDepotModal = () => {
         cache.writeQuery({
           query: GetDepotsDocument,
           data: {
-            fuelCards: [{ ...currentDepots.depots }, newDepot],
+            depots: [{ ...currentDepots.depots }, newDepot],
           },
         });
       }
