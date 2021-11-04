@@ -7,6 +7,9 @@ import DeleteFuelCardModal from 'components/FuelCards/Modal/Delete/DeleteFuelCar
 import { addFuelCardModalStateVar } from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetFuelCardsQuery } from 'generated/graphql';
+import CreateFuelCardAlert from 'components/FuelCards/Alerts/CreateFuelCardAlert';
+import UpdateFuelCardAlert from 'components/FuelCards/Alerts/UpdateFuelCardAlert';
+import DeleteFuelCardAlert from 'components/FuelCards/Alerts/DeleteFuelCardAlert';
 
 const FuelCards: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -37,6 +40,9 @@ const FuelCards: NextPage = () => {
       <CreateFuelCardModal />
       <UpdateFuelCardModal />
       <DeleteFuelCardModal />
+      <CreateFuelCardAlert />
+      <UpdateFuelCardAlert />
+      <DeleteFuelCardAlert />
       <FuelCardList data={data} loading={loading} error={error} />
     </Layout>
   );

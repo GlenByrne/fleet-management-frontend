@@ -20,7 +20,11 @@ import {
 } from 'generated/graphql';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
-import { addTollTagModalStateVar } from 'constants/apollo-client';
+import {
+  addTollTagModalStateVar,
+  createTollTagAlertStateVar,
+  errorAlertStateVar,
+} from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 
 const getDepotOptions = (depots: Depot[]) => {
@@ -87,15 +91,21 @@ const CreateTollTagModal = () => {
 
     addTollTagModalStateVar(false);
 
-    addTollTag({
-      variables: {
-        data: {
-          tagNumber: tagNumber != null ? tagNumber : '',
-          tagProvider: tagProvider != null ? tagProvider : '',
-          depotId: depot.value != null ? depot.value : '',
+    try {
+      addTollTag({
+        variables: {
+          data: {
+            tagNumber: tagNumber != null ? tagNumber : '',
+            tagProvider: tagProvider != null ? tagProvider : '',
+            depotId: depot.value != null ? depot.value : '',
+          },
         },
-      },
-    });
+      });
+
+      createTollTagAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
 
     setTagNumber('');
     setTagProvider('');

@@ -13,7 +13,9 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import {
   currentFuelCardVar,
+  deleteFuelCardAlertStateVar,
   deleteFuelCardModalStateVar,
+  errorAlertStateVar,
 } from 'constants/apollo-client';
 
 const DeleteFuelCardModal = () => {
@@ -48,13 +50,18 @@ const DeleteFuelCardModal = () => {
 
   const deleteCardHandler = (id: string) => {
     deleteFuelCardModalStateVar(false);
-    deleteFuelCard({
-      variables: {
-        data: {
-          id: id,
+    try {
+      deleteFuelCard({
+        variables: {
+          data: {
+            id: id,
+          },
         },
-      },
-    });
+      });
+      deleteFuelCardAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   const cancelButtonRef = useRef(null);

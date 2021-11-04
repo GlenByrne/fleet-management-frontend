@@ -2,7 +2,9 @@ import { useReactiveVar } from '@apollo/client';
 import { ExclamationIcon } from '@heroicons/react/solid';
 import {
   currentDepotVar,
+  deleteDepotAlertStateVar,
   deleteDepotModalStateVar,
+  errorAlertStateVar,
 } from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';
 import Modal from 'core/Modal/Modal';
@@ -48,13 +50,19 @@ const DeleteDepotModal = () => {
 
   const deleteDepotHandler = (id: string) => {
     deleteDepotModalStateVar(false);
-    deleteDepot({
-      variables: {
-        data: {
-          id: id,
+    try {
+      deleteDepot({
+        variables: {
+          data: {
+            id: id,
+          },
         },
-      },
-    });
+      });
+
+      deleteDepotAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   const cancelButtonRef = useRef(null);

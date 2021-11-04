@@ -22,6 +22,8 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   currentTollTagVar,
+  errorAlertStateVar,
+  updateTollTagAlertStateVar,
   updateTollTagModalStateVar,
 } from 'constants/apollo-client';
 
@@ -85,16 +87,22 @@ const UpdateTollTagModal = () => {
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     updateTollTagModalStateVar(false);
-    updateTollTag({
-      variables: {
-        data: {
-          id: currentTag.id,
-          tagNumber: tagNumber != null ? tagNumber : '',
-          tagProvider: tagProvider != null ? tagProvider : '',
-          depotId: depot.value != null ? depot.value : '',
+    try {
+      updateTollTag({
+        variables: {
+          data: {
+            id: currentTag.id,
+            tagNumber: tagNumber != null ? tagNumber : '',
+            tagProvider: tagProvider != null ? tagProvider : '',
+            depotId: depot.value != null ? depot.value : '',
+          },
         },
-      },
-    });
+      });
+
+      updateTollTagAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   if (loading) {

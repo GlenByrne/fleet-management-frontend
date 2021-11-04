@@ -21,7 +21,11 @@ import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
-import { addFuelCardModalStateVar } from 'constants/apollo-client';
+import {
+  addFuelCardModalStateVar,
+  createFuelCardAlertStateVar,
+  errorAlertStateVar,
+} from 'constants/apollo-client';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -88,15 +92,21 @@ const CreateFuelCardModal = () => {
 
     addFuelCardModalStateVar(false);
 
-    addFuelCard({
-      variables: {
-        data: {
-          cardNumber: cardNumber != null ? cardNumber : '',
-          cardProvider: cardProvider != null ? cardProvider : '',
-          depotId: depot.value != null ? depot.value : '',
+    try {
+      addFuelCard({
+        variables: {
+          data: {
+            cardNumber: cardNumber != null ? cardNumber : '',
+            cardProvider: cardProvider != null ? cardProvider : '',
+            depotId: depot.value != null ? depot.value : '',
+          },
         },
-      },
-    });
+      });
+
+      createFuelCardAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
 
     setCardNumber('');
     setCardProvider('');

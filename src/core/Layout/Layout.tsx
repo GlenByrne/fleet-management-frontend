@@ -48,6 +48,14 @@ const Layout = ({
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
+
   const userNavigation: UserNavbarOption[] = [
     { name: 'Your Profile', onClick: () => {} },
     { name: 'Settings', onClick: () => {} },

@@ -1,6 +1,10 @@
 import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
-import { addDepotModalStateVar } from 'constants/apollo-client';
+import {
+  addDepotModalStateVar,
+  createDepotAlertStateVar,
+  errorAlertStateVar,
+} from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';
 import Modal from 'core/Modal/Modal';
 import {
@@ -48,16 +52,20 @@ const CreateDepotModal = () => {
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-
     addDepotModalStateVar(false);
 
-    addDepot({
-      variables: {
-        data: {
-          name: name != null ? name : '',
+    try {
+      addDepot({
+        variables: {
+          data: {
+            name: name != null ? name : '',
+          },
         },
-      },
-    });
+      });
+      createDepotAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
 
     setName('');
   };

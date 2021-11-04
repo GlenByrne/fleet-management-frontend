@@ -7,6 +7,9 @@ import DeleteVehicleModal from 'components/Vehicles/Modal/Delete/DeleteVehicleMo
 import { addVehicleModalStateVar } from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetVehiclesQuery } from 'generated/graphql';
+import CreateVehicleAlert from 'components/Vehicles/Alerts/CreateVehicleAlert';
+import UpdateVehicleAlert from 'components/Vehicles/Alerts/UpdateVehicleAlert';
+import DeleteVehicleAlert from 'components/Vehicles/Alerts/DeleteVehicleAlert';
 
 const Vehicles: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -37,6 +40,9 @@ const Vehicles: NextPage = () => {
       <CreateVehicleModal />
       <UpdateVehicleModal />
       <DeleteVehicleModal />
+      <CreateVehicleAlert />
+      <UpdateVehicleAlert />
+      <DeleteVehicleAlert />
       <VehicleList data={data} loading={loading} error={error} />
     </Layout>
   );

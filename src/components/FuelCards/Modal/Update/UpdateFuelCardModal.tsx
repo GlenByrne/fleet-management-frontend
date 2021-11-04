@@ -22,6 +22,8 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   currentFuelCardVar,
+  errorAlertStateVar,
+  updateFuelCardAlertStateVar,
   updateFuelCardModalStateVar,
 } from 'constants/apollo-client';
 
@@ -86,16 +88,22 @@ const UpdateFuelCardModal = () => {
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     updateFuelCardModalStateVar(false);
-    updateFuelCard({
-      variables: {
-        data: {
-          id: currentCard.id,
-          cardNumber: cardNumber != null ? cardNumber : '',
-          cardProvider: cardProvider != null ? cardProvider : '',
-          depotId: depot.value != null ? depot.value : '',
+    try {
+      updateFuelCard({
+        variables: {
+          data: {
+            id: currentCard.id,
+            cardNumber: cardNumber != null ? cardNumber : '',
+            cardProvider: cardProvider != null ? cardProvider : '',
+            depotId: depot.value != null ? depot.value : '',
+          },
         },
-      },
-    });
+      });
+
+      updateFuelCardAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   if (loading) {

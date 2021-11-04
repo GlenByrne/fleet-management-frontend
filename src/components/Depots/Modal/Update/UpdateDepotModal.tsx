@@ -2,6 +2,8 @@ import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
 import {
   currentDepotVar,
+  errorAlertStateVar,
+  updateDepotAlertStateVar,
   updateDepotModalStateVar,
 } from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';
@@ -49,14 +51,20 @@ const UpdateDepotModal = () => {
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     updateDepotModalStateVar(false);
-    updateDepot({
-      variables: {
-        data: {
-          id: currentDepot.id,
-          name: name != null ? name : '',
+    try {
+      updateDepot({
+        variables: {
+          data: {
+            id: currentDepot.id,
+            name: name != null ? name : '',
+          },
         },
-      },
-    });
+      });
+
+      updateDepotAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   return (

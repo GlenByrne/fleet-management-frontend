@@ -26,7 +26,9 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   currentVehicleVar,
+  errorAlertStateVar,
   updateVehicleModalStateVar,
+  updateVehicleAlertStateVar,
 } from 'constants/apollo-client';
 
 const getDepotOptions = (depots: Depot[]) => {
@@ -205,22 +207,29 @@ const UpdateVehicleModal = () => {
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     updateVehicleModalStateVar(false);
-    updateVehicle({
-      variables: {
-        data: {
-          id: currentVehicle.id,
-          type:
-            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
-          registration: registration != null ? registration : '',
-          make: make != null ? make : '',
-          model: model != null ? model : '',
-          owner: owner != null ? owner : '',
-          depotId: depot.value != null ? depot.value : '',
-          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
-          tollTagId: tollTag.value === '' ? null : tollTag.value,
+    try {
+      updateVehicle({
+        variables: {
+          data: {
+            id: currentVehicle.id,
+            type:
+              type.value != null
+                ? (type.value as VehicleType)
+                : VehicleType.Van,
+            registration: registration != null ? registration : '',
+            make: make != null ? make : '',
+            model: model != null ? model : '',
+            owner: owner != null ? owner : '',
+            depotId: depot.value != null ? depot.value : '',
+            fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+            tollTagId: tollTag.value === '' ? null : tollTag.value,
+          },
         },
-      },
-    });
+      });
+      updateVehicleAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   if (loading) {

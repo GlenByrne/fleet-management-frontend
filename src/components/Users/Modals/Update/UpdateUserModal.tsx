@@ -20,6 +20,8 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   currentUserVar,
+  errorAlertStateVar,
+  updateUserAlertStateVar,
   updateUserModalStateVar,
 } from 'constants/apollo-client';
 
@@ -101,17 +103,23 @@ const UpdateUserModal = () => {
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     updateUserModalStateVar(false);
-    updateUser({
-      variables: {
-        data: {
-          id: currentUser.id,
-          name: name != null ? name : '',
-          email: email != null ? email : '',
-          depotId: depot.value != null ? depot.value : '',
-          role: role.value != null ? (role.value as Role) : Role.User,
+    try {
+      updateUser({
+        variables: {
+          data: {
+            id: currentUser.id,
+            name: name != null ? name : '',
+            email: email != null ? email : '',
+            depotId: depot.value != null ? depot.value : '',
+            role: role.value != null ? (role.value as Role) : Role.User,
+          },
         },
-      },
-    });
+      });
+
+      updateUserAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   if (loading) {

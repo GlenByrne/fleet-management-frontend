@@ -7,6 +7,9 @@ import DeleteUserModal from 'components/Users/Modals/Delete/DeleteUserModal';
 import UpdateUserModal from 'components/Users/Modals/Update/UpdateUserModal';
 import { FormEventHandler, useState, FormEvent } from 'react';
 import { useGetUsersQuery } from 'generated/graphql';
+import CreateUserAlert from 'components/Users/Alerts/CreateUserAlert';
+import UpdateUserAlert from 'components/Users/Alerts/UpdateUserAlert';
+import DeleteUserAlert from 'components/Users/Alerts/DeleteUserAlert';
 
 const Users: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -37,6 +40,9 @@ const Users: NextPage = () => {
       <CreateUserModal />
       <UpdateUserModal />
       <DeleteUserModal />
+      <CreateUserAlert />
+      <UpdateUserAlert />
+      <DeleteUserAlert />
       <UserList data={data} loading={loading} error={error} />
     </Layout>
   );

@@ -20,7 +20,11 @@ import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
-import { addUserModalStateVar } from 'constants/apollo-client';
+import {
+  addUserModalStateVar,
+  createUserAlertStateVar,
+  errorAlertStateVar,
+} from 'constants/apollo-client';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -110,17 +114,23 @@ const CreateUserModal = () => {
     e.preventDefault();
     addUserModalStateVar(false);
 
-    addUser({
-      variables: {
-        data: {
-          name: name != null ? name : '',
-          email: email != null ? email : '',
-          password: password != null ? password : '',
-          depotId: depot.value != null ? depot.value : '',
-          role: role.value != null ? (role.value as Role) : Role.User,
+    try {
+      addUser({
+        variables: {
+          data: {
+            name: name != null ? name : '',
+            email: email != null ? email : '',
+            password: password != null ? password : '',
+            depotId: depot.value != null ? depot.value : '',
+            role: role.value != null ? (role.value as Role) : Role.User,
+          },
         },
-      },
-    });
+      });
+
+      createUserAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
 
     setName('');
     setEmail('');

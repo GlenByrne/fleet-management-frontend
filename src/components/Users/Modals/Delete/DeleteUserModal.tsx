@@ -10,7 +10,9 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import {
   currentUserVar,
+  deleteUserAlertStateVar,
   deleteUserModalStateVar,
+  errorAlertStateVar,
 } from 'constants/apollo-client';
 
 const DeleteUserModal = () => {
@@ -43,13 +45,19 @@ const DeleteUserModal = () => {
 
   const deleteUserHandler = (id: string) => {
     deleteUserModalStateVar(false);
-    deleteUser({
-      variables: {
-        data: {
-          id: id,
+    try {
+      deleteUser({
+        variables: {
+          data: {
+            id: id,
+          },
         },
-      },
-    });
+      });
+
+      deleteUserAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   const cancelButtonRef = useRef(null);

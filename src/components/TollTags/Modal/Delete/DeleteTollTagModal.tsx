@@ -13,7 +13,9 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import {
   currentTollTagVar,
+  deleteTollTagAlertStateVar,
   deleteTollTagModalStateVar,
+  errorAlertStateVar,
 } from 'constants/apollo-client';
 
 const DeleteTollTagModal = () => {
@@ -48,13 +50,19 @@ const DeleteTollTagModal = () => {
 
   const deleteTagHandler = (id: string) => {
     deleteTollTagModalStateVar(false);
-    deleteTollTag({
-      variables: {
-        data: {
-          id: id,
+    try {
+      deleteTollTag({
+        variables: {
+          data: {
+            id: id,
+          },
         },
-      },
-    });
+      });
+
+      deleteTollTagAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+    }
   };
 
   const cancelButtonRef = useRef(null);
