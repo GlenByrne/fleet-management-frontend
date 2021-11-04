@@ -4,6 +4,7 @@ type ModalFormInputProps = {
   label: string;
   name: string;
   type: string;
+  autoComplete?: string;
   required: boolean;
   value?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
@@ -13,6 +14,7 @@ const ModalFormInput = ({
   label,
   name,
   type,
+  autoComplete,
   required,
   value,
   onChange,
@@ -35,6 +37,7 @@ const ModalFormInput = ({
           type={type}
           name={name}
           id={name}
+          autoComplete={autoComplete || 'off'}
           value={value}
           onChange={onChange}
           className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"

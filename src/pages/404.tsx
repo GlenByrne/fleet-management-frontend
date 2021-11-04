@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const AlreadyLoggedIn = () => {
+const Custom404 = () => {
   return (
     <>
       {/*
@@ -28,13 +28,13 @@ const AlreadyLoggedIn = () => {
           <div className="py-16">
             <div className="text-center">
               <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wide">
-                Mate
+                404 error
               </p>
               <h1 className="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
-                Your&apos;e already logged in.
+                Page not found.
               </h1>
               <p className="mt-2 text-base text-gray-500">
-                You don&apos;t need to be here.
+                Sorry, we couldn’t find the page you’re looking for.
               </p>
               <div className="mt-6">
                 <Link href={'/vehicles'}>
@@ -51,4 +51,4 @@ const AlreadyLoggedIn = () => {
   );
 };
 
-export default AlreadyLoggedIn;
+export default Custom404;

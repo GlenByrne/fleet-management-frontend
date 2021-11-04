@@ -21,6 +21,7 @@ const navigation: NavbarOption[] = [
   { name: 'Fuel Cards', href: '/fuelCards' },
   { name: 'Toll Tags', href: '/tollTags' },
   { name: 'Depots', href: '/depots' },
+  { name: 'Users', href: '/users' },
 ];
 
 const Navbar = ({

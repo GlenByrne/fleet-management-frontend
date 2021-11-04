@@ -5,12 +5,12 @@ import {
   makeVar,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { Role, User, VehicleType } from 'generated/graphql';
+import { Role, VehicleType } from 'generated/graphql';
 import {
   DepotUpdateModalItem,
   FuelCardUpdateModalItem,
   TollTagUpdateModalItem,
-  UserDisplayDetails,
+  UserUpdateModalItem,
   VehicleUpdateModalItem,
 } from './types';
 
@@ -63,6 +63,14 @@ const initialDepot: DepotUpdateModalItem = {
   name: '',
 };
 
+const initialUser: UserUpdateModalItem = {
+  id: '',
+  name: '',
+  email: '',
+  role: Role.User,
+  depot: null,
+};
+
 export const currentFuelCardVar =
   makeVar<FuelCardUpdateModalItem>(initialFuelCard);
 
@@ -74,7 +82,7 @@ export const currentVehicleVar =
 
 export const currentDepotVar = makeVar<DepotUpdateModalItem>(initialDepot);
 
-export const currentUserVar = makeVar<UserDisplayDetails | null>(null);
+export const currentUserVar = makeVar<UserUpdateModalItem>(initialUser);
 
 export const hasAccessVar = makeVar(false);
 
@@ -97,6 +105,11 @@ export const deleteTollTagModalStateVar = makeVar(false);
 export const addDepotModalStateVar = makeVar(false);
 export const updateDepotModalStateVar = makeVar(false);
 export const deleteDepotModalStateVar = makeVar(false);
+
+// User Modals states
+export const addUserModalStateVar = makeVar(false);
+export const updateUserModalStateVar = makeVar(false);
+export const deleteUserModalStateVar = makeVar(false);
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
@@ -138,6 +151,11 @@ const client = new ApolloClient({
           currentDepot: {
             read() {
               return currentDepotVar();
+            },
+          },
+          currentUser: {
+            read() {
+              return currentUserVar();
             },
           },
         },

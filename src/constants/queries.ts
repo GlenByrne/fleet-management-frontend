@@ -177,6 +177,15 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD = gql`
   }
 `;
 
+export const GET_SELECTABLE_ITEMS_FOR_ADD_USER = gql`
+  query GetSelectableItemsForAddUser {
+    depots {
+      id
+      name
+    }
+  }
+`;
+
 export const GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD = gql`
   query GetSelectableItemsForUpdateFuelCard {
     depots {
@@ -188,6 +197,15 @@ export const GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD = gql`
 
 export const GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG = gql`
   query GetSelectableItemsForUpdateTollTag {
+    depots {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_SELECTABLE_ITEMS_FOR_UPDATE_USER = gql`
+  query GetSelectableItemsForUpdateUser {
     depots {
       id
       name
@@ -410,27 +428,27 @@ export const LOGIN = gql`
   }
 `;
 
-export const REGISTER = gql`
-  mutation Register($data: RegisterInput!) {
-    register(data: $data) {
-      user {
-        id
-        name
-        email
-        role
-        company {
-          id
-          name
-        }
-        depot {
-          id
-          name
-        }
-      }
-      token
-    }
-  }
-`;
+// export const REGISTER = gql`
+//   mutation Register($data: RegisterInput!) {
+//     register(data: $data) {
+//       user {
+//         id
+//         name
+//         email
+//         role
+//         company {
+//           id
+//           name
+//         }
+//         depot {
+//           id
+//           name
+//         }
+//       }
+//       token
+//     }
+//   }
+// `;
 
 export const ADD_COMPANY = gql`
   mutation AddCompany($data: AddCompanyInput!) {
@@ -444,6 +462,59 @@ export const ADD_COMPANY = gql`
         name
       }
       token
+    }
+  }
+`;
+
+export const GET_USERS = gql`
+  query GetUsers {
+    users {
+      id
+      name
+      email
+      role
+      depot {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const ADD_USER = gql`
+  mutation AddUser($data: AddUserInput!) {
+    addUser(data: $data) {
+      id
+      name
+      email
+      role
+      depot {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($data: UpdateUserInput!) {
+    updateUser(data: $data) {
+      id
+      name
+      role
+      depot {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser($data: DeleteUserInput!) {
+    deleteUser(data: $data) {
+      id
+      name
     }
   }
 `;

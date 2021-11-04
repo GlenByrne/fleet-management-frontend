@@ -1,8 +1,8 @@
-type NoVehiclesAddButtonProps = {
+type NoUsersAddButtonProps = {
   onClick: (state: boolean) => void;
 };
 
-const NoVehiclesAddButton = ({ onClick }: NoVehiclesAddButtonProps) => {
+const NoUsersAddButton = ({ onClick }: NoUsersAddButtonProps) => {
   return (
     <button
       type="button"
@@ -25,10 +25,10 @@ const NoVehiclesAddButton = ({ onClick }: NoVehiclesAddButtonProps) => {
         />
       </svg>
       <span className="mt-2 block text-sm font-medium text-gray-900">
-        Add a new vehicle
+        Add a new user
       </span>
     </button>
   );
 };
 
-export default NoVehiclesAddButton;
+export default NoUsersAddButton;

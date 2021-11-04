@@ -1,8 +1,4 @@
-import {
-  useAddCompanyMutation,
-  useLoginMutation,
-  useRegisterMutation,
-} from 'generated/graphql';
+import { useAddCompanyMutation } from 'generated/graphql';
 import { useState } from 'react';
 import { NextPage } from 'next';
 import { FormEventHandler, FormEvent } from 'react';

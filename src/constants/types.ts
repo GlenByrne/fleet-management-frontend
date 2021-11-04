@@ -74,16 +74,11 @@ export type DepotUpdateModalItem = {
   name: string;
 };
 
-export type UserDisplayDetails = {
+export type UserUpdateModalItem = {
   id: string;
   email: string;
-  password: string;
   role: Role;
   name: string;
-  company: {
-    id: string;
-    name: string;
-  };
   depot: {
     id: string;
     name: string;

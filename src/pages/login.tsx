@@ -2,7 +2,6 @@ import { NextPage } from 'next';
 import LoginForm from 'components/Login/LoginForm';
 import AlreadyLoggedIn from 'components/Login/AlreadyLoggedIn';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Loading from 'core/Loading';
 
