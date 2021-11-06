@@ -48,10 +48,10 @@ const DeleteFuelCardModal = () => {
     ],
   });
 
-  const deleteCardHandler = (id: string) => {
+  const deleteCardHandler = async (id: string) => {
     deleteFuelCardModalStateVar(false);
     try {
-      deleteFuelCard({
+      await deleteFuelCard({
         variables: {
           data: {
             id: id,
@@ -61,6 +61,7 @@ const DeleteFuelCardModal = () => {
       deleteFuelCardAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error deleting fuel card');
     }
   };
 

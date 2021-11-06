@@ -86,13 +86,12 @@ const CreateTollTagModal = () => {
     ],
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-
     addTollTagModalStateVar(false);
 
     try {
-      addTollTag({
+      await addTollTag({
         variables: {
           data: {
             tagNumber: tagNumber != null ? tagNumber : '',
@@ -105,6 +104,7 @@ const CreateTollTagModal = () => {
       createTollTagAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error adding toll tag');
     }
 
     setTagNumber('');

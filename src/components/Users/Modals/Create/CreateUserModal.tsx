@@ -110,12 +110,12 @@ const CreateUserModal = () => {
 
   const cancelButtonRef = useRef(null);
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     addUserModalStateVar(false);
 
     try {
-      addUser({
+      await addUser({
         variables: {
           data: {
             name: name != null ? name : '',
@@ -130,6 +130,7 @@ const CreateUserModal = () => {
       createUserAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error adding user');
     }
 
     setName('');

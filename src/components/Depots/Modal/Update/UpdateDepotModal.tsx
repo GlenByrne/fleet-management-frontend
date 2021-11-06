@@ -48,11 +48,11 @@ const UpdateDepotModal = () => {
     ],
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     updateDepotModalStateVar(false);
     try {
-      updateDepot({
+      await updateDepot({
         variables: {
           data: {
             id: currentDepot.id,
@@ -64,6 +64,7 @@ const UpdateDepotModal = () => {
       updateDepotAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error updating depot');
     }
   };
 

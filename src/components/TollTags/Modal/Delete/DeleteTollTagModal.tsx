@@ -48,10 +48,10 @@ const DeleteTollTagModal = () => {
     ],
   });
 
-  const deleteTagHandler = (id: string) => {
+  const deleteTagHandler = async (id: string) => {
     deleteTollTagModalStateVar(false);
     try {
-      deleteTollTag({
+      await deleteTollTag({
         variables: {
           data: {
             id: id,
@@ -62,6 +62,7 @@ const DeleteTollTagModal = () => {
       deleteTollTagAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error deleting toll tag');
     }
   };
 

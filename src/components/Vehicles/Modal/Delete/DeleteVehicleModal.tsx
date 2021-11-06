@@ -53,10 +53,10 @@ const DeleteVehicleModal = () => {
     ],
   });
 
-  const deleteVehicleHandler = (id: string) => {
+  const deleteVehicleHandler = async (id: string) => {
     deleteVehicleModalStateVar(false);
     try {
-      deleteVehicle({
+      await deleteVehicle({
         variables: {
           data: {
             id: id,
@@ -66,6 +66,7 @@ const DeleteVehicleModal = () => {
       deleteVehicleAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error deleting vehicle');
     }
   };
 

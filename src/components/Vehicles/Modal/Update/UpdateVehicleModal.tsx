@@ -228,7 +228,8 @@ const UpdateVehicleModal = () => {
       });
       updateVehicleAlertStateVar(true);
     } catch (error) {
-      console.log(error);
+      errorAlertStateVar(true);
+      throw new Error('Error updating vehicle');
     }
   };
 

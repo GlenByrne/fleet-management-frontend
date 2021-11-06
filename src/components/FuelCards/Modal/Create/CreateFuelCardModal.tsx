@@ -87,13 +87,13 @@ const CreateFuelCardModal = () => {
     ],
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
 
     addFuelCardModalStateVar(false);
 
     try {
-      addFuelCard({
+      await addFuelCard({
         variables: {
           data: {
             cardNumber: cardNumber != null ? cardNumber : '',
@@ -106,6 +106,7 @@ const CreateFuelCardModal = () => {
       createFuelCardAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error adding fuel card');
     }
 
     setCardNumber('');

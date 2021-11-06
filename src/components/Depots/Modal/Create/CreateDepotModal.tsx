@@ -50,12 +50,12 @@ const CreateDepotModal = () => {
     ],
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     addDepotModalStateVar(false);
 
     try {
-      addDepot({
+      await addDepot({
         variables: {
           data: {
             name: name != null ? name : '',
@@ -65,6 +65,7 @@ const CreateDepotModal = () => {
       createDepotAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error adding depot');
     }
 
     setName('');

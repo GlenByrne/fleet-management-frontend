@@ -85,11 +85,11 @@ const UpdateFuelCardModal = () => {
     ],
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     updateFuelCardModalStateVar(false);
     try {
-      updateFuelCard({
+      await updateFuelCard({
         variables: {
           data: {
             id: currentCard.id,
@@ -103,6 +103,7 @@ const UpdateFuelCardModal = () => {
       updateFuelCardAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error updating fuel card');
     }
   };
 

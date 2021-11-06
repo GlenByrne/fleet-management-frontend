@@ -84,11 +84,11 @@ const UpdateTollTagModal = () => {
     ],
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     updateTollTagModalStateVar(false);
     try {
-      updateTollTag({
+      await updateTollTag({
         variables: {
           data: {
             id: currentTag.id,
@@ -102,6 +102,7 @@ const UpdateTollTagModal = () => {
       updateTollTagAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error updating toll tag');
     }
   };
 

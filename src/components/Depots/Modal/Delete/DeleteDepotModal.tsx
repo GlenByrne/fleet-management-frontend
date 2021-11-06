@@ -48,10 +48,10 @@ const DeleteDepotModal = () => {
     ],
   });
 
-  const deleteDepotHandler = (id: string) => {
+  const deleteDepotHandler = async (id: string) => {
     deleteDepotModalStateVar(false);
     try {
-      deleteDepot({
+      await deleteDepot({
         variables: {
           data: {
             id: id,
@@ -62,6 +62,7 @@ const DeleteDepotModal = () => {
       deleteDepotAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error deleting depot');
     }
   };
 

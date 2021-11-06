@@ -100,11 +100,11 @@ const UpdateUserModal = () => {
 
   const [updateUser] = useUpdateUserMutation();
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     updateUserModalStateVar(false);
     try {
-      updateUser({
+      await updateUser({
         variables: {
           data: {
             id: currentUser.id,
@@ -119,6 +119,7 @@ const UpdateUserModal = () => {
       updateUserAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error updating user');
     }
   };
 

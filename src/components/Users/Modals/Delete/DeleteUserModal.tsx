@@ -43,10 +43,10 @@ const DeleteUserModal = () => {
     },
   });
 
-  const deleteUserHandler = (id: string) => {
+  const deleteUserHandler = async (id: string) => {
     deleteUserModalStateVar(false);
     try {
-      deleteUser({
+      await deleteUser({
         variables: {
           data: {
             id: id,
@@ -57,6 +57,7 @@ const DeleteUserModal = () => {
       deleteUserAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error deleting user');
     }
   };
 

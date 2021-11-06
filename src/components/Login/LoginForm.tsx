@@ -20,16 +20,20 @@ const LoginForm = () => {
     },
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    login({
-      variables: {
-        data: {
-          email: email,
-          password: password,
+    try {
+      await login({
+        variables: {
+          data: {
+            email: email,
+            password: password,
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+      throw new Error('Error logging in');
+    }
   };
 
   const changeEmail = (event: FormEvent<HTMLInputElement>) => {

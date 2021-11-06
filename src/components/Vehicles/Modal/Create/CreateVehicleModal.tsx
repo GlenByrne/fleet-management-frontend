@@ -170,11 +170,11 @@ const CreateVehicleModal = () => {
 
   const cancelButtonRef = useRef(null);
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     addVehicleModalStateVar(false);
     try {
-      addVehicle({
+      await addVehicle({
         variables: {
           data: {
             type:
@@ -195,6 +195,7 @@ const CreateVehicleModal = () => {
       createVehicleAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
+      throw new Error('Error adding vehicle');
     }
 
     setType({
