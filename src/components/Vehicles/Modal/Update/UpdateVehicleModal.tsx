@@ -204,11 +204,11 @@ const UpdateVehicleModal = () => {
     ],
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     updateVehicleModalStateVar(false);
     try {
-      updateVehicle({
+      await updateVehicle({
         variables: {
           data: {
             id: currentVehicle.id,
@@ -227,8 +227,8 @@ const UpdateVehicleModal = () => {
         },
       });
       updateVehicleAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
+    } catch (error) {
+      console.log(error);
     }
   };
 

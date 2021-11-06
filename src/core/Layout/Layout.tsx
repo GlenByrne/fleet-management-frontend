@@ -1,7 +1,6 @@
 import { ReactNode, ChangeEventHandler, FormEventHandler } from 'react';
 import Head from 'next/head';
 import ClientOnly from 'core/ClientOnly/ClientOnly';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { NavbarOption, UserNavbarOption } from 'constants/types';
 import {
@@ -13,9 +12,10 @@ import {
   UsersIcon,
 } from '@heroicons/react/solid';
 import { useState } from 'react';
-import client from 'constants/apollo-client';
 import SideNav from 'core/Layout/SideNav';
 import ContentArea from './ContentArea';
+import { checkAuth, logOut } from 'utilities/auth';
+import { logoutAlertVar } from 'constants/apollo-client';
 
 type LayoutProps = {
   children: ReactNode;
@@ -45,16 +45,7 @@ const Layout = ({
   searchSubmitHandler,
   setSearchCriteria,
 }: LayoutProps) => {
-  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      router.push('/login');
-    }
-  }, [router]);
 
   const userNavigation: UserNavbarOption[] = [
     { name: 'Your Profile', onClick: () => {} },
@@ -62,20 +53,15 @@ const Layout = ({
     {
       name: 'Sign out',
       onClick: () => {
-        localStorage.removeItem('token');
-        router.push('/login');
-        client.clearStore();
+        logOut();
+        logoutAlertVar(true);
       },
     },
   ];
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      router.push('/login');
-    }
-  }, [router]);
+    checkAuth();
+  }, []);
 
   return (
     <div className="flex h-screen">

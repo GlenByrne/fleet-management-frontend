@@ -1,9 +1,11 @@
 import {
   ApolloClient,
   createHttpLink,
+  from,
   InMemoryCache,
   makeVar,
 } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import { Role, VehicleType } from 'generated/graphql';
 import {
@@ -13,6 +15,7 @@ import {
   UserUpdateModalItem,
   VehicleUpdateModalItem,
 } from './types';
+import { logOut } from 'utilities/auth';
 
 const initialFuelCard: FuelCardUpdateModalItem = {
   id: '',
@@ -136,6 +139,10 @@ export const createDepotAlertStateVar = makeVar(false);
 export const updateDepotAlertStateVar = makeVar(false);
 export const deleteDepotAlertStateVar = makeVar(false);
 
+// Logout Alerts
+export const logoutAlertVar = makeVar(false);
+export const authTimeoutAlertVar = makeVar(false);
+
 export const errorAlertStateVar = makeVar(false);
 
 const httpLink = createHttpLink({
@@ -154,8 +161,17 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    logOut();
+    authTimeoutAlertVar(true);
+  } else if (networkError) {
+    errorAlertStateVar(true);
+  }
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([errorLink, authLink.concat(httpLink)]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

@@ -4,6 +4,8 @@ import AlreadyLoggedIn from 'components/Login/AlreadyLoggedIn';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Loading from 'core/Loading';
+import LogoutAlert from 'components/Login/Alerts/LogoutAlert';
+import AuthTimeoutAlert from 'components/Login/Alerts/AuthTimeoutAlert';
 
 const Login: NextPage = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -24,7 +26,15 @@ const Login: NextPage = () => {
     return <Loading />;
   }
 
-  return loggedIn ? <AlreadyLoggedIn /> : <LoginForm />;
+  return loggedIn ? (
+    <AlreadyLoggedIn />
+  ) : (
+    <>
+      <LoginForm />
+      <LogoutAlert />
+      <AuthTimeoutAlert />
+    </>
+  );
 };
 
 export default Login;
