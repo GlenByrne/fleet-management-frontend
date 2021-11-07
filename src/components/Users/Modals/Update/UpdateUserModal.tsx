@@ -117,10 +117,7 @@ const UpdateUserModal = () => {
       });
 
       updateUserAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error updating user');
-    }
+    } catch {}
   };
 
   if (loading) {

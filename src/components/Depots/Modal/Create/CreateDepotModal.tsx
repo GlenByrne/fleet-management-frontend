@@ -63,10 +63,7 @@ const CreateDepotModal = () => {
         },
       });
       createDepotAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error adding depot');
-    }
+    } catch {}
 
     setName('');
   };

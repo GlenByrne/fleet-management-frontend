@@ -102,10 +102,7 @@ const CreateTollTagModal = () => {
       });
 
       createTollTagAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error adding toll tag');
-    }
+    } catch {}
 
     setTagNumber('');
     setTagProvider('');

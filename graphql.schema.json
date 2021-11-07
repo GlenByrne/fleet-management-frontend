@@ -118,7 +118,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "UsersPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -615,7 +615,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "UsersPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -2080,7 +2080,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "UsersPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -2154,7 +2154,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "UsersPayload",
               "ofType": null
             },
             "isDeprecated": false,

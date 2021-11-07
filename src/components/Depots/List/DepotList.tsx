@@ -3,9 +3,8 @@ import {
   addDepotModalStateVar,
   currentDepotVar,
 } from 'constants/apollo-client';
-import { DepotUpdateModalItem } from 'constants/types';
 import Loading from 'core/Loading';
-import { Depot, GetDepotsQuery } from 'generated/graphql';
+import { Depot, GetDepotsQuery, UpdateDepotInput } from 'generated/graphql';
 import DepotListItem from './DepotListItem';
 import NoDepotAddButton from './NoDepotAddButton';
 
@@ -17,7 +16,7 @@ type DepotListProps = {
 
 const DepotList = ({ data, loading, error }: DepotListProps) => {
   const changeCurrentDepot = (depot: Depot) => {
-    const chosenDepot: DepotUpdateModalItem = {
+    const chosenDepot: UpdateDepotInput = {
       id: depot.id,
       name: depot.name,
     };

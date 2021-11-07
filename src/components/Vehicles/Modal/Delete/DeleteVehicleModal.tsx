@@ -64,10 +64,7 @@ const DeleteVehicleModal = () => {
         },
       });
       deleteVehicleAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error deleting vehicle');
-    }
+    } catch {}
   };
 
   const cancelButtonRef = useRef(null);

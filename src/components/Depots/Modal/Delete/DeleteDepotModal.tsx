@@ -60,10 +60,7 @@ const DeleteDepotModal = () => {
       });
 
       deleteDepotAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error deleting depot');
-    }
+    } catch {}
   };
 
   const cancelButtonRef = useRef(null);

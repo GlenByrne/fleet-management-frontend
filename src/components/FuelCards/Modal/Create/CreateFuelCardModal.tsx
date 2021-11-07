@@ -104,10 +104,7 @@ const CreateFuelCardModal = () => {
       });
 
       createFuelCardAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error adding fuel card');
-    }
+    } catch {}
 
     setCardNumber('');
     setCardProvider('');

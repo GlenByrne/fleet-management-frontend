@@ -59,10 +59,7 @@ const DeleteFuelCardModal = () => {
         },
       });
       deleteFuelCardAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error deleting fuel card');
-    }
+    } catch {}
   };
 
   const cancelButtonRef = useRef(null);

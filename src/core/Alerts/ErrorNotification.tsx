@@ -1,15 +1,12 @@
 import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon, XIcon } from '@heroicons/react/solid';
-import { errorAlertStateVar } from 'constants/apollo-client';
-import { Fragment, useEffect, ReactNode } from 'react';
+import { errorAlertStateVar, errorTextVar } from 'constants/apollo-client';
+import { Fragment, useEffect } from 'react';
 
-type ErrorNotificationProps = {
-  children: ReactNode;
-};
-
-const ErrorNotification = ({ children }: ErrorNotificationProps) => {
+const ErrorNotification = () => {
   const alertState = useReactiveVar(errorAlertStateVar);
+  const errorText = useReactiveVar(errorTextVar);
 
   useEffect(() => {
     if (alertState === true) {
@@ -49,7 +46,7 @@ const ErrorNotification = ({ children }: ErrorNotificationProps) => {
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className="text-sm font-medium text-gray-900">
-                      An error occured
+                      {errorText}
                     </p>
                   </div>
                   <div className="ml-4 flex-shrink-0 flex">

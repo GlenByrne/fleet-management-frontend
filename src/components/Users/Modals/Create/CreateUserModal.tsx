@@ -128,10 +128,7 @@ const CreateUserModal = () => {
       });
 
       createUserAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error adding user');
-    }
+    } catch {}
 
     setName('');
     setEmail('');

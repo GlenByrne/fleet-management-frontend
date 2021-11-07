@@ -1,19 +1,14 @@
-import client from 'constants/apollo-client';
+import client, { loggedInUserVar } from 'constants/apollo-client';
 import Router from 'next/router';
 
 export const checkAuth = () => {
   const token = localStorage.getItem('token');
-  if (!token) {
-    Router.push('/login');
-  }
+  return Boolean(token);
 };
 
 export const logOut = () => {
   localStorage.removeItem('token');
+  loggedInUserVar(null);
   Router.push('/login');
   client.clearStore();
 };
-
-// export const login = ({token, token_expiry}, noRedirect) {
-
-// }

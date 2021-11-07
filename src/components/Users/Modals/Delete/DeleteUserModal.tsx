@@ -55,10 +55,7 @@ const DeleteUserModal = () => {
       });
 
       deleteUserAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error deleting user');
-    }
+    } catch {}
   };
 
   const cancelButtonRef = useRef(null);

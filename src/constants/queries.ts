@@ -394,10 +394,6 @@ export const GET_CURRENT_USER = gql`
       name
       email
       role
-      company {
-        id
-        name
-      }
       depot {
         id
         name
@@ -414,10 +410,6 @@ export const LOGIN = gql`
         email
         name
         role
-        company {
-          id
-          name
-        }
         depot {
           id
           name

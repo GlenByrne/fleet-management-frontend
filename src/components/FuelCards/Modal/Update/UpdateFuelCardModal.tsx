@@ -101,10 +101,7 @@ const UpdateFuelCardModal = () => {
       });
 
       updateFuelCardAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error updating fuel card');
-    }
+    } catch {}
   };
 
   if (loading) {

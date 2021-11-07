@@ -100,10 +100,7 @@ const UpdateTollTagModal = () => {
       });
 
       updateTollTagAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error updating toll tag');
-    }
+    } catch {}
   };
 
   if (loading) {

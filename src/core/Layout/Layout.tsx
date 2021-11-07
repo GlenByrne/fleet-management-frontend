@@ -16,6 +16,7 @@ import SideNav from 'core/Layout/SideNav';
 import ContentArea from './ContentArea';
 import { checkAuth, logOut } from 'utilities/auth';
 import { logoutAlertVar } from 'constants/apollo-client';
+import { useRouter } from 'next/router';
 
 type LayoutProps = {
   children: ReactNode;
@@ -45,6 +46,7 @@ const Layout = ({
   searchSubmitHandler,
   setSearchCriteria,
 }: LayoutProps) => {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const userNavigation: UserNavbarOption[] = [
@@ -60,8 +62,12 @@ const Layout = ({
   ];
 
   useEffect(() => {
-    checkAuth();
-  }, []);
+    const isLoggedIn = checkAuth();
+
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+  }, [router]);
 
   return (
     <div className="flex h-screen">

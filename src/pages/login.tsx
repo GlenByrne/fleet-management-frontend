@@ -6,15 +6,16 @@ import { useState } from 'react';
 import Loading from 'core/Loading';
 import LogoutAlert from 'components/Login/Alerts/LogoutAlert';
 import AuthTimeoutAlert from 'components/Login/Alerts/AuthTimeoutAlert';
+import { checkAuth } from 'utilities/auth';
 
 const Login: NextPage = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const isLoggedIn = checkAuth();
 
-    if (token) {
+    if (isLoggedIn) {
       setLoggedIn(true);
     } else {
       setLoggedIn(false);

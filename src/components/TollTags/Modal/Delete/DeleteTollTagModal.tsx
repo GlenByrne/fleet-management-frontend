@@ -60,10 +60,7 @@ const DeleteTollTagModal = () => {
       });
 
       deleteTollTagAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error deleting toll tag');
-    }
+    } catch {}
   };
 
   const cancelButtonRef = useRef(null);

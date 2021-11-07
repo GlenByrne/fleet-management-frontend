@@ -193,10 +193,7 @@ const CreateVehicleModal = () => {
       });
 
       createVehicleAlertStateVar(true);
-    } catch {
-      errorAlertStateVar(true);
-      throw new Error('Error adding vehicle');
-    }
+    } catch {}
 
     setType({
       value: VehicleType.Van,

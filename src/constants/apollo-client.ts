@@ -7,9 +7,13 @@ import {
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
-import { Role, VehicleType } from 'generated/graphql';
 import {
-  DepotUpdateModalItem,
+  Role,
+  UpdateDepotInput,
+  UsersPayload,
+  VehicleType,
+} from 'generated/graphql';
+import {
   FuelCardUpdateModalItem,
   TollTagUpdateModalItem,
   UserUpdateModalItem,
@@ -61,7 +65,7 @@ const initialVehicle: VehicleUpdateModalItem = {
   },
 };
 
-const initialDepot: DepotUpdateModalItem = {
+const initialDepot: UpdateDepotInput = {
   id: '',
   name: '',
 };
@@ -83,7 +87,7 @@ export const currentTollTagVar =
 export const currentVehicleVar =
   makeVar<VehicleUpdateModalItem>(initialVehicle);
 
-export const currentDepotVar = makeVar<DepotUpdateModalItem>(initialDepot);
+export const currentDepotVar = makeVar<UpdateDepotInput>(initialDepot);
 
 export const currentUserVar = makeVar<UserUpdateModalItem>(initialUser);
 
@@ -144,6 +148,9 @@ export const logoutAlertVar = makeVar(false);
 export const authTimeoutAlertVar = makeVar(false);
 
 export const errorAlertStateVar = makeVar(false);
+export const errorTextVar = makeVar('');
+
+export const loggedInUserVar = makeVar<UsersPayload | null>(null);
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
@@ -163,9 +170,17 @@ const authLink = setContext((_, { headers }) => {
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    logOut();
-    authTimeoutAlertVar(true);
+    graphQLErrors.map(({ message }) => {
+      if (message === 'Not Authorised!') {
+        logOut();
+        authTimeoutAlertVar(true);
+      } else {
+        errorTextVar(message);
+        errorAlertStateVar(true);
+      }
+    });
   } else if (networkError) {
+    errorTextVar('A network error has occured');
     errorAlertStateVar(true);
   }
 });

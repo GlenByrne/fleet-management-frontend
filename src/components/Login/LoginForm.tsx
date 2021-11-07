@@ -1,8 +1,9 @@
-import { useLoginMutation } from 'generated/graphql';
+import { useLoginMutation, UsersPayload } from 'generated/graphql';
 import { useState } from 'react';
 import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { loggedInUserVar } from 'constants/apollo-client';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -13,6 +14,7 @@ const LoginForm = () => {
     onCompleted: ({ login }) => {
       if (login.token) {
         localStorage.setItem('token', login.token);
+        loggedInUserVar(login.user as UsersPayload);
         router.push('/vehicles');
         setEmail('');
         setPassword('');
@@ -31,9 +33,7 @@ const LoginForm = () => {
           },
         },
       });
-    } catch (error) {
-      throw new Error('Error logging in');
-    }
+    } catch {}
   };
 
   const changeEmail = (event: FormEvent<HTMLInputElement>) => {

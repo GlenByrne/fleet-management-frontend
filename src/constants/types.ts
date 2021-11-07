@@ -1,5 +1,4 @@
 import { Role, VehicleType } from 'generated/graphql';
-import { ReactNode } from 'markdown-to-jsx/node_modules/@types/react';
 
 export type NavbarOption = {
   name: string;
@@ -69,11 +68,6 @@ export type TollTagUpdateModalItem = {
     id: string;
     name: string;
   };
-};
-
-export type DepotUpdateModalItem = {
-  id: string;
-  name: string;
 };
 
 export type UserUpdateModalItem = {
