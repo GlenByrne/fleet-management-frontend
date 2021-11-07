@@ -10,6 +10,9 @@ import {
 import Button from 'core/Table/Button';
 import { Vehicle } from 'generated/graphql';
 import Link from 'next/link';
+import classNames from 'utilities/classNames';
+import { dateStatus } from 'utilities/dateStatus';
+import { getDateClassNames } from 'utilities/getDateClassName';
 
 type VehicleListItemProps = {
   vehicle: Vehicle;
@@ -43,8 +46,24 @@ const VehicleListItem = ({
             <div className="mt-2 sm:flex sm:justify-between">
               <div className="sm:flex">
                 <p className="flex items-center text-sm text-gray-500">
-                  Model: {vehicle.make} {vehicle.model}
+                  Model: {vehicle.make} {vehicle.model}{' '}
                 </p>
+                <div
+                  className={classNames(
+                    vehicle.tachoCalibrationDueDate != null
+                      ? getDateClassNames(
+                          dateStatus(new Date(vehicle.tachoCalibrationDueDate))
+                        )
+                      : 'py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75'
+                  )}
+                >
+                  {vehicle.tachoCalibrationDueDate
+                    ? new Date(
+                        vehicle.tachoCalibrationDueDate
+                      ).toLocaleDateString()
+                    : 'N/A'}
+                </div>
+
                 <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                   <LocationMarkerIcon
                     className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"

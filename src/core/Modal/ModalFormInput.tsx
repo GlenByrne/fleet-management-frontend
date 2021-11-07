@@ -20,7 +20,7 @@ const ModalFormInput = ({
   onChange,
 }: ModalFormInputProps) => {
   return (
-    <div className="col-span-6 sm:col-span-3">
+    <>
       <div className="flex justify-between">
         <label
           htmlFor={name}
@@ -44,7 +44,7 @@ const ModalFormInput = ({
           required={required}
         />
       </div>
-    </div>
+    </>
   );
 };
 

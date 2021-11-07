@@ -80,3 +80,9 @@ export type UserUpdateModalItem = {
     name: string;
   } | null;
 };
+
+export enum DateStatus {
+  OUT_OF_DATE,
+  UPCOMING_NEXT_14_DAYS,
+  NOT_SOON,
+}

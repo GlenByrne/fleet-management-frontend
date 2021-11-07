@@ -31,6 +31,7 @@ import {
   createVehicleAlertStateVar,
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
+import DatePicker from 'core/DatePick';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -118,6 +119,10 @@ const CreateVehicleModal = () => {
     label: 'None',
   });
 
+  const [cvrt, setCVRT] = useState<Date>(new Date());
+  const [thirteenWeek, setThirteenWeek] = useState<Date>(new Date());
+  const [tachoCalibration, setTachoCalibration] = useState<Date>(new Date());
+
   useEffect(() => {
     setTypeOptions(getVehicleTypeOptions());
     setDepotOptions(getDepotOptions(data?.depots as Depot[]));
@@ -185,6 +190,14 @@ const CreateVehicleModal = () => {
             make: make != null ? make : '',
             model: model != null ? model : '',
             owner: owner != null ? owner : '',
+            cvrtDueDate: cvrt != null ? cvrt : null,
+            thirteenWeekInspectionDueDate:
+              thirteenWeek != null ? thirteenWeek : null,
+            tachoCalibrationDueDate:
+              tachoCalibration != null && type.value != VehicleType.Van
+                ? tachoCalibration
+                : null,
+
             depotId: depot.value != null ? depot.value : '',
             fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
             tollTagId: tollTag.value === '' ? null : tollTag.value,
@@ -215,6 +228,9 @@ const CreateVehicleModal = () => {
       value: '',
       label: 'None',
     });
+    setCVRT(new Date());
+    setThirteenWeek(new Date());
+    setTachoCalibration(new Date());
   };
 
   if (loading) {
@@ -334,6 +350,37 @@ const CreateVehicleModal = () => {
                       selected={tollTag}
                       onChange={setTollTag}
                       options={tollTagOptions}
+                    />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <DatePicker
+                      label="CVRT"
+                      name="cvrt"
+                      selected={cvrt}
+                      onChange={setCVRT}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <DatePicker
+                      label="13 Week"
+                      name="thirteenWeek"
+                      selected={thirteenWeek}
+                      onChange={setThirteenWeek}
+                      required={true}
+                    />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <DatePicker
+                      label="Tacho Calibration"
+                      name="tachoCalibration"
+                      selected={tachoCalibration}
+                      onChange={setTachoCalibration}
+                      required={true}
+                      disabled={type.value === VehicleType.Van && true}
                     />
                   </div>
                 </div>
