@@ -21,9 +21,24 @@ export const GET_VEHICLE = gql`
         id
         tagNumber
       }
-      cvrtDueDate
-      thirteenWeekInspectionDueDate
-      tachoCalibrationDueDate
+      cvrt {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      thirteenWeekInspection {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      tachoCalibration {
+        id
+        dueDate
+        completionDate
+        status
+      }
     }
   }
 `;
@@ -49,9 +64,24 @@ export const GET_VEHICLES = gql`
         id
         tagNumber
       }
-      cvrtDueDate
-      thirteenWeekInspectionDueDate
-      tachoCalibrationDueDate
+      cvrt {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      thirteenWeekInspection {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      tachoCalibration {
+        id
+        dueDate
+        completionDate
+        status
+      }
     }
   }
 `;
@@ -222,9 +252,24 @@ export const ADD_VEHICLE = gql`
       make
       model
       owner
-      cvrtDueDate
-      thirteenWeekInspectionDueDate
-      tachoCalibrationDueDate
+      cvrt {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      thirteenWeekInspection {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      tachoCalibration {
+        id
+        dueDate
+        completionDate
+        status
+      }
       depot {
         id
         name
@@ -359,9 +404,24 @@ export const UPDATE_VEHICLE = gql`
       make
       model
       owner
-      cvrtDueDate
-      thirteenWeekInspectionDueDate
-      tachoCalibrationDueDate
+      cvrt {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      thirteenWeekInspection {
+        id
+        dueDate
+        completionDate
+        status
+      }
+      tachoCalibration {
+        id
+        dueDate
+        completionDate
+        status
+      }
       depot {
         id
         name

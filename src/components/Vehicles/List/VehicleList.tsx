@@ -24,9 +24,9 @@ const VehicleList = ({ data, loading, error }: VehicleListProps) => {
       make: vehicle.make,
       model: vehicle.model,
       owner: vehicle.owner,
-      cvrtDueDate: vehicle.cvrtDueDate,
-      tachoCalibrationDueDate: vehicle.tachoCalibrationDueDate,
-      thirteenWeekInspectionDueDate: vehicle.thirteenWeekInspectionDueDate,
+      cvrtDueDate: vehicle.cvrt?.dueDate,
+      tachoCalibrationDueDate: vehicle.tachoCalibration?.dueDate,
+      thirteenWeekInspectionDueDate: vehicle.thirteenWeekInspection?.dueDate,
       depot: {
         id: vehicle.depot != null ? vehicle.depot.id : '',
         name: vehicle.depot != null ? vehicle.depot.name : '',

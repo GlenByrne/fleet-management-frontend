@@ -13,6 +13,7 @@ import Link from 'next/link';
 import classNames from 'utilities/classNames';
 import { dateStatus } from 'utilities/dateStatus';
 import { getDateClassNames } from 'utilities/getDateClassName';
+import { format } from 'date-fns';
 
 type VehicleListItemProps = {
   vehicle: Vehicle;
@@ -50,17 +51,18 @@ const VehicleListItem = ({
                 </p>
                 <div
                   className={classNames(
-                    vehicle.tachoCalibrationDueDate != null
+                    vehicle.tachoCalibration != null
                       ? getDateClassNames(
-                          dateStatus(new Date(vehicle.tachoCalibrationDueDate))
+                          dateStatus(new Date(vehicle.tachoCalibration.dueDate))
                         )
                       : 'py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75'
                   )}
                 >
-                  {vehicle.tachoCalibrationDueDate
-                    ? new Date(
-                        vehicle.tachoCalibrationDueDate
-                      ).toLocaleDateString()
+                  {vehicle.tachoCalibration?.dueDate
+                    ? format(
+                        new Date(vehicle.tachoCalibration.dueDate),
+                        'dd/MM/yyyy'
+                      )
                     : 'N/A'}
                 </div>
 

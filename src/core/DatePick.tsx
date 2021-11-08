@@ -1,4 +1,4 @@
-import { useState, createElement, SetStateAction } from 'react';
+import { SetStateAction } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
