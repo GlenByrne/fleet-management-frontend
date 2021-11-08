@@ -16,7 +16,6 @@ import {
   currentVehicleVar,
   deleteVehicleAlertStateVar,
   deleteVehicleModalStateVar,
-  errorAlertStateVar,
 } from 'constants/apollo-client';
 
 const DeleteVehicleModal = () => {

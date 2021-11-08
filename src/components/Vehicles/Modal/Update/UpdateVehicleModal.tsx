@@ -231,9 +231,7 @@ const UpdateVehicleModal = () => {
             thirteenWeekInspectionDueDate:
               thirteenWeek != null ? thirteenWeek : null,
             tachoCalibrationDueDate:
-              tachoCalibration != null && type.value != VehicleType.Van
-                ? tachoCalibration
-                : null,
+              tachoCalibration != null ? tachoCalibration : null,
             depotId: depot.value != null ? depot.value : '',
             fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
             tollTagId: tollTag.value === '' ? null : tollTag.value,
@@ -241,7 +239,7 @@ const UpdateVehicleModal = () => {
         },
       });
       updateVehicleAlertStateVar(true);
-    } catch (error) {}
+    } catch {}
   };
 
   if (loading) {
@@ -387,7 +385,6 @@ const UpdateVehicleModal = () => {
                     selected={tachoCalibration}
                     onChange={setTachoCalibration}
                     required={true}
-                    disabled={type.value === VehicleType.Van && true}
                   />
                 </div>
               </div>

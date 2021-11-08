@@ -34,8 +34,8 @@ export type VehicleUpdateModalItem = {
   model: string;
   owner: string;
   cvrtDueDate: Date;
-  tachoCalibrationDueDate: Date;
   thirteenWeekInspectionDueDate: Date;
+  tachoCalibrationDueDate: Date;
   depot: {
     id: string;
     name: string;

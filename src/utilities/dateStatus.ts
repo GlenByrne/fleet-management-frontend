@@ -1,11 +1,10 @@
 import { DateStatus } from 'constants/types';
 
 export const dateStatus = (date: Date) => {
-  let twoWeeks = new Date();
-  twoWeeks.setDate(twoWeeks.getDate() + 14);
+  const oneDayInMs = 1000 * 60 * 60 * 24;
 
-  const timeDifference = date.getTime() - twoWeeks.getTime();
-  const dayDifference = timeDifference / (1000 * 3600 * 24);
+  const timeDifference = date.getTime() - new Date().getTime();
+  const dayDifference = Math.round(timeDifference / oneDayInMs);
 
   if (dayDifference > 14) {
     return DateStatus.NOT_SOON;

@@ -10,6 +10,12 @@ import { useGetVehiclesQuery } from 'generated/graphql';
 import CreateVehicleAlert from 'components/Vehicles/Alerts/CreateVehicleAlert';
 import UpdateVehicleAlert from 'components/Vehicles/Alerts/UpdateVehicleAlert';
 import DeleteVehicleAlert from 'components/Vehicles/Alerts/DeleteVehicleAlert';
+import UpdateVehicleTachoCalibrationModal from 'components/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
+import UpdateVehicleTachoCalibrationAlert from 'components/Vehicles/Alerts/UpdateVehicleTachoCalibrationAlert';
+import UpdateVehicleCVRTModal from 'components/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
+import UpdateVehicleCVRTAlert from 'components/Vehicles/Alerts/UpdateVehicleCVRTAlert';
+import UpdateVehicleThirteenWeekAlert from 'components/Vehicles/Alerts/UpdateVehicleThirteenWeekInspectionAlert';
+import UpdateVehicleThirteenWeekModal from 'components/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
 
 const Vehicles: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -43,6 +49,12 @@ const Vehicles: NextPage = () => {
       <CreateVehicleAlert />
       <UpdateVehicleAlert />
       <DeleteVehicleAlert />
+      <UpdateVehicleCVRTModal />
+      <UpdateVehicleCVRTAlert />
+      <UpdateVehicleThirteenWeekModal />
+      <UpdateVehicleThirteenWeekAlert />
+      <UpdateVehicleTachoCalibrationModal />
+      <UpdateVehicleTachoCalibrationAlert />
       <VehicleList data={data} loading={loading} error={error} />
     </Layout>
   );

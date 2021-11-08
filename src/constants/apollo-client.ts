@@ -96,6 +96,9 @@ export const hasAccessVar = makeVar(false);
 // Vehicle Modals states
 export const addVehicleModalStateVar = makeVar(false);
 export const updateVehicleModalStateVar = makeVar(false);
+export const updateVehicleCVRTModalStateVar = makeVar(false);
+export const updateVehicleThirteenWeekModalStateVar = makeVar(false);
+export const updateVehicleTachoCalibrationModalStateVar = makeVar(false);
 export const deleteVehicleModalStateVar = makeVar(false);
 
 // Fuel Card Modals states
@@ -121,6 +124,9 @@ export const deleteUserModalStateVar = makeVar(false);
 // Vehicle Page Alerts
 export const createVehicleAlertStateVar = makeVar(false);
 export const updateVehicleAlertStateVar = makeVar(false);
+export const updateVehicleCVRTAlertStateVar = makeVar(false);
+export const updateVehicleThirteenWeekAlertStateVar = makeVar(false);
+export const updateVehicleTachoCalibrationAlertStateVar = makeVar(false);
 export const deleteVehicleAlertStateVar = makeVar(false);
 
 // Users Page Alerts

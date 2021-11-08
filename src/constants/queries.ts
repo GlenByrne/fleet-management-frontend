@@ -24,20 +24,16 @@ export const GET_VEHICLE = gql`
       cvrt {
         id
         dueDate
-        completionDate
-        status
       }
       thirteenWeekInspection {
         id
         dueDate
-        completionDate
-        status
+        previousDate
       }
       tachoCalibration {
         id
         dueDate
-        completionDate
-        status
+        previousDate
       }
     }
   }
@@ -67,20 +63,16 @@ export const GET_VEHICLES = gql`
       cvrt {
         id
         dueDate
-        completionDate
-        status
       }
       thirteenWeekInspection {
         id
         dueDate
-        completionDate
-        status
+        previousDate
       }
       tachoCalibration {
         id
         dueDate
-        completionDate
-        status
+        previousDate
       }
     }
   }
@@ -94,6 +86,45 @@ export const GET_VEHICLE_DEFECTS = gql`
       dateReported
       dateCompleted
       status
+    }
+  }
+`;
+
+export const GET_VEHICLES_UPCOMING_CVRT = gql`
+  query UpcomingCVRT {
+    upcomingCVRT {
+      id
+      registration
+      cvrt {
+        id
+        dueDate
+      }
+    }
+  }
+`;
+
+export const GET_VEHICLES_UPCOMING_THIRTEEN_WEEK = gql`
+  query UpcomingThirteenWeek {
+    upcomingThirteenWeek {
+      id
+      registration
+      thirteenWeekInspection {
+        id
+        dueDate
+      }
+    }
+  }
+`;
+
+export const GET_VEHICLES_UPCOMING_TACHO_CALIBRATION = gql`
+  query UpcomingTachoCalibration {
+    upcomingTachoCalibration {
+      id
+      registration
+      tachoCalibration {
+        id
+        dueDate
+      }
     }
   }
 `;
@@ -255,20 +286,16 @@ export const ADD_VEHICLE = gql`
       cvrt {
         id
         dueDate
-        completionDate
-        status
       }
       thirteenWeekInspection {
         id
         dueDate
-        completionDate
-        status
+        previousDate
       }
       tachoCalibration {
         id
         dueDate
-        completionDate
-        status
+        previousDate
       }
       depot {
         id
@@ -407,20 +434,137 @@ export const UPDATE_VEHICLE = gql`
       cvrt {
         id
         dueDate
-        completionDate
-        status
       }
       thirteenWeekInspection {
         id
         dueDate
-        completionDate
-        status
+        previousDate
       }
       tachoCalibration {
         id
         dueDate
-        completionDate
-        status
+        previousDate
+      }
+      depot {
+        id
+        name
+      }
+      fuelCard {
+        id
+        cardNumber
+      }
+      tollTag {
+        id
+        tagNumber
+      }
+    }
+  }
+`;
+
+export const UPDATE_VEHICLE_CVRT = gql`
+  mutation UpdateVehicleCVRT($data: UpdateVehicleDates!) {
+    updateVehicleCVRT(data: $data) {
+      id
+      type
+      registration
+      make
+      model
+      owner
+      cvrt {
+        id
+        dueDate
+      }
+      thirteenWeekInspection {
+        id
+        dueDate
+        previousDate
+      }
+      tachoCalibration {
+        id
+        dueDate
+        previousDate
+      }
+      depot {
+        id
+        name
+      }
+      fuelCard {
+        id
+        cardNumber
+      }
+      tollTag {
+        id
+        tagNumber
+      }
+    }
+  }
+`;
+
+export const UPDATE_VEHICLE_THIRTEEN_WEEK_INSPECTION = gql`
+  mutation UpdateVehicleThirteenWeekInspection(
+    $data: UpdateVehicleDatesWithCompletion!
+  ) {
+    updateVehicleThirteenWeekInspection(data: $data) {
+      id
+      type
+      registration
+      make
+      model
+      owner
+      cvrt {
+        id
+        dueDate
+      }
+      thirteenWeekInspection {
+        id
+        dueDate
+        previousDate
+      }
+      tachoCalibration {
+        id
+        dueDate
+        previousDate
+      }
+      depot {
+        id
+        name
+      }
+      fuelCard {
+        id
+        cardNumber
+      }
+      tollTag {
+        id
+        tagNumber
+      }
+    }
+  }
+`;
+
+export const UPDATE_VEHICLE_TACHO_CALIBRATION = gql`
+  mutation UpdateVehicleTachoCalibration(
+    $data: UpdateVehicleDatesWithCompletion!
+  ) {
+    updateVehicleTachoCalibration(data: $data) {
+      id
+      type
+      registration
+      make
+      model
+      owner
+      cvrt {
+        id
+        dueDate
+      }
+      thirteenWeekInspection {
+        id
+        dueDate
+        previousDate
+      }
+      tachoCalibration {
+        id
+        dueDate
+        previousDate
       }
       depot {
         id

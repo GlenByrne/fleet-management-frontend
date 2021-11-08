@@ -5,10 +5,17 @@ import {
 } from '@heroicons/react/solid';
 import {
   deleteVehicleModalStateVar,
+  updateVehicleCVRTModalStateVar,
   updateVehicleModalStateVar,
+  updateVehicleTachoCalibrationModalStateVar,
+  updateVehicleThirteenWeekModalStateVar,
 } from 'constants/apollo-client';
 import Button from 'core/Table/Button';
-import { Vehicle } from 'generated/graphql';
+import {
+  useUpdateVehicleTachoCalibrationMutation,
+  Vehicle,
+  VehicleType,
+} from 'generated/graphql';
 import Link from 'next/link';
 import classNames from 'utilities/classNames';
 import { dateStatus } from 'utilities/dateStatus';
@@ -49,7 +56,44 @@ const VehicleListItem = ({
                 <p className="flex items-center text-sm text-gray-500">
                   Model: {vehicle.make} {vehicle.model}{' '}
                 </p>
-                <div
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    changeCurrentVehicle(vehicle);
+                    updateVehicleCVRTModalStateVar(true);
+                  }}
+                  className={getDateClassNames(
+                    dateStatus(new Date(vehicle.cvrt?.dueDate))
+                  )}
+                >
+                  {format(new Date(vehicle.cvrt?.dueDate), 'dd/MM/yyyy')}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    changeCurrentVehicle(vehicle);
+                    updateVehicleThirteenWeekModalStateVar(true);
+                  }}
+                  className={getDateClassNames(
+                    dateStatus(
+                      new Date(vehicle.thirteenWeekInspection?.dueDate)
+                    )
+                  )}
+                >
+                  {format(
+                    new Date(vehicle.thirteenWeekInspection?.dueDate),
+                    'dd/MM/yyyy'
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    changeCurrentVehicle(vehicle);
+                    updateVehicleTachoCalibrationModalStateVar(true);
+                  }}
                   className={classNames(
                     vehicle.tachoCalibration != null
                       ? getDateClassNames(
@@ -64,7 +108,7 @@ const VehicleListItem = ({
                         'dd/MM/yyyy'
                       )
                     : 'N/A'}
-                </div>
+                </button>
 
                 <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                   <LocationMarkerIcon

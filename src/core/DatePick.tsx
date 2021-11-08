@@ -9,7 +9,6 @@ type DatePickProps = {
   selected: Date;
   required: boolean;
   onChange: (value: SetStateAction<Date>) => void;
-  disabled?: boolean;
 };
 
 const DatePicker = ({
@@ -18,13 +17,13 @@ const DatePicker = ({
   selected,
   required,
   onChange,
-  disabled,
 }: DatePickProps) => {
   return (
     <ReactDatePicker
       selected={selected}
       onChange={(date: Date) => onChange(date)}
       startDate={selected}
+      required={required}
       nextMonthButtonLabel=">"
       previousMonthButtonLabel="<"
       popperClassName="react-datepicker-left"
@@ -34,18 +33,14 @@ const DatePicker = ({
             <label className="block text-sm font-medium text-gray-700">
               {label}
             </label>
-            <span className="text-sm text-gray-500">
-              {required ? '' : 'Optional'}
-            </span>
           </div>
           <div className="mt-1">
             <button
               type="button"
               name={name}
-              disabled={disabled}
               className="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             >
-              {disabled ? 'N/A' : format(new Date(selected), 'dd/MM/yyyy')}
+              {format(new Date(selected), 'dd/MM/yyyy')}
             </button>
           </div>
         </div>
