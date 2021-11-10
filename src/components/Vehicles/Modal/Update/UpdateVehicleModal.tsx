@@ -134,9 +134,9 @@ const UpdateVehicleModal = () => {
     value: '',
     label: 'None',
   });
-  const [cvrt, setCVRT] = useState<Date>(new Date());
-  const [thirteenWeek, setThirteenWeek] = useState<Date>(new Date());
-  const [tachoCalibration, setTachoCalibration] = useState<Date>(new Date());
+  const [cvrt, setCVRT] = useState<Date | null>(null);
+  const [thirteenWeek, setThirteenWeek] = useState<Date | null>(null);
+  const [tachoCalibration, setTachoCalibration] = useState<Date | null>(null);
 
   useEffect(() => {
     setTypeOptions(getVehicleTypeOptions());
@@ -179,9 +179,17 @@ const UpdateVehicleModal = () => {
           ? currentVehicle.tollTag.tagNumber
           : 'None',
     });
-    setCVRT(new Date(currentVehicle.cvrtDueDate));
-    setThirteenWeek(new Date(currentVehicle.thirteenWeekInspectionDueDate));
-    setTachoCalibration(new Date(currentVehicle.tachoCalibrationDueDate));
+    setCVRT(currentVehicle.cvrt != null ? new Date(currentVehicle.cvrt) : null);
+    setThirteenWeek(
+      currentVehicle.thirteenWeekInspection != null
+        ? new Date(currentVehicle.thirteenWeekInspection)
+        : null
+    );
+    setTachoCalibration(
+      currentVehicle.tachoCalibration != null
+        ? new Date(currentVehicle.tachoCalibration)
+        : null
+    );
   }, [currentVehicle, data]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
@@ -227,10 +235,9 @@ const UpdateVehicleModal = () => {
             make: make != null ? make : '',
             model: model != null ? model : '',
             owner: owner != null ? owner : '',
-            cvrtDueDate: cvrt != null ? cvrt : null,
-            thirteenWeekInspectionDueDate:
-              thirteenWeek != null ? thirteenWeek : null,
-            tachoCalibrationDueDate:
+            cvrt: cvrt != null ? cvrt : null,
+            thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
+            tachoCalibration:
               tachoCalibration != null ? tachoCalibration : null,
             depotId: depot.value != null ? depot.value : '',
             fuelCardId: fuelCard.value === '' ? null : fuelCard.value,

@@ -27,7 +27,6 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addVehicleModalStateVar,
-  errorAlertStateVar,
   createVehicleAlertStateVar,
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
@@ -119,9 +118,9 @@ const CreateVehicleModal = () => {
     label: 'None',
   });
 
-  const [cvrt, setCVRT] = useState<Date>(new Date());
-  const [thirteenWeek, setThirteenWeek] = useState<Date>(new Date());
-  const [tachoCalibration, setTachoCalibration] = useState<Date>(new Date());
+  const [cvrt, setCVRT] = useState<Date | null>(null);
+  const [thirteenWeek, setThirteenWeek] = useState<Date | null>(null);
+  const [tachoCalibration, setTachoCalibration] = useState<Date | null>(null);
 
   useEffect(() => {
     setTypeOptions(getVehicleTypeOptions());
@@ -190,10 +189,9 @@ const CreateVehicleModal = () => {
             make: make != null ? make : '',
             model: model != null ? model : '',
             owner: owner != null ? owner : '',
-            cvrtDueDate: cvrt != null ? cvrt : null,
-            thirteenWeekInspectionDueDate:
-              thirteenWeek != null ? thirteenWeek : null,
-            tachoCalibrationDueDate:
+            cvrt: cvrt != null ? cvrt : null,
+            thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
+            tachoCalibration:
               tachoCalibration != null ? tachoCalibration : null,
 
             depotId: depot.value != null ? depot.value : '',
@@ -226,9 +224,9 @@ const CreateVehicleModal = () => {
       value: '',
       label: 'None',
     });
-    setCVRT(new Date());
-    setThirteenWeek(new Date());
-    setTachoCalibration(new Date());
+    setCVRT(null);
+    setThirteenWeek(null);
+    setTachoCalibration(null);
   };
 
   if (loading) {

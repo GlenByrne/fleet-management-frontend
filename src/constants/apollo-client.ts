@@ -48,9 +48,9 @@ const initialVehicle: VehicleUpdateModalItem = {
   make: '',
   model: '',
   owner: '',
-  cvrtDueDate: new Date(),
-  tachoCalibrationDueDate: new Date(),
-  thirteenWeekInspectionDueDate: new Date(),
+  cvrt: new Date(),
+  tachoCalibration: new Date(),
+  thirteenWeekInspection: new Date(),
   depot: {
     id: '',
     name: 'None',
@@ -183,6 +183,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       } else {
         errorTextVar(message);
         errorAlertStateVar(true);
+        console.log(message);
       }
     });
   } else if (networkError) {

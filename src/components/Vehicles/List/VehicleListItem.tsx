@@ -11,13 +11,8 @@ import {
   updateVehicleThirteenWeekModalStateVar,
 } from 'constants/apollo-client';
 import Button from 'core/Table/Button';
-import {
-  useUpdateVehicleTachoCalibrationMutation,
-  Vehicle,
-  VehicleType,
-} from 'generated/graphql';
+import { Vehicle } from 'generated/graphql';
 import Link from 'next/link';
-import classNames from 'utilities/classNames';
 import { dateStatus } from 'utilities/dateStatus';
 import { getDateClassNames } from 'utilities/getDateClassName';
 import { format } from 'date-fns';
@@ -60,54 +55,53 @@ const VehicleListItem = ({
                 <button
                   type="button"
                   onClick={() => {
-                    changeCurrentVehicle(vehicle);
-                    updateVehicleCVRTModalStateVar(true);
+                    if (vehicle.cvrt != null) {
+                      changeCurrentVehicle(vehicle);
+                      updateVehicleCVRTModalStateVar(true);
+                    }
                   }}
-                  className={getDateClassNames(
-                    dateStatus(new Date(vehicle.cvrt?.dueDate))
-                  )}
+                  className={getDateClassNames(dateStatus(vehicle.cvrt))}
                 >
-                  {format(new Date(vehicle.cvrt?.dueDate), 'dd/MM/yyyy')}
+                  {vehicle.cvrt != null
+                    ? format(new Date(vehicle.cvrt), 'dd/MM/yyyy')
+                    : 'None'}
                 </button>
 
                 <button
                   type="button"
                   onClick={() => {
-                    changeCurrentVehicle(vehicle);
-                    updateVehicleThirteenWeekModalStateVar(true);
+                    if (vehicle.thirteenWeekInspection != null) {
+                      changeCurrentVehicle(vehicle);
+                      updateVehicleThirteenWeekModalStateVar(true);
+                    }
                   }}
                   className={getDateClassNames(
-                    dateStatus(
-                      new Date(vehicle.thirteenWeekInspection?.dueDate)
-                    )
+                    dateStatus(vehicle.thirteenWeekInspection)
                   )}
                 >
-                  {format(
-                    new Date(vehicle.thirteenWeekInspection?.dueDate),
-                    'dd/MM/yyyy'
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    changeCurrentVehicle(vehicle);
-                    updateVehicleTachoCalibrationModalStateVar(true);
-                  }}
-                  className={classNames(
-                    vehicle.tachoCalibration != null
-                      ? getDateClassNames(
-                          dateStatus(new Date(vehicle.tachoCalibration.dueDate))
-                        )
-                      : 'py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75'
-                  )}
-                >
-                  {vehicle.tachoCalibration?.dueDate
+                  {vehicle.thirteenWeekInspection != null
                     ? format(
-                        new Date(vehicle.tachoCalibration.dueDate),
+                        new Date(vehicle.thirteenWeekInspection),
                         'dd/MM/yyyy'
                       )
-                    : 'N/A'}
+                    : 'None'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (vehicle.tachoCalibration != null) {
+                      changeCurrentVehicle(vehicle);
+                      updateVehicleTachoCalibrationModalStateVar(true);
+                    }
+                  }}
+                  className={getDateClassNames(
+                    dateStatus(vehicle.tachoCalibration)
+                  )}
+                >
+                  {vehicle.tachoCalibration
+                    ? format(new Date(vehicle.tachoCalibration), 'dd/MM/yyyy')
+                    : 'None'}
                 </button>
 
                 <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">

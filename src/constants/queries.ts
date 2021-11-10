@@ -21,20 +21,9 @@ export const GET_VEHICLE = gql`
         id
         tagNumber
       }
-      cvrt {
-        id
-        dueDate
-      }
-      thirteenWeekInspection {
-        id
-        dueDate
-        previousDate
-      }
-      tachoCalibration {
-        id
-        dueDate
-        previousDate
-      }
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
     }
   }
 `;
@@ -60,20 +49,9 @@ export const GET_VEHICLES = gql`
         id
         tagNumber
       }
-      cvrt {
-        id
-        dueDate
-      }
-      thirteenWeekInspection {
-        id
-        dueDate
-        previousDate
-      }
-      tachoCalibration {
-        id
-        dueDate
-        previousDate
-      }
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
     }
   }
 `;
@@ -95,10 +73,7 @@ export const GET_VEHICLES_UPCOMING_CVRT = gql`
     upcomingCVRT {
       id
       registration
-      cvrt {
-        id
-        dueDate
-      }
+      cvrt
     }
   }
 `;
@@ -108,10 +83,7 @@ export const GET_VEHICLES_UPCOMING_THIRTEEN_WEEK = gql`
     upcomingThirteenWeek {
       id
       registration
-      thirteenWeekInspection {
-        id
-        dueDate
-      }
+      thirteenWeekInspection
     }
   }
 `;
@@ -121,10 +93,7 @@ export const GET_VEHICLES_UPCOMING_TACHO_CALIBRATION = gql`
     upcomingTachoCalibration {
       id
       registration
-      tachoCalibration {
-        id
-        dueDate
-      }
+      tachoCalibration
     }
   }
 `;
@@ -283,20 +252,9 @@ export const ADD_VEHICLE = gql`
       make
       model
       owner
-      cvrt {
-        id
-        dueDate
-      }
-      thirteenWeekInspection {
-        id
-        dueDate
-        previousDate
-      }
-      tachoCalibration {
-        id
-        dueDate
-        previousDate
-      }
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
       depot {
         id
         name
@@ -431,20 +389,9 @@ export const UPDATE_VEHICLE = gql`
       make
       model
       owner
-      cvrt {
-        id
-        dueDate
-      }
-      thirteenWeekInspection {
-        id
-        dueDate
-        previousDate
-      }
-      tachoCalibration {
-        id
-        dueDate
-        previousDate
-      }
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
       depot {
         id
         name
@@ -470,20 +417,9 @@ export const UPDATE_VEHICLE_CVRT = gql`
       make
       model
       owner
-      cvrt {
-        id
-        dueDate
-      }
-      thirteenWeekInspection {
-        id
-        dueDate
-        previousDate
-      }
-      tachoCalibration {
-        id
-        dueDate
-        previousDate
-      }
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
       depot {
         id
         name
@@ -511,20 +447,9 @@ export const UPDATE_VEHICLE_THIRTEEN_WEEK_INSPECTION = gql`
       make
       model
       owner
-      cvrt {
-        id
-        dueDate
-      }
-      thirteenWeekInspection {
-        id
-        dueDate
-        previousDate
-      }
-      tachoCalibration {
-        id
-        dueDate
-        previousDate
-      }
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
       depot {
         id
         name
@@ -552,20 +477,9 @@ export const UPDATE_VEHICLE_TACHO_CALIBRATION = gql`
       make
       model
       owner
-      cvrt {
-        id
-        dueDate
-      }
-      thirteenWeekInspection {
-        id
-        dueDate
-        previousDate
-      }
-      tachoCalibration {
-        id
-        dueDate
-        previousDate
-      }
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
       depot {
         id
         name

@@ -33,9 +33,9 @@ export type VehicleUpdateModalItem = {
   make: string;
   model: string;
   owner: string;
-  cvrtDueDate: Date;
-  thirteenWeekInspectionDueDate: Date;
-  tachoCalibrationDueDate: Date;
+  cvrt: Date;
+  thirteenWeekInspection: Date;
+  tachoCalibration: Date;
   depot: {
     id: string;
     name: string;
@@ -85,4 +85,5 @@ export enum DateStatus {
   OUT_OF_DATE,
   UPCOMING_NEXT_14_DAYS,
   NOT_SOON,
+  NONE,
 }

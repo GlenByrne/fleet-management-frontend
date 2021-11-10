@@ -1,6 +1,12 @@
 import { DateStatus } from 'constants/types';
 
-export const dateStatus = (date: Date) => {
+export const dateStatus = (value: any | null) => {
+  if (value == null) {
+    return DateStatus.NONE;
+  }
+
+  const date = new Date(value);
+
   const oneDayInMs = 1000 * 60 * 60 * 24;
 
   const timeDifference = date.getTime() - new Date().getTime();

@@ -27,11 +27,9 @@ const Home: NextPage = () => {
         <button
           type="button"
           onClick={() => {}}
-          className={getDateClassNames(
-            dateStatus(new Date(vehicle?.cvrt?.dueDate))
-          )}
+          className={getDateClassNames(dateStatus(vehicle?.cvrt))}
         >
-          {format(new Date(vehicle?.cvrt?.dueDate), 'dd/MM/yyyy')}
+          {format(new Date(vehicle?.cvrt), 'dd/MM/yyyy')}
         </button>;
       })}
     </Layout>

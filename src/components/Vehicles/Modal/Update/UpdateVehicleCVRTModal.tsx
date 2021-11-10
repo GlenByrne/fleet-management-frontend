@@ -6,7 +6,7 @@ import {
   updateVehicleCVRTAlertStateVar,
   updateVehicleCVRTModalStateVar,
 } from 'constants/apollo-client';
-import DatePicker from 'core/DatePick';
+import DatePickerNoClear from 'core/DatePickerNoClear';
 import Modal from 'core/Modal/Modal';
 import { useUpdateVehicleCvrtMutation } from 'generated/graphql';
 import { useRef, useState, FormEventHandler } from 'react';
@@ -56,7 +56,7 @@ const UpdateVehicleCVRTModal = () => {
               </Dialog.Title>
               <div className="grid grid-cols-6 gap-6 mt-2">
                 <div className="col-span-6 sm:col-span-3">
-                  <DatePicker
+                  <DatePickerNoClear
                     label="Completion Date"
                     name="completionDate"
                     selected={completionDate}
