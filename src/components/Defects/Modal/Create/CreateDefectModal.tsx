@@ -6,7 +6,6 @@ import {
   GetVehicleDefectsQuery,
   useAddDefectMutation,
 } from 'generated/graphql';
-import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
@@ -19,7 +18,6 @@ import { useRouter } from 'next/router';
 const CreateDefectModal = () => {
   const router = useRouter();
   const vehicleId = String(router.query.id);
-
   const currentModalStateVar = useReactiveVar(addDefectModalStateVar);
 
   const [description, setDescription] = useState('');
@@ -60,7 +58,6 @@ const CreateDefectModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-
     addDefectModalStateVar(false);
 
     try {

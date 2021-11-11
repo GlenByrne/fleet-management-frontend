@@ -36,9 +36,7 @@ const getDefectStatusOptions = () => {
 
 const UpdateDefectModal = () => {
   const currentDefect = useReactiveVar(currentDefectVar);
-
   const currentModalStateVar = useReactiveVar(updateDefectModalStateVar);
-
   const [statusOptions, setStatusOptions] = useState(getDefectStatusOptions());
 
   const [description, setDescription] = useState('');

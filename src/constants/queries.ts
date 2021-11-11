@@ -350,6 +350,14 @@ export const DELETE_VEHICLE = gql`
   }
 `;
 
+export const DELETE_DEFECT = gql`
+  mutation DeleteDefect($data: DeleteDefectInput!) {
+    deleteDefect(data: $data) {
+      id
+    }
+  }
+`;
+
 export const DELETE_DEPOT = gql`
   mutation DeleteDepot($data: DeleteDepotInput!) {
     deleteDepot(data: $data) {

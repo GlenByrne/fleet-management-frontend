@@ -246,6 +246,11 @@ const client = new ApolloClient({
               return currentUserVar();
             },
           },
+          currentDefect: {
+            read() {
+              return currentDefectVar();
+            },
+          },
         },
       },
     },
