@@ -1,16 +1,25 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
-import ClientOnly from '../../core/ClientOnly/ClientOnly';
-import DefectList from '../../components/Defects/DefectList';
-import styles from '../../styles/Home.module.css';
+import DefectList from '../../components/Defects/List/DefectList';
 import Layout from 'core/Layout/Layout';
+import { addDefectModalStateVar } from 'constants/apollo-client';
+import CreateDefectModal from 'components/Defects/Modal/Create/CreateDefectModal';
+import CreateDefectAlert from 'components/Defects/Alerts/CreateDefectAlert';
+import UpdateDefectModal from 'components/Defects/Modal/Update/UpdateDefectModal';
 
 const Defects: NextPage = () => {
   return (
-    <div></div>
-    // <Layout>
-    //   <DefectList />
-    // </Layout>
+    <Layout
+      hasQuickActionButton={true}
+      quickAction={addDefectModalStateVar}
+      quickActionLabel="New Defect"
+      pageSearchable={false}
+    >
+      <DefectList />
+      <CreateDefectModal />
+      <CreateDefectAlert />
+      <UpdateDefectModal />
+      <UpdateDefectModal />
+    </Layout>
   );
 };
 

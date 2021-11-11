@@ -61,6 +61,7 @@ export const GET_VEHICLE_DEFECTS = gql`
     defectsForVehicle(vehicleId: $vehicleId) {
       id
       description
+      reporter
       dateReported
       dateCompleted
       status
@@ -68,32 +69,25 @@ export const GET_VEHICLE_DEFECTS = gql`
   }
 `;
 
-export const GET_VEHICLES_UPCOMING_CVRT = gql`
-  query UpcomingCVRT {
+export const GET_VEHICLES_UPCOMING_MAINTENANCE = gql`
+  query UpcomingMaintenace {
     upcomingCVRT {
       id
       registration
       cvrt
+      type
     }
-  }
-`;
-
-export const GET_VEHICLES_UPCOMING_THIRTEEN_WEEK = gql`
-  query UpcomingThirteenWeek {
     upcomingThirteenWeek {
       id
       registration
       thirteenWeekInspection
+      type
     }
-  }
-`;
-
-export const GET_VEHICLES_UPCOMING_TACHO_CALIBRATION = gql`
-  query UpcomingTachoCalibration {
     upcomingTachoCalibration {
       id
       registration
       tachoCalibration
+      type
     }
   }
 `;
@@ -267,6 +261,19 @@ export const ADD_VEHICLE = gql`
         id
         tagNumber
       }
+    }
+  }
+`;
+
+export const ADD_DEFECT = gql`
+  mutation AddDefect($data: AddDefectInput!) {
+    addDefect(data: $data) {
+      id
+      description
+      reporter
+      dateReported
+      dateCompleted
+      status
     }
   }
 `;
@@ -492,6 +499,19 @@ export const UPDATE_VEHICLE_TACHO_CALIBRATION = gql`
         id
         tagNumber
       }
+    }
+  }
+`;
+
+export const UPDATE_DEFECT = gql`
+  mutation UpdateDefect($data: UpdateDefectInput!) {
+    updateDefect(data: $data) {
+      id
+      description
+      reporter
+      dateReported
+      dateCompleted
+      status
     }
   }
 `;

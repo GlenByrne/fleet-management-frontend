@@ -1,11 +1,9 @@
-import { SetStateAction } from 'react';
+import { SetStateAction, useRef } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  XIcon,
-} from '@heroicons/react/solid';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { Portal } from '@headlessui/react';
+import CalendarContainer from './CalendarContainer';
 
 type DatePickProps = {
   label: string;
@@ -32,6 +30,7 @@ const DatePickerNoClear = ({
       nextMonthButtonLabel=">"
       previousMonthButtonLabel="<"
       popperClassName="react-datepicker-left"
+      popperContainer={CalendarContainer}
       customInput={
         <div className="col-span-6 sm:col-span-3">
           <div className="flex justify-between">

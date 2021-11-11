@@ -8,12 +8,14 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import {
+  DefectStatus,
   Role,
   UpdateDepotInput,
   UsersPayload,
   VehicleType,
 } from 'generated/graphql';
 import {
+  DefectUpdateModalItem,
   FuelCardUpdateModalItem,
   TollTagUpdateModalItem,
   UserUpdateModalItem,
@@ -78,6 +80,15 @@ const initialUser: UserUpdateModalItem = {
   depot: null,
 };
 
+const initialDefect: DefectUpdateModalItem = {
+  id: '',
+  description: '',
+  dateReported: new Date(),
+  reporter: '',
+  dateCompleted: null,
+  status: DefectStatus.Incomplete,
+};
+
 export const currentFuelCardVar =
   makeVar<FuelCardUpdateModalItem>(initialFuelCard);
 
@@ -91,6 +102,8 @@ export const currentDepotVar = makeVar<UpdateDepotInput>(initialDepot);
 
 export const currentUserVar = makeVar<UserUpdateModalItem>(initialUser);
 
+export const currentDefectVar = makeVar<DefectUpdateModalItem>(initialDefect);
+
 export const hasAccessVar = makeVar(false);
 
 // Vehicle Modals states
@@ -100,6 +113,11 @@ export const updateVehicleCVRTModalStateVar = makeVar(false);
 export const updateVehicleThirteenWeekModalStateVar = makeVar(false);
 export const updateVehicleTachoCalibrationModalStateVar = makeVar(false);
 export const deleteVehicleModalStateVar = makeVar(false);
+
+// Defect Modal State
+export const addDefectModalStateVar = makeVar(false);
+export const updateDefectModalStateVar = makeVar(false);
+export const deleteDefectModalStateVar = makeVar(false);
 
 // Fuel Card Modals states
 export const addFuelCardModalStateVar = makeVar(false);
@@ -128,6 +146,11 @@ export const updateVehicleCVRTAlertStateVar = makeVar(false);
 export const updateVehicleThirteenWeekAlertStateVar = makeVar(false);
 export const updateVehicleTachoCalibrationAlertStateVar = makeVar(false);
 export const deleteVehicleAlertStateVar = makeVar(false);
+
+// Defect Page Alerts
+export const createDefectAlertStateVar = makeVar(false);
+export const updateDefectAlertStateVar = makeVar(false);
+export const deleteDefectAlertStateVar = makeVar(false);
 
 // Users Page Alerts
 export const createUserAlertStateVar = makeVar(false);
@@ -177,7 +200,7 @@ const authLink = setContext((_, { headers }) => {
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message }) => {
-      if (message === 'Not Authorised!') {
+      if (message === 'Not Authorised!' || message === 'jwt expired') {
         logOut();
         authTimeoutAlertVar(true);
       } else {

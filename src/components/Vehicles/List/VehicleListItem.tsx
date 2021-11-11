@@ -1,4 +1,5 @@
 import {
+  ExclamationIcon,
   LocationMarkerIcon,
   PencilIcon,
   TrashIcon,
@@ -16,6 +17,7 @@ import Link from 'next/link';
 import { dateStatus } from 'utilities/dateStatus';
 import { getDateClassNames } from 'utilities/getDateClassName';
 import { format } from 'date-fns';
+import { useRouter } from 'next/router';
 
 type VehicleListItemProps = {
   vehicle: Vehicle;
@@ -26,6 +28,12 @@ const VehicleListItem = ({
   vehicle,
   changeCurrentVehicle,
 }: VehicleListItemProps) => {
+  const router = useRouter();
+
+  const showDefectsHandler = () => {
+    router.push('/defects/' + vehicle.id);
+  };
+
   return (
     <li>
       <Link href="#">
@@ -119,6 +127,9 @@ const VehicleListItem = ({
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />
+              </Button>
+              <Button onClick={showDefectsHandler}>
+                <ExclamationIcon className="h-6 w-6" aria-hidden="true" />
               </Button>
             </div>
           </div>
