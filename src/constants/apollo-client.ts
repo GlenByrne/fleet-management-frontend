@@ -139,6 +139,9 @@ export const addUserModalStateVar = makeVar(false);
 export const updateUserModalStateVar = makeVar(false);
 export const deleteUserModalStateVar = makeVar(false);
 
+// Infringement Modals states
+export const addInfringementModalStateVar = makeVar(false);
+
 // Vehicle Page Alerts
 export const createVehicleAlertStateVar = makeVar(false);
 export const updateVehicleAlertStateVar = makeVar(false);
@@ -171,6 +174,9 @@ export const deleteTollTagAlertStateVar = makeVar(false);
 export const createDepotAlertStateVar = makeVar(false);
 export const updateDepotAlertStateVar = makeVar(false);
 export const deleteDepotAlertStateVar = makeVar(false);
+
+// Infringement Page Alerts
+export const createInfringementAlertStateVar = makeVar(false);
 
 // Logout Alerts
 export const logoutAlertVar = makeVar(false);

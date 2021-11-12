@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { NavbarOption, UserNavbarOption } from 'constants/types';
 import {
   CreditCardIcon,
+  ExclamationIcon,
   HomeIcon,
   OfficeBuildingIcon,
   TagIcon,
@@ -31,6 +32,7 @@ type LayoutProps = {
 const navigation: NavbarOption[] = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Vehicles', href: '/vehicles', icon: TruckIcon },
+  { name: 'Infringements', href: '/infringements', icon: ExclamationIcon },
   { name: 'Fuel Cards', href: '/fuelCards', icon: CreditCardIcon },
   { name: 'Toll Tags', href: '/tollTags', icon: TagIcon },
   { name: 'Depots', href: '/depots', icon: OfficeBuildingIcon },

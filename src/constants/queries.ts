@@ -149,6 +149,41 @@ export const GET_DEPOTS = gql`
   }
 `;
 
+export const GET_DRIVERS = gql`
+  query GetDrivers {
+    drivers {
+      id
+      name
+      email
+      role
+      depot {
+        id
+        name
+      }
+      infringements {
+        id
+        description
+        dateOccured
+        status
+      }
+    }
+  }
+`;
+
+export const ADD_INFRINGEMENTS = gql`
+  mutation AddInfringement($data: AddInfringementInput!) {
+    addInfringement(data: $data) {
+      id
+      description
+      dateOccured
+      status
+      driver {
+        id
+      }
+    }
+  }
+`;
+
 export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
   query GetSelectableItemsForAddVehicle {
     fuelCardsNotAssigned {
