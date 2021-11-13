@@ -36,3 +36,4 @@ yarn-error.log*
 .eslintcache
 /src/generated
 tsconfig.tsbuildinfo
+graphql.schema.json
