@@ -10,7 +10,7 @@ export const dateStatus = (value: any | null) => {
   const oneDayInMs = 1000 * 60 * 60 * 24;
 
   const timeDifference = date.getTime() - new Date().getTime();
-  const dayDifference = Math.round(timeDifference / oneDayInMs);
+  const dayDifference = Math.ceil(timeDifference / oneDayInMs);
 
   if (dayDifference > 14) {
     return DateStatus.NOT_SOON;
