@@ -28,6 +28,8 @@ import { TruckIcon } from '@heroicons/react/outline';
 import {
   addVehicleModalStateVar,
   createVehicleAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 import DatePicker from 'core/DatePick';
@@ -201,7 +203,8 @@ const CreateVehicleModal = () => {
         },
       });
 
-      createVehicleAlertStateVar(true);
+      successTextVar('Vehicle added successfully');
+      successAlertStateVar(true);
     } catch {}
 
     setType({

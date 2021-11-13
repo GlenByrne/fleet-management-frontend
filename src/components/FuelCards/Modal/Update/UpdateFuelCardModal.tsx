@@ -23,6 +23,8 @@ import { useReactiveVar } from '@apollo/client';
 import {
   currentFuelCardVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
   updateFuelCardAlertStateVar,
   updateFuelCardModalStateVar,
 } from 'constants/apollo-client';
@@ -100,7 +102,8 @@ const UpdateFuelCardModal = () => {
         },
       });
 
-      updateFuelCardAlertStateVar(true);
+      successTextVar('Fuel Card updated successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

@@ -12,6 +12,7 @@ import {
   GetDriversDocument,
   GetDriversQuery,
   useAddInfringementMutation,
+  UsersPayload,
 } from 'generated/graphql';
 import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
@@ -19,6 +20,11 @@ import { TruckIcon } from '@heroicons/react/outline';
 import {
   addInfringementModalStateVar,
   createInfringementAlertStateVar,
+  createInfringementNoDriverAlertStateVar,
+  errorAlertStateVar,
+  errorTextVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 import DatePickerNoClear from 'core/DatePickerNoClear';
@@ -27,8 +33,8 @@ type CreateInfringementModalProps = {
   data: GetDriversQuery | undefined;
 };
 
-const getDriverOptions = (data: GetDriversQuery | undefined) => {
-  const options = data?.drivers.map(
+const getDriverOptions = (drivers: UsersPayload[]) => {
+  const options = drivers?.map(
     (driver) => ({ value: driver.id, label: driver.name } as Option)
   );
 
@@ -37,16 +43,18 @@ const getDriverOptions = (data: GetDriversQuery | undefined) => {
 
 const CreateInfringementModal = ({ data }: CreateInfringementModalProps) => {
   const currentModalStateVar = useReactiveVar(addInfringementModalStateVar);
-  const [driverOptions, setDriverOptions] = useState(getDriverOptions(data));
+  const [driverOptions, setDriverOptions] = useState(
+    getDriverOptions(data?.drivers as UsersPayload[])
+  );
   const [description, setDescription] = useState('');
   const [dateOccured, setDateOccured] = useState(new Date());
   const [driver, setDriver] = useState<Option>({
-    value: '',
+    value: null,
     label: 'None',
   });
 
   useEffect(() => {
-    setDriverOptions(getDriverOptions(data));
+    setDriverOptions(getDriverOptions(data?.drivers as UsersPayload[]));
   }, [data]);
 
   const changeDescription = (event: FormEvent<HTMLInputElement>) => {
@@ -80,22 +88,33 @@ const CreateInfringementModal = ({ data }: CreateInfringementModalProps) => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    addInfringementModalStateVar(false);
-    try {
-      await addInfringement({
-        variables: {
-          data: {
-            description: description,
-            driverId: driver.value,
-            dateOccured: dateOccured,
+    if (driver.value != null) {
+      addInfringementModalStateVar(false);
+      try {
+        await addInfringement({
+          variables: {
+            data: {
+              description: description,
+              driverId: driver.value,
+              dateOccured: dateOccured,
+            },
           },
-        },
-      });
+        });
 
-      createInfringementAlertStateVar(true);
-    } catch {}
-    setDescription('');
-    setDateOccured(new Date());
+        successTextVar('Infringement added successfully');
+        successAlertStateVar(true);
+      } catch {}
+
+      setDescription('');
+      setDateOccured(new Date());
+      setDriver({
+        value: null,
+        label: 'None',
+      });
+    } else {
+      errorTextVar('A driver must be assigned to add an infringement');
+      errorAlertStateVar(true);
+    }
   };
 
   return (
@@ -134,13 +153,13 @@ const CreateInfringementModal = ({ data }: CreateInfringementModalProps) => {
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    {/* <ModalFormSelect
+                    <ModalFormSelect
                       label="Driver"
                       name="driver"
                       selected={driver}
                       onChange={setDriver}
                       options={driverOptions}
-                    /> */}
+                    />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">

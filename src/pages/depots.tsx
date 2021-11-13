@@ -7,9 +7,6 @@ import DeleteDepotModal from 'components/Depots/Modal/Delete/DeleteDepotModal';
 import DepotList from 'components/Depots/List/DepotList';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetDepotsQuery } from 'generated/graphql';
-import CreateDepotAlert from 'components/Depots/Alerts/CreateDepotAlert';
-import UpdateDepotAlert from 'components/Depots/Alerts/UpdateDepotAlert';
-import DeleteDepotAlert from 'components/Depots/Alerts/DeleteDepotAlert';
 
 const Depots: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -40,9 +37,6 @@ const Depots: NextPage = () => {
       <CreateDepotModal />
       <UpdateDepotModal />
       <DeleteDepotModal />
-      <CreateDepotAlert />
-      <UpdateDepotAlert />
-      <DeleteDepotAlert />
       <DepotList data={data} loading={loading} error={error} />
     </Layout>
   );

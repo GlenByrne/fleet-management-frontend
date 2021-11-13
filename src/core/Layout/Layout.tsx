@@ -16,7 +16,11 @@ import { useState } from 'react';
 import SideNav from 'core/Layout/SideNav';
 import ContentArea from './ContentArea';
 import { checkAuth, logOut } from 'utilities/auth';
-import { logoutAlertVar } from 'constants/apollo-client';
+import {
+  logoutAlertVar,
+  successAlertStateVar,
+  successTextVar,
+} from 'constants/apollo-client';
 import { useRouter } from 'next/router';
 
 type LayoutProps = {
@@ -58,7 +62,8 @@ const Layout = ({
       name: 'Sign out',
       onClick: () => {
         logOut();
-        logoutAlertVar(true);
+        successTextVar('Logged out successfully');
+        successAlertStateVar(true);
       },
     },
   ];

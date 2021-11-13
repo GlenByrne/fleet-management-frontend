@@ -3,6 +3,8 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import {
   currentVehicleVar,
+  successAlertStateVar,
+  successTextVar,
   updateVehicleTachoCalibrationAlertStateVar,
   updateVehicleTachoCalibrationModalStateVar,
 } from 'constants/apollo-client';
@@ -33,7 +35,8 @@ const UpdateVehicleTachoCalibrationModal = () => {
           },
         },
       });
-      updateVehicleTachoCalibrationAlertStateVar(true);
+      successTextVar('Vehicle tacho calibration date updated successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

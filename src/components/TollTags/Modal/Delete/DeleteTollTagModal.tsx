@@ -16,6 +16,8 @@ import {
   deleteTollTagAlertStateVar,
   deleteTollTagModalStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 
 const DeleteTollTagModal = () => {
@@ -59,7 +61,8 @@ const DeleteTollTagModal = () => {
         },
       });
 
-      deleteTollTagAlertStateVar(true);
+      successTextVar('Toll Tag deleted successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

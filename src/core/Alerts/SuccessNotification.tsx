@@ -1,18 +1,22 @@
+import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { CheckCircleIcon, XIcon } from '@heroicons/react/solid';
-import { Fragment, ReactNode } from 'react';
+import { successAlertStateVar, successTextVar } from 'constants/apollo-client';
+import { Fragment, useEffect } from 'react';
 
-type SuccessNotificationProps = {
-  children: ReactNode;
-  alertState: boolean;
-  setAlertState: (status: boolean) => void;
-};
+const SuccessNotification = () => {
+  const alertState = useReactiveVar(successAlertStateVar);
+  const successText = useReactiveVar(successTextVar);
 
-const SuccessNotification = ({
-  children,
-  alertState,
-  setAlertState,
-}: SuccessNotificationProps) => {
+  useEffect(() => {
+    if (alertState === true) {
+      setTimeout(() => {
+        successAlertStateVar(false);
+        successTextVar('');
+      }, 3000);
+    }
+  });
+
   return (
     <>
       {/* Global notification live region, render this permanently at the end of the document */}
@@ -41,12 +45,16 @@ const SuccessNotification = ({
                       aria-hidden="true"
                     />
                   </div>
-                  <div className="ml-3 w-0 flex-1 pt-0.5">{children}</div>
+                  <div className="ml-3 w-0 flex-1 pt-0.5">
+                    <p className="text-sm font-medium text-gray-900">
+                      {successText}
+                    </p>
+                  </div>
                   <div className="ml-4 flex-shrink-0 flex">
                     <button
                       className="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       onClick={() => {
-                        setAlertState(false);
+                        successAlertStateVar(false);
                       }}
                     >
                       <span className="sr-only">Close</span>

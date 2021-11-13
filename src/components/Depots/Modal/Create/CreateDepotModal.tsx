@@ -4,6 +4,8 @@ import {
   addDepotModalStateVar,
   createDepotAlertStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';
 import Modal from 'core/Modal/Modal';
@@ -62,7 +64,8 @@ const CreateDepotModal = () => {
           },
         },
       });
-      createDepotAlertStateVar(true);
+      successTextVar('Depot added successfully');
+      successAlertStateVar(true);
     } catch {}
 
     setName('');

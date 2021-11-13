@@ -177,10 +177,14 @@ export const deleteDepotAlertStateVar = makeVar(false);
 
 // Infringement Page Alerts
 export const createInfringementAlertStateVar = makeVar(false);
+export const createInfringementNoDriverAlertStateVar = makeVar(false);
 
 // Logout Alerts
 export const logoutAlertVar = makeVar(false);
 export const authTimeoutAlertVar = makeVar(false);
+
+export const successAlertStateVar = makeVar(false);
+export const successTextVar = makeVar('');
 
 export const errorAlertStateVar = makeVar(false);
 export const errorTextVar = makeVar('');
@@ -208,11 +212,13 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     graphQLErrors.map(({ message }) => {
       if (message === 'Not Authorised!' || message === 'jwt expired') {
         logOut();
-        authTimeoutAlertVar(true);
+        successTextVar(
+          'You have been logged out due to your login credentials expiring. Please log back in'
+        );
+        successAlertStateVar(true);
       } else {
         errorTextVar(message);
         errorAlertStateVar(true);
-        console.log(message);
       }
     });
   } else if (networkError) {

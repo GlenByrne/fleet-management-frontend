@@ -25,6 +25,8 @@ import {
   addFuelCardModalStateVar,
   createFuelCardAlertStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 
 const getDepotOptions = (depots: Depot[]) => {
@@ -103,7 +105,8 @@ const CreateFuelCardModal = () => {
         },
       });
 
-      createFuelCardAlertStateVar(true);
+      successTextVar('Fuel Card added successfully');
+      successAlertStateVar(true);
     } catch {}
 
     setCardNumber('');

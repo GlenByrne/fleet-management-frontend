@@ -24,6 +24,8 @@ import {
   addTollTagModalStateVar,
   createTollTagAlertStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 
@@ -101,7 +103,8 @@ const CreateTollTagModal = () => {
         },
       });
 
-      createTollTagAlertStateVar(true);
+      successTextVar('Toll Tag added successfully');
+      successAlertStateVar(true);
     } catch {}
 
     setTagNumber('');

@@ -29,6 +29,8 @@ import {
   errorAlertStateVar,
   updateVehicleModalStateVar,
   updateVehicleAlertStateVar,
+  successTextVar,
+  successAlertStateVar,
 } from 'constants/apollo-client';
 import DatePicker from 'core/DatePick';
 
@@ -245,7 +247,8 @@ const UpdateVehicleModal = () => {
           },
         },
       });
-      updateVehicleAlertStateVar(true);
+      successTextVar('Vehicle updated successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

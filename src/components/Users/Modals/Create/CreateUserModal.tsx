@@ -24,6 +24,8 @@ import {
   addUserModalStateVar,
   createUserAlertStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 
 const getDepotOptions = (depots: Depot[]) => {
@@ -127,7 +129,8 @@ const CreateUserModal = () => {
         },
       });
 
-      createUserAlertStateVar(true);
+      successTextVar('User added successfully');
+      successAlertStateVar(true);
     } catch {}
 
     setName('');

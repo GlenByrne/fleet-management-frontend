@@ -4,8 +4,6 @@ import AlreadyLoggedIn from 'components/Login/AlreadyLoggedIn';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Loading from 'core/Loading';
-import LogoutAlert from 'components/Login/Alerts/LogoutAlert';
-import AuthTimeoutAlert from 'components/Login/Alerts/AuthTimeoutAlert';
 import { checkAuth } from 'utilities/auth';
 
 const Login: NextPage = () => {
@@ -32,8 +30,6 @@ const Login: NextPage = () => {
   ) : (
     <>
       <LoginForm />
-      <LogoutAlert />
-      <AuthTimeoutAlert />
     </>
   );
 };

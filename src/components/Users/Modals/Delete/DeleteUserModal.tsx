@@ -13,6 +13,8 @@ import {
   deleteUserAlertStateVar,
   deleteUserModalStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 
 const DeleteUserModal = () => {
@@ -54,7 +56,8 @@ const DeleteUserModal = () => {
         },
       });
 
-      deleteUserAlertStateVar(true);
+      successTextVar('User deleted successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

@@ -5,6 +5,8 @@ import {
   deleteDepotAlertStateVar,
   deleteDepotModalStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';
 import Modal from 'core/Modal/Modal';
@@ -59,7 +61,8 @@ const DeleteDepotModal = () => {
         },
       });
 
-      deleteDepotAlertStateVar(true);
+      successTextVar('Depot deleted successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

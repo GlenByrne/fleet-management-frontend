@@ -16,6 +16,8 @@ import {
   deleteFuelCardAlertStateVar,
   deleteFuelCardModalStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 
 const DeleteFuelCardModal = () => {
@@ -58,7 +60,8 @@ const DeleteFuelCardModal = () => {
           },
         },
       });
-      deleteFuelCardAlertStateVar(true);
+      successTextVar('Fuel Card deleted successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

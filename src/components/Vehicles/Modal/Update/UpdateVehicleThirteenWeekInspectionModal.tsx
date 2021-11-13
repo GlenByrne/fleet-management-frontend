@@ -3,6 +3,8 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import {
   currentVehicleVar,
+  successAlertStateVar,
+  successTextVar,
   updateVehicleThirteenWeekAlertStateVar,
   updateVehicleThirteenWeekModalStateVar,
 } from 'constants/apollo-client';
@@ -33,7 +35,10 @@ const UpdateVehicleThirteenWeekModal = () => {
           },
         },
       });
-      updateVehicleThirteenWeekAlertStateVar(true);
+      successTextVar(
+        'Vehicle thirteen week inspection date updated successfully'
+      );
+      successAlertStateVar(true);
     } catch {}
   };
 

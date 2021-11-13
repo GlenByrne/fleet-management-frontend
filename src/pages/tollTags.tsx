@@ -7,9 +7,6 @@ import DeleteTollTagModal from 'components/TollTags/Modal/Delete/DeleteTollTagMo
 import { addTollTagModalStateVar } from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetTollTagsQuery } from 'generated/graphql';
-import CreateTollTagAlert from 'components/TollTags/Alerts/CreateTollTagAlert';
-import UpdateTollTagAlert from 'components/TollTags/Alerts/UpdateTollTagAlert';
-import DeleteTollTagAlert from 'components/TollTags/Alerts/DeleteTollTagAlert';
 
 const TollTags: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -40,9 +37,6 @@ const TollTags: NextPage = () => {
       <CreateTollTagModal />
       <UpdateTollTagModal />
       <DeleteTollTagModal />
-      <CreateTollTagAlert />
-      <UpdateTollTagAlert />
-      <DeleteTollTagAlert />
       <TollTagList data={data} loading={loading} error={error} />
     </Layout>
   );

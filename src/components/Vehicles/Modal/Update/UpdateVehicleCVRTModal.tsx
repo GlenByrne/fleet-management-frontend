@@ -3,6 +3,8 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import {
   currentVehicleVar,
+  successAlertStateVar,
+  successTextVar,
   updateVehicleCVRTAlertStateVar,
   updateVehicleCVRTModalStateVar,
 } from 'constants/apollo-client';
@@ -29,7 +31,8 @@ const UpdateVehicleCVRTModal = () => {
           },
         },
       });
-      updateVehicleCVRTAlertStateVar(true);
+      successTextVar('Vehicle CVRT date updated successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

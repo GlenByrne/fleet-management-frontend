@@ -23,6 +23,8 @@ import { useReactiveVar } from '@apollo/client';
 import {
   currentTollTagVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
   updateTollTagAlertStateVar,
   updateTollTagModalStateVar,
 } from 'constants/apollo-client';
@@ -99,7 +101,8 @@ const UpdateTollTagModal = () => {
         },
       });
 
-      updateTollTagAlertStateVar(true);
+      successTextVar('Toll Tag updated successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

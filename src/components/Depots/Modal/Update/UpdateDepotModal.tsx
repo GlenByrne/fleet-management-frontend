@@ -3,6 +3,8 @@ import { TruckIcon } from '@heroicons/react/solid';
 import {
   currentDepotVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
   updateDepotAlertStateVar,
   updateDepotModalStateVar,
 } from 'constants/apollo-client';
@@ -61,7 +63,8 @@ const UpdateDepotModal = () => {
         },
       });
 
-      updateDepotAlertStateVar(true);
+      successTextVar('Depot updated successfully');
+      successAlertStateVar(true);
     } catch {
       errorAlertStateVar(true);
       throw new Error('Error updating depot');

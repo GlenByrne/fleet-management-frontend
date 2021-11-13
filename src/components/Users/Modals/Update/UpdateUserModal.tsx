@@ -21,6 +21,8 @@ import { useReactiveVar } from '@apollo/client';
 import {
   currentUserVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
   updateUserAlertStateVar,
   updateUserModalStateVar,
 } from 'constants/apollo-client';
@@ -116,7 +118,8 @@ const UpdateUserModal = () => {
         },
       });
 
-      updateUserAlertStateVar(true);
+      successTextVar('User updated successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

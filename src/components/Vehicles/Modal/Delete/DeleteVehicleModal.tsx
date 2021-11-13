@@ -16,6 +16,8 @@ import {
   currentVehicleVar,
   deleteVehicleAlertStateVar,
   deleteVehicleModalStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 
 const DeleteVehicleModal = () => {
@@ -62,7 +64,8 @@ const DeleteVehicleModal = () => {
           },
         },
       });
-      deleteVehicleAlertStateVar(true);
+      successTextVar('Vehicle deleted successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

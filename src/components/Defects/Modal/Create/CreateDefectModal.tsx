@@ -12,6 +12,8 @@ import { useReactiveVar } from '@apollo/client';
 import {
   addDefectModalStateVar,
   createDefectAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 import { useRouter } from 'next/router';
 
@@ -70,7 +72,8 @@ const CreateDefectModal = () => {
         },
       });
 
-      createDefectAlertStateVar(true);
+      successTextVar('Defect added successfully');
+      successAlertStateVar(true);
     } catch {}
 
     setDescription('');

@@ -12,7 +12,8 @@ const ErrorNotification = () => {
     if (alertState === true) {
       setTimeout(() => {
         errorAlertStateVar(false);
-      }, 2000);
+        errorTextVar('');
+      }, 3000);
     }
   });
 

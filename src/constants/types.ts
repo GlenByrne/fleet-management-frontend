@@ -22,7 +22,7 @@ export interface IdObj {
 }
 
 export type Option = {
-  value: string;
+  value: string | null;
   label: string;
 };
 

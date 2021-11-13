@@ -5,6 +5,8 @@ import {
   deleteDefectAlertStateVar,
   deleteDefectModalStateVar,
   errorAlertStateVar,
+  successAlertStateVar,
+  successTextVar,
 } from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';
 import Modal from 'core/Modal/Modal';
@@ -64,7 +66,8 @@ const DeleteDefectModal = () => {
         },
       });
 
-      deleteDefectAlertStateVar(true);
+      successTextVar('Defect deleted successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 

@@ -16,6 +16,8 @@ import {
   updateDefectModalStateVar,
   currentDefectVar,
   updateDefectAlertStateVar,
+  successTextVar,
+  successAlertStateVar,
 } from 'constants/apollo-client';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 
@@ -78,7 +80,8 @@ const UpdateDefectModal = () => {
         },
       });
 
-      updateDefectAlertStateVar(true);
+      successTextVar('Defect updated successfully');
+      successAlertStateVar(true);
     } catch {}
   };
 
