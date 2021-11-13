@@ -25,6 +25,7 @@ import {
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
+import PasswordInput from 'core/Modal/PasswordInput';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -195,14 +196,9 @@ const CreateUserModal = () => {
                 </div>
 
                 <div className="col-span-6 sm:col-span-3">
-                  <ModalFormInput
-                    label="Password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    autoComplete="email"
+                  <PasswordInput
+                    password={password}
                     onChange={changePassword}
-                    required={true}
                   />
                 </div>
 
@@ -238,7 +234,16 @@ const CreateUserModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => addUserModalStateVar(false)}
+              onClick={() => {
+                addUserModalStateVar(false);
+                setName('');
+                setEmail('');
+                setPassword('');
+                setDepot({
+                  value: '',
+                  label: 'None',
+                });
+              }}
               ref={cancelButtonRef}
             >
               Cancel

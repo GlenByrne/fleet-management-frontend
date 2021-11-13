@@ -4,6 +4,7 @@ import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { loggedInUserVar } from 'constants/apollo-client';
+import PasswordInput from 'core/Modal/PasswordInput';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -99,24 +100,7 @@ const LoginForm = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={changePassword}
-                    required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
+                <PasswordInput password={password} onChange={changePassword} />
               </div>
 
               <div className="flex items-center justify-between">
