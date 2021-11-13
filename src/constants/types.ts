@@ -1,4 +1,9 @@
-import { DefectStatus, Role, VehicleType } from 'generated/graphql';
+import {
+  DefectStatus,
+  InfringementStatus,
+  Role,
+  VehicleType,
+} from 'generated/graphql';
 
 export type NavbarOption = {
   name: string;
@@ -80,6 +85,13 @@ export type DefectUpdateModalItem = {
   reporter: string;
   dateCompleted?: Date | null;
   status: DefectStatus;
+};
+
+export type InfringementUpdateModalItem = {
+  id: string;
+  description: string;
+  dateOccured: Date;
+  status: InfringementStatus;
 };
 
 export enum DateStatus {

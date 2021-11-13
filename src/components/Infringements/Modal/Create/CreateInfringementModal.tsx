@@ -11,7 +11,11 @@ import { Dialog } from '@headlessui/react';
 import {
   GetDriversDocument,
   GetDriversQuery,
+  GetInfringementsDocument,
+  GetInfringementsQuery,
+  Infringement,
   useAddInfringementMutation,
+  useGetDriversQuery,
   UsersPayload,
 } from 'generated/graphql';
 import { Option } from 'constants/types';
@@ -27,10 +31,6 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import DatePickerNoClear from 'core/DatePickerNoClear';
 
-type CreateInfringementModalProps = {
-  data: GetDriversQuery | undefined;
-};
-
 const getDriverOptions = (drivers: UsersPayload[]) => {
   const options = drivers?.map(
     (driver) => ({ value: driver.id, label: driver.name } as Option)
@@ -39,7 +39,9 @@ const getDriverOptions = (drivers: UsersPayload[]) => {
   return options;
 };
 
-const CreateInfringementModal = ({ data }: CreateInfringementModalProps) => {
+const CreateInfringementModal = () => {
+  const { data, loading, error } = useGetDriversQuery();
+
   const currentModalStateVar = useReactiveVar(addInfringementModalStateVar);
   const [driverOptions, setDriverOptions] = useState(
     getDriverOptions(data?.drivers as UsersPayload[])
@@ -63,19 +65,18 @@ const CreateInfringementModal = ({ data }: CreateInfringementModalProps) => {
     update: (cache, { data: mutationReturn }) => {
       const newInfringement = mutationReturn?.addInfringement;
 
-      const currentInfringements = cache
-        .readQuery<GetDriversQuery>({
-          query: GetDriversDocument,
-        })
-        ?.drivers?.find(
-          (driver) => driver?.id === mutationReturn?.addInfringement.driver?.id
-        )?.infringements;
+      const currentInfringements = cache.readQuery<GetInfringementsQuery>({
+        query: GetInfringementsDocument,
+      });
 
       if (currentInfringements && newInfringement) {
         cache.writeQuery({
-          query: GetDriversDocument,
+          query: GetInfringementsDocument,
           data: {
-            infringements: [{ ...currentInfringements }, newInfringement],
+            infringements: [
+              { ...currentInfringements.infringements },
+              newInfringement,
+            ],
           },
         });
       }
@@ -114,6 +115,18 @@ const CreateInfringementModal = ({ data }: CreateInfringementModalProps) => {
       errorAlertStateVar(true);
     }
   };
+
+  if (loading) {
+    return <div></div>;
+  }
+
+  if (error) {
+    return <div></div>;
+  }
+
+  if (!data) {
+    return <div></div>;
+  }
 
   return (
     <>

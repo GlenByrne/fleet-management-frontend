@@ -1,15 +1,26 @@
+import {
+  addInfringementModalStateVar,
+  currentInfringementVar,
+} from 'constants/apollo-client';
+import { InfringementUpdateModalItem } from 'constants/types';
 import Loading from 'core/Loading';
-import { ApolloError } from '@apollo/client';
-import { GetDriversQuery, UsersPayload } from 'generated/graphql';
+import { Infringement, useGetInfringementsQuery } from 'generated/graphql';
 import InfringementListItem from './InfringementListItem';
+import NoInfringementsAddButton from './NoInfringementsAddButton';
 
-type InfringementListProps = {
-  data: GetDriversQuery | undefined;
-  loading: boolean;
-  error: ApolloError | undefined;
-};
+const InfringementList = () => {
+  const { data, loading, error } = useGetInfringementsQuery();
 
-const InfringementList = ({ data, loading, error }: InfringementListProps) => {
+  const changeCurrentInfringement = (infringement: Infringement) => {
+    const chosenInfringement: InfringementUpdateModalItem = {
+      id: infringement.id,
+      description: infringement.description,
+      dateOccured: infringement.dateOccured,
+      status: infringement.status,
+    };
+    currentInfringementVar(chosenInfringement);
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -22,18 +33,22 @@ const InfringementList = ({ data, loading, error }: InfringementListProps) => {
     return <div></div>;
   }
 
-  const drivers = data.drivers as UsersPayload[];
+  const infringements = data.infringements as Infringement[];
 
-  return drivers.length > 0 ? (
+  return infringements.length > 0 ? (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {drivers.map((driver) => (
-          <InfringementListItem key={driver.id} driver={driver} />
+        {infringements.map((infringement) => (
+          <InfringementListItem
+            key={infringement.id}
+            infringement={infringement}
+            changeCurrentInfringement={changeCurrentInfringement}
+          />
         ))}
       </ul>
     </div>
   ) : (
-    <div></div>
+    <NoInfringementsAddButton onClick={addInfringementModalStateVar} />
   );
 };
 

@@ -1,13 +1,12 @@
 import { NextPage } from 'next';
 import Layout from 'core/Layout/Layout';
 import { addInfringementModalStateVar } from 'constants/apollo-client';
-import { useGetDriversQuery } from 'generated/graphql';
 import InfringementList from 'components/Infringements/List/InfringementList';
 import CreateInfringementModal from 'components/Infringements/Modal/Create/CreateInfringementModal';
+import UpdateInfringementModal from 'components/Infringements/Modal/Update/UpdateInfringementModal';
+import DeleteInfringementModal from 'components/Infringements/Modal/Delete/DeleteInfringementModal';
 
 const Infringements: NextPage = () => {
-  const { data, loading, error } = useGetDriversQuery();
-
   return (
     <Layout
       hasQuickActionButton={true}
@@ -15,8 +14,10 @@ const Infringements: NextPage = () => {
       quickActionLabel="New Infringement"
       pageSearchable={false}
     >
-      <CreateInfringementModal data={data} />
-      <InfringementList data={data} loading={loading} error={error} />
+      <CreateInfringementModal />
+      <UpdateInfringementModal />
+      <DeleteInfringementModal />
+      <InfringementList />
     </Layout>
   );
 };

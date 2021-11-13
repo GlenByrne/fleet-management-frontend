@@ -16,7 +16,7 @@ const LoginForm = () => {
       if (login.token) {
         localStorage.setItem('token', login.token);
         loggedInUserVar(login.user as UsersPayload);
-        router.push('/vehicles');
+        router.push('/');
         setEmail('');
         setPassword('');
       }

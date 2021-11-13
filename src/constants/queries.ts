@@ -154,6 +154,21 @@ export const GET_DRIVERS = gql`
   }
 `;
 
+export const GET_INFRINGEMENTS = gql`
+  query GetInfringements {
+    infringements {
+      id
+      description
+      dateOccured
+      status
+      driver {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const ADD_INFRINGEMENTS = gql`
   mutation AddInfringement($data: AddInfringementInput!) {
     addInfringement(data: $data) {
@@ -378,6 +393,21 @@ export const DELETE_DEPOT = gql`
   }
 `;
 
+export const DELETE_INFRINGEMENTS = gql`
+  mutation DeleteInfringement($data: DeleteInfringementInput!) {
+    deleteInfringement(data: $data) {
+      id
+      description
+      dateOccured
+      status
+      driver {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const UPDATE_FUEL_CARD = gql`
   mutation UpdateFuelCard($data: UpdateFuelCardInput!) {
     updateFuelCard(data: $data) {
@@ -532,6 +562,21 @@ export const UPDATE_DEPOT = gql`
     updateDepot(data: $data) {
       id
       name
+    }
+  }
+`;
+
+export const UPDATE_INFRINGEMENT = gql`
+  mutation UpdateInfringement($data: UpdateInfringementInput!) {
+    updateInfringement(data: $data) {
+      id
+      description
+      dateOccured
+      status
+      driver {
+        id
+        name
+      }
     }
   }
 `;

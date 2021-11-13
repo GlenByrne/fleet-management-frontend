@@ -9,6 +9,7 @@ import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import {
   DefectStatus,
+  InfringementStatus,
   Role,
   UpdateDepotInput,
   UsersPayload,
@@ -17,6 +18,7 @@ import {
 import {
   DefectUpdateModalItem,
   FuelCardUpdateModalItem,
+  InfringementUpdateModalItem,
   TollTagUpdateModalItem,
   UserUpdateModalItem,
   VehicleUpdateModalItem,
@@ -81,6 +83,13 @@ const initialDefect: DefectUpdateModalItem = {
   status: DefectStatus.Incomplete,
 };
 
+const initialInfringement: InfringementUpdateModalItem = {
+  id: '',
+  description: '',
+  dateOccured: new Date(),
+  status: InfringementStatus.Unsigned,
+};
+
 export const currentFuelCardVar =
   makeVar<FuelCardUpdateModalItem>(initialFuelCard);
 
@@ -95,6 +104,9 @@ export const currentDepotVar = makeVar<UpdateDepotInput>(initialDepot);
 export const currentUserVar = makeVar<UserUpdateModalItem>(initialUser);
 
 export const currentDefectVar = makeVar<DefectUpdateModalItem>(initialDefect);
+
+export const currentInfringementVar =
+  makeVar<InfringementUpdateModalItem>(initialInfringement);
 
 export const hasAccessVar = makeVar(false);
 
@@ -133,6 +145,8 @@ export const deleteUserModalStateVar = makeVar(false);
 
 // Infringement Modals states
 export const addInfringementModalStateVar = makeVar(false);
+export const updateInfringementModalStateVar = makeVar(false);
+export const deleteInfringementModalStateVar = makeVar(false);
 
 export const successAlertStateVar = makeVar(false);
 export const successTextVar = makeVar('');
@@ -212,6 +226,11 @@ const client = new ApolloClient({
           currentDefect: {
             read() {
               return currentDefectVar();
+            },
+          },
+          currentInfringement: {
+            read() {
+              return currentInfringementVar();
             },
           },
         },
