@@ -23,41 +23,15 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   addFuelCardModalStateVar,
-  createFuelCardAlertStateVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
 
-const getDepotOptions = (depots: Depot[]) => {
-  const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
-  );
-
-  options?.unshift({ value: '', label: 'None' });
-
-  return options;
-};
-
 const CreateFuelCardModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForAddFuelCardQuery();
-
   const currentModalStateVar = useReactiveVar(addFuelCardModalStateVar);
-
-  const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
-  );
 
   const [cardNumber, setCardNumber] = useState('');
   const [cardProvider, setCardProvider] = useState('');
-  const [depot, setDepot] = useState<Option>({
-    value: '',
-    label: 'None',
-  });
-
-  useEffect(() => {
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
-  }, [data]);
 
   const changeCardNumber = (event: FormEvent<HTMLInputElement>) => {
     setCardNumber(event.currentTarget.value);
@@ -100,7 +74,6 @@ const CreateFuelCardModal = () => {
           data: {
             cardNumber: cardNumber != null ? cardNumber : '',
             cardProvider: cardProvider != null ? cardProvider : '',
-            depotId: depot.value != null ? depot.value : '',
           },
         },
       });
@@ -111,23 +84,7 @@ const CreateFuelCardModal = () => {
 
     setCardNumber('');
     setCardProvider('');
-    setDepot({
-      value: '',
-      label: 'None',
-    });
   };
-
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
-
-  if (!data) {
-    return <div></div>;
-  }
 
   return (
     <Modal
@@ -168,16 +125,6 @@ const CreateFuelCardModal = () => {
                     value={cardProvider}
                     onChange={changeCardProvider}
                     required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormSelect
-                    label="Depot"
-                    name="depot"
-                    selected={depot}
-                    onChange={setDepot}
-                    options={depotOptions}
                   />
                 </div>
               </div>

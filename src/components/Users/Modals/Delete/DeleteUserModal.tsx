@@ -10,9 +10,7 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import {
   currentUserVar,
-  deleteUserAlertStateVar,
   deleteUserModalStateVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';

@@ -15,7 +15,6 @@ import { useReactiveVar } from '@apollo/client';
 import {
   updateDefectModalStateVar,
   currentDefectVar,
-  updateDefectAlertStateVar,
   successTextVar,
   successAlertStateVar,
 } from 'constants/apollo-client';

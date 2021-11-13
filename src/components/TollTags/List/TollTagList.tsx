@@ -21,10 +21,6 @@ const TollTagList = ({ data, loading, error }: TollTagListProps) => {
       id: tollTag.id,
       tagNumber: tollTag.tagNumber,
       tagProvider: tollTag.tagProvider,
-      depot: {
-        id: tollTag.depot != null ? tollTag.depot.id : '',
-        name: tollTag.depot != null ? tollTag.depot.name : '',
-      },
     };
     currentTollTagVar(chosenTollTag);
   };

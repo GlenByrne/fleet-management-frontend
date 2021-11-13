@@ -14,7 +14,6 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import {
   currentVehicleVar,
-  deleteVehicleAlertStateVar,
   deleteVehicleModalStateVar,
   successAlertStateVar,
   successTextVar,

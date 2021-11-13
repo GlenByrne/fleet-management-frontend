@@ -22,52 +22,23 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   currentFuelCardVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
-  updateFuelCardAlertStateVar,
   updateFuelCardModalStateVar,
 } from 'constants/apollo-client';
 
-const getDepotOptions = (depots: Depot[]) => {
-  const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
-  );
-
-  options?.unshift({ value: '', label: 'None' });
-
-  return options;
-};
-
 const UpdateFuelCardModal = () => {
-  const { data, loading, error } =
-    useGetSelectableItemsForUpdateFuelCardQuery();
-
   const currentCard = useReactiveVar(currentFuelCardVar);
 
   const currentModalStateVar = useReactiveVar(updateFuelCardModalStateVar);
 
-  const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
-  );
-
   const [cardNumber, setCardNumber] = useState('');
   const [cardProvider, setCardProvider] = useState('');
-  const [depot, setDepot] = useState<Option>({
-    value: '',
-    label: '',
-  });
 
   useEffect(() => {
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
-
     setCardNumber(currentCard.cardNumber);
     setCardProvider(currentCard.cardProvider);
-    setDepot({
-      value: currentCard.depot.id,
-      label: currentCard.depot.name,
-    });
-  }, [currentCard, data]);
+  }, [currentCard]);
 
   const changeCardNumber = (event: FormEvent<HTMLInputElement>) => {
     setCardNumber(event.currentTarget.value);
@@ -97,7 +68,6 @@ const UpdateFuelCardModal = () => {
             id: currentCard.id,
             cardNumber: cardNumber != null ? cardNumber : '',
             cardProvider: cardProvider != null ? cardProvider : '',
-            depotId: depot.value != null ? depot.value : '',
           },
         },
       });
@@ -106,18 +76,6 @@ const UpdateFuelCardModal = () => {
       successAlertStateVar(true);
     } catch {}
   };
-
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
-
-  if (!data) {
-    return <div></div>;
-  }
 
   return (
     <Modal
@@ -158,16 +116,6 @@ const UpdateFuelCardModal = () => {
                     value={cardProvider}
                     onChange={changeCardProvider}
                     required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormSelect
-                    label="Depot"
-                    name="depot"
-                    selected={depot}
-                    onChange={setDepot}
-                    options={depotOptions}
                   />
                 </div>
               </div>

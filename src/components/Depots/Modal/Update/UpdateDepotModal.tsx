@@ -5,7 +5,6 @@ import {
   errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
-  updateDepotAlertStateVar,
   updateDepotModalStateVar,
 } from 'constants/apollo-client';
 import { Dialog } from '@headlessui/react';

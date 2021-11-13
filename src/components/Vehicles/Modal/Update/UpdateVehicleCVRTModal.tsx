@@ -5,7 +5,6 @@ import {
   currentVehicleVar,
   successAlertStateVar,
   successTextVar,
-  updateVehicleCVRTAlertStateVar,
   updateVehicleCVRTModalStateVar,
 } from 'constants/apollo-client';
 import DatePickerNoClear from 'core/DatePickerNoClear';

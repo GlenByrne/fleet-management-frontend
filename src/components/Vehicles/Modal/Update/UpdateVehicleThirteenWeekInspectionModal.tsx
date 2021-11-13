@@ -5,10 +5,8 @@ import {
   currentVehicleVar,
   successAlertStateVar,
   successTextVar,
-  updateVehicleThirteenWeekAlertStateVar,
   updateVehicleThirteenWeekModalStateVar,
 } from 'constants/apollo-client';
-import DatePicker from 'core/DatePick';
 import DatePickerNoClear from 'core/DatePickerNoClear';
 import Modal from 'core/Modal/Modal';
 import { useUpdateVehicleThirteenWeekInspectionMutation } from 'generated/graphql';

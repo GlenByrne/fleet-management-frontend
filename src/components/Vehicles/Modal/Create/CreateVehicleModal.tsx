@@ -27,7 +27,6 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addVehicleModalStateVar,
-  createVehicleAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';

@@ -2,9 +2,7 @@ import { useReactiveVar } from '@apollo/client';
 import { ExclamationIcon } from '@heroicons/react/solid';
 import {
   currentDefectVar,
-  deleteDefectAlertStateVar,
   deleteDefectModalStateVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';

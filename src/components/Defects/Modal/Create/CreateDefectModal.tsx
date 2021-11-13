@@ -11,7 +11,6 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   addDefectModalStateVar,
-  createDefectAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';

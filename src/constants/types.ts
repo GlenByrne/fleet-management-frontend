@@ -54,20 +54,12 @@ export type FuelCardUpdateModalItem = {
   id: string;
   cardNumber: string;
   cardProvider: string;
-  depot: {
-    id: string;
-    name: string;
-  };
 };
 
 export type TollTagUpdateModalItem = {
   id: string;
   tagNumber: string;
   tagProvider: string;
-  depot: {
-    id: string;
-    name: string;
-  };
 };
 
 export type UserUpdateModalItem = {

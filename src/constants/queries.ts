@@ -98,10 +98,6 @@ export const GET_FUEL_CARDS = gql`
       id
       cardNumber
       cardProvider
-      depot {
-        id
-        name
-      }
       vehicle {
         id
         registration
@@ -116,10 +112,6 @@ export const GET_TOLL_TAGS = gql`
       id
       tagNumber
       tagProvider
-      depot {
-        id
-        name
-      }
       vehicle {
         id
         registration
@@ -136,14 +128,6 @@ export const GET_DEPOTS = gql`
       vehicles {
         id
         registration
-      }
-      fuelCards {
-        id
-        cardNumber
-      }
-      tollTags {
-        id
-        tagNumber
       }
     }
   }
@@ -323,10 +307,6 @@ export const ADD_TOLL_TAG = gql`
         id
         registration
       }
-      depot {
-        id
-        name
-      }
     }
   }
 `;
@@ -340,10 +320,6 @@ export const ADD_FUEL_CARD = gql`
       vehicle {
         id
         registration
-      }
-      depot {
-        id
-        name
       }
     }
   }
@@ -408,10 +384,6 @@ export const UPDATE_FUEL_CARD = gql`
       id
       cardNumber
       cardProvider
-      depot {
-        id
-        name
-      }
     }
   }
 `;
@@ -422,10 +394,6 @@ export const UPDATE_TOLL_TAG = gql`
       id
       tagNumber
       tagProvider
-      depot {
-        id
-        name
-      }
     }
   }
 `;

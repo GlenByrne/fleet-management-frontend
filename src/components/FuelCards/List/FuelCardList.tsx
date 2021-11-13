@@ -21,10 +21,6 @@ const FuelCardList = ({ data, loading, error }: FuelCardListProps) => {
       id: fuelCard.id,
       cardNumber: fuelCard.cardNumber,
       cardProvider: fuelCard.cardProvider,
-      depot: {
-        id: fuelCard.depot != null ? fuelCard.depot.id : '',
-        name: fuelCard.depot != null ? fuelCard.depot.name : '',
-      },
     };
     currentFuelCardVar(chosenFuelCard);
   };

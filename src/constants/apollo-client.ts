@@ -27,20 +27,12 @@ const initialFuelCard: FuelCardUpdateModalItem = {
   id: '',
   cardNumber: '',
   cardProvider: '',
-  depot: {
-    id: '',
-    name: 'None',
-  },
 };
 
 const initialTollTag: TollTagUpdateModalItem = {
   id: '',
   tagNumber: '',
   tagProvider: '',
-  depot: {
-    id: '',
-    name: 'None',
-  },
 };
 
 const initialVehicle: VehicleUpdateModalItem = {
@@ -141,47 +133,6 @@ export const deleteUserModalStateVar = makeVar(false);
 
 // Infringement Modals states
 export const addInfringementModalStateVar = makeVar(false);
-
-// Vehicle Page Alerts
-export const createVehicleAlertStateVar = makeVar(false);
-export const updateVehicleAlertStateVar = makeVar(false);
-export const updateVehicleCVRTAlertStateVar = makeVar(false);
-export const updateVehicleThirteenWeekAlertStateVar = makeVar(false);
-export const updateVehicleTachoCalibrationAlertStateVar = makeVar(false);
-export const deleteVehicleAlertStateVar = makeVar(false);
-
-// Defect Page Alerts
-export const createDefectAlertStateVar = makeVar(false);
-export const updateDefectAlertStateVar = makeVar(false);
-export const deleteDefectAlertStateVar = makeVar(false);
-
-// Users Page Alerts
-export const createUserAlertStateVar = makeVar(false);
-export const updateUserAlertStateVar = makeVar(false);
-export const deleteUserAlertStateVar = makeVar(false);
-
-// Fuel Cards Page Alerts
-export const createFuelCardAlertStateVar = makeVar(false);
-export const updateFuelCardAlertStateVar = makeVar(false);
-export const deleteFuelCardAlertStateVar = makeVar(false);
-
-// Toll Tags Page Alerts
-export const createTollTagAlertStateVar = makeVar(false);
-export const updateTollTagAlertStateVar = makeVar(false);
-export const deleteTollTagAlertStateVar = makeVar(false);
-
-// Depots Page Alerts
-export const createDepotAlertStateVar = makeVar(false);
-export const updateDepotAlertStateVar = makeVar(false);
-export const deleteDepotAlertStateVar = makeVar(false);
-
-// Infringement Page Alerts
-export const createInfringementAlertStateVar = makeVar(false);
-export const createInfringementNoDriverAlertStateVar = makeVar(false);
-
-// Logout Alerts
-export const logoutAlertVar = makeVar(false);
-export const authTimeoutAlertVar = makeVar(false);
 
 export const successAlertStateVar = makeVar(false);
 export const successTextVar = makeVar('');

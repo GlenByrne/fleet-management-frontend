@@ -2,8 +2,6 @@ import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
 import {
   addDepotModalStateVar,
-  createDepotAlertStateVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';

@@ -6,67 +6,35 @@ import {
   useState,
 } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
 import {
-  Depot,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   GetVehiclesDocument,
-  useGetSelectableItemsForUpdateTollTagQuery,
   useUpdateTollTagMutation,
 } from 'generated/graphql';
-import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   currentTollTagVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
-  updateTollTagAlertStateVar,
   updateTollTagModalStateVar,
 } from 'constants/apollo-client';
 
-const getDepotOptions = (depots: Depot[]) => {
-  const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
-  );
-
-  options?.unshift({ value: '', label: 'None' });
-
-  return options;
-};
-
 const UpdateTollTagModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForUpdateTollTagQuery();
-
   const currentTag = useReactiveVar(currentTollTagVar);
 
   const currentModalStateVar = useReactiveVar(updateTollTagModalStateVar);
 
-  const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
-  );
-
   const [tagNumber, setTagNumber] = useState('');
   const [tagProvider, setTagProvider] = useState('');
-  const [depot, setDepot] = useState<Option>({
-    value: 'None',
-    label: '',
-  });
 
   useEffect(() => {
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
-
     setTagNumber(currentTag.tagNumber);
     setTagProvider(currentTag.tagProvider);
-    setDepot({
-      value: currentTag.depot.id,
-      label: currentTag.depot.name,
-    });
-  }, [currentTag, data]);
+  }, [currentTag]);
 
   const changeTagNumber = (event: FormEvent<HTMLInputElement>) => {
     setTagNumber(event.currentTarget.value);
@@ -96,7 +64,6 @@ const UpdateTollTagModal = () => {
             id: currentTag.id,
             tagNumber: tagNumber != null ? tagNumber : '',
             tagProvider: tagProvider != null ? tagProvider : '',
-            depotId: depot.value != null ? depot.value : '',
           },
         },
       });
@@ -105,18 +72,6 @@ const UpdateTollTagModal = () => {
       successAlertStateVar(true);
     } catch {}
   };
-
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
-
-  if (!data) {
-    return <div></div>;
-  }
 
   return (
     <Modal
@@ -157,16 +112,6 @@ const UpdateTollTagModal = () => {
                     value={tagProvider}
                     onChange={changeTagProvider}
                     required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormSelect
-                    label="Depot"
-                    name="depot"
-                    selected={depot}
-                    onChange={setDepot}
-                    options={depotOptions}
                   />
                 </div>
               </div>

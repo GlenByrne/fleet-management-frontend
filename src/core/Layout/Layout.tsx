@@ -16,11 +16,7 @@ import { useState } from 'react';
 import SideNav from 'core/Layout/SideNav';
 import ContentArea from './ContentArea';
 import { checkAuth, logOut } from 'utilities/auth';
-import {
-  logoutAlertVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'constants/apollo-client';
 import { useRouter } from 'next/router';
 
 type LayoutProps = {

@@ -22,42 +22,16 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addTollTagModalStateVar,
-  createTollTagAlertStateVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 
-const getDepotOptions = (depots: Depot[]) => {
-  const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
-  );
-
-  options?.unshift({ value: '', label: 'None' });
-
-  return options;
-};
-
 const CreateTollTagModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForAddTollTagQuery();
-
   const currentModalStateVar = useReactiveVar(addTollTagModalStateVar);
-
-  const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
-  );
 
   const [tagNumber, setTagNumber] = useState('');
   const [tagProvider, setTagProvider] = useState('');
-  const [depot, setDepot] = useState<Option>({
-    value: '',
-    label: 'None',
-  });
-
-  useEffect(() => {
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
-  }, [data]);
 
   const changeTagNumber = (event: FormEvent<HTMLInputElement>) => {
     setTagNumber(event.currentTarget.value);
@@ -98,7 +72,6 @@ const CreateTollTagModal = () => {
           data: {
             tagNumber: tagNumber != null ? tagNumber : '',
             tagProvider: tagProvider != null ? tagProvider : '',
-            depotId: depot.value != null ? depot.value : '',
           },
         },
       });
@@ -109,23 +82,7 @@ const CreateTollTagModal = () => {
 
     setTagNumber('');
     setTagProvider('');
-    setDepot({
-      value: '',
-      label: 'None',
-    });
   };
-
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
-
-  if (!data) {
-    return <div></div>;
-  }
 
   return (
     <Modal
@@ -166,16 +123,6 @@ const CreateTollTagModal = () => {
                     value={tagProvider}
                     onChange={changeTagProvider}
                     required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormSelect
-                    label="Depot"
-                    name="depot"
-                    selected={depot}
-                    onChange={setDepot}
-                    options={depotOptions}
                   />
                 </div>
               </div>

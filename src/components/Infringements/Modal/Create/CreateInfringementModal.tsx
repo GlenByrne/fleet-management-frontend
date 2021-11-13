@@ -19,8 +19,6 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addInfringementModalStateVar,
-  createInfringementAlertStateVar,
-  createInfringementNoDriverAlertStateVar,
   errorAlertStateVar,
   errorTextVar,
   successAlertStateVar,

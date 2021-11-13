@@ -13,9 +13,7 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import {
   currentFuelCardVar,
-  deleteFuelCardAlertStateVar,
   deleteFuelCardModalStateVar,
-  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
