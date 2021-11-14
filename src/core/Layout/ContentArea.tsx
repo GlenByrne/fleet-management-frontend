@@ -137,7 +137,7 @@ const ContentArea = ({
       </header>
 
       {/* Main content */}
-      <div className="flex-1 flex items-stretch overflow-hidden">
+      <div className="flex-1 flex items-stretch overflow-hidden p-4">
         <main className="flex-1 overflow-y-auto">
           {/* Primary column */}
           <section
