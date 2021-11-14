@@ -581,6 +581,21 @@ export const UPDATE_INFRINGEMENT = gql`
   }
 `;
 
+export const UPDATE_INFRINGEMENT_STATUS = gql`
+  mutation UpdateInfringementStatus($data: UpdateInfringementStasusInput!) {
+    updateInfringementStatus(data: $data) {
+      id
+      description
+      dateOccured
+      status
+      driver {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query GetCurrentUser {
     me {

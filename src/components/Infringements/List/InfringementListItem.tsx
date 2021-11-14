@@ -3,7 +3,7 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
-import { Infringement } from 'generated/graphql';
+import { Infringement, InfringementStatus } from 'generated/graphql';
 import Link from 'next/link';
 import { getInfringementClassNames } from 'utilities/getInfringementClassNames';
 import { format } from 'date-fns';
@@ -11,7 +11,7 @@ import Button from 'core/Table/Button';
 import {
   deleteInfringementModalStateVar,
   updateInfringementModalStateVar,
-  updateVehicleCVRTModalStateVar,
+  updateInfringementStatusModalStateVar,
 } from 'constants/apollo-client';
 
 type InfringementListItemProps = {
@@ -52,8 +52,10 @@ const InfringementListItem = ({
                 <button
                   type="button"
                   onClick={() => {
-                    changeCurrentInfringement(infringement);
-                    updateVehicleCVRTModalStateVar(true);
+                    if (infringement.status != InfringementStatus.Signed) {
+                      changeCurrentInfringement(infringement);
+                      updateInfringementStatusModalStateVar(true);
+                    }
                   }}
                   className={getInfringementClassNames(infringement.status)}
                 >

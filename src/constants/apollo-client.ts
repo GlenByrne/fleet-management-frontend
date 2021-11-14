@@ -146,6 +146,7 @@ export const deleteUserModalStateVar = makeVar(false);
 // Infringement Modals states
 export const addInfringementModalStateVar = makeVar(false);
 export const updateInfringementModalStateVar = makeVar(false);
+export const updateInfringementStatusModalStateVar = makeVar(false);
 export const deleteInfringementModalStateVar = makeVar(false);
 
 export const successAlertStateVar = makeVar(false);
