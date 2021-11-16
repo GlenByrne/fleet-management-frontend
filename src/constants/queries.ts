@@ -637,10 +637,6 @@ export const LOGIN = gql`
 //         name
 //         email
 //         role
-//         company {
-//           id
-//           name
-//         }
 //         depot {
 //           id
 //           name
@@ -650,22 +646,6 @@ export const LOGIN = gql`
 //     }
 //   }
 // `;
-
-export const ADD_COMPANY = gql`
-  mutation AddCompany($data: AddCompanyInput!) {
-    addCompany(data: $data) {
-      company {
-        id
-        name
-      }
-      user {
-        id
-        name
-      }
-      token
-    }
-  }
-`;
 
 export const GET_USERS = gql`
   query GetUsers($data: UsersInputFilter) {
