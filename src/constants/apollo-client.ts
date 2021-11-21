@@ -1,7 +1,9 @@
 import {
   ApolloClient,
+  concat,
   createHttpLink,
   from,
+  fromPromise,
   InMemoryCache,
   makeVar,
 } from '@apollo/client';
@@ -10,6 +12,7 @@ import { setContext } from '@apollo/client/link/context';
 import {
   DefectStatus,
   InfringementStatus,
+  RefreshTokenDocument,
   Role,
   UpdateDepotInput,
   UsersPayload,
@@ -23,7 +26,8 @@ import {
   UserUpdateModalItem,
   VehicleUpdateModalItem,
 } from './types';
-import { logOut } from 'utilities/auth';
+import { LogOut } from 'utilities/auth';
+import Router from 'next/router';
 
 const initialFuelCard: FuelCardUpdateModalItem = {
   id: '',
@@ -156,46 +160,95 @@ export const errorAlertStateVar = makeVar(false);
 export const errorTextVar = makeVar('');
 
 export const loggedInUserVar = makeVar<UsersPayload | null>(null);
+export const accessTokenVar = makeVar<string | null>(null);
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
   credentials: 'include',
 });
 
-// const authLink = setContext((_, { headers }) => {
-//   // get the authentication token from local storage if it exists
-//   const token = localStorage.getItem('token');
-//   // return the headers to the context so httpLink can read them
-//   return {
-//     headers: {
-//       ...headers,
-//       authorization: token ? `Bearer ${token}` : '',
-//     },
-//   };
-// });
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = accessTokenVar();
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.map(({ message }) => {
-      if (message === 'Not Authorised!' || message === 'jwt expired') {
-        logOut();
-        successTextVar(
-          'You have been logged out due to your login credentials expiring. Please log back in'
-        );
-        successAlertStateVar(true);
-      } else {
-        errorTextVar(message);
-        errorAlertStateVar(true);
-      }
+let isRefreshing = false;
+let pendingRequests: Function[] = [];
+
+const setIsRefreshing = (value: boolean) => {
+  isRefreshing = value;
+};
+
+const addPendingRequest = (pendingRequest: Function) => {
+  pendingRequests.push(pendingRequest);
+};
+
+const resolvePendingRequests = () => {
+  pendingRequests.map((callback) => callback());
+  pendingRequests = [];
+};
+
+const getNewToken = async () => {
+  return await client
+    .mutate({ mutation: RefreshTokenDocument })
+    .then((response) => {
+      // extract your accessToken from your response data and return it
+      const { accessToken } = response.data.refreshToken;
+      accessTokenVar(accessToken);
     });
-  } else if (networkError) {
-    errorTextVar('A network error has occured');
-    errorAlertStateVar(true);
+};
+
+const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+  if (graphQLErrors) {
+    for (const err of graphQLErrors) {
+      switch (err?.message) {
+        case 'Not Authorised!':
+          if (!isRefreshing) {
+            setIsRefreshing(true);
+
+            return fromPromise(
+              getNewToken().catch(() => {
+                resolvePendingRequests();
+                setIsRefreshing(false);
+
+                accessTokenVar(null);
+                loggedInUserVar(null);
+                Router.push('/login');
+                client.clearStore();
+                successTextVar('Please log back in');
+                successAlertStateVar(true);
+
+                return forward(operation);
+              })
+            ).flatMap(() => {
+              resolvePendingRequests();
+              setIsRefreshing(false);
+
+              return forward(operation);
+            });
+          } else {
+            return fromPromise(
+              new Promise<void>((resolve) => {
+                addPendingRequest(() => resolve());
+              })
+            ).flatMap(() => {
+              return forward(operation);
+            });
+          }
+      }
+    }
   }
 });
 
 const client = new ApolloClient({
-  link: from([errorLink, httpLink]),
+  link: from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

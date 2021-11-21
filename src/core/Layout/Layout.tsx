@@ -15,9 +15,15 @@ import {
 import { useState } from 'react';
 import SideNav from 'core/Layout/SideNav';
 import ContentArea from './ContentArea';
-import { checkAuth, logOut } from 'utilities/auth';
-import { successAlertStateVar, successTextVar } from 'constants/apollo-client';
+import { checkAuth, LogOut } from 'utilities/auth';
+import client, {
+  accessTokenVar,
+  loggedInUserVar,
+  successAlertStateVar,
+  successTextVar,
+} from 'constants/apollo-client';
 import { useRouter } from 'next/router';
+import { useLogoutMutation } from 'generated/graphql';
 
 type LayoutProps = {
   children: ReactNode;
@@ -50,27 +56,34 @@ const Layout = ({
 }: LayoutProps) => {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logOut] = useLogoutMutation();
+
+  const handleLogOut = () => {
+    logOut();
+    accessTokenVar(null);
+    loggedInUserVar(null);
+    router.push('/login');
+    client.clearStore();
+    successTextVar('Logged out successfully');
+    successAlertStateVar(true);
+  };
 
   const userNavigation: UserNavbarOption[] = [
     { name: 'Your Profile', onClick: () => {} },
     { name: 'Settings', onClick: () => {} },
     {
       name: 'Sign out',
-      onClick: () => {
-        logOut();
-        successTextVar('Logged out successfully');
-        successAlertStateVar(true);
-      },
+      onClick: handleLogOut,
     },
   ];
 
-  useEffect(() => {
-    const isLoggedIn = checkAuth();
+  // useEffect(() => {
+  //   const isLoggedIn = checkAuth();
 
-    if (!isLoggedIn) {
-      router.push('/login');
-    }
-  }, [router]);
+  //   if (!isLoggedIn) {
+  //     router.push('/login');
+  //   }
+  // }, [router]);
 
   return (
     <div className="flex h-screen">

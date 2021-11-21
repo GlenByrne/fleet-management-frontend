@@ -1,14 +1,24 @@
-import client, { loggedInUserVar } from 'constants/apollo-client';
+import client, {
+  accessTokenVar,
+  loggedInUserVar,
+} from 'constants/apollo-client';
+import { useLogoutMutation } from 'generated/graphql';
 import Router from 'next/router';
 
 export const checkAuth = () => {
-  const token = localStorage.getItem('token');
-  return Boolean(token);
+  const accessToken = accessTokenVar();
+  return Boolean(accessToken);
 };
 
-export const logOut = () => {
-  localStorage.removeItem('token');
-  loggedInUserVar(null);
-  Router.push('/login');
-  client.clearStore();
+export const LogOut = () => {
+  const [logOut] = useLogoutMutation();
+
+  logOut({
+    onCompleted: () => {
+      accessTokenVar(null);
+      loggedInUserVar(null);
+      Router.push('/login');
+      client.clearStore();
+    },
+  });
 };

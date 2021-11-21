@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { loggedInUserVar } from 'constants/apollo-client';
+import { accessTokenVar, loggedInUserVar } from 'constants/apollo-client';
 import PasswordInput from 'core/Modal/PasswordInput';
 
 const LoginForm = () => {
@@ -13,6 +13,7 @@ const LoginForm = () => {
 
   const [login] = useLoginMutation({
     onCompleted: ({ login }) => {
+      accessTokenVar(login.accessToken);
       loggedInUserVar(login.user as UsersPayload);
       router.push('/');
       setEmail('');

@@ -624,6 +624,23 @@ export const LOGIN = gql`
           name
         }
       }
+      accessToken
+    }
+  }
+`;
+
+export const LOGOUT = gql`
+  mutation Logout {
+    logout {
+      message
+    }
+  }
+`;
+
+export const REFRESH_TOKEN = gql`
+  mutation RefreshToken {
+    refreshToken {
+      accessToken
     }
   }
 `;
@@ -660,6 +677,7 @@ export const ADD_COMPANY = gql`
         id
         name
       }
+      accessToken
     }
   }
 `;
