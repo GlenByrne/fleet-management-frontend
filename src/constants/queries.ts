@@ -653,7 +653,7 @@ export const REFRESH_TOKEN = gql`
 //         name
 //         email
 //         role
-//         company {
+//         organisation {
 //           id
 //           name
 //         }
@@ -666,10 +666,10 @@ export const REFRESH_TOKEN = gql`
 //   }
 // `;
 
-export const ADD_COMPANY = gql`
-  mutation AddCompany($data: AddCompanyInput!) {
-    addCompany(data: $data) {
-      company {
+export const ADD_ORGANISATION = gql`
+  mutation AddOrganisation($data: AddOrganisationInput!) {
+    addOrganisation(data: $data) {
+      organisation {
         id
         name
       }

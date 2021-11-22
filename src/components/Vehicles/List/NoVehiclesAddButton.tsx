@@ -10,18 +10,19 @@ const NoVehiclesAddButton = ({ onClick }: NoVehiclesAddButtonProps) => {
       onClick={() => onClick(true)}
     >
       <svg
-        className="mx-auto h-12 w-12 text-gray-400"
         xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
+        className="mx-auto h-12 w-12 text-gray-400"
         fill="none"
-        viewBox="0 0 48 48"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
         aria-hidden="true"
       >
+        <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6"
+          d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
         />
       </svg>
       <span className="mt-2 block text-sm font-medium text-gray-900">

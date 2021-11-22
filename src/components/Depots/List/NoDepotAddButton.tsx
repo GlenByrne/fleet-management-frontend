@@ -10,18 +10,18 @@ const NoDepotAddButton = ({ onClick }: NoDepotAddButtonProps) => {
       onClick={() => onClick(true)}
     >
       <svg
-        className="mx-auto h-12 w-12 text-gray-400"
         xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
+        className="mx-auto h-12 w-12 text-gray-400"
         fill="none"
-        viewBox="0 0 48 48"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
         aria-hidden="true"
       >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6"
+          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
         />
       </svg>
       <span className="mt-2 block text-sm font-medium text-gray-900">

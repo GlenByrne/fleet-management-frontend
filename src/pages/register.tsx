@@ -4,19 +4,19 @@ import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import PasswordInput from 'core/Modal/PasswordInput';
-import { useAddCompanyMutation } from 'generated/graphql';
+import { useAddOrganisationMutation } from 'generated/graphql';
 
 const Register: NextPage = () => {
   const router = useRouter();
-  const [companyName, setCompanyName] = useState('');
+  const [organisationName, setOrganisationName] = useState('');
   const [adminName, setAdminName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [addCompany] = useAddCompanyMutation({
+  const [addOrganisation] = useAddOrganisationMutation({
     onCompleted: () => {
       router.push('/');
-      setCompanyName('');
+      setOrganisationName('');
       setAdminName('');
       setEmail('');
       setPassword('');
@@ -25,10 +25,10 @@ const Register: NextPage = () => {
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    addCompany({
+    addOrganisation({
       variables: {
         data: {
-          name: companyName,
+          name: organisationName,
           adminName: adminName,
           email: email,
           password: password,
@@ -37,8 +37,8 @@ const Register: NextPage = () => {
     });
   };
 
-  const changeCompanyName = (event: FormEvent<HTMLInputElement>) => {
-    setCompanyName(event.currentTarget.value);
+  const changeOrganisationName = (event: FormEvent<HTMLInputElement>) => {
+    setOrganisationName(event.currentTarget.value);
   };
 
   const changeAdminName = (event: FormEvent<HTMLInputElement>) => {
@@ -87,19 +87,19 @@ const Register: NextPage = () => {
             <form className="space-y-6" onSubmit={submitHandler}>
               <div>
                 <label
-                  htmlFor="companyName"
+                  htmlFor="organisationName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Company Name
+                  Organisation Name
                 </label>
                 <div className="mt-1">
                   <input
-                    id="companyName"
-                    name="companyName"
-                    type="companyName"
-                    autoComplete="companyName"
-                    value={companyName}
-                    onChange={changeCompanyName}
+                    id="organisationName"
+                    name="organisationName"
+                    type="organisationName"
+                    autoComplete="organisationName"
+                    value={organisationName}
+                    onChange={changeOrganisationName}
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />

@@ -112,8 +112,6 @@ export const currentDefectVar = makeVar<DefectUpdateModalItem>(initialDefect);
 export const currentInfringementVar =
   makeVar<InfringementUpdateModalItem>(initialInfringement);
 
-export const hasAccessVar = makeVar(false);
-
 // Vehicle Modals states
 export const addVehicleModalStateVar = makeVar(false);
 export const updateVehicleModalStateVar = makeVar(false);
@@ -242,6 +240,9 @@ const errorLink = onError(({ graphQLErrors, operation, forward }) => {
               return forward(operation);
             });
           }
+        default:
+          errorTextVar(err.message);
+          errorAlertStateVar(true);
       }
     }
   }

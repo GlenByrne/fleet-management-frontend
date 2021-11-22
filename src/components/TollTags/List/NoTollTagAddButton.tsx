@@ -10,18 +10,18 @@ const NoTollTagAddButton = ({ onClick }: NoTollTagAddButtonProps) => {
       onClick={() => onClick(true)}
     >
       <svg
-        className="mx-auto h-12 w-12 text-gray-400"
         xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
+        className="mx-auto h-12 w-12 text-gray-400"
         fill="none"
-        viewBox="0 0 48 48"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
         aria-hidden="true"
       >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6"
+          d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
         />
       </svg>
       <span className="mt-2 block text-sm font-medium text-gray-900">
