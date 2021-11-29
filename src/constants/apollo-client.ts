@@ -143,7 +143,7 @@ export const deleteDepotModalStateVar = makeVar(false);
 // User Modals states
 export const addUserModalStateVar = makeVar(false);
 export const updateUserModalStateVar = makeVar(false);
-export const deleteUserModalStateVar = makeVar(false);
+export const removeUserModalStateVar = makeVar(false);
 
 // Infringement Modals states
 export const addInfringementModalStateVar = makeVar(false);
@@ -159,6 +159,8 @@ export const errorTextVar = makeVar('');
 
 export const loggedInUserVar = makeVar<UsersPayload | null>(null);
 export const accessTokenVar = makeVar<string | null>(null);
+
+export const currentOrganisationVar = makeVar<string>('');
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',

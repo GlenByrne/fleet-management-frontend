@@ -1,14 +1,14 @@
 import { NextPage } from 'next';
 import DefectList from '../../components/Defects/List/DefectList';
-import Layout from 'core/Layout/Layout';
 import { addDefectModalStateVar } from 'constants/apollo-client';
 import CreateDefectModal from 'components/Defects/Modal/Create/CreateDefectModal';
 import UpdateDefectModal from 'components/Defects/Modal/Update/UpdateDefectModal';
 import DeleteDefectModal from 'components/Defects/Modal/Delete/DeleteDefectModal';
+import MainLayout from 'core/Layout/MainLayout/MainLayout';
 
 const Defects: NextPage = () => {
   return (
-    <Layout
+    <MainLayout
       hasQuickActionButton={true}
       quickAction={addDefectModalStateVar}
       quickActionLabel="New Defect"
@@ -18,7 +18,7 @@ const Defects: NextPage = () => {
       <CreateDefectModal />
       <UpdateDefectModal />
       <DeleteDefectModal />
-    </Layout>
+    </MainLayout>
   );
 };
 

@@ -29,6 +29,7 @@ import {
   updateVehicleModalStateVar,
   successTextVar,
   successAlertStateVar,
+  currentOrganisationVar,
 } from 'constants/apollo-client';
 import DatePicker from 'core/DatePick';
 
@@ -98,7 +99,14 @@ const getVehicleTypeOptions = () => {
 };
 
 const UpdateVehicleModal = () => {
-  const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
+  const { data, loading, error } = useGetItemsForUpdateVehicleQuery({
+    variables: {
+      organisationId: currentOrganisationVar(),
+      data: {
+        organisationId: currentOrganisationVar(),
+      },
+    },
+  });
 
   const currentVehicle = useReactiveVar(currentVehicleVar);
   const currentModalStateVar = useReactiveVar(updateVehicleModalStateVar);

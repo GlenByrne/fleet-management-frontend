@@ -13,12 +13,13 @@ import {
   Depot,
   Role,
   useGetSelectableItemsForUpdateUserQuery,
-  useUpdateUserMutation,
+  useUpdateUserOrgDetailsMutation,
 } from 'generated/graphql';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
+  currentOrganisationVar,
   currentUserVar,
   successAlertStateVar,
   successTextVar,
@@ -51,7 +52,13 @@ const getRoleOptions = () => {
 };
 
 const UpdateUserModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForUpdateUserQuery();
+  const { data, loading, error } = useGetSelectableItemsForUpdateUserQuery({
+    variables: {
+      data: {
+        organisationId: currentOrganisationVar(),
+      },
+    },
+  });
 
   const currentUser = useReactiveVar(currentUserVar);
   const currentModalStateVar = useReactiveVar(updateUserModalStateVar);
@@ -98,7 +105,7 @@ const UpdateUserModal = () => {
 
   const cancelButtonRef = useRef(null);
 
-  const [updateUser] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserOrgDetailsMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -107,9 +114,8 @@ const UpdateUserModal = () => {
       await updateUser({
         variables: {
           data: {
-            id: currentUser.id,
-            name: name != null ? name : '',
-            email: email != null ? email : '',
+            userId: currentUser.id,
+            organisationId: currentOrganisationVar(),
             depotId: depot.value != null ? depot.value : '',
             role: role.value != null ? (role.value as Role) : Role.User,
           },

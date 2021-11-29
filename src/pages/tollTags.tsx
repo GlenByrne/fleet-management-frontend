@@ -1,16 +1,25 @@
 import { NextPage } from 'next';
 import TollTagList from 'components/TollTags/List/TollTagList';
-import Layout from 'core/Layout/Layout';
 import CreateTollTagModal from 'components/TollTags/Modal/Create/CreateTollTagModal';
 import UpdateTollTagModal from 'components/TollTags/Modal/Update/UpdateTollTagModal';
 import DeleteTollTagModal from 'components/TollTags/Modal/Delete/DeleteTollTagModal';
-import { addTollTagModalStateVar } from 'constants/apollo-client';
+import {
+  addTollTagModalStateVar,
+  currentOrganisationVar,
+} from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetTollTagsQuery } from 'generated/graphql';
+import MainLayout from 'core/Layout/MainLayout/MainLayout';
 
 const TollTags: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetTollTagsQuery();
+  const { data, loading, error, refetch } = useGetTollTagsQuery({
+    variables: {
+      data: {
+        organisationId: currentOrganisationVar(),
+      },
+    },
+  });
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -21,12 +30,13 @@ const TollTags: NextPage = () => {
     refetch({
       data: {
         searchCriteria: searchCriteria,
+        organisationId: currentOrganisationVar(),
       },
     });
   };
 
   return (
-    <Layout
+    <MainLayout
       hasQuickActionButton={true}
       quickAction={addTollTagModalStateVar}
       quickActionLabel="New Tag"
@@ -38,7 +48,7 @@ const TollTags: NextPage = () => {
       <UpdateTollTagModal />
       <DeleteTollTagModal />
       <TollTagList data={data} loading={loading} error={error} />
-    </Layout>
+    </MainLayout>
   );
 };
 

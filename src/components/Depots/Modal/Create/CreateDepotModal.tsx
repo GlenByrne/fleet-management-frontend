@@ -2,6 +2,7 @@ import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
 import {
   addDepotModalStateVar,
+  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
@@ -59,6 +60,7 @@ const CreateDepotModal = () => {
         variables: {
           data: {
             name: name != null ? name : '',
+            organisationId: currentOrganisationVar(),
           },
         },
       });

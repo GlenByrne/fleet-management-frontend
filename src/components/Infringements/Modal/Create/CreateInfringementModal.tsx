@@ -9,13 +9,12 @@ import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
 import {
-  GetDriversDocument,
-  GetDriversQuery,
+  DriversInOrganisationPayload,
   GetInfringementsDocument,
   GetInfringementsQuery,
-  Infringement,
   useAddInfringementMutation,
   useGetDriversQuery,
+  UsersNoOrgsPayload,
   UsersPayload,
 } from 'generated/graphql';
 import { Option } from 'constants/types';
@@ -23,6 +22,7 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addInfringementModalStateVar,
+  currentOrganisationVar,
   errorAlertStateVar,
   errorTextVar,
   successAlertStateVar,
@@ -31,20 +31,28 @@ import {
 import { useReactiveVar } from '@apollo/client';
 import DatePickerNoClear from 'core/DatePickerNoClear';
 
-const getDriverOptions = (drivers: UsersPayload[]) => {
+const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
   const options = drivers?.map(
-    (driver) => ({ value: driver.id, label: driver.name } as Option)
+    (driver) => ({ value: driver.user.id, label: driver.user.name } as Option)
   );
 
   return options;
 };
 
 const CreateInfringementModal = () => {
-  const { data, loading, error } = useGetDriversQuery();
+  const { data, loading, error } = useGetDriversQuery({
+    variables: {
+      data: {
+        organisationId: currentOrganisationVar(),
+      },
+    },
+  });
 
   const currentModalStateVar = useReactiveVar(addInfringementModalStateVar);
   const [driverOptions, setDriverOptions] = useState(
-    getDriverOptions(data?.drivers as UsersPayload[])
+    getDriverOptions(
+      data?.driversInOrganisation as DriversInOrganisationPayload[]
+    )
   );
   const [description, setDescription] = useState('');
   const [dateOccured, setDateOccured] = useState(new Date());
@@ -54,7 +62,11 @@ const CreateInfringementModal = () => {
   });
 
   useEffect(() => {
-    setDriverOptions(getDriverOptions(data?.drivers as UsersPayload[]));
+    setDriverOptions(
+      getDriverOptions(
+        data?.driversInOrganisation as DriversInOrganisationPayload[]
+      )
+    );
   }, [data]);
 
   const changeDescription = (event: FormEvent<HTMLInputElement>) => {
@@ -96,6 +108,7 @@ const CreateInfringementModal = () => {
               description: description,
               driverId: driver.value,
               dateOccured: dateOccured,
+              organisationId: currentOrganisationVar(),
             },
           },
         });

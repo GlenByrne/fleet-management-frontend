@@ -1,3 +1,4 @@
+import { currentOrganisationVar } from 'constants/apollo-client';
 import Loading from 'core/Loading';
 import {
   useUpcomingMaintenaceQuery,
@@ -9,7 +10,11 @@ import UpcomingTachoCalibrationList from './UpcomingTachoCalibrationList';
 import UpcomingThirteenWeekList from './UpcomingThirteenWeekList';
 
 const Dashboard = () => {
-  const { data, loading, error } = useUpcomingMaintenaceQuery();
+  const { data, loading, error } = useUpcomingMaintenaceQuery({
+    variables: {
+      organisationId: currentOrganisationVar(),
+    },
+  });
 
   if (loading) {
     return <Loading />;

@@ -23,6 +23,7 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   addFuelCardModalStateVar,
+  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
@@ -74,6 +75,7 @@ const CreateFuelCardModal = () => {
           data: {
             cardNumber: cardNumber != null ? cardNumber : '',
             cardProvider: cardProvider != null ? cardProvider : '',
+            organisationId: currentOrganisationVar(),
           },
         },
       });

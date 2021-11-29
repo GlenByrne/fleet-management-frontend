@@ -10,10 +10,10 @@ import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
 import {
   Depot,
-  GetUsersDocument,
-  GetUsersQuery,
+  GetUsersInOrganisationDocument,
+  GetUsersInOrganisationQuery,
   Role,
-  useAddUserMutation,
+  useAddUserToOrganisationMutation,
   useGetSelectableItemsForAddUserQuery,
 } from 'generated/graphql';
 import { Option } from 'constants/types';
@@ -22,6 +22,7 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   addUserModalStateVar,
+  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
@@ -53,7 +54,13 @@ const getRoleOptions = () => {
 };
 
 const CreateUserModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForAddUserQuery();
+  const { data, loading, error } = useGetSelectableItemsForAddUserQuery({
+    variables: {
+      data: {
+        organisationId: currentOrganisationVar(),
+      },
+    },
+  });
 
   const currentModalStateVar = useReactiveVar(addUserModalStateVar);
 
@@ -92,18 +99,23 @@ const CreateUserModal = () => {
     setPassword(event.currentTarget.value);
   };
 
-  const [addUser] = useAddUserMutation({
+  const [addUserToOrganisation] = useAddUserToOrganisationMutation({
     update: (cache, { data: mutationReturn }) => {
-      const newUser = mutationReturn?.addUser;
+      const newUser = mutationReturn?.addUserToOrganisation;
 
-      const currentUsers = cache.readQuery<GetUsersQuery>({
-        query: GetUsersDocument,
+      const currentUsers = cache.readQuery<GetUsersInOrganisationQuery>({
+        query: GetUsersInOrganisationDocument,
       });
 
       if (currentUsers && newUser) {
         cache.writeQuery({
-          query: GetUsersDocument,
-          data: { users: [{ ...currentUsers.users }, newUser] },
+          query: GetUsersInOrganisationDocument,
+          data: {
+            usersInOrganisation: [
+              { ...currentUsers.usersInOrganisation },
+              newUser,
+            ],
+          },
         });
       }
     },
@@ -116,12 +128,11 @@ const CreateUserModal = () => {
     addUserModalStateVar(false);
 
     try {
-      await addUser({
+      await addUserToOrganisation({
         variables: {
           data: {
-            name: name != null ? name : '',
-            email: email != null ? email : '',
-            password: password != null ? password : '',
+            userId: 'test',
+            organisationId: currentOrganisationVar(),
             depotId: depot.value != null ? depot.value : '',
             role: role.value != null ? (role.value as Role) : Role.User,
           },

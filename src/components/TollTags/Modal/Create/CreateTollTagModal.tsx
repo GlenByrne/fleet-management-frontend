@@ -22,6 +22,7 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addTollTagModalStateVar,
+  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
@@ -72,6 +73,7 @@ const CreateTollTagModal = () => {
           data: {
             tagNumber: tagNumber != null ? tagNumber : '',
             tagProvider: tagProvider != null ? tagProvider : '',
+            organisationId: currentOrganisationVar(),
           },
         },
       });

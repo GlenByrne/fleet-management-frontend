@@ -1,16 +1,25 @@
 import { NextPage } from 'next';
-import Layout from 'core/Layout/Layout';
-import { addDepotModalStateVar } from 'constants/apollo-client';
+import {
+  addDepotModalStateVar,
+  currentOrganisationVar,
+} from 'constants/apollo-client';
 import CreateDepotModal from 'components/Depots/Modal/Create/CreateDepotModal';
 import UpdateDepotModal from 'components/Depots/Modal/Update/UpdateDepotModal';
 import DeleteDepotModal from 'components/Depots/Modal/Delete/DeleteDepotModal';
 import DepotList from 'components/Depots/List/DepotList';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetDepotsQuery } from 'generated/graphql';
+import MainLayout from 'core/Layout/MainLayout/MainLayout';
 
 const Depots: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetDepotsQuery();
+  const { data, loading, error, refetch } = useGetDepotsQuery({
+    variables: {
+      data: {
+        organisationId: currentOrganisationVar(),
+      },
+    },
+  });
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -21,12 +30,13 @@ const Depots: NextPage = () => {
     refetch({
       data: {
         searchCriteria: searchCriteria,
+        organisationId: currentOrganisationVar(),
       },
     });
   };
 
   return (
-    <Layout
+    <MainLayout
       hasQuickActionButton={true}
       quickAction={addDepotModalStateVar}
       quickActionLabel="New Depot"
@@ -38,7 +48,7 @@ const Depots: NextPage = () => {
       <UpdateDepotModal />
       <DeleteDepotModal />
       <DepotList data={data} loading={loading} error={error} />
-    </Layout>
+    </MainLayout>
   );
 };
 

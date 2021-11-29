@@ -13,7 +13,6 @@ import {
   UsersIcon,
 } from '@heroicons/react/solid';
 import { useState } from 'react';
-import SideNav from 'core/Layout/SideNav';
 import ContentArea from './ContentArea';
 import { checkAuth, LogOut } from 'utilities/auth';
 import client, {
@@ -24,8 +23,9 @@ import client, {
 } from 'constants/apollo-client';
 import { useRouter } from 'next/router';
 import { useLogoutMutation } from 'generated/graphql';
+import SideNav from './SideNav';
 
-type LayoutProps = {
+type MainLayoutProps = {
   children: ReactNode;
   hasQuickActionButton: boolean;
   quickAction?: (state: boolean) => void;
@@ -45,7 +45,7 @@ const navigation: NavbarOption[] = [
   { name: 'Users', href: '/users', icon: UsersIcon },
 ];
 
-const Layout = ({
+const MainLayout = ({
   children,
   hasQuickActionButton,
   quickAction,
@@ -53,10 +53,11 @@ const Layout = ({
   pageSearchable,
   searchSubmitHandler,
   setSearchCriteria,
-}: LayoutProps) => {
+}: MainLayoutProps) => {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logOut] = useLogoutMutation();
+  const userOrganisations = loggedInUserVar()?.organisations;
 
   const handleLogOut = () => {
     logOut();
@@ -77,13 +78,13 @@ const Layout = ({
     },
   ];
 
-  // useEffect(() => {
-  //   const isLoggedIn = checkAuth();
-
-  //   if (!isLoggedIn) {
-  //     router.push('/login');
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    if (userOrganisations == null && checkAuth()) {
+      router.push('/organisations');
+    } else if (!checkAuth()) {
+      router.push('/login');
+    }
+  }, [userOrganisations, router]);
 
   return (
     <div className="flex h-screen">
@@ -93,11 +94,13 @@ const Layout = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <SideNav
-        navigation={navigation}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
+      {userOrganisations != null && (
+        <SideNav
+          navigation={navigation}
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+        />
+      )}
 
       <ContentArea
         userNavigation={userNavigation}
@@ -115,4 +118,4 @@ const Layout = ({
   );
 };
 
-export default Layout;
+export default MainLayout;

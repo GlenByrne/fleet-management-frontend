@@ -4,7 +4,7 @@ import {
   TrashIcon,
 } from '@heroicons/react/solid';
 import {
-  deleteUserModalStateVar,
+  removeUserModalStateVar,
   updateUserModalStateVar,
 } from 'constants/apollo-client';
 import Button from 'core/Table/Button';
@@ -30,7 +30,7 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
                 <Button
                   onClick={() => {
                     changeCurrentUser(user);
-                    deleteUserModalStateVar(true);
+                    removeUserModalStateVar(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -47,7 +47,7 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
                     className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
-                  {user.depot ? user.depot.name : 'None'}
+                  {/* {user.depot ? user.depot.name : 'None'} */}
                 </p>
               </div>
               <Button

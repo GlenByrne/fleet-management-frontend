@@ -27,6 +27,7 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addVehicleModalStateVar,
+  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
@@ -83,7 +84,14 @@ const getVehicleTypeOptions = () => {
 };
 
 const CreateVehicleModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForAddVehicleQuery();
+  const { data, loading, error } = useGetSelectableItemsForAddVehicleQuery({
+    variables: {
+      organisationId: currentOrganisationVar(),
+      data: {
+        organisationId: currentOrganisationVar(),
+      },
+    },
+  });
 
   const currentModalStateVar = useReactiveVar(addVehicleModalStateVar);
 
@@ -198,6 +206,7 @@ const CreateVehicleModal = () => {
             depotId: depot.value != null ? depot.value : '',
             fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
             tollTagId: tollTag.value === '' ? null : tollTag.value,
+            organisationId: currentOrganisationVar(),
           },
         },
       });
