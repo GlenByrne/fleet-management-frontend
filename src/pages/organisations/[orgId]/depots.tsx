@@ -1,19 +1,21 @@
 import { NextPage } from 'next';
-import TollTagList from 'components/TollTags/List/TollTagList';
-import CreateTollTagModal from 'components/TollTags/Modal/Create/CreateTollTagModal';
-import UpdateTollTagModal from 'components/TollTags/Modal/Update/UpdateTollTagModal';
-import DeleteTollTagModal from 'components/TollTags/Modal/Delete/DeleteTollTagModal';
 import {
-  addTollTagModalStateVar,
+  addDepotModalStateVar,
   currentOrganisationVar,
 } from 'constants/apollo-client';
+import CreateDepotModal from 'components/Depots/Modal/Create/CreateDepotModal';
+import UpdateDepotModal from 'components/Depots/Modal/Update/UpdateDepotModal';
+import DeleteDepotModal from 'components/Depots/Modal/Delete/DeleteDepotModal';
+import DepotList from 'components/Depots/List/DepotList';
 import { FormEvent, FormEventHandler, useState } from 'react';
-import { useGetTollTagsQuery } from 'generated/graphql';
+import { useGetDepotsQuery } from 'generated/graphql';
 import MainLayout from 'core/Layout/MainLayout/MainLayout';
+import useAuthentication from 'hooks/useAuthentication';
+import Loading from 'core/Loading';
 
-const TollTags: NextPage = () => {
+const Depots: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetTollTagsQuery({
+  const { data, loading, error, refetch } = useGetDepotsQuery({
     variables: {
       data: {
         organisationId: currentOrganisationVar(),
@@ -35,21 +37,27 @@ const TollTags: NextPage = () => {
     });
   };
 
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
+
   return (
     <MainLayout
       hasQuickActionButton={true}
-      quickAction={addTollTagModalStateVar}
-      quickActionLabel="New Tag"
+      quickAction={addDepotModalStateVar}
+      quickActionLabel="New Depot"
       pageSearchable={true}
       searchSubmitHandler={submitHandler}
       setSearchCriteria={changeSearchCriteria}
     >
-      <CreateTollTagModal />
-      <UpdateTollTagModal />
-      <DeleteTollTagModal />
-      <TollTagList data={data} loading={loading} error={error} />
+      <CreateDepotModal />
+      <UpdateDepotModal />
+      <DeleteDepotModal />
+      <DepotList data={data} loading={loading} error={error} />
     </MainLayout>
   );
 };
 
-export default TollTags;
+export default Depots;

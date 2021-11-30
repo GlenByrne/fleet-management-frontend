@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import DefectList from '../../components/Defects/List/DefectList';
+import DefectList from '../../../../components/Defects/List/DefectList';
 import { addDefectModalStateVar } from 'constants/apollo-client';
 import CreateDefectModal from 'components/Defects/Modal/Create/CreateDefectModal';
 import UpdateDefectModal from 'components/Defects/Modal/Update/UpdateDefectModal';

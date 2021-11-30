@@ -682,6 +682,18 @@ export const GET_USERS_IN_ORGANISATION = gql`
   }
 `;
 
+export const GET_USERS_ORGANISATIONS = gql`
+  query GetUsersOrganisations {
+    usersOrganisations {
+      role
+      organisation {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const ADD_USER_TO_ORGANISATION = gql`
   mutation AddUserToOrganisation($data: AddUserToOrganisationInput!) {
     addUserToOrganisation(data: $data) {

@@ -151,6 +151,9 @@ export const updateInfringementModalStateVar = makeVar(false);
 export const updateInfringementStatusModalStateVar = makeVar(false);
 export const deleteInfringementModalStateVar = makeVar(false);
 
+// Organisation Modals states
+export const addOrganisationModalStateVar = makeVar(false);
+
 export const successAlertStateVar = makeVar(false);
 export const successTextVar = makeVar('');
 
@@ -199,7 +202,6 @@ const getNewToken = async () => {
   return await client
     .mutate({ mutation: RefreshTokenDocument })
     .then((response) => {
-      // extract your accessToken from your response data and return it
       const { accessToken } = response.data.refreshToken;
       accessTokenVar(accessToken);
     });

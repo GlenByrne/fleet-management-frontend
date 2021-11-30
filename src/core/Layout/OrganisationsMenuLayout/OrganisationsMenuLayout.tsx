@@ -13,8 +13,7 @@ import {
   UsersIcon,
 } from '@heroicons/react/solid';
 import { useState } from 'react';
-import ContentArea from './ContentArea';
-import { checkAuth, LogOut } from 'utilities/auth';
+import ContentArea from '../OrganisationsMenuLayout/ContentArea';
 import client, {
   accessTokenVar,
   loggedInUserVar,
@@ -23,9 +22,8 @@ import client, {
 } from 'constants/apollo-client';
 import { useRouter } from 'next/router';
 import { useLogoutMutation } from 'generated/graphql';
-import SideNav from './SideNav';
 
-type MainLayoutProps = {
+type OrganisationsMenuLayoutProps = {
   children: ReactNode;
   hasQuickActionButton: boolean;
   quickAction?: (state: boolean) => void;
@@ -35,17 +33,7 @@ type MainLayoutProps = {
   setSearchCriteria?: ChangeEventHandler<HTMLInputElement>;
 };
 
-const navigation: NavbarOption[] = [
-  { name: 'Home', href: '/', icon: HomeIcon },
-  { name: 'Vehicles', href: '/vehicles', icon: TruckIcon },
-  { name: 'Infringements', href: '/infringements', icon: ExclamationIcon },
-  { name: 'Fuel Cards', href: '/fuelCards', icon: CreditCardIcon },
-  { name: 'Toll Tags', href: '/tollTags', icon: TagIcon },
-  { name: 'Depots', href: '/depots', icon: OfficeBuildingIcon },
-  { name: 'Users', href: '/users', icon: UsersIcon },
-];
-
-const MainLayout = ({
+const OrganisationsMenuLayout = ({
   children,
   hasQuickActionButton,
   quickAction,
@@ -53,11 +41,10 @@ const MainLayout = ({
   pageSearchable,
   searchSubmitHandler,
   setSearchCriteria,
-}: MainLayoutProps) => {
+}: OrganisationsMenuLayoutProps) => {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logOut] = useLogoutMutation();
-  const userOrganisations = loggedInUserVar()?.organisations;
 
   const handleLogOut = () => {
     logOut();
@@ -86,12 +73,6 @@ const MainLayout = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <SideNav
-        navigation={navigation}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
-
       <ContentArea
         userNavigation={userNavigation}
         setMobileMenuOpen={setMobileMenuOpen}
@@ -108,4 +89,4 @@ const MainLayout = ({
   );
 };
 
-export default MainLayout;
+export default OrganisationsMenuLayout;

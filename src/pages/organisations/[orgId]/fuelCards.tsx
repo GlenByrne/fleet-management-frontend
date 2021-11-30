@@ -10,6 +10,8 @@ import {
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetFuelCardsQuery } from 'generated/graphql';
 import MainLayout from 'core/Layout/MainLayout/MainLayout';
+import useAuthentication from 'hooks/useAuthentication';
+import Loading from 'core/Loading';
 
 const FuelCards: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -34,6 +36,12 @@ const FuelCards: NextPage = () => {
       },
     });
   };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
 
   return (
     <MainLayout

@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import VehicleList from '../components/Vehicles/List/VehicleList';
 import CreateVehicleModal from 'components/Vehicles/Modal/Create/CreateVehicleModal';
 import UpdateVehicleModal from 'components/Vehicles/Modal/Update/UpdateVehicleModal';
 import DeleteVehicleModal from 'components/Vehicles/Modal/Delete/DeleteVehicleModal';
@@ -13,6 +12,9 @@ import UpdateVehicleTachoCalibrationModal from 'components/Vehicles/Modal/Update
 import UpdateVehicleCVRTModal from 'components/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
 import UpdateVehicleThirteenWeekModal from 'components/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
 import MainLayout from 'core/Layout/MainLayout/MainLayout';
+import Loading from 'core/Loading';
+import useAuthentication from 'hooks/useAuthentication';
+import VehicleList from 'components/Vehicles/List/VehicleList';
 
 const Vehicles: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -37,6 +39,12 @@ const Vehicles: NextPage = () => {
       },
     });
   };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
 
   return (
     <MainLayout

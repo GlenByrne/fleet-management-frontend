@@ -6,8 +6,16 @@ import UpdateInfringementModal from 'components/Infringements/Modal/Update/Updat
 import DeleteInfringementModal from 'components/Infringements/Modal/Delete/DeleteInfringementModal';
 import UpdateInfringementStatusModal from 'components/Infringements/Modal/Update/UpdateInfringementStatusModal';
 import MainLayout from 'core/Layout/MainLayout/MainLayout';
+import Loading from 'core/Loading';
+import useAuthentication from 'hooks/useAuthentication';
 
 const Infringements: NextPage = () => {
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
+
   return (
     <MainLayout
       hasQuickActionButton={true}

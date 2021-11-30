@@ -1,13 +1,19 @@
-import Dashboard from 'components/Dashboard/Dashboard';
-import MainLayout from 'core/Layout/MainLayout/MainLayout';
 import { NextPage } from 'next';
+import OrganisationsMenuLayout from 'core/Layout/OrganisationsMenuLayout/OrganisationsMenuLayout';
+import { addOrganisationModalStateVar } from 'constants/apollo-client';
+import OrganisationsList from 'components/Organisations/List/OrganisationsList';
 
-const Home: NextPage = () => {
+const Organisations: NextPage = () => {
   return (
-    <MainLayout hasQuickActionButton={false} pageSearchable={false}>
-      <Dashboard />
-    </MainLayout>
+    <OrganisationsMenuLayout
+      hasQuickActionButton={true}
+      quickAction={addOrganisationModalStateVar}
+      quickActionLabel="New Organisation"
+      pageSearchable={false}
+    >
+      <OrganisationsList />
+    </OrganisationsMenuLayout>
   );
 };
 
-export default Home;
+export default Organisations;

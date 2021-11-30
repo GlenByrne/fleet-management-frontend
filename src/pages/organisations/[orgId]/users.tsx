@@ -10,6 +10,8 @@ import { FormEventHandler, useState, FormEvent } from 'react';
 import MainLayout from 'core/Layout/MainLayout/MainLayout';
 import { useGetUsersInOrganisationQuery } from 'generated/graphql';
 import RemoveUserModal from 'components/Users/Modals/Remove/RemoveUserModal';
+import Loading from 'core/Loading';
+import useAuthentication from 'hooks/useAuthentication';
 
 const Users: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -34,6 +36,12 @@ const Users: NextPage = () => {
       },
     });
   };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
 
   return (
     <MainLayout
