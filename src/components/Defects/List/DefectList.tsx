@@ -12,7 +12,7 @@ import { DefectUpdateModalItem } from 'constants/types';
 
 const DefectList = () => {
   const router = useRouter();
-  const id = String(router.query.id);
+  const vehicleId = String(router.query.vehicleId);
 
   // const [shouldSkip, setShouldSkip] = useState(true);
 
@@ -24,7 +24,7 @@ const DefectList = () => {
 
   const { data, loading, error } = useGetVehicleDefectsQuery({
     variables: {
-      vehicleId: id,
+      vehicleId,
     },
     // skip: shouldSkip,
   });

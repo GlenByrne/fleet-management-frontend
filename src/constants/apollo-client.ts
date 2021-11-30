@@ -163,8 +163,6 @@ export const errorTextVar = makeVar('');
 export const loggedInUserVar = makeVar<UsersPayload | null>(null);
 export const accessTokenVar = makeVar<string | null>(null);
 
-export const currentOrganisationVar = makeVar<string>('');
-
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
   credentials: 'include',

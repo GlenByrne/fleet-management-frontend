@@ -9,11 +9,8 @@ import {
 import { Dialog } from '@headlessui/react';
 import Modal from 'core/Modal/Modal';
 import {
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
   GetVehicleDefectsDocument,
   GetVehicleDefectsQuery,
-  GetVehiclesDocument,
   useDeleteDefectMutation,
 } from 'generated/graphql';
 import { useRef } from 'react';

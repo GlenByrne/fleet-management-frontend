@@ -19,12 +19,12 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
-  currentOrganisationVar,
   currentUserVar,
   successAlertStateVar,
   successTextVar,
   updateUserModalStateVar,
 } from 'constants/apollo-client';
+import { useRouter } from 'next/router';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -52,10 +52,13 @@ const getRoleOptions = () => {
 };
 
 const UpdateUserModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const { data, loading, error } = useGetSelectableItemsForUpdateUserQuery({
     variables: {
       data: {
-        organisationId: currentOrganisationVar(),
+        organisationId,
       },
     },
   });
@@ -115,7 +118,7 @@ const UpdateUserModal = () => {
         variables: {
           data: {
             userId: currentUser.id,
-            organisationId: currentOrganisationVar(),
+            organisationId,
             depotId: depot.value != null ? depot.value : '',
             role: role.value != null ? (role.value as Role) : Role.User,
           },

@@ -2,10 +2,7 @@ import { NextPage } from 'next';
 import CreateVehicleModal from 'components/Vehicles/Modal/Create/CreateVehicleModal';
 import UpdateVehicleModal from 'components/Vehicles/Modal/Update/UpdateVehicleModal';
 import DeleteVehicleModal from 'components/Vehicles/Modal/Delete/DeleteVehicleModal';
-import {
-  addVehicleModalStateVar,
-  currentOrganisationVar,
-} from 'constants/apollo-client';
+import { addVehicleModalStateVar } from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetVehiclesQuery } from 'generated/graphql';
 import UpdateVehicleTachoCalibrationModal from 'components/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
@@ -15,13 +12,18 @@ import MainLayout from 'core/Layout/MainLayout/MainLayout';
 import Loading from 'core/Loading';
 import useAuthentication from 'hooks/useAuthentication';
 import VehicleList from 'components/Vehicles/List/VehicleList';
+import { useRouter } from 'next/router';
 
 const Vehicles: NextPage = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+  console.log(organisationId);
+
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
   const { data, loading, error, refetch } = useGetVehiclesQuery({
     variables: {
       data: {
-        organisationId: currentOrganisationVar(),
+        organisationId,
       },
     },
   });
@@ -35,7 +37,7 @@ const Vehicles: NextPage = () => {
     refetch({
       data: {
         searchCriteria: searchCriteria,
-        organisationId: currentOrganisationVar(),
+        organisationId,
       },
     });
   };

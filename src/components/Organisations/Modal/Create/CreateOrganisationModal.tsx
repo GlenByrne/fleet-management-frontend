@@ -1,85 +1,87 @@
 import {
   FormEvent,
   FormEventHandler,
-  useEffect,
   useRef,
   useState,
+  useEffect,
 } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
 import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
 import {
-  Depot,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
-  GetVehiclesDocument,
-  useUpdateFuelCardMutation,
+  GetUsersOrganisationsDocument,
+  GetUsersOrganisationsQuery,
+  useAddOrganisationMutation,
 } from 'generated/graphql';
 import { Option } from 'constants/types';
 import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
-  currentFuelCardVar,
+  addOrganisationModalStateVar,
   successAlertStateVar,
   successTextVar,
-  updateFuelCardModalStateVar,
 } from 'constants/apollo-client';
 
-const UpdateFuelCardModal = () => {
-  const currentCard = useReactiveVar(currentFuelCardVar);
+const CreateOrganisationModal = () => {
+  const currentModalStateVar = useReactiveVar(addOrganisationModalStateVar);
 
-  const currentModalStateVar = useReactiveVar(updateFuelCardModalStateVar);
-
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardProvider, setCardProvider] = useState('');
-
-  useEffect(() => {
-    setCardNumber(currentCard.cardNumber);
-    setCardProvider(currentCard.cardProvider);
-  }, [currentCard]);
-
-  const changeCardNumber = (event: FormEvent<HTMLInputElement>) => {
-    setCardNumber(event.currentTarget.value);
-  };
-
-  const changeCardProvider = (event: FormEvent<HTMLInputElement>) => {
-    setCardProvider(event.currentTarget.value);
-  };
+  const [name, setName] = useState('');
 
   const cancelButtonRef = useRef(null);
 
-  const [updateFuelCard] = useUpdateFuelCardMutation({
-    refetchQueries: [
-      { query: GetVehiclesDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
-    ],
+  const changeName = (event: FormEvent<HTMLInputElement>) => {
+    setName(event.currentTarget.value);
+  };
+
+  const [addOrganisation] = useAddOrganisationMutation({
+    update: (cache, { data: mutationReturn }) => {
+      const newOrganisation = mutationReturn?.addOrganisation;
+      const currentOrganisations = cache.readQuery<GetUsersOrganisationsQuery>({
+        query: GetUsersOrganisationsDocument,
+      });
+
+      if (currentOrganisations && newOrganisation) {
+        cache.writeQuery({
+          query: GetUsersOrganisationsDocument,
+          data: {
+            usersOrganisations: [
+              { ...currentOrganisations.usersOrganisations },
+              newOrganisation,
+            ],
+          },
+        });
+      }
+    },
   });
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateFuelCardModalStateVar(false);
+
+    addOrganisationModalStateVar(false);
+
     try {
-      await updateFuelCard({
+      await addOrganisation({
         variables: {
           data: {
-            id: currentCard.id,
-            cardNumber: cardNumber != null ? cardNumber : '',
-            cardProvider: cardProvider != null ? cardProvider : '',
+            name: name != null ? name : '',
           },
         },
       });
 
-      successTextVar('Fuel Card updated successfully');
+      successTextVar('Organisation created successfully');
       successAlertStateVar(true);
     } catch {}
+
+    setName('');
   };
 
   return (
     <Modal
       modalState={currentModalStateVar}
-      setModalState={updateFuelCardModalStateVar}
+      setModalState={addOrganisationModalStateVar}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -93,27 +95,16 @@ const UpdateFuelCardModal = () => {
                 as="h3"
                 className="text-lg leading-6 font-medium text-gray-900"
               >
-                Update Fuel Card
+                Create Organisation
               </Dialog.Title>
               <div className="grid grid-cols-6 gap-6 mt-2">
                 <div className="col-span-6 sm:col-span-3">
                   <ModalFormInput
-                    label="Card Number"
-                    name="cardNumber"
+                    label="Name"
+                    name="name"
                     type="text"
-                    value={cardNumber}
-                    onChange={changeCardNumber}
-                    required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormInput
-                    label="Card Provider"
-                    name="cardProvider"
-                    type="text"
-                    value={cardProvider}
-                    onChange={changeCardProvider}
+                    value={name}
+                    onChange={changeName}
                     required={true}
                   />
                 </div>
@@ -125,12 +116,12 @@ const UpdateFuelCardModal = () => {
               type="submit"
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
             >
-              Save
+              Create
             </button>
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateFuelCardModalStateVar(false)}
+              onClick={() => addOrganisationModalStateVar(false)}
               ref={cancelButtonRef}
             >
               Cancel
@@ -142,4 +133,4 @@ const UpdateFuelCardModal = () => {
   );
 };
 
-export default UpdateFuelCardModal;
+export default CreateOrganisationModal;

@@ -2,7 +2,6 @@ import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
 import {
   addDepotModalStateVar,
-  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
@@ -17,8 +16,12 @@ import {
 } from 'generated/graphql';
 import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import ModalFormInput from 'core/Modal/ModalFormInput';
+import { useRouter } from 'next/router';
 
 const CreateDepotModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const currentModalStateVar = useReactiveVar(addDepotModalStateVar);
 
   const [name, setName] = useState('');
@@ -60,7 +63,7 @@ const CreateDepotModal = () => {
         variables: {
           data: {
             name: name != null ? name : '',
-            organisationId: currentOrganisationVar(),
+            organisationId,
           },
         },
       });

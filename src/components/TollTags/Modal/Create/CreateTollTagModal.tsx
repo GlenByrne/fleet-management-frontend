@@ -22,13 +22,16 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addTollTagModalStateVar,
-  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 const CreateTollTagModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const currentModalStateVar = useReactiveVar(addTollTagModalStateVar);
 
   const [tagNumber, setTagNumber] = useState('');
@@ -73,7 +76,7 @@ const CreateTollTagModal = () => {
           data: {
             tagNumber: tagNumber != null ? tagNumber : '',
             tagProvider: tagProvider != null ? tagProvider : '',
-            organisationId: currentOrganisationVar(),
+            organisationId,
           },
         },
       });

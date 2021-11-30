@@ -29,9 +29,9 @@ import {
   updateVehicleModalStateVar,
   successTextVar,
   successAlertStateVar,
-  currentOrganisationVar,
 } from 'constants/apollo-client';
 import DatePicker from 'core/DatePick';
+import { useRouter } from 'next/router';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -99,11 +99,14 @@ const getVehicleTypeOptions = () => {
 };
 
 const UpdateVehicleModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const { data, loading, error } = useGetItemsForUpdateVehicleQuery({
     variables: {
-      organisationId: currentOrganisationVar(),
+      organisationId,
       data: {
-        organisationId: currentOrganisationVar(),
+        organisationId,
       },
     },
   });

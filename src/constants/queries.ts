@@ -37,6 +37,9 @@ export const GET_VEHICLES = gql`
       make
       model
       owner
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
       depot {
         id
         name
@@ -49,9 +52,10 @@ export const GET_VEHICLES = gql`
         id
         tagNumber
       }
-      cvrt
-      thirteenWeekInspection
-      tachoCalibration
+      organisation {
+        id
+        name
+      }
     }
   }
 `;
@@ -655,7 +659,13 @@ export const REGISTER = gql`
         id
         name
         email
+        organisations {
+          organisationId
+          role
+          isDefault
+        }
       }
+      accessToken
     }
   }
 `;
@@ -678,6 +688,10 @@ export const GET_USERS_IN_ORGANISATION = gql`
         email
       }
       role
+      depot {
+        id
+        name
+      }
     }
   }
 `;

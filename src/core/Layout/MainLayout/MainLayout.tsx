@@ -35,16 +35,6 @@ type MainLayoutProps = {
   setSearchCriteria?: ChangeEventHandler<HTMLInputElement>;
 };
 
-const navigation: NavbarOption[] = [
-  { name: 'Home', href: '/', icon: HomeIcon },
-  { name: 'Vehicles', href: '/vehicles', icon: TruckIcon },
-  { name: 'Infringements', href: '/infringements', icon: ExclamationIcon },
-  { name: 'Fuel Cards', href: '/fuelCards', icon: CreditCardIcon },
-  { name: 'Toll Tags', href: '/tollTags', icon: TagIcon },
-  { name: 'Depots', href: '/depots', icon: OfficeBuildingIcon },
-  { name: 'Users', href: '/users', icon: UsersIcon },
-];
-
 const MainLayout = ({
   children,
   hasQuickActionButton,
@@ -55,6 +45,8 @@ const MainLayout = ({
   setSearchCriteria,
 }: MainLayoutProps) => {
   const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logOut] = useLogoutMutation();
   const userOrganisations = loggedInUserVar()?.organisations;
@@ -68,6 +60,46 @@ const MainLayout = ({
     successTextVar('Logged out successfully');
     successAlertStateVar(true);
   };
+
+  const navigation: NavbarOption[] = [
+    {
+      name: 'Home',
+      href: `/organisations/${encodeURIComponent(organisationId)}/dashboard`,
+      icon: HomeIcon,
+    },
+    {
+      name: 'Vehicles',
+      href: `/organisations/${encodeURIComponent(organisationId)}/vehicles`,
+      icon: TruckIcon,
+    },
+    {
+      name: 'Infringements',
+      href: `/organisations/${encodeURIComponent(
+        organisationId
+      )}/infringements`,
+      icon: ExclamationIcon,
+    },
+    {
+      name: 'Fuel Cards',
+      href: `/organisations/${encodeURIComponent(organisationId)}/fuelCards`,
+      icon: CreditCardIcon,
+    },
+    {
+      name: 'Toll Tags',
+      href: `/organisations/${encodeURIComponent(organisationId)}/tollTags`,
+      icon: TagIcon,
+    },
+    {
+      name: 'Depots',
+      href: `/organisations/${encodeURIComponent(organisationId)}/depots`,
+      icon: OfficeBuildingIcon,
+    },
+    {
+      name: 'Users',
+      href: `/organisations/${encodeURIComponent(organisationId)}/users`,
+      icon: UsersIcon,
+    },
+  ];
 
   const userNavigation: UserNavbarOption[] = [
     { name: 'Your Profile', onClick: () => {} },

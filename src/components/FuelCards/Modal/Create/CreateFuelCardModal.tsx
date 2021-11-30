@@ -23,12 +23,15 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   addFuelCardModalStateVar,
-  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
+import { useRouter } from 'next/router';
 
 const CreateFuelCardModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const currentModalStateVar = useReactiveVar(addFuelCardModalStateVar);
 
   const [cardNumber, setCardNumber] = useState('');
@@ -59,8 +62,8 @@ const CreateFuelCardModal = () => {
       }
     },
     refetchQueries: [
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      // { query: GetSelectableItemsForAddVehicleDocument },
+      // { query: GetItemsForUpdateVehicleDocument },
     ],
   });
 
@@ -75,7 +78,7 @@ const CreateFuelCardModal = () => {
           data: {
             cardNumber: cardNumber != null ? cardNumber : '',
             cardProvider: cardProvider != null ? cardProvider : '',
-            organisationId: currentOrganisationVar(),
+            organisationId,
           },
         },
       });

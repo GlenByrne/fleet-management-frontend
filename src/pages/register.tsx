@@ -4,7 +4,8 @@ import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import PasswordInput from 'core/Modal/PasswordInput';
-import { useRegisterMutation } from 'generated/graphql';
+import { useRegisterMutation, UsersPayload } from 'generated/graphql';
+import { accessTokenVar, loggedInUserVar } from 'constants/apollo-client';
 
 const Register: NextPage = () => {
   const router = useRouter();
@@ -13,8 +14,10 @@ const Register: NextPage = () => {
   const [password, setPassword] = useState('');
 
   const [register] = useRegisterMutation({
-    onCompleted: () => {
-      router.push('/organisations');
+    onCompleted: ({ register }) => {
+      accessTokenVar(register.accessToken);
+      loggedInUserVar(register.user as UsersPayload);
+      router.push('/');
       setName('');
       setEmail('');
       setPassword('');

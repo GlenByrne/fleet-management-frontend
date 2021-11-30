@@ -1,18 +1,21 @@
-import { currentOrganisationVar } from 'constants/apollo-client';
 import Loading from 'core/Loading';
 import {
   useUpcomingMaintenaceQuery,
   Vehicle,
   VehicleType,
 } from 'generated/graphql';
+import { useRouter } from 'next/router';
 import UpcomingCvrtList from './UpcomingCvrtList';
 import UpcomingTachoCalibrationList from './UpcomingTachoCalibrationList';
 import UpcomingThirteenWeekList from './UpcomingThirteenWeekList';
 
 const Dashboard = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const { data, loading, error } = useUpcomingMaintenaceQuery({
     variables: {
-      organisationId: currentOrganisationVar(),
+      organisationId: organisationId,
     },
   });
 

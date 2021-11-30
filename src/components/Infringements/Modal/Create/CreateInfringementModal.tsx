@@ -22,7 +22,6 @@ import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import {
   addInfringementModalStateVar,
-  currentOrganisationVar,
   errorAlertStateVar,
   errorTextVar,
   successAlertStateVar,
@@ -30,6 +29,7 @@ import {
 } from 'constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 import DatePickerNoClear from 'core/DatePickerNoClear';
+import { useRouter } from 'next/router';
 
 const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
   const options = drivers?.map(
@@ -40,10 +40,13 @@ const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
 };
 
 const CreateInfringementModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const { data, loading, error } = useGetDriversQuery({
     variables: {
       data: {
-        organisationId: currentOrganisationVar(),
+        organisationId,
       },
     },
   });
@@ -108,7 +111,7 @@ const CreateInfringementModal = () => {
               description: description,
               driverId: driver.value,
               dateOccured: dateOccured,
-              organisationId: currentOrganisationVar(),
+              organisationId,
             },
           },
         });

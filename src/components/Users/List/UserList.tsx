@@ -1,71 +1,64 @@
-// import {
-//   GetUsersQuery,
-//   useGetUsersQuery,
-//   UsersPayload,
-// } from 'generated/graphql';
-// import Loading from 'core/Loading';
-// import UserListItem from './UserListItem';
-// import NoUsersAddButton from './NoUsersAddButton';
-// import { addUserModalStateVar, currentUserVar } from 'constants/apollo-client';
-// import { UserUpdateModalItem } from 'constants/types';
-// import { ApolloError } from '@apollo/client';
+import {
+  GetUsersInOrganisationQuery,
+  UsersInOrganisationPayload,
+} from 'generated/graphql';
+import Loading from 'core/Loading';
+import UserListItem from './UserListItem';
+import NoUsersAddButton from './NoUsersAddButton';
+import { addUserModalStateVar, currentUserVar } from 'constants/apollo-client';
+import { UserUpdateModalItem } from 'constants/types';
+import { ApolloError } from '@apollo/client';
 
-// type UserListProps = {
-//   data: GetUsersQuery | undefined;
-//   loading: boolean;
-//   error: ApolloError | undefined;
-// };
+type UserListProps = {
+  data: GetUsersInOrganisationQuery | undefined;
+  loading: boolean;
+  error: ApolloError | undefined;
+};
 
-// const UserList = ({ data, loading, error }: UserListProps) => {
-//   const changeCurrentUser = (user: UsersPayload) => {
-//     const chosenUser: UserUpdateModalItem = {
-//       id: user.id,
-//       name: user.name,
-//       email: user.email,
-//       role: user.role,
-//       depot: {
-//         id: user.depot != null ? user.depot.id : '',
-//         name: user.depot != null ? user.depot.name : '',
-//       },
-//     };
-//     currentUserVar(chosenUser);
-//   };
+const UserList = ({ data, loading, error }: UserListProps) => {
+  const changeCurrentUser = (user: UsersInOrganisationPayload) => {
+    const chosenUser: UserUpdateModalItem = {
+      id: user.user.id,
+      name: user.user.name,
+      email: user.user.email,
+      role: user.role,
+      depot: {
+        id: user.depot != null ? user.depot.id : '',
+        name: user.depot != null ? user.depot.name : '',
+      },
+    };
+    currentUserVar(chosenUser);
+  };
 
-//   if (loading) {
-//     return <Loading />;
-//   }
+  if (loading) {
+    return <Loading />;
+  }
 
-//   if (error) {
-//     return <div className="h2">Error</div>;
-//   }
+  if (error) {
+    return <div className="h2">Error</div>;
+  }
 
-//   if (!data) {
-//     return <div></div>;
-//   }
+  if (!data) {
+    return <div></div>;
+  }
 
-//   const users = data.users as UsersPayload[];
+  const users = data.usersInOrganisation as UsersInOrganisationPayload[];
 
-//   return users.length > 0 ? (
-//     <div className="bg-white shadow overflow-hidden sm:rounded-md">
-//       <ul role="list" className="divide-y divide-gray-200">
-//         {users.map((user) => (
-//           <UserListItem
-//             key={user.id}
-//             user={user}
-//             changeCurrentUser={changeCurrentUser}
-//           />
-//         ))}
-//       </ul>
-//     </div>
-//   ) : (
-//     <NoUsersAddButton onClick={addUserModalStateVar} />
-//   );
-// };
-
-// export default UserList;
-
-const UserList = () => {
-  return <div></div>;
+  return users.length > 0 ? (
+    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul role="list" className="divide-y divide-gray-200">
+        {users.map((user) => (
+          <UserListItem
+            key={user.user.id}
+            user={user}
+            changeCurrentUser={changeCurrentUser}
+          />
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <NoUsersAddButton onClick={addUserModalStateVar} />
+  );
 };
 
 export default UserList;

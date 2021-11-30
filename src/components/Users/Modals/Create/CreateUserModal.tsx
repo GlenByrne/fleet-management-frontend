@@ -22,11 +22,11 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   addUserModalStateVar,
-  currentOrganisationVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
 import PasswordInput from 'core/Modal/PasswordInput';
+import { useRouter } from 'next/router';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -54,10 +54,13 @@ const getRoleOptions = () => {
 };
 
 const CreateUserModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const { data, loading, error } = useGetSelectableItemsForAddUserQuery({
     variables: {
       data: {
-        organisationId: currentOrganisationVar(),
+        organisationId,
       },
     },
   });
@@ -132,7 +135,7 @@ const CreateUserModal = () => {
         variables: {
           data: {
             userId: 'test',
-            organisationId: currentOrganisationVar(),
+            organisationId,
             depotId: depot.value != null ? depot.value : '',
             role: role.value != null ? (role.value as Role) : Role.User,
           },

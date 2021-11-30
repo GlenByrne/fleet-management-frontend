@@ -15,7 +15,7 @@ const LoginForm = () => {
     onCompleted: ({ login }) => {
       accessTokenVar(login.accessToken);
       loggedInUserVar(login.user as UsersPayload);
-      router.push('/organisations');
+      router.push('/');
       setEmail('');
       setPassword('');
     },

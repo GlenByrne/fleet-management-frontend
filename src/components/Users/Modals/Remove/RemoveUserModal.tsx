@@ -9,14 +9,17 @@ import {
 } from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
 import {
-  currentOrganisationVar,
   currentUserVar,
   removeUserModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
+import { useRouter } from 'next/router';
 
 const RemoveUserModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const currentUser = useReactiveVar(currentUserVar);
 
   const currentModalStateVar = useReactiveVar(removeUserModalStateVar);
@@ -51,7 +54,7 @@ const RemoveUserModal = () => {
         variables: {
           data: {
             userId,
-            organisationId: currentOrganisationVar(),
+            organisationId,
           },
         },
       });

@@ -29,9 +29,14 @@ const VehicleListItem = ({
   changeCurrentVehicle,
 }: VehicleListItemProps) => {
   const router = useRouter();
+  const organisationId = String(router.query.organisationId);
 
   const showDefectsHandler = () => {
-    router.push('/defects/' + vehicle.id);
+    router.push(
+      `/organisations/${encodeURIComponent(
+        organisationId
+      )}/defects/${encodeURIComponent(vehicle.id)}`
+    );
   };
 
   return (
