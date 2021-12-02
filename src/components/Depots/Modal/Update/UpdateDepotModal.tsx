@@ -23,8 +23,11 @@ import {
   useRef,
   FormEventHandler,
 } from 'react';
+import { useRouter } from 'next/router';
 
 const UpdateDepotModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
   const currentDepot = useReactiveVar(currentDepotVar);
 
   const currentModalStateVar = useReactiveVar(updateDepotModalStateVar);
@@ -43,9 +46,32 @@ const UpdateDepotModal = () => {
 
   const [updateDepot] = useUpdateDepotMutation({
     refetchQueries: [
-      { query: GetVehiclesDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

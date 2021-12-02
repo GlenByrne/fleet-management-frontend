@@ -17,8 +17,11 @@ import {
   useDeleteDepotMutation,
 } from 'generated/graphql';
 import { useRef } from 'react';
+import { useRouter } from 'next/router';
 
 const DeleteDepotModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
   const currentDepot = useReactiveVar(currentDepotVar);
 
   const currentModalStateVar = useReactiveVar(deleteDepotModalStateVar);
@@ -27,6 +30,11 @@ const DeleteDepotModal = () => {
     update: (cache, { data: mutationReturn }) => {
       const currentDepots = cache.readQuery<GetDepotsQuery>({
         query: GetDepotsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
       });
       const newDepots = currentDepots?.depots?.filter((depot) =>
         depot != null
@@ -35,6 +43,11 @@ const DeleteDepotModal = () => {
       );
       cache.writeQuery({
         query: GetDepotsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
         data: { depots: newDepots },
       });
       cache.evict({
@@ -42,9 +55,32 @@ const DeleteDepotModal = () => {
       });
     },
     refetchQueries: [
-      { query: GetVehiclesDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

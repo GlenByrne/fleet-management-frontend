@@ -18,8 +18,11 @@ import {
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
+import { useRouter } from 'next/router';
 
 const DeleteVehicleModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
   const currentVehicle = useReactiveVar(currentVehicleVar);
 
   const currentModalStateVar = useReactiveVar(deleteVehicleModalStateVar);
@@ -28,6 +31,11 @@ const DeleteVehicleModal = () => {
     update: (cache, { data: mutationReturn }) => {
       const currentVehicles = cache.readQuery<GetVehiclesQuery>({
         query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
       });
 
       const newVehicles = currentVehicles?.vehicles?.filter((vehicle) =>
@@ -38,6 +46,11 @@ const DeleteVehicleModal = () => {
 
       cache.writeQuery({
         query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
         data: { vehicles: newVehicles },
       });
 
@@ -46,10 +59,40 @@ const DeleteVehicleModal = () => {
       });
     },
     refetchQueries: [
-      { query: GetTollTagsDocument },
-      { query: GetFuelCardsDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetFuelCardsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

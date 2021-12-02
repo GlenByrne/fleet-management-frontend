@@ -52,18 +52,44 @@ const CreateFuelCardModal = () => {
       const newFuelCard = mutationReturn?.addFuelCard;
       const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
         query: GetFuelCardsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
       });
 
       if (currentFuelCards && newFuelCard) {
         cache.writeQuery({
           query: GetFuelCardsDocument,
+          variables: {
+            data: {
+              organisationId: organisationId,
+            },
+          },
           data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
         });
       }
     },
     refetchQueries: [
-      // { query: GetSelectableItemsForAddVehicleDocument },
-      // { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

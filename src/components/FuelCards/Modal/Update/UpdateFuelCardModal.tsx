@@ -25,8 +25,11 @@ import {
   successTextVar,
   updateFuelCardModalStateVar,
 } from 'constants/apollo-client';
+import { useRouter } from 'next/router';
 
 const UpdateFuelCardModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
   const currentCard = useReactiveVar(currentFuelCardVar);
 
   const currentModalStateVar = useReactiveVar(updateFuelCardModalStateVar);
@@ -51,9 +54,32 @@ const UpdateFuelCardModal = () => {
 
   const [updateFuelCard] = useUpdateFuelCardMutation({
     refetchQueries: [
-      { query: GetVehiclesDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

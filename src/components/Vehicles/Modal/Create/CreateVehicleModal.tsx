@@ -169,7 +169,7 @@ const CreateVehicleModal = () => {
         query: GetVehiclesDocument,
         variables: {
           data: {
-            organisationId,
+            organisationId: organisationId,
           },
         },
       });
@@ -177,6 +177,11 @@ const CreateVehicleModal = () => {
       if (currentVehicles && newVehicle) {
         cache.writeQuery({
           query: GetVehiclesDocument,
+          variables: {
+            data: {
+              organisationId,
+            },
+          },
           data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
         });
       }

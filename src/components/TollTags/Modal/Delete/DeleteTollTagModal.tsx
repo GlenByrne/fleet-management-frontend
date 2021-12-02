@@ -17,8 +17,11 @@ import {
   successAlertStateVar,
   successTextVar,
 } from 'constants/apollo-client';
+import { useRouter } from 'next/router';
 
 const DeleteTollTagModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
   const currentTag = useReactiveVar(currentTollTagVar);
 
   const currentModalStateVar = useReactiveVar(deleteTollTagModalStateVar);
@@ -27,6 +30,11 @@ const DeleteTollTagModal = () => {
     update: (cache, { data: mutationReturn }) => {
       const currentTollTags = cache.readQuery<GetTollTagsQuery>({
         query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
       });
       const newTollTags = currentTollTags?.tollTags?.filter((tollTag) =>
         tollTag != null
@@ -35,6 +43,11 @@ const DeleteTollTagModal = () => {
       );
       cache.writeQuery({
         query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
         data: { tollTags: newTollTags },
       });
       cache.evict({
@@ -42,9 +55,32 @@ const DeleteTollTagModal = () => {
       });
     },
     refetchQueries: [
-      { query: GetVehiclesDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

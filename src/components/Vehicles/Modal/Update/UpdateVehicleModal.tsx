@@ -223,10 +223,40 @@ const UpdateVehicleModal = () => {
 
   const [updateVehicle] = useUpdateVehicleMutation({
     refetchQueries: [
-      { query: GetTollTagsDocument },
-      { query: GetFuelCardsDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetFuelCardsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

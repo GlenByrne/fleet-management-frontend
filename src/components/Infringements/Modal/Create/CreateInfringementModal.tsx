@@ -82,11 +82,17 @@ const CreateInfringementModal = () => {
 
       const currentInfringements = cache.readQuery<GetInfringementsQuery>({
         query: GetInfringementsDocument,
+        variables: {
+          organisationId: organisationId,
+        },
       });
 
       if (currentInfringements && newInfringement) {
         cache.writeQuery({
           query: GetInfringementsDocument,
+          variables: {
+            organisationId: organisationId,
+          },
           data: {
             infringements: [
               { ...currentInfringements.infringements },

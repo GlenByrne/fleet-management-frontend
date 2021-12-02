@@ -52,17 +52,43 @@ const CreateTollTagModal = () => {
       const newTollTag = mutationReturn?.addTollTag;
       const currentTollTags = cache.readQuery<GetTollTagsQuery>({
         query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
       });
       if (currentTollTags && newTollTag) {
         cache.writeQuery({
           query: GetTollTagsDocument,
+          variables: {
+            data: {
+              organisationId,
+            },
+          },
           data: { tollTags: [{ ...currentTollTags.tollTags }, newTollTag] },
         });
       }
     },
     refetchQueries: [
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

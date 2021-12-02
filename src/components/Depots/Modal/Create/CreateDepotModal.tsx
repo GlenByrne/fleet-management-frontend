@@ -37,11 +37,21 @@ const CreateDepotModal = () => {
       const newDepot = mutationReturn?.addDepot;
       const currentDepots = cache.readQuery<GetDepotsQuery>({
         query: GetDepotsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
       });
 
       if (currentDepots && newDepot) {
         cache.writeQuery({
           query: GetDepotsDocument,
+          variables: {
+            data: {
+              organisationId: organisationId,
+            },
+          },
           data: {
             depots: [{ ...currentDepots.depots }, newDepot],
           },
@@ -49,8 +59,24 @@ const CreateDepotModal = () => {
       }
     },
     refetchQueries: [
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

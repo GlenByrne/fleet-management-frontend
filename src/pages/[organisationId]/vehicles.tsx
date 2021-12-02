@@ -17,7 +17,6 @@ import { useRouter } from 'next/router';
 const Vehicles: NextPage = () => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-  console.log(organisationId);
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
   const { data, loading, error, refetch } = useGetVehiclesQuery({

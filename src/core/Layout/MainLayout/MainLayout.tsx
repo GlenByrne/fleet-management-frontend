@@ -64,39 +64,37 @@ const MainLayout = ({
   const navigation: NavbarOption[] = [
     {
       name: 'Home',
-      href: `/organisations/${encodeURIComponent(organisationId)}/dashboard`,
+      href: `/${encodeURIComponent(organisationId)}/dashboard`,
       icon: HomeIcon,
     },
     {
       name: 'Vehicles',
-      href: `/organisations/${encodeURIComponent(organisationId)}/vehicles`,
+      href: `/${encodeURIComponent(organisationId)}/vehicles`,
       icon: TruckIcon,
     },
     {
       name: 'Infringements',
-      href: `/organisations/${encodeURIComponent(
-        organisationId
-      )}/infringements`,
+      href: `/${encodeURIComponent(organisationId)}/infringements`,
       icon: ExclamationIcon,
     },
     {
       name: 'Fuel Cards',
-      href: `/organisations/${encodeURIComponent(organisationId)}/fuelCards`,
+      href: `/${encodeURIComponent(organisationId)}/fuelCards`,
       icon: CreditCardIcon,
     },
     {
       name: 'Toll Tags',
-      href: `/organisations/${encodeURIComponent(organisationId)}/tollTags`,
+      href: `/${encodeURIComponent(organisationId)}/tollTags`,
       icon: TagIcon,
     },
     {
       name: 'Depots',
-      href: `/organisations/${encodeURIComponent(organisationId)}/depots`,
+      href: `/${encodeURIComponent(organisationId)}/depots`,
       icon: OfficeBuildingIcon,
     },
     {
       name: 'Users',
-      href: `/organisations/${encodeURIComponent(organisationId)}/users`,
+      href: `/${encodeURIComponent(organisationId)}/users`,
       icon: UsersIcon,
     },
   ];
