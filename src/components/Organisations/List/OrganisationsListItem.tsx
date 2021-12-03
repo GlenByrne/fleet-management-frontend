@@ -11,9 +11,7 @@ const OrganisationsListItem = ({
   return (
     <li>
       <Link
-        href={`/organisations/${encodeURIComponent(
-          organisation.organisation.id
-        )}/dashboard`}
+        href={`/${encodeURIComponent(organisation.organisation.id)}/dashboard`}
       >
         <a className="block hover:bg-gray-50">
           <div className="px-4 py-4 sm:px-6">
