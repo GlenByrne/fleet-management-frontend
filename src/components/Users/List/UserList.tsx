@@ -5,7 +5,10 @@ import {
 import Loading from 'core/Loading';
 import UserListItem from './UserListItem';
 import NoUsersAddButton from './NoUsersAddButton';
-import { addUserModalStateVar, currentUserVar } from 'constants/apollo-client';
+import {
+  inviteUserModalStateVar,
+  currentUserVar,
+} from 'constants/apollo-client';
 import { UserUpdateModalItem } from 'constants/types';
 import { ApolloError } from '@apollo/client';
 
@@ -57,7 +60,7 @@ const UserList = ({ data, loading, error }: UserListProps) => {
       </ul>
     </div>
   ) : (
-    <NoUsersAddButton onClick={addUserModalStateVar} />
+    <NoUsersAddButton onClick={inviteUserModalStateVar} />
   );
 };
 

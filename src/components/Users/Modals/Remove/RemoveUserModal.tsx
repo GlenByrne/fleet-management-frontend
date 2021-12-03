@@ -59,7 +59,7 @@ const RemoveUserModal = () => {
         },
       });
 
-      successTextVar('User removed successfully');
+      successTextVar('User removed from organisation successfully');
       successAlertStateVar(true);
     } catch {}
   };
@@ -89,8 +89,8 @@ const RemoveUserModal = () => {
             </Dialog.Title>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
-                Are you sure you want to remove this user? The user will no
-                longer be able to log in after they are removed.
+                Are you sure you want to remove this user organisation? The user
+                will no longer be able to access this organisation.
               </p>
             </div>
           </div>

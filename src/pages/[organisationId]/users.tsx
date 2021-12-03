@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { addUserModalStateVar } from 'constants/apollo-client';
+import { inviteUserModalStateVar } from 'constants/apollo-client';
 import UserList from 'components/Users/List/UserList';
 import CreateUserModal from 'components/Users/Modals/Create/CreateUserModal';
 import UpdateUserModal from 'components/Users/Modals/Update/UpdateUserModal';
@@ -47,7 +47,7 @@ const Users: NextPage = () => {
   return (
     <MainLayout
       hasQuickActionButton={true}
-      quickAction={addUserModalStateVar}
+      quickAction={inviteUserModalStateVar}
       quickActionLabel="New User"
       pageSearchable={true}
       searchSubmitHandler={submitHandler}

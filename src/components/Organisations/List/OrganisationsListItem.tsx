@@ -21,6 +21,9 @@ const OrganisationsListItem = ({
                 <p className="flex items-center text-sm text-gray-500">
                   {organisation.organisation.name}
                 </p>
+                <p className="flex items-center text-sm text-gray-500">
+                  {organisation.role}
+                </p>
               </div>
             </div>
           </div>

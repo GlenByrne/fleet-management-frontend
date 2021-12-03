@@ -141,7 +141,7 @@ export const updateDepotModalStateVar = makeVar(false);
 export const deleteDepotModalStateVar = makeVar(false);
 
 // User Modals states
-export const addUserModalStateVar = makeVar(false);
+export const inviteUserModalStateVar = makeVar(false);
 export const updateUserModalStateVar = makeVar(false);
 export const removeUserModalStateVar = makeVar(false);
 
@@ -244,6 +244,8 @@ const errorLink = onError(({ graphQLErrors, operation, forward }) => {
           }
         default:
           errorTextVar(err.message);
+          console.log(err.message);
+
           errorAlertStateVar(true);
       }
     }

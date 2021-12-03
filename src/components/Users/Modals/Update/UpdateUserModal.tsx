@@ -67,8 +67,6 @@ const UpdateUserModal = () => {
   const currentModalStateVar = useReactiveVar(updateUserModalStateVar);
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [depot, setDepot] = useState<Option>({
     value: '',
     label: 'None',
@@ -86,8 +84,6 @@ const UpdateUserModal = () => {
     setRoleOptions(getRoleOptions());
     setDepotOptions(getDepotOptions(data?.depots as Depot[]));
 
-    setName(currentUser.name);
-    setEmail(currentUser.email);
     setDepot({
       value: currentUser.depot != null ? currentUser.depot.id : '',
       label: currentUser.depot != null ? currentUser.depot.name : 'None',
@@ -97,14 +93,6 @@ const UpdateUserModal = () => {
       label: currentUser.role,
     });
   }, [currentUser, data]);
-
-  const changeName = (event: FormEvent<HTMLInputElement>) => {
-    setName(event.currentTarget.value);
-  };
-
-  const changeEmail = (event: FormEvent<HTMLInputElement>) => {
-    setEmail(event.currentTarget.value);
-  };
 
   const cancelButtonRef = useRef(null);
 
@@ -162,28 +150,6 @@ const UpdateUserModal = () => {
                 Update User
               </Dialog.Title>
               <div className="grid grid-cols-6 gap-6 mt-2">
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormInput
-                    label="Name"
-                    name="name"
-                    type="text"
-                    value={name}
-                    onChange={changeName}
-                    required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormInput
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={changeEmail}
-                    required={true}
-                  />
-                </div>
-
                 <div className="col-span-6 sm:col-span-3">
                   <ModalFormSelect
                     label="Depot"

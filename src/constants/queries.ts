@@ -628,7 +628,7 @@ export const LOGIN = gql`
         organisations {
           organisationId
           role
-          isDefault
+          inviteAccepted
         }
       }
       accessToken
@@ -662,7 +662,7 @@ export const REGISTER = gql`
         organisations {
           organisationId
           role
-          isDefault
+          inviteAccepted
         }
       }
       accessToken
@@ -708,17 +708,48 @@ export const GET_USERS_ORGANISATIONS = gql`
   }
 `;
 
-export const ADD_USER_TO_ORGANISATION = gql`
-  mutation AddUserToOrganisation($data: AddUserToOrganisationInput!) {
-    addUserToOrganisation(data: $data) {
-      id
-      name
-      email
+export const GET_USERS_ORGANISATIONS_INVITES = gql`
+  query GetUsersOrganisationsInvites {
+    usersOrganisationInvites {
       role
-      depot {
+      organisation {
         id
         name
       }
+    }
+  }
+`;
+
+export const INVITE_USER_TO_ORGANISATION = gql`
+  mutation InviteUserToOrganisation($data: InviteUserToOrganisationInput!) {
+    inviteUserToOrganisation(data: $data) {
+      id
+      name
+    }
+  }
+`;
+
+export const ACCEPT_INVITE = gql`
+  mutation AcceptInvite($data: AcceptInviteInput!) {
+    acceptInvite(data: $data) {
+      role
+      inviteAccepted
+      user {
+        id
+        name
+      }
+      organisation {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const DECLINE_INVITE = gql`
+  mutation DeclineInvite($data: DeclineInviteInput!) {
+    declineInvite(data: $data) {
+      organisationId
     }
   }
 `;

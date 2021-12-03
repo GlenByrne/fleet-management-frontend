@@ -3,17 +3,15 @@ import OrganisationsMenuLayout from 'core/Layout/OrganisationsMenuLayout/Organis
 import { addOrganisationModalStateVar } from 'constants/apollo-client';
 import OrganisationsList from 'components/Organisations/List/OrganisationsList';
 import CreateOrganisationModal from 'components/Organisations/Modal/Create/CreateOrganisationModal';
+import OrganisationInviteList from 'components/Organisations/List/OrganisationInviteList';
 
 const Organisations: NextPage = () => {
   return (
     <OrganisationsMenuLayout
-      hasQuickActionButton={true}
-      quickAction={addOrganisationModalStateVar}
-      quickActionLabel="New Organisation"
-      pageSearchable={false}
+      mainContent={<OrganisationsList />}
+      rightContent={<OrganisationInviteList />}
     >
       <CreateOrganisationModal />
-      <OrganisationsList />
     </OrganisationsMenuLayout>
   );
 };

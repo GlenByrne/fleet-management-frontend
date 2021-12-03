@@ -24,7 +24,7 @@ const NoUsersAddButton = ({ onClick }: NoUsersAddButtonProps) => {
         />
       </svg>
       <span className="mt-2 block text-sm font-medium text-gray-900">
-        Add a new user
+        Invite user to your organisation
       </span>
     </button>
   );
