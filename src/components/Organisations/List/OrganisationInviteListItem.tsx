@@ -51,7 +51,7 @@ const OrganisationInviteListItem = ({
         currentOrganisationInvites?.usersOrganisationInvites?.filter((invite) =>
           invite != null
             ? invite.organisation.id !==
-              mutationReturn?.declineInvite.organisation.id
+              mutationReturn?.declineInvite.organisationId
             : currentOrganisationInvites.usersOrganisationInvites
         );
       cache.writeQuery({
@@ -59,7 +59,7 @@ const OrganisationInviteListItem = ({
         data: { usersOrganisationInvites: newOrganisationInvites },
       });
       cache.evict({
-        id: mutationReturn?.declineInvite.organisation.id,
+        id: mutationReturn?.declineInvite.organisationId,
       });
     },
   });
