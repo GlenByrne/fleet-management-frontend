@@ -661,8 +661,20 @@ export const REGISTER = gql`
 `;
 
 export const ACTIVATE_ACCOUNT = gql`
-  mutation ActivateAccount($token: String!) {
-    activateAccount(token: $token) {
+  mutation ActivateAccount($data: ActivateAccountInput!) {
+    activateAccount(data: $data)
+  }
+`;
+
+export const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($data: ForgotPasswordInput!) {
+    forgotPassword(data: $data)
+  }
+`;
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($data: ResetPasswordInput!) {
+    resetPassword(data: $data) {
       message
     }
   }

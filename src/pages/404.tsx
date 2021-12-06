@@ -1,7 +1,8 @@
+import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const Custom404 = () => {
+const Custom404: NextPage = () => {
   const router = useRouter();
   return (
     <>

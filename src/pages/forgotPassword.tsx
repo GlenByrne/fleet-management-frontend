@@ -1,53 +1,41 @@
-import { useLoginMutation, UsersPayload } from 'generated/graphql';
-import { useState } from 'react';
-import { FormEventHandler, FormEvent } from 'react';
+import { successAlertStateVar, successTextVar } from 'constants/apollo-client';
+import { useForgotPasswordMutation } from 'generated/graphql';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { accessTokenVar, loggedInUserVar } from 'constants/apollo-client';
-import PasswordInput from 'core/Modal/PasswordInput';
+import { FormEvent, FormEventHandler, useState } from 'react';
 
-const LoginForm = () => {
+const ForgotPassword: NextPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const [login] = useLoginMutation({
-    onCompleted: ({ login }) => {
-      accessTokenVar(login.accessToken);
-      loggedInUserVar(login.user as UsersPayload);
-      router.push('/');
+  const [forgotPassword] = useForgotPasswordMutation({
+    onCompleted: () => {
+      successTextVar('Password reset email sent');
+      successAlertStateVar(true);
+      router.push('/login');
       setEmail('');
-      setPassword('');
     },
   });
 
-  const submitHandler: FormEventHandler = async (e) => {
+  const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    try {
-      await login({
-        variables: {
-          data: {
-            email: email,
-            password: password,
-          },
+    forgotPassword({
+      variables: {
+        data: {
+          email: email,
         },
-      });
-    } catch {}
+      },
+    });
   };
 
   const changeEmail = (event: FormEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
   };
 
-  const changePassword = (event: FormEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value);
-  };
-
   return (
     <>
       {/*
         This example requires updating your template:
-
         ```
         <html class="h-full bg-gray-50">
         <body class="h-full">
@@ -61,16 +49,8 @@ const LoginForm = () => {
             alt="Workflow"
           />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Forgot Password
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link href="/register">
-              <a className="font-medium text-indigo-600 hover:text-indigo-500">
-                create an account
-              </a>
-            </Link>
-          </p>
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -98,40 +78,11 @@ const LoginForm = () => {
               </div>
 
               <div>
-                <PasswordInput password={password} onChange={changePassword} />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-900"
-                  >
-                    Remember me
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <Link href="/forgotPassword">
-                    <a className="font-medium text-indigo-600 hover:text-indigo-500">
-                      Forgot your password?
-                    </a>
-                  </Link>
-                </div>
-              </div>
-
-              <div>
                 <button
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  Sign in
+                  Send Email
                 </button>
               </div>
             </form>
@@ -142,4 +93,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ForgotPassword;

@@ -1,10 +1,11 @@
 import Loading from 'core/Loading';
 import { useActivateAccountMutation } from 'generated/graphql';
+import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const AccountActivation = () => {
+const AccountActivation: NextPage = () => {
   const [activating, setActivating] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const router = useRouter();
@@ -12,14 +13,16 @@ const AccountActivation = () => {
 
   const [activateAccount] = useActivateAccountMutation({
     variables: {
-      token,
+      data: {
+        token,
+      },
     },
   });
 
   useEffect(() => {
     async function handleAccountActivation() {
       const isValid = await activateAccount();
-      if (isValid.data?.activateAccount.message) {
+      if (isValid) {
         setIsValid(true);
       } else {
         setIsValid(false);
