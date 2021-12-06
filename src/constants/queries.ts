@@ -655,17 +655,15 @@ export const REFRESH_TOKEN = gql`
 export const REGISTER = gql`
   mutation Register($data: RegisterInput!) {
     register(data: $data) {
-      user {
-        id
-        name
-        email
-        organisations {
-          organisationId
-          role
-          inviteAccepted
-        }
-      }
-      accessToken
+      message
+    }
+  }
+`;
+
+export const ACTIVATE_ACCOUNT = gql`
+  mutation ActivateAccount($token: String!) {
+    activateAccount(token: $token) {
+      message
     }
   }
 `;
