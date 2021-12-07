@@ -244,8 +244,6 @@ const errorLink = onError(({ graphQLErrors, operation, forward }) => {
           }
         default:
           errorTextVar(err.message);
-          console.log(err.message);
-
           errorAlertStateVar(true);
       }
     }

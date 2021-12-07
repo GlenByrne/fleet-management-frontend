@@ -20,8 +20,6 @@ const Register: NextPage = () => {
 
   const [register] = useRegisterMutation({
     onCompleted: ({ register }) => {
-      // accessTokenVar(register.accessToken);
-      // loggedInUserVar(register.user as UsersPayload);
       successTextVar(register.message);
       successAlertStateVar(true);
       router.push('/login');
@@ -31,17 +29,19 @@ const Register: NextPage = () => {
     },
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    register({
-      variables: {
-        data: {
-          name: name,
-          email: email,
-          password: password,
+    try {
+      await register({
+        variables: {
+          data: {
+            name: name,
+            email: email,
+            password: password,
+          },
         },
-      },
-    });
+      });
+    } catch {}
   };
 
   const changeName = (event: FormEvent<HTMLInputElement>) => {

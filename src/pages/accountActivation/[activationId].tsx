@@ -30,8 +30,10 @@ const AccountActivation: NextPage = () => {
       setActivating(false);
     }
 
-    handleAccountActivation();
-  }, [activateAccount]);
+    if (token != 'undefined') {
+      handleAccountActivation();
+    }
+  }, [activateAccount, token]);
 
   if (activating) {
     return <Loading />;
