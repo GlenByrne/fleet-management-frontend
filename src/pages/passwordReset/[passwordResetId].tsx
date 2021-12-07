@@ -60,7 +60,11 @@ const PasswordReset: NextPage = () => {
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={submitHandler}>
               <div>
-                <PasswordInput password={password} onChange={changePassword} />
+                <PasswordInput
+                  password={password}
+                  onChange={changePassword}
+                  label="Password"
+                />
               </div>
 
               <div>

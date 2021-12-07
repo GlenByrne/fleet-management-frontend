@@ -98,7 +98,11 @@ const LoginForm = () => {
               </div>
 
               <div>
-                <PasswordInput password={password} onChange={changePassword} />
+                <PasswordInput
+                  password={password}
+                  onChange={changePassword}
+                  label="Password"
+                />
               </div>
 
               <div className="flex items-center justify-between">

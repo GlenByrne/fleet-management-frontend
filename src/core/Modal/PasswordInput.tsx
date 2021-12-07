@@ -4,9 +4,10 @@ import { ChangeEventHandler, useState } from 'react';
 type PasswordInputProps = {
   password: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  label: string;
 };
 
-const PasswordInput = ({ password, onChange }: PasswordInputProps) => {
+const PasswordInput = ({ password, onChange, label }: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -15,7 +16,7 @@ const PasswordInput = ({ password, onChange }: PasswordInputProps) => {
         htmlFor="password"
         className="block text-sm font-medium text-gray-700"
       >
-        Password
+        {label}
       </label>
       <div className="mt-1 flex rounded-md shadow-sm">
         <input

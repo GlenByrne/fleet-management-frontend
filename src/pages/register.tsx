@@ -131,7 +131,11 @@ const Register: NextPage = () => {
               </div>
 
               <div>
-                <PasswordInput password={password} onChange={changePassword} />
+                <PasswordInput
+                  password={password}
+                  onChange={changePassword}
+                  label="Password"
+                />
               </div>
 
               <div>

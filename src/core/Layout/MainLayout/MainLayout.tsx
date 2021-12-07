@@ -49,7 +49,6 @@ const MainLayout = ({
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logOut] = useLogoutMutation();
-  const userOrganisations = loggedInUserVar()?.organisations;
 
   const handleLogOut = () => {
     logOut();
@@ -101,7 +100,7 @@ const MainLayout = ({
 
   const userNavigation: UserNavbarOption[] = [
     { name: 'Your Profile', onClick: () => {} },
-    { name: 'Settings', onClick: () => {} },
+    { name: 'Settings', onClick: () => {}, href: '/settings/account' },
     {
       name: 'Sign out',
       onClick: handleLogOut,

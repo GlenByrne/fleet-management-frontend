@@ -57,7 +57,7 @@ const OrganisationsMenuLayout = ({
 
   const userNavigation: UserNavbarOption[] = [
     { name: 'Your Profile', onClick: () => {} },
-    { name: 'Settings', onClick: () => {} },
+    { name: 'Settings', onClick: () => {}, href: '/settings/account' },
     {
       name: 'Sign out',
       onClick: handleLogOut,
@@ -127,6 +127,7 @@ const OrganisationsMenuLayout = ({
                                       'block px-4 py-2 text-sm text-gray-700'
                                     )}
                                     onClick={item.onClick}
+                                    href={item.href}
                                   >
                                     {item.name}
                                   </a>
@@ -142,22 +143,6 @@ const OrganisationsMenuLayout = ({
               </div>
 
               <Disclosure.Panel className="lg:hidden">
-                <div className="px-2 pt-2 pb-3">
-                  <Disclosure.Button
-                    as="a"
-                    href="#"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-800"
-                  >
-                    Dashboard
-                  </Disclosure.Button>
-                  <Disclosure.Button
-                    as="a"
-                    href="#"
-                    className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-indigo-200 hover:text-indigo-100 hover:bg-indigo-600"
-                  >
-                    Support
-                  </Disclosure.Button>
-                </div>
                 <div className="pt-4 pb-3 border-t border-indigo-800">
                   <div className="px-2">
                     <Disclosure.Button

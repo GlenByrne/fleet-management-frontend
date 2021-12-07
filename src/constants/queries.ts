@@ -680,6 +680,14 @@ export const RESET_PASSWORD = gql`
   }
 `;
 
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($data: ChangePasswordInput!) {
+    changePassword(data: $data) {
+      message
+    }
+  }
+`;
+
 export const ADD_ORGANISATION = gql`
   mutation AddOrganisation($data: AddOrganisationInput!) {
     addOrganisation(data: $data) {
