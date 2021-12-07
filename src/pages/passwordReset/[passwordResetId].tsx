@@ -7,7 +7,7 @@ import { useState, FormEventHandler, FormEvent } from 'react';
 
 const PasswordReset: NextPage = () => {
   const router = useRouter();
-  const token = String(router.query.activationId);
+  const token = String(router.query.passwordResetId);
   const [password, setPassword] = useState('');
 
   const [resetPassword] = useResetPasswordMutation({
