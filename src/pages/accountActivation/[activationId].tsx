@@ -22,7 +22,7 @@ const AccountActivation: NextPage = () => {
   useEffect(() => {
     async function handleAccountActivation() {
       const isValid = await activateAccount();
-      if (isValid) {
+      if (isValid === true) {
         setIsValid(true);
       } else {
         setIsValid(false);
