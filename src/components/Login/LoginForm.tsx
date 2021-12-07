@@ -1,10 +1,10 @@
-import { useLoginMutation, UsersPayload } from 'generated/graphql';
 import { useState } from 'react';
 import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { accessTokenVar, loggedInUserVar } from 'constants/apollo-client';
-import PasswordInput from 'core/Modal/PasswordInput';
+import { useLoginMutation, UsersPayload } from '@/generated/graphql';
+import { accessTokenVar, loggedInUserVar } from '@/constants/apollo-client';
+import PasswordInput from '@/core/Modal/PasswordInput';
 
 const LoginForm = () => {
   const router = useRouter();

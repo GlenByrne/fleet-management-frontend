@@ -3,16 +3,16 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
-import { Infringement, InfringementStatus } from 'generated/graphql';
 import Link from 'next/link';
-import { getInfringementClassNames } from 'utilities/getInfringementClassNames';
 import { format } from 'date-fns';
-import Button from 'core/Table/Button';
+import { Infringement, InfringementStatus } from '@/generated/graphql';
 import {
   deleteInfringementModalStateVar,
   updateInfringementModalStateVar,
   updateInfringementStatusModalStateVar,
-} from 'constants/apollo-client';
+} from '@/constants/apollo-client';
+import { getInfringementClassNames } from '@/utilities/getInfringementClassNames';
+import Button from '@/core/Table/Button';
 
 type InfringementListItemProps = {
   infringement: Infringement;

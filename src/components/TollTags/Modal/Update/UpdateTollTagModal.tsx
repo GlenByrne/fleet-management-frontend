@@ -5,24 +5,24 @@ import {
   useRef,
   useState,
 } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
 import { Dialog } from '@headlessui/react';
-import {
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  GetVehiclesDocument,
-  useUpdateTollTagMutation,
-} from 'generated/graphql';
-import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   currentTollTagVar,
   successAlertStateVar,
   successTextVar,
   updateTollTagModalStateVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import {
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetVehiclesDocument,
+  useUpdateTollTagMutation,
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const UpdateTollTagModal = () => {
   const router = useRouter();

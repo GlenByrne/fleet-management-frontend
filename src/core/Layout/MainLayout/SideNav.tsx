@@ -1,10 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/solid';
-import { NavbarOption } from 'constants/types';
 import { useRouter } from 'next/router';
 import { Fragment, Dispatch, SetStateAction } from 'react';
-import classNames from 'utilities/classNames';
 import Link from 'next/link';
+import { NavbarOption } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 
 type SideNavProps = {
   navigation: NavbarOption[];

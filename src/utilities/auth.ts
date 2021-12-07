@@ -1,10 +1,9 @@
+import Router, { useRouter } from 'next/router';
 import client, {
   accessTokenVar,
   loggedInUserVar,
-} from 'constants/apollo-client';
-import { useLogoutMutation } from 'generated/graphql';
-import { useEffect } from 'react';
-import Router, { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import { useLogoutMutation } from '@/generated/graphql';
 
 export const checkAuth = () => {
   const accessToken = accessTokenVar();

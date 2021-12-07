@@ -1,10 +1,9 @@
-import { addOrganisationModalStateVar } from 'constants/apollo-client';
-import Loading from 'core/Loading';
+import { addOrganisationModalStateVar } from '@/constants/apollo-client';
+import Loading from '@/core/Loading';
 import {
-  Organisation,
   useGetUsersOrganisationsQuery,
   UsersOnOrganisations,
-} from 'generated/graphql';
+} from '@/generated/graphql';
 import NoOrganisationsAddButton from './NoOrganisationsAddButton';
 import OrganisationsListItem from './OrganisationsListItem';
 

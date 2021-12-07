@@ -1,4 +1,4 @@
-import { UsersOnOrganisations } from 'generated/graphql';
+import { UsersOnOrganisations } from '@/generated/graphql';
 import Link from 'next/link';
 
 type OrganisationsListItemProps = {

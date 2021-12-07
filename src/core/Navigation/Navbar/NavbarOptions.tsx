@@ -1,8 +1,7 @@
-import { FC } from 'react';
-import { NavbarOption } from '../../../constants/types';
+import { NavbarOption } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import classNames from 'utilities/classNames';
 
 type NavbarOptionsProps = {
   navigation: NavbarOption[];

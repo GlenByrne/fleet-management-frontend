@@ -1,15 +1,13 @@
 import { NextPage } from 'next';
-import FuelCardList from 'components/FuelCards/List/FuelCardList';
-import CreateFuelCardModal from 'components/FuelCards/Modal/Create/CreateFuelCardModal';
-import UpdateFuelCardModal from 'components/FuelCards/Modal/Update/UpdateFuelCardModal';
-import DeleteFuelCardModal from 'components/FuelCards/Modal/Delete/DeleteFuelCardModal';
-import { addFuelCardModalStateVar } from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
-import { useGetFuelCardsQuery } from 'generated/graphql';
-import MainLayout from 'core/Layout/MainLayout/MainLayout';
-import useAuthentication from 'hooks/useAuthentication';
-import Loading from 'core/Loading';
 import { useRouter } from 'next/router';
+import { useGetFuelCardsQuery } from '@/generated/graphql';
+import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import { addFuelCardModalStateVar } from '@/constants/apollo-client';
+import CreateFuelCardModal from '@/components/FuelCards/Modal/Create/CreateFuelCardModal';
+import UpdateFuelCardModal from '@/components/FuelCards/Modal/Update/UpdateFuelCardModal';
+import DeleteFuelCardModal from '@/components/FuelCards/Modal/Delete/DeleteFuelCardModal';
+import FuelCardList from '@/components/FuelCards/List/FuelCardList';
 
 const FuelCards: NextPage = () => {
   const router = useRouter();

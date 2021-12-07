@@ -1,14 +1,14 @@
 import {
+  deleteDefectModalStateVar,
+  updateDefectModalStateVar,
+} from '@/constants/apollo-client';
+import Button from '@/core/Table/Button';
+import { Defect } from '@/generated/graphql';
+import {
   LocationMarkerIcon,
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
-import {
-  deleteDefectModalStateVar,
-  updateDefectModalStateVar,
-} from 'constants/apollo-client';
-import Button from 'core/Table/Button';
-import { Defect } from 'generated/graphql';
 import Link from 'next/link';
 
 type DefectItemProps = {

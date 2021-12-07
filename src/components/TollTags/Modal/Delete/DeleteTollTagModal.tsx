@@ -1,23 +1,23 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import Modal from 'core/Modal/Modal';
-import {
-  GetTollTagsDocument,
-  GetTollTagsQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  GetVehiclesDocument,
-  useDeleteTollTagMutation,
-} from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   currentTollTagVar,
   deleteTollTagModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import {
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetTollTagsDocument,
+  GetTollTagsQuery,
+  GetVehiclesDocument,
+  useDeleteTollTagMutation,
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
 
 const DeleteTollTagModal = () => {
   const router = useRouter();

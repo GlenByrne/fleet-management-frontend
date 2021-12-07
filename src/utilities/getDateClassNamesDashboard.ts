@@ -1,4 +1,4 @@
-import { DateStatus } from 'constants/types';
+import { DateStatus } from '@/constants/types';
 
 export const getDateClassNamesDashboard = (status: DateStatus) => {
   if (status === DateStatus.NOT_SOON) {

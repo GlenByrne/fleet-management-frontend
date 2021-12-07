@@ -1,22 +1,22 @@
 import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
+import { Dialog } from '@headlessui/react';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   addDepotModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { Dialog } from '@headlessui/react';
-import Modal from 'core/Modal/Modal';
+} from '@/constants/apollo-client';
 import {
   GetDepotsDocument,
   GetDepotsQuery,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   useAddDepotMutation,
-} from 'generated/graphql';
-import { FormEvent, FormEventHandler, useRef, useState } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import { useRouter } from 'next/router';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const CreateDepotModal = () => {
   const router = useRouter();

@@ -3,13 +3,13 @@ import client, {
   loggedInUserVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import SettingsLayout from 'core/Layout/SettingsLayout/SettingsLayout';
-import PasswordInput from 'core/Modal/PasswordInput';
+} from '@/constants/apollo-client';
+import SettingsLayout from '@/core/Layout/SettingsLayout/SettingsLayout';
+import PasswordInput from '@/core/Modal/PasswordInput';
 import {
   useChangePasswordMutation,
   useLogoutMutation,
-} from 'generated/graphql';
+} from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FormEvent, useState, FormEventHandler } from 'react';

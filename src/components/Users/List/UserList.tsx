@@ -1,16 +1,16 @@
+import UserListItem from './UserListItem';
+import NoUsersAddButton from './NoUsersAddButton';
+import { ApolloError } from '@apollo/client';
 import {
   GetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
-} from 'generated/graphql';
-import Loading from 'core/Loading';
-import UserListItem from './UserListItem';
-import NoUsersAddButton from './NoUsersAddButton';
+} from '@/generated/graphql';
+import { UserUpdateModalItem } from '@/constants/types';
 import {
-  inviteUserModalStateVar,
   currentUserVar,
-} from 'constants/apollo-client';
-import { UserUpdateModalItem } from 'constants/types';
-import { ApolloError } from '@apollo/client';
+  inviteUserModalStateVar,
+} from '@/constants/apollo-client';
+import Loading from '@/core/Loading';
 
 type UserListProps = {
   data: GetUsersInOrganisationQuery | undefined;

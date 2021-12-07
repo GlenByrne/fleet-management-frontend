@@ -1,6 +1,8 @@
-import { CheckIcon, XIcon } from '@heroicons/react/solid';
-import { successAlertStateVar, successTextVar } from 'constants/apollo-client';
-import Button from 'core/Table/Button';
+import {
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
+import Button from '@/core/Table/Button';
 import {
   GetUsersOrganisationsDocument,
   GetUsersOrganisationsInvitesDocument,
@@ -8,7 +10,8 @@ import {
   useAcceptInviteMutation,
   useDeclineInviteMutation,
   UsersOnOrganisations,
-} from 'generated/graphql';
+} from '@/generated/graphql';
+import { CheckIcon, XIcon } from '@heroicons/react/solid';
 
 type OrganisationInvitesListItemProps = {
   invite: UsersOnOrganisations;

@@ -1,7 +1,5 @@
-import Dashboard from 'components/Dashboard/Dashboard';
-import MainLayout from 'core/Layout/MainLayout/MainLayout';
-import Loading from 'core/Loading';
-import useAuthentication from 'hooks/useAuthentication';
+import Dashboard from '@/components/Dashboard/Dashboard';
+import MainLayout from '@/core/Layout/MainLayout/MainLayout';
 import { NextPage } from 'next';
 
 const Home: NextPage = () => {

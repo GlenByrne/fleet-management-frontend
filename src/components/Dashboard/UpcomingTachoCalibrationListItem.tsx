@@ -1,9 +1,7 @@
-import { Vehicle } from 'generated/graphql';
-import { dateStatus } from 'utilities/dateStatus';
-import { getDateClassNames } from 'utilities/getDateClassName';
+import { Vehicle } from '@/generated/graphql';
+import { dateStatus } from '@/utilities/dateStatus';
+import { getDateClassNamesDashboard } from '@/utilities/getDateClassNamesDashboard';
 import { format } from 'date-fns';
-import { BookmarkIcon } from '@heroicons/react/solid';
-import { getDateClassNamesDashboard } from 'utilities/getDateClassNamesDashboard';
 
 type UpcomingTachoCalibrationListItemProps = {
   vehicle: Vehicle;

@@ -3,14 +3,12 @@ import { NextPage } from 'next';
 import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import PasswordInput from 'core/Modal/PasswordInput';
-import { useRegisterMutation, UsersPayload } from 'generated/graphql';
+import { useRegisterMutation } from '@/generated/graphql';
 import {
-  accessTokenVar,
-  loggedInUserVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
+} from '@/constants/apollo-client';
+import PasswordInput from '@/core/Modal/PasswordInput';
 
 const Register: NextPage = () => {
   const router = useRouter();

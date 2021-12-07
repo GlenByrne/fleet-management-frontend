@@ -4,20 +4,20 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
+import Link from 'next/link';
+import { format } from 'date-fns';
+import { useRouter } from 'next/router';
+import { Vehicle } from '@/generated/graphql';
+import Button from '@/core/Table/Button';
 import {
   deleteVehicleModalStateVar,
   updateVehicleCVRTModalStateVar,
   updateVehicleModalStateVar,
   updateVehicleTachoCalibrationModalStateVar,
   updateVehicleThirteenWeekModalStateVar,
-} from 'constants/apollo-client';
-import Button from 'core/Table/Button';
-import { Vehicle } from 'generated/graphql';
-import Link from 'next/link';
-import { dateStatus } from 'utilities/dateStatus';
-import { getDateClassNames } from 'utilities/getDateClassName';
-import { format } from 'date-fns';
-import { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import { getDateClassNames } from '@/utilities/getDateClassName';
+import { dateStatus } from '@/utilities/dateStatus';
 
 type VehicleListItemProps = {
   vehicle: Vehicle;

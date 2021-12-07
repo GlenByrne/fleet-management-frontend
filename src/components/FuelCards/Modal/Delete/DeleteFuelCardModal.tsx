@@ -1,7 +1,14 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import Modal from 'core/Modal/Modal';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
+import {
+  currentFuelCardVar,
+  deleteFuelCardModalStateVar,
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
 import {
   GetFuelCardsDocument,
   GetFuelCardsQuery,
@@ -9,15 +16,8 @@ import {
   GetSelectableItemsForAddVehicleDocument,
   GetVehiclesDocument,
   useDeleteFuelCardMutation,
-} from 'generated/graphql';
-import { useReactiveVar } from '@apollo/client';
-import {
-  currentFuelCardVar,
-  deleteFuelCardModalStateVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
 
 const DeleteFuelCardModal = () => {
   const router = useRouter();

@@ -1,9 +1,9 @@
 import { Fragment, SetStateAction, useMemo, useRef, useState } from 'react';
-import { Option } from 'constants/types';
 import { Listbox, Portal, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { usePopper, Modifier } from 'react-popper';
-import classNames from 'utilities/classNames';
+import { Option } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 
 type ModalFormSelectProps = {
   label: string;

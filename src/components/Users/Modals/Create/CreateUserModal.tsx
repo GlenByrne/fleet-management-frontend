@@ -5,9 +5,10 @@ import {
   useState,
   useEffect,
 } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   Depot,
   GetUsersInOrganisationDocument,
@@ -15,18 +16,16 @@ import {
   Role,
   useGetSelectableItemsForAddUserQuery,
   useInviteUserToOrganisationMutation,
-} from 'generated/graphql';
-import { Option } from 'constants/types';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
+} from '@/generated/graphql';
+import { Option } from '@/constants/types';
 import {
   inviteUserModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import PasswordInput from 'core/Modal/PasswordInput';
-import { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(

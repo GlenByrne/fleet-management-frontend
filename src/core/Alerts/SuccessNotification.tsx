@@ -1,7 +1,10 @@
+import {
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { CheckCircleIcon, XIcon } from '@heroicons/react/solid';
-import { successAlertStateVar, successTextVar } from 'constants/apollo-client';
 import { Fragment, useEffect } from 'react';
 
 const SuccessNotification = () => {

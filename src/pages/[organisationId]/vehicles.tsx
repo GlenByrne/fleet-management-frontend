@@ -1,18 +1,16 @@
 import { NextPage } from 'next';
-import CreateVehicleModal from 'components/Vehicles/Modal/Create/CreateVehicleModal';
-import UpdateVehicleModal from 'components/Vehicles/Modal/Update/UpdateVehicleModal';
-import DeleteVehicleModal from 'components/Vehicles/Modal/Delete/DeleteVehicleModal';
-import { addVehicleModalStateVar } from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
-import { useGetVehiclesQuery } from 'generated/graphql';
-import UpdateVehicleTachoCalibrationModal from 'components/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
-import UpdateVehicleCVRTModal from 'components/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
-import UpdateVehicleThirteenWeekModal from 'components/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
-import MainLayout from 'core/Layout/MainLayout/MainLayout';
-import Loading from 'core/Loading';
-import useAuthentication from 'hooks/useAuthentication';
-import VehicleList from 'components/Vehicles/List/VehicleList';
 import { useRouter } from 'next/router';
+import { useGetVehiclesQuery } from '@/generated/graphql';
+import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import { addVehicleModalStateVar } from '@/constants/apollo-client';
+import CreateVehicleModal from '@/components/Vehicles/Modal/Create/CreateVehicleModal';
+import UpdateVehicleModal from '@/components/Vehicles/Modal/Update/UpdateVehicleModal';
+import DeleteVehicleModal from '@/components/Vehicles/Modal/Delete/DeleteVehicleModal';
+import UpdateVehicleCVRTModal from '@/components/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
+import UpdateVehicleThirteenWeekModal from '@/components/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
+import UpdateVehicleTachoCalibrationModal from '@/components/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
+import VehicleList from '@/components/Vehicles/List/VehicleList';
 
 const Vehicles: NextPage = () => {
   const router = useRouter();

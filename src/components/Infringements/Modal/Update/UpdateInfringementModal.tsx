@@ -5,24 +5,24 @@ import {
   useRef,
   useState,
 } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
 import {
   InfringementStatus,
   useUpdateInfringementMutation,
-} from 'generated/graphql';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
+} from '@/generated/graphql';
 import {
   currentInfringementVar,
   successAlertStateVar,
   successTextVar,
   updateInfringementModalStateVar,
-} from 'constants/apollo-client';
-import DatePickerNoClear from 'core/DatePickerNoClear';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
-import { Option } from 'constants/types';
+} from '@/constants/apollo-client';
+import { Option } from '@/constants/types';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
+import DatePickerNoClear from '@/core/DatePickerNoClear';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+import Modal from '@/core/Modal/Modal';
 
 const getInfringementStatuseOptions = () => {
   const options: Option[] = [

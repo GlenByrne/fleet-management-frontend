@@ -1,4 +1,4 @@
-import SettingsLayout from 'core/Layout/SettingsLayout/SettingsLayout';
+import SettingsLayout from '@/core/Layout/SettingsLayout/SettingsLayout';
 import { NextPage } from 'next';
 
 const Account: NextPage = () => {

@@ -10,15 +10,6 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import {
-  DefectStatus,
-  InfringementStatus,
-  RefreshTokenDocument,
-  Role,
-  UpdateDepotInput,
-  UsersPayload,
-  VehicleType,
-} from 'generated/graphql';
-import {
   DefectUpdateModalItem,
   FuelCardUpdateModalItem,
   InfringementUpdateModalItem,
@@ -26,8 +17,16 @@ import {
   UserUpdateModalItem,
   VehicleUpdateModalItem,
 } from './types';
-import { LogOut } from 'utilities/auth';
 import Router from 'next/router';
+import {
+  DefectStatus,
+  InfringementStatus,
+  RefreshTokenDocument,
+  Role,
+  UpdateDepotInput,
+  UsersPayload,
+  VehicleType,
+} from '@/generated/graphql';
 
 const initialFuelCard: FuelCardUpdateModalItem = {
   id: '',

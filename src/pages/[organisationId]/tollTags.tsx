@@ -1,15 +1,13 @@
 import { NextPage } from 'next';
-import TollTagList from 'components/TollTags/List/TollTagList';
-import CreateTollTagModal from 'components/TollTags/Modal/Create/CreateTollTagModal';
-import UpdateTollTagModal from 'components/TollTags/Modal/Update/UpdateTollTagModal';
-import DeleteTollTagModal from 'components/TollTags/Modal/Delete/DeleteTollTagModal';
-import { addTollTagModalStateVar } from 'constants/apollo-client';
 import { FormEvent, FormEventHandler, useState } from 'react';
-import { useGetTollTagsQuery } from 'generated/graphql';
-import MainLayout from 'core/Layout/MainLayout/MainLayout';
-import Loading from 'core/Loading';
-import useAuthentication from 'hooks/useAuthentication';
 import { useRouter } from 'next/router';
+import { useGetTollTagsQuery } from '@/generated/graphql';
+import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import { addTollTagModalStateVar } from '@/constants/apollo-client';
+import CreateTollTagModal from '@/components/TollTags/Modal/Create/CreateTollTagModal';
+import UpdateTollTagModal from '@/components/TollTags/Modal/Update/UpdateTollTagModal';
+import DeleteTollTagModal from '@/components/TollTags/Modal/Delete/DeleteTollTagModal';
+import TollTagList from '@/components/TollTags/List/TollTagList';
 
 const TollTags: NextPage = () => {
   const router = useRouter();

@@ -1,6 +1,9 @@
-import { successAlertStateVar, successTextVar } from 'constants/apollo-client';
-import PasswordInput from 'core/Modal/PasswordInput';
-import { useResetPasswordMutation } from 'generated/graphql';
+import {
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
+import PasswordInput from '@/core/Modal/PasswordInput';
+import { useResetPasswordMutation } from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState, FormEventHandler, FormEvent } from 'react';

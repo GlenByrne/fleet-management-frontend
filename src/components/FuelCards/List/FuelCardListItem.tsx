@@ -1,14 +1,10 @@
 import {
-  LocationMarkerIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/solid';
-import {
   deleteFuelCardModalStateVar,
   updateFuelCardModalStateVar,
-} from 'constants/apollo-client';
-import Button from 'core/Table/Button';
-import { FuelCard } from 'generated/graphql';
+} from '@/constants/apollo-client';
+import Button from '@/core/Table/Button';
+import { FuelCard } from '@/generated/graphql';
+import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 
 type FuelCardListItemProps = {

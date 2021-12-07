@@ -1,32 +1,22 @@
-import {
-  FormEvent,
-  FormEventHandler,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
-import { Option } from 'constants/types';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
-  Depot,
+  addTollTagModalStateVar,
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
+import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   GetTollTagsDocument,
   GetTollTagsQuery,
   useAddTollTagMutation,
-  useGetSelectableItemsForAddTollTagQuery,
-} from 'generated/graphql';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import {
-  addTollTagModalStateVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'constants/apollo-client';
-import { useReactiveVar } from '@apollo/client';
-import { useRouter } from 'next/router';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const CreateTollTagModal = () => {
   const router = useRouter();

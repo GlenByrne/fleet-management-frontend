@@ -1,15 +1,13 @@
 import { NextPage } from 'next';
-import { inviteUserModalStateVar } from 'constants/apollo-client';
-import UserList from 'components/Users/List/UserList';
-import CreateUserModal from 'components/Users/Modals/Create/CreateUserModal';
-import UpdateUserModal from 'components/Users/Modals/Update/UpdateUserModal';
 import { FormEventHandler, useState, FormEvent } from 'react';
-import MainLayout from 'core/Layout/MainLayout/MainLayout';
-import { useGetUsersInOrganisationQuery } from 'generated/graphql';
-import RemoveUserModal from 'components/Users/Modals/Remove/RemoveUserModal';
-import Loading from 'core/Loading';
-import useAuthentication from 'hooks/useAuthentication';
 import { useRouter } from 'next/router';
+import { useGetUsersInOrganisationQuery } from '@/generated/graphql';
+import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import { inviteUserModalStateVar } from '@/constants/apollo-client';
+import CreateUserModal from '@/components/Users/Modals/Create/CreateUserModal';
+import UpdateUserModal from '@/components/Users/Modals/Update/UpdateUserModal';
+import RemoveUserModal from '@/components/Users/Modals/Remove/RemoveUserModal';
+import UserList from '@/components/Users/List/UserList';
 
 const Users: NextPage = () => {
   const router = useRouter();

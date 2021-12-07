@@ -1,8 +1,5 @@
 import { ReactNode, ChangeEventHandler, FormEventHandler } from 'react';
 import Head from 'next/head';
-import ClientOnly from 'core/ClientOnly/ClientOnly';
-import { useEffect } from 'react';
-import { NavbarOption, UserNavbarOption } from 'constants/types';
 import {
   CreditCardIcon,
   ExclamationIcon,
@@ -14,16 +11,17 @@ import {
 } from '@heroicons/react/solid';
 import { useState } from 'react';
 import ContentArea from './ContentArea';
-import { checkAuth, LogOut } from 'utilities/auth';
+import { useRouter } from 'next/router';
+import SideNav from './SideNav';
+import { useLogoutMutation } from '@/generated/graphql';
 import client, {
   accessTokenVar,
   loggedInUserVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
-import { useLogoutMutation } from 'generated/graphql';
-import SideNav from './SideNav';
+} from '@/constants/apollo-client';
+import { NavbarOption, UserNavbarOption } from '@/constants/types';
+import ClientOnly from '@/core/ClientOnly/ClientOnly';
 
 type MainLayoutProps = {
   children: ReactNode;

@@ -1,9 +1,9 @@
-import Loading from 'core/Loading';
+import Loading from '@/core/Loading';
 import {
   useUpcomingMaintenaceQuery,
   Vehicle,
   VehicleType,
-} from 'generated/graphql';
+} from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import UpcomingCvrtList from './UpcomingCvrtList';
 import UpcomingTachoCalibrationList from './UpcomingTachoCalibrationList';

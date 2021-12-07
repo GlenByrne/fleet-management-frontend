@@ -1,24 +1,24 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import Modal from 'core/Modal/Modal';
-import {
-  GetVehiclesDocument,
-  GetVehiclesQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  useDeleteVehicleMutation,
-  GetTollTagsDocument,
-  GetFuelCardsDocument,
-} from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   currentVehicleVar,
   deleteVehicleModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import {
+  GetFuelCardsDocument,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetTollTagsDocument,
+  GetVehiclesDocument,
+  GetVehiclesQuery,
+  useDeleteVehicleMutation,
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
 
 const DeleteVehicleModal = () => {
   const router = useRouter();

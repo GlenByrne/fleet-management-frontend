@@ -1,32 +1,22 @@
-import {
-  FormEvent,
-  FormEventHandler,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
-  Depot,
+  addFuelCardModalStateVar,
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
+import {
   GetFuelCardsDocument,
   GetFuelCardsQuery,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   useAddFuelCardMutation,
-  useGetSelectableItemsForAddFuelCardQuery,
-} from 'generated/graphql';
-import { Option } from 'constants/types';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
-import {
-  addFuelCardModalStateVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const CreateFuelCardModal = () => {
   const router = useRouter();

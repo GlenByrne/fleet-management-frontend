@@ -1,13 +1,13 @@
-import { GetVehiclesQuery, Vehicle } from 'generated/graphql';
-import { VehicleUpdateModalItem } from 'constants/types';
-import {
-  addVehicleModalStateVar,
-  currentVehicleVar,
-} from 'constants/apollo-client';
-import Loading from 'core/Loading';
 import NoVehiclesAddButton from './NoVehiclesAddButton';
 import VehicleListItem from './VehicleListItem';
 import { ApolloError } from '@apollo/client';
+import { GetVehiclesQuery, Vehicle } from '@/generated/graphql';
+import { VehicleUpdateModalItem } from '@/constants/types';
+import {
+  addVehicleModalStateVar,
+  currentVehicleVar,
+} from '@/constants/apollo-client';
+import Loading from '@/core/Loading';
 
 type VehicleListProps = {
   data: GetVehiclesQuery | undefined;

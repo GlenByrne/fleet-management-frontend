@@ -1,34 +1,15 @@
-import {
-  ReactNode,
-  ChangeEventHandler,
-  FormEventHandler,
-  Fragment,
-} from 'react';
-import Head from 'next/head';
-import ClientOnly from 'core/ClientOnly/ClientOnly';
-import { useEffect } from 'react';
-import { NavbarOption, UserNavbarOption } from 'constants/types';
-import {
-  CreditCardIcon,
-  ExclamationIcon,
-  HomeIcon,
-  OfficeBuildingIcon,
-  TagIcon,
-  TruckIcon,
-  UsersIcon,
-} from '@heroicons/react/solid';
-import { useState } from 'react';
-import ContentArea from '../OrganisationsMenuLayout/ContentArea';
+import { ReactNode, Fragment } from 'react';
+import { useRouter } from 'next/router';
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { useLogoutMutation } from '@/generated/graphql';
 import client, {
   accessTokenVar,
   loggedInUserVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
-import { useLogoutMutation } from 'generated/graphql';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import classNames from 'utilities/classNames';
+} from '@/constants/apollo-client';
+import { UserNavbarOption } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 import TwoColumnLayout from '../TwoColumnLayout';
 
 type OrganisationsMenuLayoutProps = {

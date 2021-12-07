@@ -1,15 +1,15 @@
-import { useReactiveVar } from '@apollo/client';
-import { Dialog } from '@headlessui/react';
-import { TruckIcon } from '@heroicons/react/solid';
 import {
   currentVehicleVar,
   successAlertStateVar,
   successTextVar,
   updateVehicleTachoCalibrationModalStateVar,
-} from 'constants/apollo-client';
-import DatePickerNoClear from 'core/DatePickerNoClear';
-import Modal from 'core/Modal/Modal';
-import { useUpdateVehicleTachoCalibrationMutation } from 'generated/graphql';
+} from '@/constants/apollo-client';
+import DatePickerNoClear from '@/core/DatePickerNoClear';
+import Modal from '@/core/Modal/Modal';
+import { useUpdateVehicleTachoCalibrationMutation } from '@/generated/graphql';
+import { useReactiveVar } from '@apollo/client';
+import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/solid';
 import { useRef, useState, FormEventHandler } from 'react';
 
 const UpdateVehicleTachoCalibrationModal = () => {

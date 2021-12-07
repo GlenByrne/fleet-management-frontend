@@ -1,4 +1,4 @@
-import { DateStatus } from 'constants/types';
+import { DateStatus } from '@/constants/types';
 
 export const dateStatus = (value: any | null) => {
   if (value == null) {

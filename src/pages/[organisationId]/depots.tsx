@@ -1,15 +1,13 @@
 import { NextPage } from 'next';
-import { addDepotModalStateVar } from 'constants/apollo-client';
-import CreateDepotModal from 'components/Depots/Modal/Create/CreateDepotModal';
-import UpdateDepotModal from 'components/Depots/Modal/Update/UpdateDepotModal';
-import DeleteDepotModal from 'components/Depots/Modal/Delete/DeleteDepotModal';
-import DepotList from 'components/Depots/List/DepotList';
 import { FormEvent, FormEventHandler, useState } from 'react';
-import { useGetDepotsQuery } from 'generated/graphql';
-import MainLayout from 'core/Layout/MainLayout/MainLayout';
-import useAuthentication from 'hooks/useAuthentication';
-import Loading from 'core/Loading';
 import { useRouter } from 'next/router';
+import { useGetDepotsQuery } from '@/generated/graphql';
+import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import { addDepotModalStateVar } from '@/constants/apollo-client';
+import CreateDepotModal from '@/components/Depots/Modal/Create/CreateDepotModal';
+import UpdateDepotModal from '@/components/Depots/Modal/Update/UpdateDepotModal';
+import DeleteDepotModal from '@/components/Depots/Modal/Delete/DeleteDepotModal';
+import DepotList from '@/components/Depots/List/DepotList';
 
 const Depots: NextPage = () => {
   const router = useRouter();

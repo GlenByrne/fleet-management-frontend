@@ -1,5 +1,5 @@
-import Loading from 'core/Loading';
-import { useActivateAccountMutation } from 'generated/graphql';
+import Loading from '@/core/Loading';
+import { useActivateAccountMutation } from '@/generated/graphql';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

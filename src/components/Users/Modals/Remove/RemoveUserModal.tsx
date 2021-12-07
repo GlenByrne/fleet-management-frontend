@@ -1,20 +1,20 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import Modal from 'core/Modal/Modal';
-import {
-  GetUsersInOrganisationDocument,
-  GetUsersInOrganisationQuery,
-  useRemoveUserFromOrganisationMutation,
-} from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   currentUserVar,
   removeUserModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import {
+  GetUsersInOrganisationDocument,
+  GetUsersInOrganisationQuery,
+  useRemoveUserFromOrganisationMutation,
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
 
 const RemoveUserModal = () => {
   const router = useRouter();

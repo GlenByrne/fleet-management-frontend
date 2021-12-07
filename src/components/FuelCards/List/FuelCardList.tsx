@@ -1,13 +1,13 @@
-import { FuelCard, GetFuelCardsQuery } from 'generated/graphql';
-import { FuelCardUpdateModalItem } from 'constants/types';
+import FuelCardListItem from './FuelCardListItem';
+import NoFuelCardAddButton from './NoFuelCardAddButton';
+import { ApolloError } from '@apollo/client';
+import { FuelCard, GetFuelCardsQuery } from '@/generated/graphql';
+import { FuelCardUpdateModalItem } from '@/constants/types';
 import {
   addFuelCardModalStateVar,
   currentFuelCardVar,
-} from 'constants/apollo-client';
-import FuelCardListItem from './FuelCardListItem';
-import NoFuelCardAddButton from './NoFuelCardAddButton';
-import Loading from 'core/Loading';
-import { ApolloError } from '@apollo/client';
+} from '@/constants/apollo-client';
+import Loading from '@/core/Loading';
 
 type FuelCardListProps = {
   data: GetFuelCardsQuery | undefined;

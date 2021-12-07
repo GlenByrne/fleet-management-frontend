@@ -1,6 +1,7 @@
+import { UserNavbarOption } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 import { Menu, Transition } from '@headlessui/react';
 import { MenuAlt2Icon, PlusSmIcon, SearchIcon } from '@heroicons/react/solid';
-import { UserNavbarOption } from 'constants/types';
 import {
   Fragment,
   Dispatch,
@@ -9,7 +10,6 @@ import {
   ChangeEventHandler,
   FormEventHandler,
 } from 'react';
-import classNames from 'utilities/classNames';
 
 type ContentAreaProps = {
   children: ReactNode;

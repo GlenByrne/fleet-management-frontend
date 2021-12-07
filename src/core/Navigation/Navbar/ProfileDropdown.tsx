@@ -1,7 +1,7 @@
+import { UserNavbarOption } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 import { Menu, Transition } from '@headlessui/react';
-import { UserNavbarOption } from 'constants/types';
 import { Fragment } from 'react';
-import classNames from 'utilities/classNames';
 
 type ProfileDropdownProps = {
   userNavigation: UserNavbarOption[];

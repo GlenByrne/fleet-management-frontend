@@ -1,14 +1,14 @@
-import { useReactiveVar } from '@apollo/client';
-import { Dialog } from '@headlessui/react';
-import { TruckIcon } from '@heroicons/react/solid';
 import {
   currentInfringementVar,
   successAlertStateVar,
   successTextVar,
   updateInfringementStatusModalStateVar,
-} from 'constants/apollo-client';
-import Modal from 'core/Modal/Modal';
-import { useUpdateInfringementStatusMutation } from 'generated/graphql';
+} from '@/constants/apollo-client';
+import Modal from '@/core/Modal/Modal';
+import { useUpdateInfringementStatusMutation } from '@/generated/graphql';
+import { useReactiveVar } from '@apollo/client';
+import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/solid';
 import { useRef, FormEventHandler } from 'react';
 
 const UpdateInfringementStatusModal = () => {

@@ -1,13 +1,14 @@
 import { useReactiveVar } from '@apollo/client';
 import { ExclamationIcon } from '@heroicons/react/solid';
+import { Dialog } from '@headlessui/react';
+import { useRef } from 'react';
+import { useRouter } from 'next/router';
 import {
   currentDepotVar,
   deleteDepotModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { Dialog } from '@headlessui/react';
-import Modal from 'core/Modal/Modal';
+} from '@/constants/apollo-client';
 import {
   GetDepotsDocument,
   GetDepotsQuery,
@@ -15,9 +16,8 @@ import {
   GetSelectableItemsForAddVehicleDocument,
   GetVehiclesDocument,
   useDeleteDepotMutation,
-} from 'generated/graphql';
-import { useRef } from 'react';
-import { useRouter } from 'next/router';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
 
 const DeleteDepotModal = () => {
   const router = useRouter();

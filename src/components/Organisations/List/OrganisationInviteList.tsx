@@ -1,13 +1,9 @@
-import { addOrganisationModalStateVar } from 'constants/apollo-client';
-import Loading from 'core/Loading';
+import Loading from '@/core/Loading';
 import {
   useGetUsersOrganisationsInvitesQuery,
-  useGetUsersOrganisationsQuery,
   UsersOnOrganisations,
-} from 'generated/graphql';
-import NoOrganisationsAddButton from './NoOrganisationsAddButton';
+} from '@/generated/graphql';
 import OrganisationInviteListItem from './OrganisationInviteListItem';
-import OrganisationsListItem from './OrganisationsListItem';
 
 const OrganisationInviteList = () => {
   const { data, loading, error } = useGetUsersOrganisationsInvitesQuery();
