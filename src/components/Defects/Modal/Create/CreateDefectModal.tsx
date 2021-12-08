@@ -1,20 +1,20 @@
 import { FormEvent, FormEventHandler, useRef, useState } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
 import { Dialog } from '@headlessui/react';
-import {
-  GetVehicleDefectsDocument,
-  GetVehicleDefectsQuery,
-  useAddDefectMutation,
-} from 'generated/graphql';
-import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   addDefectModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
+} from '@/constants/apollo-client';
+import {
+  GetVehicleDefectsDocument,
+  GetVehicleDefectsQuery,
+  useAddDefectMutation,
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const CreateDefectModal = () => {
   const router = useRouter();

@@ -1,6 +1,9 @@
+import { NextPage } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-const Custom404 = () => {
+const Custom404: NextPage = () => {
+  const router = useRouter();
   return (
     <>
       {/*
@@ -37,11 +40,12 @@ const Custom404 = () => {
                 Sorry, we couldn’t find the page you’re looking for.
               </p>
               <div className="mt-6">
-                <Link href={'/vehicles'}>
-                  <a className="text-base font-medium text-indigo-600 hover:text-indigo-500">
-                    Go back home<span aria-hidden="true"> &rarr;</span>
-                  </a>
-                </Link>
+                <a
+                  className="text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+                  onClick={() => router.back()}
+                >
+                  Go back home<span aria-hidden="true"> &rarr;</span>
+                </a>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { Portal } from '@headlessui/react';
-import { ReactNode } from 'markdown-to-jsx/node_modules/@types/react';
+import { ReactNode } from 'react';
 import { useRef } from 'react';
 
 type CalendarContainerProps = {

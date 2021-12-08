@@ -1,23 +1,27 @@
 import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
+import { Dialog } from '@headlessui/react';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   addDepotModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { Dialog } from '@headlessui/react';
-import Modal from 'core/Modal/Modal';
+} from '@/constants/apollo-client';
 import {
   GetDepotsDocument,
   GetDepotsQuery,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   useAddDepotMutation,
-} from 'generated/graphql';
-import { FormEvent, FormEventHandler, useRef, useState } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const CreateDepotModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const currentModalStateVar = useReactiveVar(addDepotModalStateVar);
 
   const [name, setName] = useState('');
@@ -33,11 +37,21 @@ const CreateDepotModal = () => {
       const newDepot = mutationReturn?.addDepot;
       const currentDepots = cache.readQuery<GetDepotsQuery>({
         query: GetDepotsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
       });
 
       if (currentDepots && newDepot) {
         cache.writeQuery({
           query: GetDepotsDocument,
+          variables: {
+            data: {
+              organisationId: organisationId,
+            },
+          },
           data: {
             depots: [{ ...currentDepots.depots }, newDepot],
           },
@@ -45,8 +59,24 @@ const CreateDepotModal = () => {
       }
     },
     refetchQueries: [
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 
@@ -59,6 +89,7 @@ const CreateDepotModal = () => {
         variables: {
           data: {
             name: name != null ? name : '',
+            organisationId,
           },
         },
       });

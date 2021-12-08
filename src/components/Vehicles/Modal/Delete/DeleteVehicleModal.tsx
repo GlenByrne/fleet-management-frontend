@@ -1,25 +1,28 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import Modal from 'core/Modal/Modal';
-import {
-  GetVehiclesDocument,
-  GetVehiclesQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  useDeleteVehicleMutation,
-  GetTollTagsDocument,
-  GetFuelCardsDocument,
-} from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   currentVehicleVar,
   deleteVehicleModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
+} from '@/constants/apollo-client';
+import {
+  GetFuelCardsDocument,
+  GetItemsForUpdateVehicleDocument,
+  GetSelectableItemsForAddVehicleDocument,
+  GetTollTagsDocument,
+  GetVehiclesDocument,
+  GetVehiclesQuery,
+  useDeleteVehicleMutation,
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
 
 const DeleteVehicleModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
   const currentVehicle = useReactiveVar(currentVehicleVar);
 
   const currentModalStateVar = useReactiveVar(deleteVehicleModalStateVar);
@@ -28,6 +31,11 @@ const DeleteVehicleModal = () => {
     update: (cache, { data: mutationReturn }) => {
       const currentVehicles = cache.readQuery<GetVehiclesQuery>({
         query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
       });
 
       const newVehicles = currentVehicles?.vehicles?.filter((vehicle) =>
@@ -38,6 +46,11 @@ const DeleteVehicleModal = () => {
 
       cache.writeQuery({
         query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
         data: { vehicles: newVehicles },
       });
 
@@ -46,10 +59,40 @@ const DeleteVehicleModal = () => {
       });
     },
     refetchQueries: [
-      { query: GetTollTagsDocument },
-      { query: GetFuelCardsDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetFuelCardsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

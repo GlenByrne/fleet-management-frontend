@@ -5,20 +5,20 @@ import {
   useState,
   useEffect,
 } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
 import { Dialog } from '@headlessui/react';
-import { DefectStatus, useUpdateDefectMutation } from 'generated/graphql';
-import { Option } from 'constants/types';
-import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
+import { Option } from '@/constants/types';
+import { DefectStatus, useUpdateDefectMutation } from '@/generated/graphql';
 import {
-  updateDefectModalStateVar,
   currentDefectVar,
-  successTextVar,
   successAlertStateVar,
-} from 'constants/apollo-client';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
+  successTextVar,
+  updateDefectModalStateVar,
+} from '@/constants/apollo-client';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 
 const getDefectStatusOptions = () => {
   const options: Option[] = [

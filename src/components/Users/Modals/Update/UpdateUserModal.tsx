@@ -1,29 +1,23 @@
-import {
-  FormEvent,
-  FormEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { Option } from 'constants/types';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   Depot,
   Role,
   useGetSelectableItemsForUpdateUserQuery,
-  useUpdateUserMutation,
-} from 'generated/graphql';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
+  useUpdateUserOrgDetailsMutation,
+} from '@/generated/graphql';
+import { Option } from '@/constants/types';
 import {
   currentUserVar,
   successAlertStateVar,
   successTextVar,
   updateUserModalStateVar,
-} from 'constants/apollo-client';
+} from '@/constants/apollo-client';
+import Modal from '@/core/Modal/Modal';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -51,14 +45,21 @@ const getRoleOptions = () => {
 };
 
 const UpdateUserModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForUpdateUserQuery();
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
+  const { data, loading, error } = useGetSelectableItemsForUpdateUserQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const currentUser = useReactiveVar(currentUserVar);
   const currentModalStateVar = useReactiveVar(updateUserModalStateVar);
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [depot, setDepot] = useState<Option>({
     value: '',
     label: 'None',
@@ -76,8 +77,6 @@ const UpdateUserModal = () => {
     setRoleOptions(getRoleOptions());
     setDepotOptions(getDepotOptions(data?.depots as Depot[]));
 
-    setName(currentUser.name);
-    setEmail(currentUser.email);
     setDepot({
       value: currentUser.depot != null ? currentUser.depot.id : '',
       label: currentUser.depot != null ? currentUser.depot.name : 'None',
@@ -88,17 +87,9 @@ const UpdateUserModal = () => {
     });
   }, [currentUser, data]);
 
-  const changeName = (event: FormEvent<HTMLInputElement>) => {
-    setName(event.currentTarget.value);
-  };
-
-  const changeEmail = (event: FormEvent<HTMLInputElement>) => {
-    setEmail(event.currentTarget.value);
-  };
-
   const cancelButtonRef = useRef(null);
 
-  const [updateUser] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserOrgDetailsMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -107,9 +98,8 @@ const UpdateUserModal = () => {
       await updateUser({
         variables: {
           data: {
-            id: currentUser.id,
-            name: name != null ? name : '',
-            email: email != null ? email : '',
+            userId: currentUser.id,
+            organisationId,
             depotId: depot.value != null ? depot.value : '',
             role: role.value != null ? (role.value as Role) : Role.User,
           },
@@ -153,28 +143,6 @@ const UpdateUserModal = () => {
                 Update User
               </Dialog.Title>
               <div className="grid grid-cols-6 gap-6 mt-2">
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormInput
-                    label="Name"
-                    name="name"
-                    type="text"
-                    value={name}
-                    onChange={changeName}
-                    required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormInput
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={changeEmail}
-                    required={true}
-                  />
-                </div>
-
                 <div className="col-span-6 sm:col-span-3">
                   <ModalFormSelect
                     label="Depot"

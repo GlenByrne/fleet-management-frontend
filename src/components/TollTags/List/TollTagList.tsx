@@ -1,11 +1,11 @@
-import { ApolloError } from '@apollo/client';
 import {
   addTollTagModalStateVar,
   currentTollTagVar,
-} from 'constants/apollo-client';
-import { TollTagUpdateModalItem } from 'constants/types';
-import Loading from 'core/Loading';
-import { GetTollTagsQuery, TollTag } from 'generated/graphql';
+} from '@/constants/apollo-client';
+import { TollTagUpdateModalItem } from '@/constants/types';
+import Loading from '@/core/Loading';
+import { GetTollTagsQuery, TollTag } from '@/generated/graphql';
+import { ApolloError } from '@apollo/client';
 import NoTollTagAddButton from './NoTollTagAddButton';
 import TollTagListItem from './TollTagListItem';
 

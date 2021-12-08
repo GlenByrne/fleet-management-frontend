@@ -1,23 +1,19 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import Modal from 'core/Modal/Modal';
-import {
-  GetInfringementsDocument,
-  GetInfringementsQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
-  GetVehiclesDocument,
-  useDeleteInfringementMutation,
-} from 'generated/graphql';
 import { useReactiveVar } from '@apollo/client';
 import {
   currentInfringementVar,
   deleteInfringementModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-
+} from '@/constants/apollo-client';
+import {
+  GetInfringementsDocument,
+  GetInfringementsQuery,
+  useDeleteInfringementMutation,
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
 const DeleteInfringementModal = () => {
   const currentInfringement = useReactiveVar(currentInfringementVar);
 

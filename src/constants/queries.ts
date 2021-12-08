@@ -29,7 +29,7 @@ export const GET_VEHICLE = gql`
 `;
 
 export const GET_VEHICLES = gql`
-  query GetVehicles($data: VehicleInputFilter) {
+  query GetVehicles($data: VehicleInputFilter!) {
     vehicles(data: $data) {
       id
       type
@@ -37,6 +37,9 @@ export const GET_VEHICLES = gql`
       make
       model
       owner
+      cvrt
+      thirteenWeekInspection
+      tachoCalibration
       depot {
         id
         name
@@ -49,9 +52,10 @@ export const GET_VEHICLES = gql`
         id
         tagNumber
       }
-      cvrt
-      thirteenWeekInspection
-      tachoCalibration
+      organisation {
+        id
+        name
+      }
     }
   }
 `;
@@ -70,20 +74,20 @@ export const GET_VEHICLE_DEFECTS = gql`
 `;
 
 export const GET_VEHICLES_UPCOMING_MAINTENANCE = gql`
-  query UpcomingMaintenace {
-    upcomingCVRT {
+  query UpcomingMaintenace($organisationId: ID!) {
+    upcomingCVRT(organisationId: $organisationId) {
       id
       registration
       cvrt
       type
     }
-    upcomingThirteenWeek {
+    upcomingThirteenWeek(organisationId: $organisationId) {
       id
       registration
       thirteenWeekInspection
       type
     }
-    upcomingTachoCalibration {
+    upcomingTachoCalibration(organisationId: $organisationId) {
       id
       registration
       tachoCalibration
@@ -93,7 +97,7 @@ export const GET_VEHICLES_UPCOMING_MAINTENANCE = gql`
 `;
 
 export const GET_FUEL_CARDS = gql`
-  query GetFuelCards($data: FuelCardInputFilter) {
+  query GetFuelCards($data: FuelCardInputFilter!) {
     fuelCards(data: $data) {
       id
       cardNumber
@@ -107,7 +111,7 @@ export const GET_FUEL_CARDS = gql`
 `;
 
 export const GET_TOLL_TAGS = gql`
-  query GetTollTags($data: TollTagInputFilter) {
+  query GetTollTags($data: TollTagInputFilter!) {
     tollTags(data: $data) {
       id
       tagNumber
@@ -121,7 +125,7 @@ export const GET_TOLL_TAGS = gql`
 `;
 
 export const GET_DEPOTS = gql`
-  query GetDepots($data: DepotInputFilter) {
+  query GetDepots($data: DepotInputFilter!) {
     depots(data: $data) {
       id
       name
@@ -134,21 +138,23 @@ export const GET_DEPOTS = gql`
 `;
 
 export const GET_DRIVERS = gql`
-  query GetDrivers {
-    drivers {
-      id
-      name
-      email
+  query GetDrivers($data: DriversInOrganisationInputFilter!) {
+    driversInOrganisation(data: $data) {
+      user {
+        id
+        name
+        email
+        infringements {
+          id
+          description
+          dateOccured
+          status
+        }
+      }
       role
       depot {
         id
         name
-      }
-      infringements {
-        id
-        description
-        dateOccured
-        status
       }
     }
   }
@@ -184,16 +190,19 @@ export const ADD_INFRINGEMENTS = gql`
 `;
 
 export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
-  query GetSelectableItemsForAddVehicle {
-    fuelCardsNotAssigned {
+  query GetSelectableItemsForAddVehicle(
+    $organisationId: ID!
+    $data: DepotInputFilter!
+  ) {
+    fuelCardsNotAssigned(organisationId: $organisationId) {
       id
       cardNumber
     }
-    tollTagsNotAssigned {
+    tollTagsNotAssigned(organisationId: $organisationId) {
       id
       tagNumber
     }
-    depots {
+    depots(data: $data) {
       id
       name
     }
@@ -201,16 +210,19 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_VEHICLE = gql`
 `;
 
 export const GET_ITEMS_FOR_UPDATE_VEHICLE = gql`
-  query GetItemsForUpdateVehicle {
-    fuelCardsNotAssigned {
+  query GetItemsForUpdateVehicle(
+    $organisationId: ID!
+    $data: DepotInputFilter!
+  ) {
+    fuelCardsNotAssigned(organisationId: $organisationId) {
       id
       cardNumber
     }
-    tollTagsNotAssigned {
+    tollTagsNotAssigned(organisationId: $organisationId) {
       id
       tagNumber
     }
-    depots {
+    depots(data: $data) {
       id
       name
     }
@@ -218,8 +230,8 @@ export const GET_ITEMS_FOR_UPDATE_VEHICLE = gql`
 `;
 
 export const GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG = gql`
-  query GetSelectableItemsForAddTollTag {
-    depots {
+  query GetSelectableItemsForAddTollTag($data: DepotInputFilter!) {
+    depots(data: $data) {
       id
       name
     }
@@ -227,8 +239,8 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_TOLL_TAG = gql`
 `;
 
 export const GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD = gql`
-  query GetSelectableItemsForAddFuelCard {
-    depots {
+  query GetSelectableItemsForAddFuelCard($data: DepotInputFilter!) {
+    depots(data: $data) {
       id
       name
     }
@@ -236,8 +248,8 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_FUEL_CARD = gql`
 `;
 
 export const GET_SELECTABLE_ITEMS_FOR_ADD_USER = gql`
-  query GetSelectableItemsForAddUser {
-    depots {
+  query GetSelectableItemsForAddUser($data: DepotInputFilter!) {
+    depots(data: $data) {
       id
       name
     }
@@ -245,8 +257,8 @@ export const GET_SELECTABLE_ITEMS_FOR_ADD_USER = gql`
 `;
 
 export const GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD = gql`
-  query GetSelectableItemsForUpdateFuelCard {
-    depots {
+  query GetSelectableItemsForUpdateFuelCard($data: DepotInputFilter!) {
+    depots(data: $data) {
       id
       name
     }
@@ -254,8 +266,8 @@ export const GET_SELECTABLE_ITEMS_FOR_UPDATE_FUEL_CARD = gql`
 `;
 
 export const GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG = gql`
-  query GetSelectableItemsForUpdateTollTag {
-    depots {
+  query GetSelectableItemsForUpdateTollTag($data: DepotInputFilter!) {
+    depots(data: $data) {
       id
       name
     }
@@ -263,8 +275,8 @@ export const GET_SELECTABLE_ITEMS_FOR_UPDATE_TOLL_TAG = gql`
 `;
 
 export const GET_SELECTABLE_ITEMS_FOR_UPDATE_USER = gql`
-  query GetSelectableItemsForUpdateUser {
-    depots {
+  query GetSelectableItemsForUpdateUser($data: DepotInputFilter!) {
+    depots(data: $data) {
       id
       name
     }
@@ -602,11 +614,6 @@ export const GET_CURRENT_USER = gql`
       id
       name
       email
-      role
-      depot {
-        id
-        name
-      }
     }
   }
 `;
@@ -616,12 +623,12 @@ export const LOGIN = gql`
     login(data: $data) {
       user {
         id
-        email
         name
-        role
-        depot {
-          id
-          name
+        email
+        organisations {
+          organisationId
+          role
+          inviteAccepted
         }
       }
       accessToken
@@ -645,92 +652,187 @@ export const REFRESH_TOKEN = gql`
   }
 `;
 
-// export const REGISTER = gql`
-//   mutation Register($data: RegisterInput!) {
-//     register(data: $data) {
-//       user {
+export const REGISTER = gql`
+  mutation Register($data: RegisterInput!) {
+    register(data: $data) {
+      message
+    }
+  }
+`;
+
+export const ACTIVATE_ACCOUNT = gql`
+  mutation ActivateAccount($data: ActivateAccountInput!) {
+    activateAccount(data: $data)
+  }
+`;
+
+export const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($data: ForgotPasswordInput!) {
+    forgotPassword(data: $data)
+  }
+`;
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($data: ResetPasswordInput!) {
+    resetPassword(data: $data) {
+      message
+    }
+  }
+`;
+
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($data: ChangePasswordInput!) {
+    changePassword(data: $data) {
+      message
+    }
+  }
+`;
+
+export const ADD_ORGANISATION = gql`
+  mutation AddOrganisation($data: AddOrganisationInput!) {
+    addOrganisation(data: $data) {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_USERS_IN_ORGANISATION = gql`
+  query GetUsersInOrganisation($data: UsersInOrganisationInputFilter!) {
+    usersInOrganisation(data: $data) {
+      user {
+        id
+        name
+        email
+      }
+      role
+      depot {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const GET_USERS_ORGANISATIONS = gql`
+  query GetUsersOrganisations {
+    usersOrganisations {
+      role
+      organisation {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const GET_USERS_ORGANISATIONS_INVITES = gql`
+  query GetUsersOrganisationsInvites {
+    usersOrganisationInvites {
+      role
+      organisation {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const INVITE_USER_TO_ORGANISATION = gql`
+  mutation InviteUserToOrganisation($data: InviteUserToOrganisationInput!) {
+    inviteUserToOrganisation(data: $data) {
+      id
+      name
+    }
+  }
+`;
+
+export const ACCEPT_INVITE = gql`
+  mutation AcceptInvite($data: AcceptInviteInput!) {
+    acceptInvite(data: $data) {
+      role
+      inviteAccepted
+      user {
+        id
+        name
+      }
+      organisation {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const DECLINE_INVITE = gql`
+  mutation DeclineInvite($data: DeclineInviteInput!) {
+    declineInvite(data: $data) {
+      organisationId
+    }
+  }
+`;
+
+export const UPDATE_USER_ORG_DETAILS = gql`
+  mutation UpdateUserOrgDetails($data: UpdateUserOrgDetailsInput!) {
+    updateUserOrgDetails(data: $data) {
+      id
+      name
+      email
+      infringements {
+        id
+        description
+        dateOccured
+        status
+      }
+    }
+  }
+`;
+
+export const REMOVE_USER_FROM_ORGANISATION = gql`
+  mutation RemoveUserFromOrganisation($data: RemoveUserFromOrganisationInput!) {
+    removeUserFromOrganisation(data: $data) {
+      user {
+        id
+        name
+      }
+    }
+  }
+`;
+
+// export const ADD_USER = gql`
+//   mutation AddUser($data: AddUserInput!) {
+//     addUser(data: $data) {
+//       id
+//       name
+//       email
+//       role
+//       depot {
 //         id
 //         name
-//         email
-//         role
-//         organisation {
-//           id
-//           name
-//         }
-//         depot {
-//           id
-//           name
-//         }
 //       }
 //     }
 //   }
 // `;
 
-export const ADD_ORGANISATION = gql`
-  mutation AddOrganisation($data: AddOrganisationInput!) {
-    addOrganisation(data: $data) {
-      organisation {
-        id
-        name
-      }
-      user {
-        id
-        name
-      }
-      accessToken
-    }
-  }
-`;
+// export const UPDATE_USER = gql`
+//   mutation UpdateUser($data: UpdateUserInput!) {
+//     updateUser(data: $data) {
+//       id
+//       name
+//       role
+//       depot {
+//         id
+//         name
+//       }
+//     }
+//   }
+// `;
 
-export const GET_USERS = gql`
-  query GetUsers($data: UsersInputFilter) {
-    users(data: $data) {
-      id
-      name
-      email
-      role
-      depot {
-        id
-        name
-      }
-    }
-  }
-`;
-
-export const ADD_USER = gql`
-  mutation AddUser($data: AddUserInput!) {
-    addUser(data: $data) {
-      id
-      name
-      email
-      role
-      depot {
-        id
-        name
-      }
-    }
-  }
-`;
-
-export const UPDATE_USER = gql`
-  mutation UpdateUser($data: UpdateUserInput!) {
-    updateUser(data: $data) {
-      id
-      name
-      role
-      depot {
-        id
-        name
-      }
-    }
-  }
-`;
-
-export const DELETE_USER = gql`
-  mutation DeleteUser($data: DeleteUserInput!) {
-    deleteUser(data: $data) {
-      id
-      name
-    }
-  }
-`;
+// export const DELETE_USER = gql`
+//   mutation DeleteUser($data: DeleteUserInput!) {
+//     deleteUser(data: $data) {
+//       id
+//       name
+//     }
+//   }
+// `;

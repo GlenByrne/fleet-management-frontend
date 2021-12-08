@@ -5,27 +5,27 @@ import {
   useState,
   useEffect,
 } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
-import {
-  Depot,
-  GetUsersDocument,
-  GetUsersQuery,
-  Role,
-  useAddUserMutation,
-  useGetSelectableItemsForAddUserQuery,
-} from 'generated/graphql';
-import { Option } from 'constants/types';
-import Modal from 'core/Modal/Modal';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
-  addUserModalStateVar,
+  Depot,
+  GetUsersInOrganisationDocument,
+  GetUsersInOrganisationQuery,
+  Role,
+  useGetSelectableItemsForAddUserQuery,
+  useInviteUserToOrganisationMutation,
+} from '@/generated/graphql';
+import { Option } from '@/constants/types';
+import {
+  inviteUserModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import PasswordInput from 'core/Modal/PasswordInput';
+} from '@/constants/apollo-client';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -53,19 +53,26 @@ const getRoleOptions = () => {
 };
 
 const CreateUserModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForAddUserQuery();
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
 
-  const currentModalStateVar = useReactiveVar(addUserModalStateVar);
+  const { data, loading, error } = useGetSelectableItemsForAddUserQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const currentModalStateVar = useReactiveVar(inviteUserModalStateVar);
 
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
-
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [depot, setDepot] = useState<Option>({
     value: '',
     label: 'None',
   });
+
   const [role, setRole] = useState<Option>({
     value: Role.User,
     label: Role.User,
@@ -80,30 +87,27 @@ const CreateUserModal = () => {
     setDepotOptions(getDepotOptions(data?.depots as Depot[]));
   }, [data]);
 
-  const changeName = (event: FormEvent<HTMLInputElement>) => {
-    setName(event.currentTarget.value);
-  };
-
   const changeEmail = (event: FormEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
   };
 
-  const changePassword = (event: FormEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value);
-  };
-
-  const [addUser] = useAddUserMutation({
+  const [inviteUserToOrganisation] = useInviteUserToOrganisationMutation({
     update: (cache, { data: mutationReturn }) => {
-      const newUser = mutationReturn?.addUser;
+      const newUser = mutationReturn?.inviteUserToOrganisation;
 
-      const currentUsers = cache.readQuery<GetUsersQuery>({
-        query: GetUsersDocument,
+      const currentUsers = cache.readQuery<GetUsersInOrganisationQuery>({
+        query: GetUsersInOrganisationDocument,
       });
 
       if (currentUsers && newUser) {
         cache.writeQuery({
-          query: GetUsersDocument,
-          data: { users: [{ ...currentUsers.users }, newUser] },
+          query: GetUsersInOrganisationDocument,
+          data: {
+            usersInOrganisation: [
+              { ...currentUsers.usersInOrganisation },
+              newUser,
+            ],
+          },
         });
       }
     },
@@ -113,28 +117,25 @@ const CreateUserModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    addUserModalStateVar(false);
+    inviteUserModalStateVar(false);
 
     try {
-      await addUser({
+      await inviteUserToOrganisation({
         variables: {
           data: {
-            name: name != null ? name : '',
-            email: email != null ? email : '',
-            password: password != null ? password : '',
+            email: email,
+            organisationId,
             depotId: depot.value != null ? depot.value : '',
             role: role.value != null ? (role.value as Role) : Role.User,
           },
         },
       });
 
-      successTextVar('User added successfully');
+      successTextVar('Invite sent to user');
       successAlertStateVar(true);
     } catch {}
 
-    setName('');
     setEmail('');
-    setPassword('');
     setDepot({
       value: '',
       label: 'None',
@@ -156,7 +157,7 @@ const CreateUserModal = () => {
   return (
     <Modal
       modalState={currentModalStateVar}
-      setModalState={addUserModalStateVar}
+      setModalState={inviteUserModalStateVar}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -170,20 +171,9 @@ const CreateUserModal = () => {
                 as="h3"
                 className="text-lg leading-6 font-medium text-gray-900"
               >
-                Add User
+                Invite User
               </Dialog.Title>
               <div className="grid grid-cols-6 gap-6 mt-2">
-                <div className="col-span-6 sm:col-span-3">
-                  <ModalFormInput
-                    label="Name"
-                    name="name"
-                    type="text"
-                    value={name}
-                    onChange={changeName}
-                    required={true}
-                  />
-                </div>
-
                 <div className="col-span-6 sm:col-span-3">
                   <ModalFormInput
                     label="Email"
@@ -192,13 +182,6 @@ const CreateUserModal = () => {
                     value={email}
                     onChange={changeEmail}
                     required={true}
-                  />
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <PasswordInput
-                    password={password}
-                    onChange={changePassword}
                   />
                 </div>
 
@@ -235,10 +218,8 @@ const CreateUserModal = () => {
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
               onClick={() => {
-                addUserModalStateVar(false);
-                setName('');
+                inviteUserModalStateVar(false);
                 setEmail('');
-                setPassword('');
                 setDepot({
                   value: '',
                   label: 'None',

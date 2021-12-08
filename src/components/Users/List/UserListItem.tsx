@@ -1,19 +1,19 @@
 import {
+  removeUserModalStateVar,
+  updateUserModalStateVar,
+} from '@/constants/apollo-client';
+import Button from '@/core/Table/Button';
+import { UsersInOrganisationPayload } from '@/generated/graphql';
+import {
   LocationMarkerIcon,
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
-import {
-  deleteUserModalStateVar,
-  updateUserModalStateVar,
-} from 'constants/apollo-client';
-import Button from 'core/Table/Button';
-import { UsersPayload } from 'generated/graphql';
 import Link from 'next/link';
 
 type UserListItemProps = {
-  user: UsersPayload;
-  changeCurrentUser: (user: UsersPayload) => void;
+  user: UsersInOrganisationPayload;
+  changeCurrentUser: (user: UsersInOrganisationPayload) => void;
 };
 
 const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
@@ -24,13 +24,13 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
           <div className="px-4 py-4 sm:px-6">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-indigo-600 truncate">
-                {user.name}
+                {user.user.name}
               </p>
               <div className="ml-2 flex-shrink-0 flex">
                 <Button
                   onClick={() => {
                     changeCurrentUser(user);
-                    deleteUserModalStateVar(true);
+                    removeUserModalStateVar(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -40,14 +40,14 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
             <div className="mt-2 sm:flex sm:justify-between">
               <div className="sm:flex">
                 <p className="flex items-center text-sm text-gray-500">
-                  Email: {user.email}
+                  Email: {user.user.email}
                 </p>
                 <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                   <LocationMarkerIcon
                     className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
-                  {user.depot ? user.depot.name : 'None'}
+                  {/* {user.depot ? user.depot.name : 'None'} */}
                 </p>
               </div>
               <Button

@@ -5,9 +5,11 @@ import {
   useState,
   useEffect,
 } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { Option } from '@/constants/types';
 import {
   Depot,
   FuelCard,
@@ -21,17 +23,16 @@ import {
   useAddVehicleMutation,
   useGetSelectableItemsForAddVehicleQuery,
   VehicleType,
-} from 'generated/graphql';
-import { Option } from 'constants/types';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
+} from '@/generated/graphql';
 import {
   addVehicleModalStateVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useReactiveVar } from '@apollo/client';
-import DatePicker from 'core/DatePick';
+} from '@/constants/apollo-client';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+import DatePicker from '@/core/DatePick';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -83,7 +84,17 @@ const getVehicleTypeOptions = () => {
 };
 
 const CreateVehicleModal = () => {
-  const { data, loading, error } = useGetSelectableItemsForAddVehicleQuery();
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
+  const { data, loading, error } = useGetSelectableItemsForAddVehicleQuery({
+    variables: {
+      organisationId,
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const currentModalStateVar = useReactiveVar(addVehicleModalStateVar);
 
@@ -156,20 +167,60 @@ const CreateVehicleModal = () => {
 
       const currentVehicles = cache.readQuery<GetVehiclesQuery>({
         query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
       });
 
       if (currentVehicles && newVehicle) {
         cache.writeQuery({
           query: GetVehiclesDocument,
+          variables: {
+            data: {
+              organisationId,
+            },
+          },
           data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
         });
       }
     },
     refetchQueries: [
-      { query: GetTollTagsDocument },
-      { query: GetFuelCardsDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetFuelCardsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 
@@ -198,6 +249,7 @@ const CreateVehicleModal = () => {
             depotId: depot.value != null ? depot.value : '',
             fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
             tollTagId: tollTag.value === '' ? null : tollTag.value,
+            organisationId,
           },
         },
       });

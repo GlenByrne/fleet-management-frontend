@@ -1,6 +1,4 @@
-import { ApolloError } from '@apollo/client';
-import Loading from 'core/Loading';
-import { Vehicle } from 'generated/graphql';
+import { Vehicle } from '@/generated/graphql';
 import UpcomingTachoCalibrationListItem from './UpcomingTachoCalibrationListItem';
 
 type UpcomingTachoCalibrationListProps = {

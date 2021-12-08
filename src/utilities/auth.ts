@@ -1,9 +1,9 @@
+import Router, { useRouter } from 'next/router';
 import client, {
   accessTokenVar,
   loggedInUserVar,
-} from 'constants/apollo-client';
-import { useLogoutMutation } from 'generated/graphql';
-import Router from 'next/router';
+} from '@/constants/apollo-client';
+import { useLogoutMutation } from '@/generated/graphql';
 
 export const checkAuth = () => {
   const accessToken = accessTokenVar();
@@ -22,3 +22,16 @@ export const LogOut = () => {
     },
   });
 };
+
+function useAuthenticated() {
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   const userOrganisations = loggedInUserVar()?.organisations;
+  //   if (userOrganisations?.length == 0 && checkAuth()) {
+  //     router.push('/organisations');
+  //   } else if (!checkAuth()) {
+  //     router.push('/login');
+  //   }
+  // }, [accessTokenVar, loggedInUserVar()?.organisations]);
+}

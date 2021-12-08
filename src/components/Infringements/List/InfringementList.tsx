@@ -1,10 +1,10 @@
 import {
   addInfringementModalStateVar,
   currentInfringementVar,
-} from 'constants/apollo-client';
-import { InfringementUpdateModalItem } from 'constants/types';
-import Loading from 'core/Loading';
-import { Infringement, useGetInfringementsQuery } from 'generated/graphql';
+} from '@/constants/apollo-client';
+import { InfringementUpdateModalItem } from '@/constants/types';
+import Loading from '@/core/Loading';
+import { Infringement, useGetInfringementsQuery } from '@/generated/graphql';
 import InfringementListItem from './InfringementListItem';
 import NoInfringementsAddButton from './NoInfringementsAddButton';
 

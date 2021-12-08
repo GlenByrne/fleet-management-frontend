@@ -1,14 +1,14 @@
 import {
+  deleteTollTagModalStateVar,
+  updateTollTagModalStateVar,
+} from '@/constants/apollo-client';
+import Button from '@/core/Table/Button';
+import { TollTag } from '@/generated/graphql';
+import {
   LocationMarkerIcon,
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
-import {
-  deleteTollTagModalStateVar,
-  updateTollTagModalStateVar,
-} from 'constants/apollo-client';
-import Button from 'core/Table/Button';
-import { TollTag } from 'generated/graphql';
 import Link from 'next/link';
 
 type TollTagListItemProps = {

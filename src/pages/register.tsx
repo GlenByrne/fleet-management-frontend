@@ -3,46 +3,47 @@ import { NextPage } from 'next';
 import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import PasswordInput from 'core/Modal/PasswordInput';
-import { useAddOrganisationMutation } from 'generated/graphql';
+import { useRegisterMutation } from '@/generated/graphql';
+import {
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
+import PasswordInput from '@/core/Modal/PasswordInput';
 
 const Register: NextPage = () => {
   const router = useRouter();
-  const [organisationName, setOrganisationName] = useState('');
-  const [adminName, setAdminName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [addOrganisation] = useAddOrganisationMutation({
-    onCompleted: () => {
-      router.push('/');
-      setOrganisationName('');
-      setAdminName('');
+  const [register] = useRegisterMutation({
+    onCompleted: ({ register }) => {
+      successTextVar(register.message);
+      successAlertStateVar(true);
+      router.push('/login');
+      setName('');
       setEmail('');
       setPassword('');
     },
   });
 
-  const submitHandler: FormEventHandler = (e) => {
+  const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    addOrganisation({
-      variables: {
-        data: {
-          name: organisationName,
-          adminName: adminName,
-          email: email,
-          password: password,
+    try {
+      await register({
+        variables: {
+          data: {
+            name: name,
+            email: email,
+            password: password,
+          },
         },
-      },
-    });
+      });
+    } catch {}
   };
 
-  const changeOrganisationName = (event: FormEvent<HTMLInputElement>) => {
-    setOrganisationName(event.currentTarget.value);
-  };
-
-  const changeAdminName = (event: FormEvent<HTMLInputElement>) => {
-    setAdminName(event.currentTarget.value);
+  const changeName = (event: FormEvent<HTMLInputElement>) => {
+    setName(event.currentTarget.value);
   };
 
   const changeEmail = (event: FormEvent<HTMLInputElement>) => {
@@ -87,40 +88,19 @@ const Register: NextPage = () => {
             <form className="space-y-6" onSubmit={submitHandler}>
               <div>
                 <label
-                  htmlFor="organisationName"
+                  htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Organisation Name
+                  Name
                 </label>
                 <div className="mt-1">
                   <input
-                    id="organisationName"
-                    name="organisationName"
-                    type="organisationName"
-                    autoComplete="organisationName"
-                    value={organisationName}
-                    onChange={changeOrganisationName}
-                    required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="adminName"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Admin Account Name
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="adminName"
-                    name="adminName"
-                    type="adminName"
-                    autoComplete="adminName"
-                    value={adminName}
-                    onChange={changeAdminName}
+                    id="name"
+                    name="name"
+                    type="name"
+                    autoComplete="name"
+                    value={name}
+                    onChange={changeName}
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
@@ -149,7 +129,11 @@ const Register: NextPage = () => {
               </div>
 
               <div>
-                <PasswordInput password={password} onChange={changePassword} />
+                <PasswordInput
+                  password={password}
+                  onChange={changePassword}
+                  label="Password"
+                />
               </div>
 
               <div>

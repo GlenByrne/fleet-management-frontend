@@ -1,33 +1,27 @@
-import {
-  FormEvent,
-  FormEventHandler,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
-  Depot,
+  addFuelCardModalStateVar,
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
+import {
   GetFuelCardsDocument,
   GetFuelCardsQuery,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   useAddFuelCardMutation,
-  useGetSelectableItemsForAddFuelCardQuery,
-} from 'generated/graphql';
-import { Option } from 'constants/types';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
-import {
-  addFuelCardModalStateVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'constants/apollo-client';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const CreateFuelCardModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const currentModalStateVar = useReactiveVar(addFuelCardModalStateVar);
 
   const [cardNumber, setCardNumber] = useState('');
@@ -48,18 +42,44 @@ const CreateFuelCardModal = () => {
       const newFuelCard = mutationReturn?.addFuelCard;
       const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
         query: GetFuelCardsDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
       });
 
       if (currentFuelCards && newFuelCard) {
         cache.writeQuery({
           query: GetFuelCardsDocument,
+          variables: {
+            data: {
+              organisationId: organisationId,
+            },
+          },
           data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
         });
       }
     },
     refetchQueries: [
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 
@@ -74,6 +94,7 @@ const CreateFuelCardModal = () => {
           data: {
             cardNumber: cardNumber != null ? cardNumber : '',
             cardProvider: cardProvider != null ? cardProvider : '',
+            organisationId,
           },
         },
       });

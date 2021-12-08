@@ -3,7 +3,7 @@ import {
   InfringementStatus,
   Role,
   VehicleType,
-} from 'generated/graphql';
+} from '@/generated/graphql';
 
 export type NavbarOption = {
   name: string;

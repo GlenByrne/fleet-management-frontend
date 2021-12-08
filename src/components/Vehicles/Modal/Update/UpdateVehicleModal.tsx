@@ -5,10 +5,10 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Option, VehicleUpdateModalItem } from 'constants/types';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
   Depot,
   FuelCard,
@@ -20,17 +20,18 @@ import {
   useGetItemsForUpdateVehicleQuery,
   useUpdateVehicleMutation,
   VehicleType,
-} from 'generated/graphql';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
+} from '@/generated/graphql';
+import { Option, VehicleUpdateModalItem } from '@/constants/types';
 import {
   currentVehicleVar,
-  updateVehicleModalStateVar,
-  successTextVar,
   successAlertStateVar,
-} from 'constants/apollo-client';
-import DatePicker from 'core/DatePick';
+  successTextVar,
+  updateVehicleModalStateVar,
+} from '@/constants/apollo-client';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+import DatePicker from '@/core/DatePick';
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -98,7 +99,17 @@ const getVehicleTypeOptions = () => {
 };
 
 const UpdateVehicleModal = () => {
-  const { data, loading, error } = useGetItemsForUpdateVehicleQuery();
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
+  const { data, loading, error } = useGetItemsForUpdateVehicleQuery({
+    variables: {
+      organisationId,
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const currentVehicle = useReactiveVar(currentVehicleVar);
   const currentModalStateVar = useReactiveVar(updateVehicleModalStateVar);
@@ -212,10 +223,40 @@ const UpdateVehicleModal = () => {
 
   const [updateVehicle] = useUpdateVehicleMutation({
     refetchQueries: [
-      { query: GetTollTagsDocument },
-      { query: GetFuelCardsDocument },
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetFuelCardsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 

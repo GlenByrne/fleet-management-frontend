@@ -1,5 +1,5 @@
+import { UserNavbarOption } from '@/constants/types';
 import { Disclosure } from '@headlessui/react';
-import { NavbarOption, UserNavbarOption } from 'constants/types';
 
 type MobileUserNavigationProps = {
   userNavigation: UserNavbarOption[];

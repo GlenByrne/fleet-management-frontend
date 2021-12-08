@@ -1,8 +1,7 @@
-import { SetStateAction, useRef } from 'react';
+import { SetStateAction } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import { Portal } from '@headlessui/react';
 import CalendarContainer from './CalendarContainer';
 
 type DatePickProps = {

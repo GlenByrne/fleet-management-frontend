@@ -4,7 +4,7 @@ import { NavbarOption, UserNavbarOption } from '../../../constants/types';
 import Link from 'next/link';
 import MobileUserNavigation from './MobileUserNavigation';
 import MobileNotificationButton from './MobileNotificationButton';
-import classNames from 'utilities/classNames';
+import classNames from '@/utilities/classNames';
 
 type MobileNavbarOptionsProps = {
   navigation: NavbarOption[];

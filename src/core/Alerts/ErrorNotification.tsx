@@ -1,7 +1,7 @@
+import { errorAlertStateVar, errorTextVar } from '@/constants/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon, XIcon } from '@heroicons/react/solid';
-import { errorAlertStateVar, errorTextVar } from 'constants/apollo-client';
 import { Fragment, useEffect } from 'react';
 
 const ErrorNotification = () => {

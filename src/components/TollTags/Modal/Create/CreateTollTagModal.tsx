@@ -1,33 +1,27 @@
-import {
-  FormEvent,
-  FormEventHandler,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
-import { Option } from 'constants/types';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
+import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
-  Depot,
+  addTollTagModalStateVar,
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
+import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   GetTollTagsDocument,
   GetTollTagsQuery,
   useAddTollTagMutation,
-  useGetSelectableItemsForAddTollTagQuery,
-} from 'generated/graphql';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
-import {
-  addTollTagModalStateVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'constants/apollo-client';
-import { useReactiveVar } from '@apollo/client';
+} from '@/generated/graphql';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
 
 const CreateTollTagModal = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const currentModalStateVar = useReactiveVar(addTollTagModalStateVar);
 
   const [tagNumber, setTagNumber] = useState('');
@@ -48,17 +42,43 @@ const CreateTollTagModal = () => {
       const newTollTag = mutationReturn?.addTollTag;
       const currentTollTags = cache.readQuery<GetTollTagsQuery>({
         query: GetTollTagsDocument,
+        variables: {
+          data: {
+            organisationId,
+          },
+        },
       });
       if (currentTollTags && newTollTag) {
         cache.writeQuery({
           query: GetTollTagsDocument,
+          variables: {
+            data: {
+              organisationId,
+            },
+          },
           data: { tollTags: [{ ...currentTollTags.tollTags }, newTollTag] },
         });
       }
     },
     refetchQueries: [
-      { query: GetSelectableItemsForAddVehicleDocument },
-      { query: GetItemsForUpdateVehicleDocument },
+      {
+        query: GetSelectableItemsForAddVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetItemsForUpdateVehicleDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
     ],
   });
 
@@ -72,6 +92,7 @@ const CreateTollTagModal = () => {
           data: {
             tagNumber: tagNumber != null ? tagNumber : '',
             tagProvider: tagProvider != null ? tagProvider : '',
+            organisationId,
           },
         },
       });

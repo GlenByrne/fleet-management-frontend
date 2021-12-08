@@ -1,27 +1,29 @@
-import {
-  GetUsersQuery,
-  useGetUsersQuery,
-  UsersPayload,
-} from 'generated/graphql';
-import Loading from 'core/Loading';
 import UserListItem from './UserListItem';
 import NoUsersAddButton from './NoUsersAddButton';
-import { addUserModalStateVar, currentUserVar } from 'constants/apollo-client';
-import { UserUpdateModalItem } from 'constants/types';
 import { ApolloError } from '@apollo/client';
+import {
+  GetUsersInOrganisationQuery,
+  UsersInOrganisationPayload,
+} from '@/generated/graphql';
+import { UserUpdateModalItem } from '@/constants/types';
+import {
+  currentUserVar,
+  inviteUserModalStateVar,
+} from '@/constants/apollo-client';
+import Loading from '@/core/Loading';
 
 type UserListProps = {
-  data: GetUsersQuery | undefined;
+  data: GetUsersInOrganisationQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
 };
 
 const UserList = ({ data, loading, error }: UserListProps) => {
-  const changeCurrentUser = (user: UsersPayload) => {
+  const changeCurrentUser = (user: UsersInOrganisationPayload) => {
     const chosenUser: UserUpdateModalItem = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: user.user.id,
+      name: user.user.name,
+      email: user.user.email,
       role: user.role,
       depot: {
         id: user.depot != null ? user.depot.id : '',
@@ -43,14 +45,14 @@ const UserList = ({ data, loading, error }: UserListProps) => {
     return <div></div>;
   }
 
-  const users = data.users as UsersPayload[];
+  const users = data.usersInOrganisation as UsersInOrganisationPayload[];
 
   return users.length > 0 ? (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {users.map((user) => (
           <UserListItem
-            key={user.id}
+            key={user.user.id}
             user={user}
             changeCurrentUser={changeCurrentUser}
           />
@@ -58,7 +60,7 @@ const UserList = ({ data, loading, error }: UserListProps) => {
       </ul>
     </div>
   ) : (
-    <NoUsersAddButton onClick={addUserModalStateVar} />
+    <NoUsersAddButton onClick={inviteUserModalStateVar} />
   );
 };
 

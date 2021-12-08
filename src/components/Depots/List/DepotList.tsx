@@ -1,10 +1,10 @@
-import { ApolloError } from '@apollo/client';
 import {
   addDepotModalStateVar,
   currentDepotVar,
-} from 'constants/apollo-client';
-import Loading from 'core/Loading';
-import { Depot, GetDepotsQuery, UpdateDepotInput } from 'generated/graphql';
+} from '@/constants/apollo-client';
+import Loading from '@/core/Loading';
+import { Depot, GetDepotsQuery, UpdateDepotInput } from '@/generated/graphql';
+import { ApolloError } from '@apollo/client';
 import DepotListItem from './DepotListItem';
 import NoDepotAddButton from './NoDepotAddButton';
 

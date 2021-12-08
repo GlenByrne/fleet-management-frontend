@@ -5,46 +5,55 @@ import {
   useState,
   useEffect,
 } from 'react';
-import ModalFormInput from 'core/Modal/ModalFormInput';
-import ModalFormSelect from 'core/Modal/ModalFormSelect';
 import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/outline';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import {
-  GetDriversDocument,
-  GetDriversQuery,
+  DriversInOrganisationPayload,
   GetInfringementsDocument,
   GetInfringementsQuery,
-  Infringement,
   useAddInfringementMutation,
   useGetDriversQuery,
-  UsersPayload,
-} from 'generated/graphql';
-import { Option } from 'constants/types';
-import Modal from 'core/Modal/Modal';
-import { TruckIcon } from '@heroicons/react/outline';
+} from '@/generated/graphql';
 import {
   addInfringementModalStateVar,
   errorAlertStateVar,
   errorTextVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useReactiveVar } from '@apollo/client';
-import DatePickerNoClear from 'core/DatePickerNoClear';
+} from '@/constants/apollo-client';
+import { Option } from '@/constants/types';
+import Modal from '@/core/Modal/Modal';
+import ModalFormInput from '@/core/Modal/ModalFormInput';
+import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+import DatePickerNoClear from '@/core/DatePickerNoClear';
 
-const getDriverOptions = (drivers: UsersPayload[]) => {
+const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
   const options = drivers?.map(
-    (driver) => ({ value: driver.id, label: driver.name } as Option)
+    (driver) => ({ value: driver.user.id, label: driver.user.name } as Option)
   );
 
   return options;
 };
 
 const CreateInfringementModal = () => {
-  const { data, loading, error } = useGetDriversQuery();
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
+  const { data, loading, error } = useGetDriversQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const currentModalStateVar = useReactiveVar(addInfringementModalStateVar);
   const [driverOptions, setDriverOptions] = useState(
-    getDriverOptions(data?.drivers as UsersPayload[])
+    getDriverOptions(
+      data?.driversInOrganisation as DriversInOrganisationPayload[]
+    )
   );
   const [description, setDescription] = useState('');
   const [dateOccured, setDateOccured] = useState(new Date());
@@ -54,7 +63,11 @@ const CreateInfringementModal = () => {
   });
 
   useEffect(() => {
-    setDriverOptions(getDriverOptions(data?.drivers as UsersPayload[]));
+    setDriverOptions(
+      getDriverOptions(
+        data?.driversInOrganisation as DriversInOrganisationPayload[]
+      )
+    );
   }, [data]);
 
   const changeDescription = (event: FormEvent<HTMLInputElement>) => {
@@ -67,11 +80,17 @@ const CreateInfringementModal = () => {
 
       const currentInfringements = cache.readQuery<GetInfringementsQuery>({
         query: GetInfringementsDocument,
+        variables: {
+          organisationId: organisationId,
+        },
       });
 
       if (currentInfringements && newInfringement) {
         cache.writeQuery({
           query: GetInfringementsDocument,
+          variables: {
+            organisationId: organisationId,
+          },
           data: {
             infringements: [
               { ...currentInfringements.infringements },
@@ -96,6 +115,7 @@ const CreateInfringementModal = () => {
               description: description,
               driverId: driver.value,
               dateOccured: dateOccured,
+              organisationId,
             },
           },
         });

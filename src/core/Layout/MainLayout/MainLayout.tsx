@@ -1,8 +1,5 @@
 import { ReactNode, ChangeEventHandler, FormEventHandler } from 'react';
 import Head from 'next/head';
-import ClientOnly from 'core/ClientOnly/ClientOnly';
-import { useEffect } from 'react';
-import { NavbarOption, UserNavbarOption } from 'constants/types';
 import {
   CreditCardIcon,
   ExclamationIcon,
@@ -13,19 +10,20 @@ import {
   UsersIcon,
 } from '@heroicons/react/solid';
 import { useState } from 'react';
-import SideNav from 'core/Layout/SideNav';
 import ContentArea from './ContentArea';
-import { checkAuth, LogOut } from 'utilities/auth';
+import { useRouter } from 'next/router';
+import SideNav from './SideNav';
+import { useLogoutMutation } from '@/generated/graphql';
 import client, {
   accessTokenVar,
   loggedInUserVar,
   successAlertStateVar,
   successTextVar,
-} from 'constants/apollo-client';
-import { useRouter } from 'next/router';
-import { useLogoutMutation } from 'generated/graphql';
+} from '@/constants/apollo-client';
+import { NavbarOption, UserNavbarOption } from '@/constants/types';
+import ClientOnly from '@/core/ClientOnly/ClientOnly';
 
-type LayoutProps = {
+type MainLayoutProps = {
   children: ReactNode;
   hasQuickActionButton: boolean;
   quickAction?: (state: boolean) => void;
@@ -35,17 +33,7 @@ type LayoutProps = {
   setSearchCriteria?: ChangeEventHandler<HTMLInputElement>;
 };
 
-const navigation: NavbarOption[] = [
-  { name: 'Home', href: '/', icon: HomeIcon },
-  { name: 'Vehicles', href: '/vehicles', icon: TruckIcon },
-  { name: 'Infringements', href: '/infringements', icon: ExclamationIcon },
-  { name: 'Fuel Cards', href: '/fuelCards', icon: CreditCardIcon },
-  { name: 'Toll Tags', href: '/tollTags', icon: TagIcon },
-  { name: 'Depots', href: '/depots', icon: OfficeBuildingIcon },
-  { name: 'Users', href: '/users', icon: UsersIcon },
-];
-
-const Layout = ({
+const MainLayout = ({
   children,
   hasQuickActionButton,
   quickAction,
@@ -53,8 +41,10 @@ const Layout = ({
   pageSearchable,
   searchSubmitHandler,
   setSearchCriteria,
-}: LayoutProps) => {
+}: MainLayoutProps) => {
   const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logOut] = useLogoutMutation();
 
@@ -68,22 +58,52 @@ const Layout = ({
     successAlertStateVar(true);
   };
 
+  const navigation: NavbarOption[] = [
+    {
+      name: 'Home',
+      href: `/${encodeURIComponent(organisationId)}/dashboard`,
+      icon: HomeIcon,
+    },
+    {
+      name: 'Vehicles',
+      href: `/${encodeURIComponent(organisationId)}/vehicles`,
+      icon: TruckIcon,
+    },
+    {
+      name: 'Infringements',
+      href: `/${encodeURIComponent(organisationId)}/infringements`,
+      icon: ExclamationIcon,
+    },
+    {
+      name: 'Fuel Cards',
+      href: `/${encodeURIComponent(organisationId)}/fuelCards`,
+      icon: CreditCardIcon,
+    },
+    {
+      name: 'Toll Tags',
+      href: `/${encodeURIComponent(organisationId)}/tollTags`,
+      icon: TagIcon,
+    },
+    {
+      name: 'Depots',
+      href: `/${encodeURIComponent(organisationId)}/depots`,
+      icon: OfficeBuildingIcon,
+    },
+    {
+      name: 'Users',
+      href: `/${encodeURIComponent(organisationId)}/users`,
+      icon: UsersIcon,
+    },
+  ];
+
   const userNavigation: UserNavbarOption[] = [
     { name: 'Your Profile', onClick: () => {} },
-    { name: 'Settings', onClick: () => {} },
+    { name: 'Settings', onClick: () => {}, href: '/settings/account' },
     {
       name: 'Sign out',
       onClick: handleLogOut,
     },
   ];
-
-  // useEffect(() => {
-  //   const isLoggedIn = checkAuth();
-
-  //   if (!isLoggedIn) {
-  //     router.push('/login');
-  //   }
-  // }, [router]);
 
   return (
     <div className="flex h-screen">
@@ -115,4 +135,4 @@ const Layout = ({
   );
 };
 
-export default Layout;
+export default MainLayout;

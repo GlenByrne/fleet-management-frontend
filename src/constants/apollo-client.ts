@@ -10,15 +10,6 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import {
-  DefectStatus,
-  InfringementStatus,
-  RefreshTokenDocument,
-  Role,
-  UpdateDepotInput,
-  UsersPayload,
-  VehicleType,
-} from 'generated/graphql';
-import {
   DefectUpdateModalItem,
   FuelCardUpdateModalItem,
   InfringementUpdateModalItem,
@@ -26,8 +17,16 @@ import {
   UserUpdateModalItem,
   VehicleUpdateModalItem,
 } from './types';
-import { LogOut } from 'utilities/auth';
 import Router from 'next/router';
+import {
+  DefectStatus,
+  InfringementStatus,
+  RefreshTokenDocument,
+  Role,
+  UpdateDepotInput,
+  UsersPayload,
+  VehicleType,
+} from '@/generated/graphql';
 
 const initialFuelCard: FuelCardUpdateModalItem = {
   id: '',
@@ -141,15 +140,18 @@ export const updateDepotModalStateVar = makeVar(false);
 export const deleteDepotModalStateVar = makeVar(false);
 
 // User Modals states
-export const addUserModalStateVar = makeVar(false);
+export const inviteUserModalStateVar = makeVar(false);
 export const updateUserModalStateVar = makeVar(false);
-export const deleteUserModalStateVar = makeVar(false);
+export const removeUserModalStateVar = makeVar(false);
 
 // Infringement Modals states
 export const addInfringementModalStateVar = makeVar(false);
 export const updateInfringementModalStateVar = makeVar(false);
 export const updateInfringementStatusModalStateVar = makeVar(false);
 export const deleteInfringementModalStateVar = makeVar(false);
+
+// Organisation Modals states
+export const addOrganisationModalStateVar = makeVar(false);
 
 export const successAlertStateVar = makeVar(false);
 export const successTextVar = makeVar('');
@@ -197,7 +199,6 @@ const getNewToken = async () => {
   return await client
     .mutate({ mutation: RefreshTokenDocument })
     .then((response) => {
-      // extract your accessToken from your response data and return it
       const { accessToken } = response.data.refreshToken;
       accessTokenVar(accessToken);
     });

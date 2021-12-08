@@ -7,7 +7,6 @@ import MobileMenuButton from './MobileMenuButton';
 import NavbarLogo from './NavbarLogo';
 import NavbarOptions from './NavbarOptions';
 import QuickActionButton from './QuickActionButton';
-import client from 'constants/apollo-client';
 import { useRouter } from 'next/router';
 import {
   BellIcon,
@@ -24,7 +23,8 @@ import {
   XIcon,
 } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import classNames from 'utilities/classNames';
+import client from '@/constants/apollo-client';
+import classNames from '@/utilities/classNames';
 
 type NavbarProps = {
   hasQuickActionButton: boolean;

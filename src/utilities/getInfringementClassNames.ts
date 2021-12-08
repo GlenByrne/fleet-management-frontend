@@ -1,4 +1,4 @@
-import { InfringementStatus } from 'generated/graphql';
+import { InfringementStatus } from '@/generated/graphql';
 
 export const getInfringementClassNames = (status: InfringementStatus) => {
   if (status === InfringementStatus.Signed) {

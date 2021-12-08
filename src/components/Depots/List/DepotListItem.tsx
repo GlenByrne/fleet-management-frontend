@@ -1,14 +1,14 @@
 import {
+  deleteDepotModalStateVar,
+  updateDepotModalStateVar,
+} from '@/constants/apollo-client';
+import Button from '@/core/Table/Button';
+import { Depot } from '@/generated/graphql';
+import {
   LocationMarkerIcon,
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
-import {
-  deleteDepotModalStateVar,
-  updateDepotModalStateVar,
-} from 'constants/apollo-client';
-import Button from 'core/Table/Button';
-import { Depot } from 'generated/graphql';
 import Link from 'next/link';
 
 type DepotListItemProps = {

@@ -1,10 +1,10 @@
-import { useLoginMutation, UsersPayload } from 'generated/graphql';
 import { useState } from 'react';
 import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { accessTokenVar, loggedInUserVar } from 'constants/apollo-client';
-import PasswordInput from 'core/Modal/PasswordInput';
+import { useLoginMutation, UsersPayload } from '@/generated/graphql';
+import { accessTokenVar, loggedInUserVar } from '@/constants/apollo-client';
+import PasswordInput from '@/core/Modal/PasswordInput';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -98,7 +98,11 @@ const LoginForm = () => {
               </div>
 
               <div>
-                <PasswordInput password={password} onChange={changePassword} />
+                <PasswordInput
+                  password={password}
+                  onChange={changePassword}
+                  label="Password"
+                />
               </div>
 
               <div className="flex items-center justify-between">
@@ -118,7 +122,7 @@ const LoginForm = () => {
                 </div>
 
                 <div className="text-sm">
-                  <Link href="#">
+                  <Link href="/forgotPassword">
                     <a className="font-medium text-indigo-600 hover:text-indigo-500">
                       Forgot your password?
                     </a>

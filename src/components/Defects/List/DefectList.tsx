@@ -1,18 +1,17 @@
-import Loading from 'core/Loading';
-import { Defect, useGetVehicleDefectsQuery } from 'generated/graphql';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import DefectListItem from './DefectListItem';
 import {
   addDefectModalStateVar,
   currentDefectVar,
-} from 'constants/apollo-client';
+} from '@/constants/apollo-client';
+import { DefectUpdateModalItem } from '@/constants/types';
+import Loading from '@/core/Loading';
+import { Defect, useGetVehicleDefectsQuery } from '@/generated/graphql';
+import { useRouter } from 'next/router';
+import DefectListItem from './DefectListItem';
 import NoDefectAddButton from './NoDefectAddButton';
-import { DefectUpdateModalItem } from 'constants/types';
 
 const DefectList = () => {
   const router = useRouter();
-  const id = String(router.query.id);
+  const vehicleId = String(router.query.vehicleId);
 
   // const [shouldSkip, setShouldSkip] = useState(true);
 
@@ -24,7 +23,7 @@ const DefectList = () => {
 
   const { data, loading, error } = useGetVehicleDefectsQuery({
     variables: {
-      vehicleId: id,
+      vehicleId,
     },
     // skip: shouldSkip,
   });
