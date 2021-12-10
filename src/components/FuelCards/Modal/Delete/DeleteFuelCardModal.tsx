@@ -37,7 +37,7 @@ const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
         variables: {
           data: {
             organisationId: organisationId,
-            searchCriteria,
+            searchCriteria: searchCriteria != null ? searchCriteria : undefined,
           },
         },
       });
@@ -51,7 +51,7 @@ const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
         variables: {
           data: {
             organisationId: organisationId,
-            searchCriteria,
+            searchCriteria: searchCriteria != null ? searchCriteria : undefined,
           },
         },
         data: { fuelCards: newFuelCards },
