@@ -21,10 +21,10 @@ import Router from 'next/router';
 import {
   DefectStatus,
   InfringementStatus,
-  RefreshTokenDocument,
+  RefreshAccessTokenDocument,
   Role,
   UpdateDepotInput,
-  UsersPayload,
+  User,
   VehicleType,
 } from '@/generated/graphql';
 
@@ -159,7 +159,7 @@ export const successTextVar = makeVar('');
 export const errorAlertStateVar = makeVar(false);
 export const errorTextVar = makeVar('');
 
-export const loggedInUserVar = makeVar<UsersPayload | null>(null);
+export const loggedInUserVar = makeVar<User | null>(null);
 export const accessTokenVar = makeVar<string | null>(null);
 
 const httpLink = createHttpLink({
@@ -197,7 +197,7 @@ const resolvePendingRequests = () => {
 
 const getNewToken = async () => {
   return await client
-    .mutate({ mutation: RefreshTokenDocument })
+    .mutate({ mutation: RefreshAccessTokenDocument })
     .then((response) => {
       const { accessToken } = response.data.refreshToken;
       accessTokenVar(accessToken);

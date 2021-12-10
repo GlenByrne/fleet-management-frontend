@@ -469,7 +469,7 @@ export const UPDATE_VEHICLE = gql`
 `;
 
 export const UPDATE_VEHICLE_CVRT = gql`
-  mutation UpdateVehicleCVRT($data: UpdateVehicleDates!) {
+  mutation UpdateVehicleCVRT($data: UpdateVehicleCVRTInput!) {
     updateVehicleCVRT(data: $data) {
       id
       type
@@ -498,7 +498,7 @@ export const UPDATE_VEHICLE_CVRT = gql`
 
 export const UPDATE_VEHICLE_THIRTEEN_WEEK_INSPECTION = gql`
   mutation UpdateVehicleThirteenWeekInspection(
-    $data: UpdateVehicleDatesWithCompletion!
+    $data: updateVehicleThirteenWeekInspectionInput!
   ) {
     updateVehicleThirteenWeekInspection(data: $data) {
       id
@@ -528,7 +528,7 @@ export const UPDATE_VEHICLE_THIRTEEN_WEEK_INSPECTION = gql`
 
 export const UPDATE_VEHICLE_TACHO_CALIBRATION = gql`
   mutation UpdateVehicleTachoCalibration(
-    $data: UpdateVehicleDatesWithCompletion!
+    $data: updateVehicleTachoCalibrationInput!
   ) {
     updateVehicleTachoCalibration(data: $data) {
       id
@@ -644,9 +644,9 @@ export const LOGOUT = gql`
   }
 `;
 
-export const REFRESH_TOKEN = gql`
-  mutation RefreshToken {
-    refreshToken {
+export const REFRESH_ACCESS_TOKEN = gql`
+  mutation RefreshAccessToken {
+    refreshAccessToken {
       accessToken
     }
   }
