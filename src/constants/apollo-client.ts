@@ -199,7 +199,7 @@ const getNewToken = async () => {
   return await client
     .mutate({ mutation: RefreshAccessTokenDocument })
     .then((response) => {
-      const { accessToken } = response.data.refreshToken;
+      const { accessToken } = response.data.refreshAccessToken;
       accessTokenVar(accessToken);
     });
 };

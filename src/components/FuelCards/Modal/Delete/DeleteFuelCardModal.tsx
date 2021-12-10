@@ -19,7 +19,11 @@ import {
 } from '@/generated/graphql';
 import Modal from '@/core/Modal/Modal';
 
-const DeleteFuelCardModal = () => {
+type DeleteFuelCardModalProps = {
+  searchCriteria: string | null;
+};
+
+const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
   const currentCard = useReactiveVar(currentFuelCardVar);
@@ -33,6 +37,7 @@ const DeleteFuelCardModal = () => {
         variables: {
           data: {
             organisationId: organisationId,
+            searchCriteria,
           },
         },
       });
@@ -46,6 +51,7 @@ const DeleteFuelCardModal = () => {
         variables: {
           data: {
             organisationId: organisationId,
+            searchCriteria,
           },
         },
         data: { fuelCards: newFuelCards },

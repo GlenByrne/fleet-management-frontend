@@ -53,7 +53,7 @@ const FuelCards: NextPage = () => {
     >
       <CreateFuelCardModal />
       <UpdateFuelCardModal />
-      <DeleteFuelCardModal />
+      <DeleteFuelCardModal searchCriteria={searchCriteria} />
       <FuelCardList data={data} loading={loading} error={error} />
     </MainLayout>
   );
