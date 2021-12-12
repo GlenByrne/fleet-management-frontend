@@ -1,6 +1,5 @@
 import {
   ApolloClient,
-  concat,
   createHttpLink,
   from,
   fromPromise,
@@ -27,12 +26,6 @@ import {
   User,
   VehicleType,
 } from '@/generated/graphql';
-
-const initialFuelCard: FuelCardUpdateModalItem = {
-  id: '',
-  cardNumber: '',
-  cardProvider: '',
-};
 
 const initialTollTag: TollTagUpdateModalItem = {
   id: '',
@@ -93,9 +86,6 @@ const initialInfringement: InfringementUpdateModalItem = {
   status: InfringementStatus.Unsigned,
 };
 
-export const currentFuelCardVar =
-  makeVar<FuelCardUpdateModalItem>(initialFuelCard);
-
 export const currentTollTagVar =
   makeVar<TollTagUpdateModalItem>(initialTollTag);
 
@@ -123,11 +113,6 @@ export const deleteVehicleModalStateVar = makeVar(false);
 export const addDefectModalStateVar = makeVar(false);
 export const updateDefectModalStateVar = makeVar(false);
 export const deleteDefectModalStateVar = makeVar(false);
-
-// Fuel Card Modals states
-export const addFuelCardModalStateVar = makeVar(false);
-export const updateFuelCardModalStateVar = makeVar(false);
-export const deleteFuelCardModalStateVar = makeVar(false);
 
 // Toll Tag Modals states
 export const addTollTagModalStateVar = makeVar(false);
@@ -255,11 +240,6 @@ const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          currentFuelCard: {
-            read() {
-              return currentFuelCardVar();
-            },
-          },
           currentTollTag: {
             read() {
               return currentTollTagVar();

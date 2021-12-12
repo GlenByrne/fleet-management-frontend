@@ -1,9 +1,12 @@
 import { NextPage } from 'next';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useGetFuelCardsQuery } from '@/generated/graphql';
+import {
+  FuelCard,
+  UpdateFuelCardInput,
+  useGetFuelCardsQuery,
+} from '@/generated/graphql';
 import MainLayout from '@/core/Layout/MainLayout/MainLayout';
-import { addFuelCardModalStateVar } from '@/constants/apollo-client';
 import CreateFuelCardModal from '@/components/FuelCards/Modal/Create/CreateFuelCardModal';
 import UpdateFuelCardModal from '@/components/FuelCards/Modal/Update/UpdateFuelCardModal';
 import DeleteFuelCardModal from '@/components/FuelCards/Modal/Delete/DeleteFuelCardModal';
@@ -12,6 +15,38 @@ import FuelCardList from '@/components/FuelCards/List/FuelCardList';
 const FuelCards: NextPage = () => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
+  const [addFuelCardModalState, setAddFuelCardModalState] = useState(false);
+  const [updateFuelCardModalState, setUpdateFuelCardModalState] =
+    useState(false);
+  const [deleteFuelCardModalState, setDeleteFuelCardModalState] =
+    useState(false);
+
+  const [currentFuelCard, setCurrentFuelCard] = useState<UpdateFuelCardInput>({
+    id: '',
+    cardNumber: '',
+    cardProvider: '',
+  });
+
+  const changeAddFuelCardModalState = (newState: boolean) => {
+    setAddFuelCardModalState(newState);
+  };
+
+  const changeUpdateFuelCardModalState = (newState: boolean) => {
+    setUpdateFuelCardModalState(newState);
+  };
+
+  const changeDeleteFuelCardModalState = (newState: boolean) => {
+    setDeleteFuelCardModalState(newState);
+  };
+
+  const changeCurrentFuelCard = (fuelCard: FuelCard) => {
+    const chosenFuelCard: UpdateFuelCardInput = {
+      id: fuelCard.id,
+      cardNumber: fuelCard.cardNumber,
+      cardProvider: fuelCard.cardProvider,
+    };
+    setCurrentFuelCard(chosenFuelCard);
+  };
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
   const { data, loading, error, refetch } = useGetFuelCardsQuery({
@@ -45,16 +80,36 @@ const FuelCards: NextPage = () => {
   return (
     <MainLayout
       hasQuickActionButton={true}
-      quickAction={addFuelCardModalStateVar}
+      quickAction={changeAddFuelCardModalState}
       quickActionLabel="New Card"
       pageSearchable={true}
       searchSubmitHandler={submitHandler}
       setSearchCriteria={changeSearchCriteria}
     >
-      <CreateFuelCardModal />
-      <UpdateFuelCardModal />
-      <DeleteFuelCardModal searchCriteria={searchCriteria} />
-      <FuelCardList data={data} loading={loading} error={error} />
+      <CreateFuelCardModal
+        modalState={addFuelCardModalState}
+        changeModalState={changeAddFuelCardModalState}
+      />
+      <UpdateFuelCardModal
+        currentFuelCard={currentFuelCard}
+        modalState={updateFuelCardModalState}
+        changeModalState={changeUpdateFuelCardModalState}
+      />
+      <DeleteFuelCardModal
+        searchCriteria={searchCriteria}
+        currentFuelCard={currentFuelCard}
+        modalState={deleteFuelCardModalState}
+        changeModalState={changeDeleteFuelCardModalState}
+      />
+      <FuelCardList
+        data={data}
+        loading={loading}
+        error={error}
+        changeAddFuelCardModalState={changeAddFuelCardModalState}
+        changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
+        changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}
+        changeCurrentFuelCard={changeCurrentFuelCard}
+      />
     </MainLayout>
   );
 };

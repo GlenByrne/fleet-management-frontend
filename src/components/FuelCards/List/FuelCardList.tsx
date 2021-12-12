@@ -2,29 +2,27 @@ import FuelCardListItem from './FuelCardListItem';
 import NoFuelCardAddButton from './NoFuelCardAddButton';
 import { ApolloError } from '@apollo/client';
 import { FuelCard, GetFuelCardsQuery } from '@/generated/graphql';
-import { FuelCardUpdateModalItem } from '@/constants/types';
-import {
-  addFuelCardModalStateVar,
-  currentFuelCardVar,
-} from '@/constants/apollo-client';
 import Loading from '@/core/Loading';
 
 type FuelCardListProps = {
   data: GetFuelCardsQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  changeCurrentFuelCard: (fuelCard: FuelCard) => void;
+  changeAddFuelCardModalState: (newState: boolean) => void;
+  changeDeleteFuelCardModalState: (newState: boolean) => void;
+  changeUpdateFuelCardModalState: (newState: boolean) => void;
 };
 
-const FuelCardList = ({ data, loading, error }: FuelCardListProps) => {
-  const changeCurrentFuelCard = (fuelCard: FuelCard) => {
-    const chosenFuelCard: FuelCardUpdateModalItem = {
-      id: fuelCard.id,
-      cardNumber: fuelCard.cardNumber,
-      cardProvider: fuelCard.cardProvider,
-    };
-    currentFuelCardVar(chosenFuelCard);
-  };
-
+const FuelCardList = ({
+  data,
+  loading,
+  error,
+  changeCurrentFuelCard,
+  changeAddFuelCardModalState,
+  changeDeleteFuelCardModalState,
+  changeUpdateFuelCardModalState,
+}: FuelCardListProps) => {
   if (loading) {
     return <Loading />;
   }
@@ -47,12 +45,14 @@ const FuelCardList = ({ data, loading, error }: FuelCardListProps) => {
             key={fuelCard.id}
             fuelCard={fuelCard}
             changeCurrentFuelCard={changeCurrentFuelCard}
+            changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
+            changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}
           />
         ))}
       </ul>
     </div>
   ) : (
-    <NoFuelCardAddButton onClick={addFuelCardModalStateVar} />
+    <NoFuelCardAddButton onClick={changeAddFuelCardModalState} />
   );
 };
 

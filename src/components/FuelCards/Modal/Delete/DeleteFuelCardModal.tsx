@@ -1,11 +1,8 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
-  currentFuelCardVar,
-  deleteFuelCardModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -15,20 +12,28 @@ import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   GetVehiclesDocument,
+  UpdateFuelCardInput,
   useDeleteFuelCardMutation,
 } from '@/generated/graphql';
 import Modal from '@/core/Modal/Modal';
 
 type DeleteFuelCardModalProps = {
   searchCriteria: string | null;
+  currentFuelCard: UpdateFuelCardInput;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
 };
 
-const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
+const DeleteFuelCardModal = ({
+  searchCriteria,
+  currentFuelCard,
+  modalState,
+  changeModalState,
+}: DeleteFuelCardModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-  const currentCard = useReactiveVar(currentFuelCardVar);
 
-  const currentModalStateVar = useReactiveVar(deleteFuelCardModalStateVar);
+  // const currentModalStateVar = useReactiveVar(deleteFuelCardModalStateVar);
 
   const [deleteFuelCard] = useDeleteFuelCardMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -91,7 +96,7 @@ const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
   });
 
   const deleteCardHandler = async (id: string) => {
-    deleteFuelCardModalStateVar(false);
+    changeModalState(false);
     try {
       await deleteFuelCard({
         variables: {
@@ -109,8 +114,8 @@ const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={deleteFuelCardModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -126,7 +131,7 @@ const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
               as="h3"
               className="text-lg leading-6 font-medium text-gray-900"
             >
-              Delete Fuel Card: {currentCard.cardNumber}
+              Delete Fuel Card: {currentFuelCard.cardNumber}
             </Dialog.Title>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
@@ -141,14 +146,14 @@ const DeleteFuelCardModal = ({ searchCriteria }: DeleteFuelCardModalProps) => {
           <button
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-            onClick={() => deleteCardHandler(currentCard.id)}
+            onClick={() => deleteCardHandler(currentFuelCard.id)}
           >
             Delete
           </button>
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => deleteFuelCardModalStateVar(false)}
+            onClick={() => changeModalState(false)}
             ref={cancelButtonRef}
           >
             Cancel

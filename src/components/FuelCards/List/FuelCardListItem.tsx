@@ -1,7 +1,3 @@
-import {
-  deleteFuelCardModalStateVar,
-  updateFuelCardModalStateVar,
-} from '@/constants/apollo-client';
 import Button from '@/core/Table/Button';
 import { FuelCard } from '@/generated/graphql';
 import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
@@ -10,11 +6,15 @@ import Link from 'next/link';
 type FuelCardListItemProps = {
   fuelCard: FuelCard;
   changeCurrentFuelCard: (fuelCard: FuelCard) => void;
+  changeDeleteFuelCardModalState: (newState: boolean) => void;
+  changeUpdateFuelCardModalState: (newState: boolean) => void;
 };
 
 const FuelCardListItem = ({
   fuelCard,
   changeCurrentFuelCard,
+  changeDeleteFuelCardModalState,
+  changeUpdateFuelCardModalState,
 }: FuelCardListItemProps) => {
   return (
     <li>
@@ -29,7 +29,7 @@ const FuelCardListItem = ({
                 <Button
                   onClick={() => {
                     changeCurrentFuelCard(fuelCard);
-                    deleteFuelCardModalStateVar(true);
+                    changeDeleteFuelCardModalState(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -45,7 +45,7 @@ const FuelCardListItem = ({
               <Button
                 onClick={() => {
                   changeCurrentFuelCard(fuelCard);
-                  updateFuelCardModalStateVar(true);
+                  changeUpdateFuelCardModalState(true);
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />
