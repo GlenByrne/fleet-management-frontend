@@ -14,7 +14,7 @@ const UpcomingTachoCalibrationListItem = ({
     <li>
       <a href="#" className="block hover:bg-gray-50">
         <div className="px-4 py-4 flex items-center sm:px-6">
-          <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+          <div className="mt-4 shrink-0 sm:mt-0 sm:ml-5">
             <div className="flex overflow-hidden -space-x-1">
               <span className="relative z-0 inline-flex shadow-sm rounded-md">
                 <button

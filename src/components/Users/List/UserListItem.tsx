@@ -26,7 +26,7 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
               <p className="text-sm font-medium text-indigo-600 truncate">
                 {user.user.name}
               </p>
-              <div className="ml-2 flex-shrink-0 flex">
+              <div className="ml-2 shrink-0 flex">
                 <Button
                   onClick={() => {
                     changeCurrentUser(user);
@@ -44,7 +44,7 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
                 </p>
                 <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                   <LocationMarkerIcon
-                    className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                    className="shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
                   {/* {user.depot ? user.depot.name : 'None'} */}

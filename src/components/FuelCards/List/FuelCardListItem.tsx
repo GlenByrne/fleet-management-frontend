@@ -25,7 +25,7 @@ const FuelCardListItem = ({
               <p className="text-sm font-medium text-indigo-600 truncate">
                 {fuelCard.cardNumber}
               </p>
-              <div className="ml-2 flex-shrink-0 flex">
+              <div className="ml-2 shrink-0 flex">
                 <Button
                   onClick={() => {
                     changeCurrentFuelCard(fuelCard);

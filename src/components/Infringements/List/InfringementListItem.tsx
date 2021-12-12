@@ -32,7 +32,7 @@ const InfringementListItem = ({
               <p className="text-sm font-medium text-indigo-600 truncate">
                 {format(new Date(infringement.dateOccured), 'dd/MM/yyyy')}
               </p>
-              <div className="ml-2 flex-shrink-0 flex">
+              <div className="ml-2 shrink-0 flex">
                 <Button
                   onClick={() => {
                     changeCurrentInfringement(infringement);
@@ -64,7 +64,7 @@ const InfringementListItem = ({
 
                 <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                   <LocationMarkerIcon
-                    className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                    className="shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
                   {infringement.description}

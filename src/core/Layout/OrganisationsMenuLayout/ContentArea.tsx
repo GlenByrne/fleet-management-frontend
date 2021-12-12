@@ -33,10 +33,10 @@ const ContentArea = ({
   return (
     // <div className="flex-1 flex flex-col overflow-hidden">
     //   <header className="w-full">
-    //     <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
+    //     <div className="relative z-10 shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
     //       <div className="flex-1 flex justify-between px-4 sm:px-6">
     //         <div className="flex md:absolute md:left-0 md:inset-y-0 lg:static xl:col-span-2">
-    //           <div className="flex-shrink-0 flex items-center">
+    //           <div className="shrink-0 flex items-center">
     //             <a href="#">
     //               <img
     //                 className="block h-8 w-auto"
@@ -49,7 +49,7 @@ const ContentArea = ({
 
     //         <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
     //           {/* Profile dropdown */}
-    //           <Menu as="div" className="relative flex-shrink-0">
+    //           <Menu as="div" className="relative shrink-0">
     //             <div>
     //               <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
     //                 <span className="sr-only">Open user menu</span>
@@ -135,14 +135,14 @@ const ContentArea = ({
       />
       <div className="relative min-h-screen flex flex-col">
         {/* Navbar */}
-        <Disclosure as="nav" className="flex-shrink-0 bg-indigo-600">
+        <Disclosure as="nav" className="shrink-0 bg-indigo-600">
           {({ open }) => (
             <>
               <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
                 <div className="relative flex items-center justify-between h-16">
                   {/* Logo section */}
                   <div className="flex items-center px-2 lg:px-0 xl:w-64">
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                       <img
                         className="h-8 w-auto"
                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg"
@@ -155,7 +155,7 @@ const ContentArea = ({
                   <div className="lg:block lg:w-80">
                     <div className="flex items-center justify-end">
                       {/* Profile dropdown */}
-                      <Menu as="div" className="ml-4 relative flex-shrink-0">
+                      <Menu as="div" className="ml-4 relative shrink-0">
                         <div>
                           <Menu.Button className="bg-indigo-700 flex text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white">
                             <span className="sr-only">Open user menu</span>
@@ -247,7 +247,7 @@ const ContentArea = ({
         </Disclosure>
 
         {/* 3 column wrapper */}
-        <div className="flex-grow w-full max-w-7xl mx-auto xl:px-8 lg:flex">
+        <div className="grow w-full max-w-7xl mx-auto xl:px-8 lg:flex">
           {/* Left sidebar & main wrapper */}
           <div className="flex-1 min-w-0 bg-white xl:flex">
             <div className="bg-white lg:min-w-0 lg:flex-1">
@@ -261,7 +261,7 @@ const ContentArea = ({
                 {/* End main area */}
               </div>
             </div>
-            <div className="border-b border-gray-200 xl:border-b-0 xl:flex-shrink-0 xl:w-64 xl:border-r xl:border-gray-200 bg-white">
+            <div className="border-b border-gray-200 xl:border-b-0 xl:shrink-0 xl:w-64 xl:border-r xl:border-gray-200 bg-white">
               <div className="h-full pl-4 pr-6 py-6 sm:pl-6 lg:pl-8 xl:pl-0">
                 {/* Start left column area */}
                 <div className="h-full relative" style={{ minHeight: '12rem' }}>

@@ -26,7 +26,7 @@ const DepotListItem = ({ depot, changeCurrentDepot }: DepotListItemProps) => {
               <p className="text-sm font-medium text-indigo-600 truncate">
                 {depot.name}
               </p>
-              <div className="ml-2 flex-shrink-0 flex">
+              <div className="ml-2 shrink-0 flex">
                 <Button
                   onClick={() => {
                     changeCurrentDepot(depot);

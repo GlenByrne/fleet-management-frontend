@@ -58,14 +58,14 @@ const OrganisationsMenuLayout = ({
       />
       <div className="relative min-h-screen flex flex-col">
         {/* Navbar */}
-        <Disclosure as="nav" className="flex-shrink-0 bg-indigo-600">
+        <Disclosure as="nav" className="shrink-0 bg-indigo-600">
           {({ open }) => (
             <>
               <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
                 <div className="relative flex items-center justify-between h-16">
                   {/* Logo section */}
                   <div className="flex items-center px-2 lg:px-0 xl:w-64">
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                       <img
                         className="h-8 w-auto"
                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg"
@@ -78,7 +78,7 @@ const OrganisationsMenuLayout = ({
                   <div className="lg:block lg:w-80">
                     <div className="flex items-center justify-end">
                       {/* Profile dropdown */}
-                      <Menu as="div" className="ml-4 relative flex-shrink-0">
+                      <Menu as="div" className="ml-4 relative shrink-0">
                         <div>
                           <Menu.Button className="bg-indigo-700 flex text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white">
                             <span className="sr-only">Open user menu</span>

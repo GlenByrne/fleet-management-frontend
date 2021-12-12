@@ -37,7 +37,7 @@ const ContentArea = ({
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       <header className="w-full">
-        <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
+        <div className="relative z-10 shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
           <button
             type="button"
             className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -60,7 +60,7 @@ const ContentArea = ({
                   <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
                       <SearchIcon
-                        className="flex-shrink-0 h-5 w-5"
+                        className="shrink-0 h-5 w-5"
                         aria-hidden="true"
                       />
                     </div>
@@ -79,7 +79,7 @@ const ContentArea = ({
 
             <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
               {/* Profile dropdown */}
-              <Menu as="div" className="relative flex-shrink-0">
+              <Menu as="div" className="relative shrink-0">
                 <div>
                   <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <span className="sr-only">Open user menu</span>

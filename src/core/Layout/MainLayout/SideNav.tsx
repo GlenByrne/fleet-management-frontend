@@ -24,7 +24,7 @@ const SideNav = ({
       {/* Narrow sidebar */}
       <div className="hidden w-28 bg-indigo-700 overflow-y-auto md:block">
         <div className="w-full py-6 flex flex-col items-center">
-          <div className="flex-shrink-0 flex items-center">
+          <div className="shrink-0 flex items-center">
             <img
               className="h-8 w-auto"
               src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
@@ -110,7 +110,7 @@ const SideNav = ({
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="flex-shrink-0 px-4 flex items-center">
+                <div className="shrink-0 px-4 flex items-center">
                   <img
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
@@ -151,7 +151,7 @@ const SideNav = ({
                 </div>
               </div>
             </Transition.Child>
-            <div className="flex-shrink-0 w-14" aria-hidden="true">
+            <div className="shrink-0 w-14" aria-hidden="true">
               {/* Dummy element to force sidebar to shrink to fit close icon */}
             </div>
           </div>

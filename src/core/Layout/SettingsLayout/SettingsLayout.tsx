@@ -51,7 +51,7 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
                     router.asPath === item.href
                       ? 'text-indigo-500 group-hover:text-indigo-500'
                       : 'text-gray-400 group-hover:text-gray-500',
-                    'flex-shrink-0 -ml-1 mr-3 h-6 w-6'
+                    'shrink-0 -ml-1 mr-3 h-6 w-6'
                   )}
                   aria-hidden="true"
                 />

@@ -48,7 +48,7 @@ const VehicleListItem = ({
               <p className="text-sm font-medium text-indigo-600 truncate">
                 {vehicle.registration}
               </p>
-              <div className="ml-2 flex-shrink-0 flex">
+              <div className="ml-2 shrink-0 flex">
                 <Button
                   onClick={() => {
                     changeCurrentVehicle(vehicle);
@@ -119,7 +119,7 @@ const VehicleListItem = ({
 
                 <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                   <LocationMarkerIcon
-                    className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                    className="shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
                   {vehicle.model}
