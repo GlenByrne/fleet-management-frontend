@@ -55,18 +55,6 @@ export type VehicleUpdateModalItem = {
   };
 };
 
-export type FuelCardUpdateModalItem = {
-  id: string;
-  cardNumber: string;
-  cardProvider: string;
-};
-
-export type TollTagUpdateModalItem = {
-  id: string;
-  tagNumber: string;
-  tagProvider: string;
-};
-
 export type UserUpdateModalItem = {
   id: string;
   email: string;
@@ -76,22 +64,6 @@ export type UserUpdateModalItem = {
     id: string;
     name: string;
   } | null;
-};
-
-export type DefectUpdateModalItem = {
-  id: string;
-  description: string;
-  dateReported: Date;
-  reporter: string;
-  dateCompleted?: Date | null;
-  status: DefectStatus;
-};
-
-export type InfringementUpdateModalItem = {
-  id: string;
-  description: string;
-  dateOccured: Date;
-  status: InfringementStatus;
 };
 
 export enum DateStatus {

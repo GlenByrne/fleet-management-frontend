@@ -1,4 +1,3 @@
-import { InfringementUpdateModalItem } from '@/constants/types';
 import Loading from '@/core/Loading';
 import { Infringement, useGetInfringementsQuery } from '@/generated/graphql';
 import InfringementListItem from './InfringementListItem';

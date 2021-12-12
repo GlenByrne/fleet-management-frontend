@@ -1,4 +1,3 @@
-import { TollTagUpdateModalItem } from '@/constants/types';
 import Loading from '@/core/Loading';
 import { GetTollTagsQuery, TollTag } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
