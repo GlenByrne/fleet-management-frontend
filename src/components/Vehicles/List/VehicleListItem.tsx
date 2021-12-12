@@ -9,24 +9,27 @@ import { format } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Vehicle } from '@/generated/graphql';
 import Button from '@/core/Table/Button';
-import {
-  deleteVehicleModalStateVar,
-  updateVehicleCVRTModalStateVar,
-  updateVehicleModalStateVar,
-  updateVehicleTachoCalibrationModalStateVar,
-  updateVehicleThirteenWeekModalStateVar,
-} from '@/constants/apollo-client';
 import { getDateClassNames } from '@/utilities/getDateClassName';
 import { dateStatus } from '@/utilities/dateStatus';
 
 type VehicleListItemProps = {
   vehicle: Vehicle;
   changeCurrentVehicle: (vehicle: Vehicle) => void;
+  changeDeleteVehicleModalState: (newState: boolean) => void;
+  changeUpdateVehicleModalState: (newState: boolean) => void;
+  changeUpdateVehicleCVRTModalState: (newState: boolean) => void;
+  changeUpdateVehicleThirteenWeekModalState: (newState: boolean) => void;
+  changeUpdateVehicleTachoCalibrationModalState: (newState: boolean) => void;
 };
 
 const VehicleListItem = ({
   vehicle,
   changeCurrentVehicle,
+  changeDeleteVehicleModalState,
+  changeUpdateVehicleModalState,
+  changeUpdateVehicleCVRTModalState,
+  changeUpdateVehicleThirteenWeekModalState,
+  changeUpdateVehicleTachoCalibrationModalState,
 }: VehicleListItemProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
@@ -52,7 +55,7 @@ const VehicleListItem = ({
                 <Button
                   onClick={() => {
                     changeCurrentVehicle(vehicle);
-                    deleteVehicleModalStateVar(true);
+                    changeDeleteVehicleModalState(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -70,7 +73,7 @@ const VehicleListItem = ({
                   onClick={() => {
                     if (vehicle.cvrt != null) {
                       changeCurrentVehicle(vehicle);
-                      updateVehicleCVRTModalStateVar(true);
+                      changeUpdateVehicleCVRTModalState(true);
                     }
                   }}
                   className={getDateClassNames(dateStatus(vehicle.cvrt))}
@@ -85,7 +88,7 @@ const VehicleListItem = ({
                   onClick={() => {
                     if (vehicle.thirteenWeekInspection != null) {
                       changeCurrentVehicle(vehicle);
-                      updateVehicleThirteenWeekModalStateVar(true);
+                      changeUpdateVehicleThirteenWeekModalState(true);
                     }
                   }}
                   className={getDateClassNames(
@@ -105,7 +108,7 @@ const VehicleListItem = ({
                   onClick={() => {
                     if (vehicle.tachoCalibration != null) {
                       changeCurrentVehicle(vehicle);
-                      updateVehicleTachoCalibrationModalStateVar(true);
+                      changeUpdateVehicleTachoCalibrationModalState(true);
                     }
                   }}
                   className={getDateClassNames(
@@ -128,7 +131,7 @@ const VehicleListItem = ({
               <Button
                 onClick={() => {
                   changeCurrentVehicle(vehicle);
-                  updateVehicleModalStateVar(true);
+                  changeUpdateVehicleModalState(true);
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />

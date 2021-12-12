@@ -1,9 +1,8 @@
 import {
-  currentVehicleVar,
   successAlertStateVar,
   successTextVar,
-  updateVehicleThirteenWeekModalStateVar,
 } from '@/constants/apollo-client';
+import { VehicleUpdateModalItem } from '@/constants/types';
 import DatePickerNoClear from '@/core/DatePickerNoClear';
 import Modal from '@/core/Modal/Modal';
 import { useUpdateVehicleThirteenWeekInspectionMutation } from '@/generated/graphql';
@@ -12,18 +11,23 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import { useRef, useState, FormEventHandler } from 'react';
 
-const UpdateVehicleThirteenWeekModal = () => {
+type UpdateVehicleThirteenWeekInspectionModalProps = {
+  currentVehicle: VehicleUpdateModalItem;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
+const UpdateVehicleThirteenWeekModal = ({
+  currentVehicle,
+  modalState,
+  changeModalState,
+}: UpdateVehicleThirteenWeekInspectionModalProps) => {
   const [updateThirteenWeek] = useUpdateVehicleThirteenWeekInspectionMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
-  const currentVehicle = useReactiveVar(currentVehicleVar);
-  const currentModalStateVar = useReactiveVar(
-    updateVehicleThirteenWeekModalStateVar
-  );
-
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateVehicleThirteenWeekModalStateVar(false);
+    changeModalState(false);
     try {
       await updateThirteenWeek({
         variables: {
@@ -44,8 +48,8 @@ const UpdateVehicleThirteenWeekModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={updateVehicleThirteenWeekModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -84,7 +88,7 @@ const UpdateVehicleThirteenWeekModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateVehicleThirteenWeekModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

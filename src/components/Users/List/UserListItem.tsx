@@ -1,7 +1,3 @@
-import {
-  removeUserModalStateVar,
-  updateUserModalStateVar,
-} from '@/constants/apollo-client';
 import Button from '@/core/Table/Button';
 import { UsersInOrganisationPayload } from '@/generated/graphql';
 import {
@@ -14,9 +10,16 @@ import Link from 'next/link';
 type UserListItemProps = {
   user: UsersInOrganisationPayload;
   changeCurrentUser: (user: UsersInOrganisationPayload) => void;
+  changeRemoveUserModalState: (newState: boolean) => void;
+  changeUpdateUserModalState: (newState: boolean) => void;
 };
 
-const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
+const UserListItem = ({
+  user,
+  changeCurrentUser,
+  changeRemoveUserModalState,
+  changeUpdateUserModalState,
+}: UserListItemProps) => {
   return (
     <li>
       <Link href="#">
@@ -30,7 +33,7 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
                 <Button
                   onClick={() => {
                     changeCurrentUser(user);
-                    removeUserModalStateVar(true);
+                    changeRemoveUserModalState(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -53,7 +56,7 @@ const UserListItem = ({ user, changeCurrentUser }: UserListItemProps) => {
               <Button
                 onClick={() => {
                   changeCurrentUser(user);
-                  updateUserModalStateVar(true);
+                  changeUpdateUserModalState(true);
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />

@@ -4,8 +4,6 @@ import { useRef } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
-  currentTollTagVar,
-  deleteTollTagModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -15,16 +13,26 @@ import {
   GetTollTagsDocument,
   GetTollTagsQuery,
   GetVehiclesDocument,
+  UpdateTollTagInput,
   useDeleteTollTagMutation,
 } from '@/generated/graphql';
 import Modal from '@/core/Modal/Modal';
 
-const DeleteTollTagModal = () => {
+type DeleteTollTagModalProps = {
+  searchCriteria: string | null;
+  currentTollTag: UpdateTollTagInput;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
+const DeleteTollTagModal = ({
+  searchCriteria,
+  currentTollTag,
+  modalState,
+  changeModalState,
+}: DeleteTollTagModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-  const currentTag = useReactiveVar(currentTollTagVar);
-
-  const currentModalStateVar = useReactiveVar(deleteTollTagModalStateVar);
 
   const [deleteTollTag] = useDeleteTollTagMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -85,7 +93,7 @@ const DeleteTollTagModal = () => {
   });
 
   const deleteTagHandler = async (id: string) => {
-    deleteTollTagModalStateVar(false);
+    changeModalState(false);
     try {
       await deleteTollTag({
         variables: {
@@ -104,8 +112,8 @@ const DeleteTollTagModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={deleteTollTagModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -121,7 +129,7 @@ const DeleteTollTagModal = () => {
               as="h3"
               className="text-lg leading-6 font-medium text-gray-900"
             >
-              Delete Toll Tag: {currentTag.tagNumber}
+              Delete Toll Tag: {currentTollTag.tagNumber}
             </Dialog.Title>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
@@ -136,14 +144,14 @@ const DeleteTollTagModal = () => {
           <button
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-            onClick={() => deleteTagHandler(currentTag.id)}
+            onClick={() => deleteTagHandler(currentTollTag.id)}
           >
             Delete
           </button>
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => deleteTollTagModalStateVar(false)}
+            onClick={() => changeModalState(false)}
             ref={cancelButtonRef}
           >
             Cancel

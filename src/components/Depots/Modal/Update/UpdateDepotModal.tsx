@@ -10,27 +10,33 @@ import {
 } from 'react';
 import { useRouter } from 'next/router';
 import {
-  currentDepotVar,
   errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
-  updateDepotModalStateVar,
 } from '@/constants/apollo-client';
 import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   GetVehiclesDocument,
+  UpdateDepotInput,
   useUpdateDepotMutation,
 } from '@/generated/graphql';
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 
-const UpdateDepotModal = () => {
+type UpdateDepotModalProps = {
+  currentDepot: UpdateDepotInput;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
+const UpdateDepotModal = ({
+  currentDepot,
+  modalState,
+  changeModalState,
+}: UpdateDepotModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-  const currentDepot = useReactiveVar(currentDepotVar);
-
-  const currentModalStateVar = useReactiveVar(updateDepotModalStateVar);
 
   const [name, setName] = useState('');
 
@@ -77,7 +83,7 @@ const UpdateDepotModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateDepotModalStateVar(false);
+    changeModalState(false);
     try {
       await updateDepot({
         variables: {
@@ -98,8 +104,8 @@ const UpdateDepotModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={updateDepotModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -139,7 +145,7 @@ const UpdateDepotModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateDepotModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

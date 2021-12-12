@@ -1,24 +1,20 @@
-import {
-  deleteTollTagModalStateVar,
-  updateTollTagModalStateVar,
-} from '@/constants/apollo-client';
 import Button from '@/core/Table/Button';
 import { TollTag } from '@/generated/graphql';
-import {
-  LocationMarkerIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/solid';
+import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 
 type TollTagListItemProps = {
   tollTag: TollTag;
   changeCurrentTollTag: (tollTag: TollTag) => void;
+  changeDeleteTollTagModalState: (newState: boolean) => void;
+  changeUpdateTollTagModalState: (newState: boolean) => void;
 };
 
 const TollTagListItem = ({
   tollTag,
   changeCurrentTollTag,
+  changeDeleteTollTagModalState,
+  changeUpdateTollTagModalState,
 }: TollTagListItemProps) => {
   return (
     <li>
@@ -33,7 +29,7 @@ const TollTagListItem = ({
                 <Button
                   onClick={() => {
                     changeCurrentTollTag(tollTag);
-                    deleteTollTagModalStateVar(true);
+                    changeDeleteTollTagModalState(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -49,7 +45,7 @@ const TollTagListItem = ({
               <Button
                 onClick={() => {
                   changeCurrentTollTag(tollTag);
-                  updateTollTagModalStateVar(true);
+                  changeUpdateTollTagModalState(true);
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />

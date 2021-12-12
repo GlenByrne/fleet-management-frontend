@@ -7,7 +7,6 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Option } from '@/constants/types';
 import {
@@ -25,7 +24,6 @@ import {
   VehicleType,
 } from '@/generated/graphql';
 import {
-  addVehicleModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -33,6 +31,11 @@ import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 import DatePicker from '@/core/DatePick';
+
+type CreateVehicleModalProps = {
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -83,7 +86,10 @@ const getVehicleTypeOptions = () => {
   return options;
 };
 
-const CreateVehicleModal = () => {
+const CreateVehicleModal = ({
+  modalState,
+  changeModalState,
+}: CreateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -95,8 +101,6 @@ const CreateVehicleModal = () => {
       },
     },
   });
-
-  const currentModalStateVar = useReactiveVar(addVehicleModalStateVar);
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
@@ -228,7 +232,7 @@ const CreateVehicleModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    addVehicleModalStateVar(false);
+    changeModalState(false);
     try {
       await addVehicle({
         variables: {
@@ -298,8 +302,8 @@ const CreateVehicleModal = () => {
   return (
     <>
       <Modal
-        modalState={currentModalStateVar}
-        setModalState={addVehicleModalStateVar}
+        modalState={modalState}
+        setModalState={changeModalState}
         cancelButtonRef={cancelButtonRef}
       >
         <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -445,7 +449,7 @@ const CreateVehicleModal = () => {
               <button
                 type="button"
                 className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                onClick={() => addVehicleModalStateVar(false)}
+                onClick={() => changeModalState(false)}
                 ref={cancelButtonRef}
               >
                 Cancel

@@ -10,19 +10,24 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
   InfringementStatus,
+  UpdateInfringementInput,
   useUpdateInfringementMutation,
 } from '@/generated/graphql';
 import {
-  currentInfringementVar,
   successAlertStateVar,
   successTextVar,
-  updateInfringementModalStateVar,
 } from '@/constants/apollo-client';
 import { Option } from '@/constants/types';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 import DatePickerNoClear from '@/core/DatePickerNoClear';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 import Modal from '@/core/Modal/Modal';
+
+type UpdateInfringementModalProps = {
+  currentInfringement: UpdateInfringementInput;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
 const getInfringementStatuseOptions = () => {
   const options: Option[] = [
@@ -39,10 +44,11 @@ const getInfringementStatuseOptions = () => {
   return options;
 };
 
-const UpdateInfringementModal = () => {
-  const currentInfringement = useReactiveVar(currentInfringementVar);
-  const currentModalStateVar = useReactiveVar(updateInfringementModalStateVar);
-
+const UpdateInfringementModal = ({
+  currentInfringement,
+  modalState,
+  changeModalState,
+}: UpdateInfringementModalProps) => {
   const [statusOptions, setStatusOptions] = useState(
     getInfringementStatuseOptions()
   );
@@ -74,7 +80,7 @@ const UpdateInfringementModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateInfringementModalStateVar(false);
+    changeModalState(false);
     try {
       await updateInfringement({
         variables: {
@@ -94,8 +100,8 @@ const UpdateInfringementModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={updateInfringementModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -155,7 +161,7 @@ const UpdateInfringementModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateInfringementModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

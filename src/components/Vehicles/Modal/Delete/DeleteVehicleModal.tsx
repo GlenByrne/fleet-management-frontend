@@ -4,8 +4,6 @@ import { useRef } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
-  currentVehicleVar,
-  deleteVehicleModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -19,13 +17,23 @@ import {
   useDeleteVehicleMutation,
 } from '@/generated/graphql';
 import Modal from '@/core/Modal/Modal';
+import { VehicleUpdateModalItem } from '@/constants/types';
 
-const DeleteVehicleModal = () => {
+type DeleteVehicleModalProps = {
+  searchCriteria: string | null;
+  currentVehicle: VehicleUpdateModalItem;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
+const DeleteVehicleModal = ({
+  searchCriteria,
+  currentVehicle,
+  modalState,
+  changeModalState,
+}: DeleteVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-  const currentVehicle = useReactiveVar(currentVehicleVar);
-
-  const currentModalStateVar = useReactiveVar(deleteVehicleModalStateVar);
 
   const [deleteVehicle] = useDeleteVehicleMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -97,7 +105,7 @@ const DeleteVehicleModal = () => {
   });
 
   const deleteVehicleHandler = async (id: string) => {
-    deleteVehicleModalStateVar(false);
+    changeModalState(false);
     try {
       await deleteVehicle({
         variables: {
@@ -116,8 +124,8 @@ const DeleteVehicleModal = () => {
   return (
     <>
       <Modal
-        modalState={currentModalStateVar}
-        setModalState={deleteVehicleModalStateVar}
+        modalState={modalState}
+        setModalState={changeModalState}
         cancelButtonRef={cancelButtonRef}
       >
         <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -157,7 +165,7 @@ const DeleteVehicleModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => deleteVehicleModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

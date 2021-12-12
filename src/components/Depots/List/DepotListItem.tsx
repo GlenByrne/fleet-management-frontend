@@ -1,22 +1,21 @@
-import {
-  deleteDepotModalStateVar,
-  updateDepotModalStateVar,
-} from '@/constants/apollo-client';
 import Button from '@/core/Table/Button';
 import { Depot } from '@/generated/graphql';
-import {
-  LocationMarkerIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/solid';
+import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 
 type DepotListItemProps = {
   depot: Depot;
   changeCurrentDepot: (depot: Depot) => void;
+  changeDeleteDepotModalState: (newState: boolean) => void;
+  changeUpdateDepotModalState: (newState: boolean) => void;
 };
 
-const DepotListItem = ({ depot, changeCurrentDepot }: DepotListItemProps) => {
+const DepotListItem = ({
+  depot,
+  changeCurrentDepot,
+  changeDeleteDepotModalState,
+  changeUpdateDepotModalState,
+}: DepotListItemProps) => {
   return (
     <li>
       <Link href="#">
@@ -30,7 +29,7 @@ const DepotListItem = ({ depot, changeCurrentDepot }: DepotListItemProps) => {
                 <Button
                   onClick={() => {
                     changeCurrentDepot(depot);
-                    deleteDepotModalStateVar(true);
+                    changeDeleteDepotModalState(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -46,7 +45,7 @@ const DepotListItem = ({ depot, changeCurrentDepot }: DepotListItemProps) => {
               <Button
                 onClick={() => {
                   changeCurrentDepot(depot);
-                  updateDepotModalStateVar(true);
+                  changeUpdateDepotModalState(true);
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />

@@ -3,7 +3,6 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import {
-  addOrganisationModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -15,9 +14,15 @@ import {
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 
-const CreateOrganisationModal = () => {
-  const currentModalStateVar = useReactiveVar(addOrganisationModalStateVar);
+type CreateOrganisationModalProps = {
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
+const CreateOrganisationModal = ({
+  modalState,
+  changeModalState,
+}: CreateOrganisationModalProps) => {
   const [name, setName] = useState('');
 
   const cancelButtonRef = useRef(null);
@@ -50,7 +55,7 @@ const CreateOrganisationModal = () => {
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
 
-    addOrganisationModalStateVar(false);
+    changeModalState(false);
 
     try {
       await addOrganisation({
@@ -70,8 +75,8 @@ const CreateOrganisationModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={addOrganisationModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -111,7 +116,7 @@ const CreateOrganisationModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => addOrganisationModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

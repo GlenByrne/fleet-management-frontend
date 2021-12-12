@@ -23,15 +23,19 @@ import {
 } from '@/generated/graphql';
 import { Option, VehicleUpdateModalItem } from '@/constants/types';
 import {
-  currentVehicleVar,
   successAlertStateVar,
   successTextVar,
-  updateVehicleModalStateVar,
 } from '@/constants/apollo-client';
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 import DatePicker from '@/core/DatePick';
+
+type UpdateVehicleModalProps = {
+  currentVehicle: VehicleUpdateModalItem;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -98,7 +102,11 @@ const getVehicleTypeOptions = () => {
   return options;
 };
 
-const UpdateVehicleModal = () => {
+const UpdateVehicleModal = ({
+  currentVehicle,
+  modalState,
+  changeModalState,
+}: UpdateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -110,9 +118,6 @@ const UpdateVehicleModal = () => {
       },
     },
   });
-
-  const currentVehicle = useReactiveVar(currentVehicleVar);
-  const currentModalStateVar = useReactiveVar(updateVehicleModalStateVar);
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
@@ -262,7 +267,7 @@ const UpdateVehicleModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateVehicleModalStateVar(false);
+    changeModalState(false);
     try {
       await updateVehicle({
         variables: {
@@ -305,8 +310,8 @@ const UpdateVehicleModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={updateVehicleModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -449,7 +454,7 @@ const UpdateVehicleModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateVehicleModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

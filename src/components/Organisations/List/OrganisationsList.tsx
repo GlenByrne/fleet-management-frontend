@@ -1,13 +1,19 @@
-import { addOrganisationModalStateVar } from '@/constants/apollo-client';
 import Loading from '@/core/Loading';
 import {
+  Organisation,
   useGetUsersOrganisationsQuery,
   UsersOnOrganisations,
 } from '@/generated/graphql';
 import NoOrganisationsAddButton from './NoOrganisationsAddButton';
 import OrganisationsListItem from './OrganisationsListItem';
 
-const OrganisationsList = () => {
+type OrganisationListProps = {
+  changeAddOrganisationModalState: (newState: boolean) => void;
+};
+
+const OrganisationsList = ({
+  changeAddOrganisationModalState,
+}: OrganisationListProps) => {
   const { data, loading, error } = useGetUsersOrganisationsQuery();
 
   if (loading) {
@@ -36,7 +42,7 @@ const OrganisationsList = () => {
       </ul>
     </div>
   ) : (
-    <NoOrganisationsAddButton onClick={addOrganisationModalStateVar} />
+    <NoOrganisationsAddButton onClick={changeAddOrganisationModalState} />
   );
 };
 

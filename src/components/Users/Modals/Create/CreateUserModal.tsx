@@ -19,13 +19,17 @@ import {
 } from '@/generated/graphql';
 import { Option } from '@/constants/types';
 import {
-  inviteUserModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+
+type CreateUserModalProps = {
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -52,7 +56,10 @@ const getRoleOptions = () => {
   return options;
 };
 
-const CreateUserModal = () => {
+const CreateUserModal = ({
+  modalState,
+  changeModalState,
+}: CreateUserModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -63,8 +70,6 @@ const CreateUserModal = () => {
       },
     },
   });
-
-  const currentModalStateVar = useReactiveVar(inviteUserModalStateVar);
 
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
   const [email, setEmail] = useState('');
@@ -117,7 +122,7 @@ const CreateUserModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    inviteUserModalStateVar(false);
+    changeModalState(false);
 
     try {
       await inviteUserToOrganisation({
@@ -156,8 +161,8 @@ const CreateUserModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={inviteUserModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -218,7 +223,7 @@ const CreateUserModal = () => {
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
               onClick={() => {
-                inviteUserModalStateVar(false);
+                changeModalState(false);
                 setEmail('');
                 setDepot({
                   value: '',

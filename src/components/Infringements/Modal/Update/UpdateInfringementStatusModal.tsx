@@ -1,27 +1,32 @@
 import {
-  currentInfringementVar,
   successAlertStateVar,
   successTextVar,
-  updateInfringementStatusModalStateVar,
 } from '@/constants/apollo-client';
 import Modal from '@/core/Modal/Modal';
-import { useUpdateInfringementStatusMutation } from '@/generated/graphql';
-import { useReactiveVar } from '@apollo/client';
+import {
+  UpdateInfringementInput,
+  useUpdateInfringementStatusMutation,
+} from '@/generated/graphql';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import { useRef, FormEventHandler } from 'react';
 
-const UpdateInfringementStatusModal = () => {
-  const [updateStatus] = useUpdateInfringementStatusMutation();
+type UpdateInfringementStatusModalProps = {
+  currentInfringement: UpdateInfringementInput;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
-  const currentInfringement = useReactiveVar(currentInfringementVar);
-  const currentModalStateVar = useReactiveVar(
-    updateInfringementStatusModalStateVar
-  );
+const UpdateInfringementStatusModal = ({
+  currentInfringement,
+  modalState,
+  changeModalState,
+}: UpdateInfringementStatusModalProps) => {
+  const [updateStatus] = useUpdateInfringementStatusMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateInfringementStatusModalStateVar(false);
+    changeModalState(false);
     try {
       await updateStatus({
         variables: {
@@ -39,8 +44,8 @@ const UpdateInfringementStatusModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={updateInfringementStatusModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -73,7 +78,7 @@ const UpdateInfringementStatusModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateInfringementStatusModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

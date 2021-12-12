@@ -1,15 +1,22 @@
-import {
-  addDefectModalStateVar,
-  currentDefectVar,
-} from '@/constants/apollo-client';
-import { DefectUpdateModalItem } from '@/constants/types';
 import Loading from '@/core/Loading';
 import { Defect, useGetVehicleDefectsQuery } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import DefectListItem from './DefectListItem';
 import NoDefectAddButton from './NoDefectAddButton';
 
-const DefectList = () => {
+type DefectListProps = {
+  changeCurrentDefect: (defect: Defect) => void;
+  changeAddDefectModalState: (newState: boolean) => void;
+  changeDeleteDefectModalState: (newState: boolean) => void;
+  changeUpdateDefectModalState: (newState: boolean) => void;
+};
+
+const DefectList = ({
+  changeCurrentDefect,
+  changeAddDefectModalState,
+  changeDeleteDefectModalState,
+  changeUpdateDefectModalState,
+}: DefectListProps) => {
   const router = useRouter();
   const vehicleId = String(router.query.vehicleId);
 
@@ -27,18 +34,6 @@ const DefectList = () => {
     },
     // skip: shouldSkip,
   });
-
-  const changeCurrentDefect = (defect: Defect) => {
-    const chosenDefect: DefectUpdateModalItem = {
-      id: defect.id,
-      description: defect.description,
-      dateReported: defect.dateReported,
-      reporter: defect.dateReported,
-      dateCompleted: defect.dateCompleted,
-      status: defect.status,
-    };
-    currentDefectVar(chosenDefect);
-  };
 
   if (loading) {
     return <Loading />;
@@ -62,12 +57,14 @@ const DefectList = () => {
             key={defect.id}
             defect={defect}
             changeCurrentDefect={changeCurrentDefect}
+            changeDeleteDefectModalState={changeDeleteDefectModalState}
+            changeUpdateDefectModalState={changeUpdateDefectModalState}
           />
         ))}
       </ul>
     </div>
   ) : (
-    <NoDefectAddButton onClick={addDefectModalStateVar} />
+    <NoDefectAddButton onClick={changeAddDefectModalState} />
   );
 };
 

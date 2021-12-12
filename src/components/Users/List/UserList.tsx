@@ -5,34 +5,27 @@ import {
   GetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
 } from '@/generated/graphql';
-import { UserUpdateModalItem } from '@/constants/types';
-import {
-  currentUserVar,
-  inviteUserModalStateVar,
-} from '@/constants/apollo-client';
 import Loading from '@/core/Loading';
 
 type UserListProps = {
   data: GetUsersInOrganisationQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  changeCurrentUser: (user: UsersInOrganisationPayload) => void;
+  changeInviteUserModalState: (newState: boolean) => void;
+  changeRemoveUserModalState: (newState: boolean) => void;
+  changeUpdateUserModalState: (newState: boolean) => void;
 };
 
-const UserList = ({ data, loading, error }: UserListProps) => {
-  const changeCurrentUser = (user: UsersInOrganisationPayload) => {
-    const chosenUser: UserUpdateModalItem = {
-      id: user.user.id,
-      name: user.user.name,
-      email: user.user.email,
-      role: user.role,
-      depot: {
-        id: user.depot != null ? user.depot.id : '',
-        name: user.depot != null ? user.depot.name : '',
-      },
-    };
-    currentUserVar(chosenUser);
-  };
-
+const UserList = ({
+  data,
+  loading,
+  error,
+  changeCurrentUser,
+  changeInviteUserModalState,
+  changeRemoveUserModalState,
+  changeUpdateUserModalState,
+}: UserListProps) => {
   if (loading) {
     return <Loading />;
   }
@@ -55,12 +48,14 @@ const UserList = ({ data, loading, error }: UserListProps) => {
             key={user.user.id}
             user={user}
             changeCurrentUser={changeCurrentUser}
+            changeRemoveUserModalState={changeRemoveUserModalState}
+            changeUpdateUserModalState={changeUpdateUserModalState}
           />
         ))}
       </ul>
     </div>
   ) : (
-    <NoUsersAddButton onClick={inviteUserModalStateVar} />
+    <NoUsersAddButton onClick={changeInviteUserModalState} />
   );
 };
 

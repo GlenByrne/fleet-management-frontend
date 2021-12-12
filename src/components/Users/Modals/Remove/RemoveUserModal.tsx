@@ -4,8 +4,6 @@ import { useRef } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
-  currentUserVar,
-  removeUserModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -15,14 +13,23 @@ import {
   useRemoveUserFromOrganisationMutation,
 } from '@/generated/graphql';
 import Modal from '@/core/Modal/Modal';
+import { UserUpdateModalItem } from '@/constants/types';
 
-const RemoveUserModal = () => {
+type RemoveUserModalProps = {
+  searchCriteria: string | null;
+  currentUser: UserUpdateModalItem;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
+const RemoveUserModal = ({
+  searchCriteria,
+  currentUser,
+  modalState,
+  changeModalState,
+}: RemoveUserModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-
-  const currentUser = useReactiveVar(currentUserVar);
-
-  const currentModalStateVar = useReactiveVar(removeUserModalStateVar);
 
   const [removeUser] = useRemoveUserFromOrganisationMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -48,7 +55,7 @@ const RemoveUserModal = () => {
   });
 
   const removeUserHandler = async (userId: string) => {
-    removeUserModalStateVar(false);
+    changeModalState(false);
     try {
       await removeUser({
         variables: {
@@ -68,8 +75,8 @@ const RemoveUserModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={removeUserModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -108,7 +115,7 @@ const RemoveUserModal = () => {
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => removeUserModalStateVar(false)}
+            onClick={() => changeModalState(false)}
             ref={cancelButtonRef}
           >
             Cancel

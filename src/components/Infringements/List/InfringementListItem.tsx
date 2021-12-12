@@ -6,22 +6,23 @@ import {
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { Infringement, InfringementStatus } from '@/generated/graphql';
-import {
-  deleteInfringementModalStateVar,
-  updateInfringementModalStateVar,
-  updateInfringementStatusModalStateVar,
-} from '@/constants/apollo-client';
 import { getInfringementClassNames } from '@/utilities/getInfringementClassNames';
 import Button from '@/core/Table/Button';
 
 type InfringementListItemProps = {
   infringement: Infringement;
   changeCurrentInfringement: (infringement: Infringement) => void;
+  changeDeleteInfringementModalState: (newState: boolean) => void;
+  changeUpdateInfringementModalState: (newState: boolean) => void;
+  changeUpdateInfringementStatusModalState: (newState: boolean) => void;
 };
 
 const InfringementListItem = ({
   infringement,
   changeCurrentInfringement,
+  changeDeleteInfringementModalState,
+  changeUpdateInfringementModalState,
+  changeUpdateInfringementStatusModalState,
 }: InfringementListItemProps) => {
   return (
     <li>
@@ -36,7 +37,7 @@ const InfringementListItem = ({
                 <Button
                   onClick={() => {
                     changeCurrentInfringement(infringement);
-                    deleteInfringementModalStateVar(true);
+                    changeDeleteInfringementModalState(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -54,7 +55,7 @@ const InfringementListItem = ({
                   onClick={() => {
                     if (infringement.status != InfringementStatus.Signed) {
                       changeCurrentInfringement(infringement);
-                      updateInfringementStatusModalStateVar(true);
+                      changeUpdateInfringementStatusModalState(true);
                     }
                   }}
                   className={getInfringementClassNames(infringement.status)}
@@ -73,7 +74,7 @@ const InfringementListItem = ({
               <Button
                 onClick={() => {
                   changeCurrentInfringement(infringement);
-                  updateInfringementModalStateVar(true);
+                  changeUpdateInfringementModalState(true);
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />

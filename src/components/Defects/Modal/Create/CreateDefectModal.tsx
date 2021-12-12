@@ -4,7 +4,6 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
-  addDefectModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -16,10 +15,17 @@ import {
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 
-const CreateDefectModal = () => {
+type CreateDefectModalProps = {
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
+const CreateDefectModal = ({
+  modalState,
+  changeModalState,
+}: CreateDefectModalProps) => {
   const router = useRouter();
   const vehicleId = String(router.query.id);
-  const currentModalStateVar = useReactiveVar(addDefectModalStateVar);
 
   const [description, setDescription] = useState('');
 
@@ -59,7 +65,7 @@ const CreateDefectModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    addDefectModalStateVar(false);
+    changeModalState(false);
 
     try {
       await addDefect({
@@ -80,8 +86,8 @@ const CreateDefectModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={addDefectModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -121,7 +127,7 @@ const CreateDefectModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => addDefectModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

@@ -9,15 +9,19 @@ import {
   useGetSelectableItemsForUpdateUserQuery,
   useUpdateUserOrgDetailsMutation,
 } from '@/generated/graphql';
-import { Option } from '@/constants/types';
+import { Option, UserUpdateModalItem } from '@/constants/types';
 import {
-  currentUserVar,
   successAlertStateVar,
   successTextVar,
-  updateUserModalStateVar,
 } from '@/constants/apollo-client';
 import Modal from '@/core/Modal/Modal';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+
+type UpdateUserModalProps = {
+  currentUser: UserUpdateModalItem;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
 const getDepotOptions = (depots: Depot[]) => {
   const options = depots?.map(
@@ -44,7 +48,11 @@ const getRoleOptions = () => {
   return options;
 };
 
-const UpdateUserModal = () => {
+const UpdateUserModal = ({
+  currentUser,
+  modalState,
+  changeModalState,
+}: UpdateUserModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -56,8 +64,6 @@ const UpdateUserModal = () => {
     },
   });
 
-  const currentUser = useReactiveVar(currentUserVar);
-  const currentModalStateVar = useReactiveVar(updateUserModalStateVar);
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
 
   const [depot, setDepot] = useState<Option>({
@@ -93,7 +99,7 @@ const UpdateUserModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateUserModalStateVar(false);
+    changeModalState(false);
     try {
       await updateUser({
         variables: {
@@ -125,8 +131,8 @@ const UpdateUserModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={updateUserModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -175,7 +181,7 @@ const UpdateUserModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateUserModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

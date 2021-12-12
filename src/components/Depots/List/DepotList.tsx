@@ -1,7 +1,3 @@
-import {
-  addDepotModalStateVar,
-  currentDepotVar,
-} from '@/constants/apollo-client';
 import Loading from '@/core/Loading';
 import { Depot, GetDepotsQuery, UpdateDepotInput } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
@@ -12,18 +8,21 @@ type DepotListProps = {
   data: GetDepotsQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  changeCurrentDepot: (depot: Depot) => void;
+  changeAddDepotModalState: (newState: boolean) => void;
+  changeDeleteDepotModalState: (newState: boolean) => void;
+  changeUpdateDepotModalState: (newState: boolean) => void;
 };
 
-const DepotList = ({ data, loading, error }: DepotListProps) => {
-  const changeCurrentDepot = (depot: Depot) => {
-    const chosenDepot: UpdateDepotInput = {
-      id: depot.id,
-      name: depot.name,
-    };
-
-    currentDepotVar(chosenDepot);
-  };
-
+const DepotList = ({
+  data,
+  loading,
+  error,
+  changeCurrentDepot,
+  changeAddDepotModalState,
+  changeDeleteDepotModalState,
+  changeUpdateDepotModalState,
+}: DepotListProps) => {
   if (loading) {
     return <Loading />;
   }
@@ -46,12 +45,14 @@ const DepotList = ({ data, loading, error }: DepotListProps) => {
             key={depot.id}
             depot={depot}
             changeCurrentDepot={changeCurrentDepot}
+            changeDeleteDepotModalState={changeDeleteDepotModalState}
+            changeUpdateDepotModalState={changeUpdateDepotModalState}
           />
         ))}
       </ul>
     </div>
   ) : (
-    <NoDepotAddButton onClick={addDepotModalStateVar} />
+    <NoDepotAddButton onClick={changeAddDepotModalState} />
   );
 };
 

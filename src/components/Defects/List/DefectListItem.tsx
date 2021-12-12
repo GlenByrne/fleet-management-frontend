@@ -1,7 +1,3 @@
-import {
-  deleteDefectModalStateVar,
-  updateDefectModalStateVar,
-} from '@/constants/apollo-client';
 import Button from '@/core/Table/Button';
 import { Defect } from '@/generated/graphql';
 import {
@@ -14,9 +10,16 @@ import Link from 'next/link';
 type DefectItemProps = {
   defect: Defect;
   changeCurrentDefect: (defect: Defect) => void;
+  changeDeleteDefectModalState: (newState: boolean) => void;
+  changeUpdateDefectModalState: (newState: boolean) => void;
 };
 
-const DefectListItem = ({ defect, changeCurrentDefect }: DefectItemProps) => {
+const DefectListItem = ({
+  defect,
+  changeCurrentDefect,
+  changeDeleteDefectModalState,
+  changeUpdateDefectModalState,
+}: DefectItemProps) => {
   return (
     <li>
       <Link href="#">
@@ -30,7 +33,7 @@ const DefectListItem = ({ defect, changeCurrentDefect }: DefectItemProps) => {
                 <Button
                   onClick={() => {
                     changeCurrentDefect(defect);
-                    deleteDefectModalStateVar(true);
+                    changeDeleteDefectModalState(true);
                   }}
                 >
                   <TrashIcon className="h-6 w-6" aria-hidden="true" />
@@ -59,7 +62,7 @@ const DefectListItem = ({ defect, changeCurrentDefect }: DefectItemProps) => {
               <Button
                 onClick={() => {
                   changeCurrentDefect(defect);
-                  updateDefectModalStateVar(true);
+                  changeUpdateDefectModalState(true);
                 }}
               >
                 <PencilIcon className="h-6 w-6" aria-hidden="true" />

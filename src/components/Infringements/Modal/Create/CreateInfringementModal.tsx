@@ -7,7 +7,6 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
   DriversInOrganisationPayload,
@@ -17,7 +16,6 @@ import {
   useGetDriversQuery,
 } from '@/generated/graphql';
 import {
-  addInfringementModalStateVar,
   errorAlertStateVar,
   errorTextVar,
   successAlertStateVar,
@@ -29,6 +27,11 @@ import ModalFormInput from '@/core/Modal/ModalFormInput';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 import DatePickerNoClear from '@/core/DatePickerNoClear';
 
+type CreateInfringementModalProps = {
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
 const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
   const options = drivers?.map(
     (driver) => ({ value: driver.user.id, label: driver.user.name } as Option)
@@ -37,7 +40,10 @@ const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
   return options;
 };
 
-const CreateInfringementModal = () => {
+const CreateInfringementModal = ({
+  modalState,
+  changeModalState,
+}: CreateInfringementModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -49,7 +55,6 @@ const CreateInfringementModal = () => {
     },
   });
 
-  const currentModalStateVar = useReactiveVar(addInfringementModalStateVar);
   const [driverOptions, setDriverOptions] = useState(
     getDriverOptions(
       data?.driversInOrganisation as DriversInOrganisationPayload[]
@@ -107,7 +112,7 @@ const CreateInfringementModal = () => {
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     if (driver.value != null) {
-      addInfringementModalStateVar(false);
+      changeModalState(false);
       try {
         await addInfringement({
           variables: {
@@ -151,8 +156,8 @@ const CreateInfringementModal = () => {
   return (
     <>
       <Modal
-        modalState={currentModalStateVar}
-        setModalState={addInfringementModalStateVar}
+        modalState={modalState}
+        setModalState={changeModalState}
         cancelButtonRef={cancelButtonRef}
       >
         <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -215,7 +220,7 @@ const CreateInfringementModal = () => {
               <button
                 type="button"
                 className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                onClick={() => addInfringementModalStateVar(false)}
+                onClick={() => changeModalState(false)}
                 ref={cancelButtonRef}
               >
                 Cancel

@@ -1,25 +1,25 @@
-import {
-  addInfringementModalStateVar,
-  currentInfringementVar,
-} from '@/constants/apollo-client';
 import { InfringementUpdateModalItem } from '@/constants/types';
 import Loading from '@/core/Loading';
 import { Infringement, useGetInfringementsQuery } from '@/generated/graphql';
 import InfringementListItem from './InfringementListItem';
 import NoInfringementsAddButton from './NoInfringementsAddButton';
 
-const InfringementList = () => {
-  const { data, loading, error } = useGetInfringementsQuery();
+type InfringementListProps = {
+  changeCurrentInfringement: (infringement: Infringement) => void;
+  changeAddInfringementModalState: (newState: boolean) => void;
+  changeDeleteInfringementModalState: (newState: boolean) => void;
+  changeUpdateInfringementModalState: (newState: boolean) => void;
+  changeUpdateInfringementStatusModalState: (newState: boolean) => void;
+};
 
-  const changeCurrentInfringement = (infringement: Infringement) => {
-    const chosenInfringement: InfringementUpdateModalItem = {
-      id: infringement.id,
-      description: infringement.description,
-      dateOccured: infringement.dateOccured,
-      status: infringement.status,
-    };
-    currentInfringementVar(chosenInfringement);
-  };
+const InfringementList = ({
+  changeCurrentInfringement,
+  changeAddInfringementModalState,
+  changeDeleteInfringementModalState,
+  changeUpdateInfringementModalState,
+  changeUpdateInfringementStatusModalState,
+}: InfringementListProps) => {
+  const { data, loading, error } = useGetInfringementsQuery();
 
   if (loading) {
     return <Loading />;
@@ -43,12 +43,21 @@ const InfringementList = () => {
             key={infringement.id}
             infringement={infringement}
             changeCurrentInfringement={changeCurrentInfringement}
+            changeDeleteInfringementModalState={
+              changeDeleteInfringementModalState
+            }
+            changeUpdateInfringementModalState={
+              changeUpdateInfringementModalState
+            }
+            changeUpdateInfringementStatusModalState={
+              changeUpdateInfringementStatusModalState
+            }
           />
         ))}
       </ul>
     </div>
   ) : (
-    <NoInfringementsAddButton onClick={addInfringementModalStateVar} />
+    <NoInfringementsAddButton onClick={changeAddInfringementModalState} />
   );
 };
 

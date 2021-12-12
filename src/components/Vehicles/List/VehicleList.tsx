@@ -2,47 +2,33 @@ import NoVehiclesAddButton from './NoVehiclesAddButton';
 import VehicleListItem from './VehicleListItem';
 import { ApolloError } from '@apollo/client';
 import { GetVehiclesQuery, Vehicle } from '@/generated/graphql';
-import { VehicleUpdateModalItem } from '@/constants/types';
-import {
-  addVehicleModalStateVar,
-  currentVehicleVar,
-} from '@/constants/apollo-client';
 import Loading from '@/core/Loading';
 
 type VehicleListProps = {
   data: GetVehiclesQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  changeCurrentVehicle: (vehicle: Vehicle) => void;
+  changeAddVehicleModalState: (newState: boolean) => void;
+  changeDeleteVehicleModalState: (newState: boolean) => void;
+  changeUpdateVehicleModalState: (newState: boolean) => void;
+  changeUpdateVehicleCVRTModalState: (newState: boolean) => void;
+  changeUpdateVehicleThirteenWeekModalState: (newState: boolean) => void;
+  changeUpdateVehicleTachoCalibrationModalState: (newState: boolean) => void;
 };
 
-const VehicleList = ({ data, loading, error }: VehicleListProps) => {
-  const changeCurrentVehicle = (vehicle: Vehicle) => {
-    const chosenVehicle: VehicleUpdateModalItem = {
-      id: vehicle.id,
-      type: vehicle.type,
-      registration: vehicle.registration,
-      make: vehicle.make,
-      model: vehicle.model,
-      owner: vehicle.owner,
-      cvrt: vehicle.cvrt,
-      tachoCalibration: vehicle.tachoCalibration,
-      thirteenWeekInspection: vehicle.thirteenWeekInspection,
-      depot: {
-        id: vehicle.depot != null ? vehicle.depot.id : '',
-        name: vehicle.depot != null ? vehicle.depot.name : '',
-      },
-      fuelCard: {
-        id: vehicle.fuelCard == null ? '' : vehicle.fuelCard.id,
-        cardNumber: vehicle.fuelCard == null ? '' : vehicle.fuelCard.cardNumber,
-      },
-      tollTag: {
-        id: vehicle.tollTag == null ? '' : vehicle.tollTag.id,
-        tagNumber: vehicle.tollTag == null ? '' : vehicle.tollTag.tagNumber,
-      },
-    };
-    currentVehicleVar(chosenVehicle);
-  };
-
+const VehicleList = ({
+  data,
+  loading,
+  error,
+  changeCurrentVehicle,
+  changeAddVehicleModalState,
+  changeDeleteVehicleModalState,
+  changeUpdateVehicleModalState,
+  changeUpdateVehicleCVRTModalState,
+  changeUpdateVehicleThirteenWeekModalState,
+  changeUpdateVehicleTachoCalibrationModalState,
+}: VehicleListProps) => {
   if (loading) {
     return <Loading />;
   }
@@ -65,12 +51,23 @@ const VehicleList = ({ data, loading, error }: VehicleListProps) => {
             key={vehicle.id}
             vehicle={vehicle}
             changeCurrentVehicle={changeCurrentVehicle}
+            changeDeleteVehicleModalState={changeDeleteVehicleModalState}
+            changeUpdateVehicleModalState={changeUpdateVehicleModalState}
+            changeUpdateVehicleCVRTModalState={
+              changeUpdateVehicleCVRTModalState
+            }
+            changeUpdateVehicleThirteenWeekModalState={
+              changeUpdateVehicleThirteenWeekModalState
+            }
+            changeUpdateVehicleTachoCalibrationModalState={
+              changeUpdateVehicleTachoCalibrationModalState
+            }
           />
         ))}
       </ul>
     </div>
   ) : (
-    <NoVehiclesAddButton onClick={addVehicleModalStateVar} />
+    <NoVehiclesAddButton onClick={changeAddVehicleModalState} />
   );
 };
 

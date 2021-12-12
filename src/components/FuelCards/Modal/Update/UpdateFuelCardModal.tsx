@@ -7,7 +7,6 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
   successAlertStateVar,

@@ -7,18 +7,25 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import { Option } from '@/constants/types';
-import { DefectStatus, useUpdateDefectMutation } from '@/generated/graphql';
 import {
-  currentDefectVar,
+  Defect,
+  DefectStatus,
+  useUpdateDefectMutation,
+} from '@/generated/graphql';
+import {
   successAlertStateVar,
   successTextVar,
-  updateDefectModalStateVar,
 } from '@/constants/apollo-client';
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+
+type UpdateDefectModalProps = {
+  currentDefect: Defect;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
 
 const getDefectStatusOptions = () => {
   const options: Option[] = [
@@ -35,9 +42,11 @@ const getDefectStatusOptions = () => {
   return options;
 };
 
-const UpdateDefectModal = () => {
-  const currentDefect = useReactiveVar(currentDefectVar);
-  const currentModalStateVar = useReactiveVar(updateDefectModalStateVar);
+const UpdateDefectModal = ({
+  currentDefect,
+  modalState,
+  changeModalState,
+}: UpdateDefectModalProps) => {
   const [statusOptions, setStatusOptions] = useState(getDefectStatusOptions());
 
   const [description, setDescription] = useState('');
@@ -66,7 +75,7 @@ const UpdateDefectModal = () => {
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-    updateDefectModalStateVar(false);
+    changeModalState(false);
 
     try {
       await updateDefect({
@@ -86,8 +95,8 @@ const UpdateDefectModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={updateDefectModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -137,7 +146,7 @@ const UpdateDefectModal = () => {
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={() => updateDefectModalStateVar(false)}
+              onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
             >
               Cancel

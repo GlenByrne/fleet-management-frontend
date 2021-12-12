@@ -1,7 +1,3 @@
-import {
-  addTollTagModalStateVar,
-  currentTollTagVar,
-} from '@/constants/apollo-client';
 import { TollTagUpdateModalItem } from '@/constants/types';
 import Loading from '@/core/Loading';
 import { GetTollTagsQuery, TollTag } from '@/generated/graphql';
@@ -13,18 +9,21 @@ type TollTagListProps = {
   data: GetTollTagsQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  changeCurrentTollTag: (tollTag: TollTag) => void;
+  changeAddTollTagModalState: (newState: boolean) => void;
+  changeDeleteTollTagModalState: (newState: boolean) => void;
+  changeUpdateTollTagModalState: (newState: boolean) => void;
 };
 
-const TollTagList = ({ data, loading, error }: TollTagListProps) => {
-  const changeCurrentTollTag = (tollTag: TollTag) => {
-    const chosenTollTag: TollTagUpdateModalItem = {
-      id: tollTag.id,
-      tagNumber: tollTag.tagNumber,
-      tagProvider: tollTag.tagProvider,
-    };
-    currentTollTagVar(chosenTollTag);
-  };
-
+const TollTagList = ({
+  data,
+  loading,
+  error,
+  changeCurrentTollTag,
+  changeAddTollTagModalState,
+  changeDeleteTollTagModalState,
+  changeUpdateTollTagModalState,
+}: TollTagListProps) => {
   if (loading) {
     return <Loading />;
   }
@@ -47,12 +46,14 @@ const TollTagList = ({ data, loading, error }: TollTagListProps) => {
             key={tollTag.id}
             tollTag={tollTag}
             changeCurrentTollTag={changeCurrentTollTag}
+            changeDeleteTollTagModalState={changeDeleteTollTagModalState}
+            changeUpdateTollTagModalState={changeUpdateTollTagModalState}
           />
         ))}
       </ul>
     </div>
   ) : (
-    <NoTollTagAddButton onClick={addTollTagModalStateVar} />
+    <NoTollTagAddButton onClick={changeAddTollTagModalState} />
   );
 };
 

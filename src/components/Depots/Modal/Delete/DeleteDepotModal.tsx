@@ -4,8 +4,6 @@ import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import {
-  currentDepotVar,
-  deleteDepotModalStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
@@ -15,16 +13,26 @@ import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
   GetVehiclesDocument,
+  UpdateDepotInput,
   useDeleteDepotMutation,
 } from '@/generated/graphql';
 import Modal from '@/core/Modal/Modal';
 
-const DeleteDepotModal = () => {
+type DeleteDepotModalProps = {
+  searchCriteria: string | null;
+  currentDepot: UpdateDepotInput;
+  modalState: boolean;
+  changeModalState: (newState: boolean) => void;
+};
+
+const DeleteDepotModal = ({
+  searchCriteria,
+  currentDepot,
+  modalState,
+  changeModalState,
+}: DeleteDepotModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-  const currentDepot = useReactiveVar(currentDepotVar);
-
-  const currentModalStateVar = useReactiveVar(deleteDepotModalStateVar);
 
   const [deleteDepot] = useDeleteDepotMutation({
     update: (cache, { data: mutationReturn }) => {
@@ -85,7 +93,7 @@ const DeleteDepotModal = () => {
   });
 
   const deleteDepotHandler = async (id: string) => {
-    deleteDepotModalStateVar(false);
+    changeModalState(false);
     try {
       await deleteDepot({
         variables: {
@@ -104,8 +112,8 @@ const DeleteDepotModal = () => {
 
   return (
     <Modal
-      modalState={currentModalStateVar}
-      setModalState={deleteDepotModalStateVar}
+      modalState={modalState}
+      setModalState={changeModalState}
       cancelButtonRef={cancelButtonRef}
     >
       <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -143,7 +151,7 @@ const DeleteDepotModal = () => {
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => deleteDepotModalStateVar(false)}
+            onClick={() => changeModalState(false)}
             ref={cancelButtonRef}
           >
             Cancel
