@@ -7,7 +7,6 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import {
   InfringementStatus,
   UpdateInfringementInput,
@@ -19,9 +18,9 @@ import {
 } from '@/constants/apollo-client';
 import { Option } from '@/constants/types';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
-import DatePickerNoClear from '@/core/DatePickerNoClear';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
 import Modal from '@/core/Modal/Modal';
+import DatePickerNoClear from '@/components/Atomic/atoms/DatePickerNoClear';
 
 type UpdateInfringementModalProps = {
   currentInfringement: UpdateInfringementInput;

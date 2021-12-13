@@ -1,0 +1,8 @@
+fragment DepotItemFields on Depot {
+  id
+  name
+  vehicles {
+    id
+    registration
+  }
+}

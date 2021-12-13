@@ -1,12 +1,7 @@
 import { NextPage } from 'next';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  UpdateVehicleInput,
-  useGetVehiclesQuery,
-  Vehicle,
-  VehicleType,
-} from '@/generated/graphql';
+import { useGetVehiclesQuery, Vehicle, VehicleType } from '@/generated/graphql';
 import MainLayout from '@/core/Layout/MainLayout/MainLayout';
 import CreateVehicleModal from '@/components/Vehicles/Modal/Create/CreateVehicleModal';
 import UpdateVehicleModal from '@/components/Vehicles/Modal/Update/UpdateVehicleModal';

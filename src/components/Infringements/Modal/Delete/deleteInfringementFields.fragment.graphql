@@ -1,0 +1,10 @@
+fragment DeleteInfringementFields on Infringement {
+  id
+  description
+  dateOccured
+  status
+  driver {
+    id
+    name
+  }
+}

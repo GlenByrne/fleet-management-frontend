@@ -1,0 +1,11 @@
+query GetUpdateVehicleOptions($organisationId: ID!, $data: DepotInputFilter!) {
+  fuelCardsNotAssigned(organisationId: $organisationId) {
+    ...UpdateVehicleOptionsFuelCardFields
+  }
+  tollTagsNotAssigned(organisationId: $organisationId) {
+    ...UpdateVehicleOptionsTollTagFields
+  }
+  depots(data: $data) {
+    ...UpdateVehicleOptionsDepotFields
+  }
+}

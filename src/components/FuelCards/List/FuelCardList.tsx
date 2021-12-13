@@ -2,7 +2,7 @@ import FuelCardListItem from './FuelCardListItem';
 import NoFuelCardAddButton from './NoFuelCardAddButton';
 import { ApolloError } from '@apollo/client';
 import { FuelCard, GetFuelCardsQuery } from '@/generated/graphql';
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 
 type FuelCardListProps = {
   data: GetFuelCardsQuery | undefined;

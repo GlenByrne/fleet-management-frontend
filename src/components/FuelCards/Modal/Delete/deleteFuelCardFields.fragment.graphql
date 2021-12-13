@@ -1,0 +1,4 @@
+fragment DeleteFuelCardFields on FuelCard {
+  id
+  cardNumber
+}

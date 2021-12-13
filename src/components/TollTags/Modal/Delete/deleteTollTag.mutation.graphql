@@ -1,0 +1,5 @@
+mutation DeleteTollTag($data: DeleteTollTagInput!) {
+  deleteTollTag(data: $data) {
+    ...DeleteTollTagFields
+  }
+}

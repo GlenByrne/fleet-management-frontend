@@ -1,0 +1,9 @@
+fragment FuelCardItemFields on FuelCard {
+  id
+  cardNumber
+  cardProvider
+  vehicle {
+    id
+    registration
+  }
+}

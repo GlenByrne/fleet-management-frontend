@@ -1,0 +1,18 @@
+fragment DriverFields on UsersOnOrganisations {
+  user {
+    id
+    name
+    email
+    infringements {
+      id
+      description
+      dateOccured
+      status
+    }
+  }
+  role
+  depot {
+    id
+    name
+  }
+}

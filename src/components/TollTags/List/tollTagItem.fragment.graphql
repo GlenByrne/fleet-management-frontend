@@ -1,0 +1,9 @@
+fragment TollTagItemFields on TollTag {
+  id
+  tagNumber
+  tagProvider
+  vehicle {
+    id
+    registration
+  }
+}

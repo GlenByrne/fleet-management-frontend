@@ -1,0 +1,5 @@
+mutation AddVehicle($data: AddVehicleInput!) {
+  addVehicle(data: $data) {
+    ...AddVehicleFields
+  }
+}

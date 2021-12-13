@@ -25,7 +25,7 @@ import { Option } from '@/constants/types';
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
-import DatePickerNoClear from '@/core/DatePickerNoClear';
+import DatePickerNoClear from '@/components/Atomic/atoms/DatePickerNoClear';
 
 type CreateInfringementModalProps = {
   modalState: boolean;

@@ -1,0 +1,3 @@
+fragment DeleteDefectFields on Defect {
+  id
+}

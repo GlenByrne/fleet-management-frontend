@@ -1,0 +1,5 @@
+query GetVehicleDefects($vehicleId: ID!) {
+  defectsForVehicle(vehicleId: $vehicleId) {
+    ...DefectItemFields
+  }
+}

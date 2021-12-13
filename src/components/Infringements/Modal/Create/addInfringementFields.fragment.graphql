@@ -1,0 +1,9 @@
+fragment AddInfringementFields on Infringement {
+  id
+  description
+  dateOccured
+  status
+  driver {
+    id
+  }
+}

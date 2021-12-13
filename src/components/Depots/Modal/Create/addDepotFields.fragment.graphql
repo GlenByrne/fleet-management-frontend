@@ -1,0 +1,4 @@
+fragment AddDepotFields on Depot {
+  id
+  name
+}

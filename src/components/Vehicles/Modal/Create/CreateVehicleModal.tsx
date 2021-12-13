@@ -30,7 +30,7 @@ import {
 import Modal from '@/core/Modal/Modal';
 import ModalFormInput from '@/core/Modal/ModalFormInput';
 import ModalFormSelect from '@/core/Modal/ModalFormSelect';
-import DatePicker from '@/core/DatePick';
+import DatePicker from '@/components/Atomic/atoms/DatePick';
 
 type CreateVehicleModalProps = {
   modalState: boolean;

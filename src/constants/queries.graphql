@@ -200,35 +200,7 @@ query GetItemsForUpdateVehicle($organisationId: ID!, $data: DepotInputFilter!) {
   }
 }
 
-query GetSelectableItemsForAddTollTag($data: DepotInputFilter!) {
-  depots(data: $data) {
-    id
-    name
-  }
-}
-
-query GetSelectableItemsForAddFuelCard($data: DepotInputFilter!) {
-  depots(data: $data) {
-    id
-    name
-  }
-}
-
 query GetSelectableItemsForAddUser($data: DepotInputFilter!) {
-  depots(data: $data) {
-    id
-    name
-  }
-}
-
-query GetSelectableItemsForUpdateFuelCard($data: DepotInputFilter!) {
-  depots(data: $data) {
-    id
-    name
-  }
-}
-
-query GetSelectableItemsForUpdateTollTag($data: DepotInputFilter!) {
   depots(data: $data) {
     id
     name

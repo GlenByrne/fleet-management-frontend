@@ -1,4 +1,4 @@
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 import { Defect, useGetVehicleDefectsQuery } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import DefectListItem from './DefectListItem';

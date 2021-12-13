@@ -1,0 +1,4 @@
+fragment DeleteDepotFields on Depot {
+  id
+  name
+}

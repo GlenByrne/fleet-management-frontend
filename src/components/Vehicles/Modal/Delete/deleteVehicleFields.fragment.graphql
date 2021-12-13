@@ -1,0 +1,4 @@
+fragment DeleteVehicleFields on Vehicle {
+  id
+  registration
+}

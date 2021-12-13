@@ -1,4 +1,4 @@
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 import { Depot, GetDepotsQuery, UpdateDepotInput } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
 import DepotListItem from './DepotListItem';

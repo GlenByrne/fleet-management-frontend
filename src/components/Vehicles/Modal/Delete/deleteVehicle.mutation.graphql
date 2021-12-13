@@ -1,0 +1,5 @@
+mutation DeleteVehicle($data: DeleteVehicleInput!) {
+  deleteVehicle(data: $data) {
+    ...DeleteVehicleFields
+  }
+}

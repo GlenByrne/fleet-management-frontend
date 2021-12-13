@@ -1,0 +1,5 @@
+mutation AddDefect($data: AddDefectInput!) {
+  addDefect(data: $data) {
+    ...AddDefectFields
+  }
+}

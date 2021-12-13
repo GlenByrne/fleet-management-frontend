@@ -2,7 +2,7 @@ import NoVehiclesAddButton from './NoVehiclesAddButton';
 import VehicleListItem from './VehicleListItem';
 import { ApolloError } from '@apollo/client';
 import { GetVehiclesQuery, Vehicle } from '@/generated/graphql';
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 
 type VehicleListProps = {
   data: GetVehiclesQuery | undefined;

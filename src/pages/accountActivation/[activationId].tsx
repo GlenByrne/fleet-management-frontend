@@ -1,4 +1,4 @@
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 import { useActivateAccountMutation } from '@/generated/graphql';
 import { NextPage } from 'next';
 import Link from 'next/link';

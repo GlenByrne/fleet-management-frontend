@@ -1,0 +1,5 @@
+query GetDrivers($data: DriversInOrganisationInputFilter!) {
+  driversInOrganisation(data: $data) {
+    ...DriverFields
+  }
+}

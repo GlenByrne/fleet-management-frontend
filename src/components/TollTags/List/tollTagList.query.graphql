@@ -1,0 +1,5 @@
+query GetTollTags($data: TollTagInputFilter!) {
+  tollTags(data: $data) {
+    ...TollTagItemFields
+  }
+}

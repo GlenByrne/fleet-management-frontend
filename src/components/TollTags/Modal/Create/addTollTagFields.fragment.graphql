@@ -1,0 +1,9 @@
+fragment AddTollTagFields on TollTag {
+  id
+  tagNumber
+  tagProvider
+  vehicle {
+    id
+    registration
+  }
+}

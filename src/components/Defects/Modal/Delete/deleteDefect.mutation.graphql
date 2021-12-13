@@ -1,0 +1,5 @@
+mutation DeleteDefect($data: DeleteDefectInput!) {
+  deleteDefect(data: $data) {
+    ...DeleteDefectFields
+  }
+}

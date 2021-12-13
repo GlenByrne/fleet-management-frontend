@@ -1,21 +1,18 @@
 import { SetStateAction } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  XIcon,
-} from '@heroicons/react/solid';
-import CalendarContainer from './CalendarContainer';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import CalendarContainer from '@/core/CalendarContainer';
+
 type DatePickProps = {
   label: string;
   name: string;
-  selected: Date | null;
+  selected: Date;
   required: boolean;
-  onChange: (value: SetStateAction<Date | null>) => void;
+  onChange: (value: SetStateAction<Date>) => void;
 };
 
-const DatePicker = ({
+const DatePickerNoClear = ({
   label,
   name,
   selected,
@@ -28,10 +25,10 @@ const DatePicker = ({
       onChange={(date: Date) => onChange(date)}
       startDate={selected}
       required={required}
-      isClearable={true}
       placeholderText="None"
       nextMonthButtonLabel=">"
       previousMonthButtonLabel="<"
+      popperClassName="react-datepicker-left"
       popperContainer={CalendarContainer}
       customInput={
         <div className="col-span-6 sm:col-span-3">
@@ -58,22 +55,12 @@ const DatePicker = ({
         prevMonthButtonDisabled,
         nextMonthButtonDisabled,
       }) => (
-        <div className="flex items-center justify-between px-1 py-1">
+        <div className="flex items-center justify-between px-2 py-2">
           <span className="text-lg text-gray-700">
             {format(date, 'MMMM yyyy')}
           </span>
 
           <div className="space-x-2">
-            <button
-              onClick={() => onChange(null)}
-              type="button"
-              className={
-                'inline-flex p-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-indigo-500'
-              }
-            >
-              <XIcon className="w-5 h-5 text-gray-600" />
-            </button>
-
             <button
               onClick={decreaseMonth}
               disabled={prevMonthButtonDisabled}
@@ -107,4 +94,4 @@ const DatePicker = ({
   );
 };
 
-export default DatePicker;
+export default DatePickerNoClear;

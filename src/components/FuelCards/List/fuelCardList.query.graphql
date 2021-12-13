@@ -1,0 +1,5 @@
+query GetFuelCards($data: FuelCardInputFilter!) {
+  fuelCards(data: $data) {
+    ...FuelCardItemFields
+  }
+}

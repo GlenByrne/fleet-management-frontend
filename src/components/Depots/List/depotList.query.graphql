@@ -1,0 +1,5 @@
+query GetDepots($data: DepotInputFilter!) {
+  depots(data: $data) {
+    ...DepotItemFields
+  }
+}

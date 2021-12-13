@@ -1,0 +1,5 @@
+mutation AddDepot($data: AddDepotInput!) {
+  addDepot(data: $data) {
+    ...AddDepotFields
+  }
+}

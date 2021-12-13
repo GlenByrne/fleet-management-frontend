@@ -33,8 +33,6 @@ const DeleteFuelCardModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  // const currentModalStateVar = useReactiveVar(deleteFuelCardModalStateVar);
-
   const [deleteFuelCard] = useDeleteFuelCardMutation({
     update: (cache, { data: mutationReturn }) => {
       const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({

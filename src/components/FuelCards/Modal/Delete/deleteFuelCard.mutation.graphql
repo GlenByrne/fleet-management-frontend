@@ -1,0 +1,5 @@
+mutation DeleteFuelCard($data: DeleteFuelCardInput!) {
+  deleteFuelCard(data: $data) {
+    ...DeleteFuelCardFields
+  }
+}

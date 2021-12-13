@@ -1,4 +1,4 @@
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 import { GetTollTagsQuery, TollTag } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
 import NoTollTagAddButton from './NoTollTagAddButton';

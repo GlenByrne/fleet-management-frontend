@@ -1,0 +1,5 @@
+mutation DeleteInfringement($data: DeleteInfringementInput!) {
+  deleteInfringement(data: $data) {
+    ...DeleteInfringementFields
+  }
+}

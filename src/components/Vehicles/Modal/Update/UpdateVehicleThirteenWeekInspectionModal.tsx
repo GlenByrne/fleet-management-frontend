@@ -1,9 +1,9 @@
+import DatePickerNoClear from '@/components/Atomic/atoms/DatePickerNoClear';
 import {
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
 import { VehicleUpdateModalItem } from '@/constants/types';
-import DatePickerNoClear from '@/core/DatePickerNoClear';
 import Modal from '@/core/Modal/Modal';
 import { useUpdateVehicleThirteenWeekInspectionMutation } from '@/generated/graphql';
 import { useReactiveVar } from '@apollo/client';

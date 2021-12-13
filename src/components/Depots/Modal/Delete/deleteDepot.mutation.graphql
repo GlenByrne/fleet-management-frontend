@@ -1,0 +1,5 @@
+mutation DeleteDepot($data: DeleteDepotInput!) {
+  deleteDepot(data: $data) {
+    ...DeleteDepotFields
+  }
+}

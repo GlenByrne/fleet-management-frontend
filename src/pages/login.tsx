@@ -1,7 +1,7 @@
 import AlreadyLoggedIn from '@/components/Login/AlreadyLoggedIn';
 import LoginForm from '@/components/Login/LoginForm';
 import { accessTokenVar } from '@/constants/apollo-client';
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 import { NextPage } from 'next';
 import { useEffect } from 'react';
 import { useState } from 'react';

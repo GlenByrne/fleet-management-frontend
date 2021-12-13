@@ -1,0 +1,4 @@
+fragment UpdateVehicleOptionsDepotFields on Depot {
+  id
+  name
+}

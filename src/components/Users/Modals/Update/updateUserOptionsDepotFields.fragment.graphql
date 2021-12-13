@@ -1,0 +1,4 @@
+fragment UpdateUserOptionsDepotFields on Depot {
+  id
+  name
+}

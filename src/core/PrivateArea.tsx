@@ -1,7 +1,7 @@
 import { checkAuth } from '@/utilities/auth';
 import { useRouter } from 'next/router';
 import { ReactNode, useState, useEffect } from 'react';
-import Loading from './Loading';
+import Loading from '../components/Atomic/atoms/Loading';
 
 type PrivateAreaProps = {
   children: ReactNode;

@@ -1,4 +1,4 @@
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 import { Infringement, useGetInfringementsQuery } from '@/generated/graphql';
 import InfringementListItem from './InfringementListItem';
 import NoInfringementsAddButton from './NoInfringementsAddButton';

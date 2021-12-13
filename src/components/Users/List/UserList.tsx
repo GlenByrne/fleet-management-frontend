@@ -5,7 +5,7 @@ import {
   GetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
 } from '@/generated/graphql';
-import Loading from '@/core/Loading';
+import Loading from '@/components/Atomic/atoms/Loading';
 
 type UserListProps = {
   data: GetUsersInOrganisationQuery | undefined;

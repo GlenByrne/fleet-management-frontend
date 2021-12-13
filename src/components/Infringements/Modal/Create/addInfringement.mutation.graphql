@@ -1,0 +1,5 @@
+mutation AddInfringement($data: AddInfringementInput!) {
+  addInfringement(data: $data) {
+    ...AddInfringementFields
+  }
+}

@@ -1,0 +1,5 @@
+query GetUpdateUserOptions($data: DepotInputFilter!) {
+  depots(data: $data) {
+    ...UpdateUserOptionsDepotFields
+  }
+}

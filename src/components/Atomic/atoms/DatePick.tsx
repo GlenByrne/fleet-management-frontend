@@ -1,18 +1,24 @@
 import { SetStateAction } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import CalendarContainer from './CalendarContainer';
-
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  XIcon,
+} from '@heroicons/react/solid';
+import CalendarContainer from '../../../core/CalendarContainer';
+import FormLabel from '@/components/Atomic/atoms/FormLabel';
+import DatePickerSelectButton from '@/components/Atomic/atoms/DatePickerSelectButton';
+import XButton from '@/components/Atomic/atoms/XButton';
 type DatePickProps = {
   label: string;
   name: string;
-  selected: Date;
+  selected: Date | null;
   required: boolean;
-  onChange: (value: SetStateAction<Date>) => void;
+  onChange: (value: SetStateAction<Date | null>) => void;
 };
 
-const DatePickerNoClear = ({
+const DatePicker = ({
   label,
   name,
   selected,
@@ -25,26 +31,23 @@ const DatePickerNoClear = ({
       onChange={(date: Date) => onChange(date)}
       startDate={selected}
       required={required}
+      isClearable={true}
       placeholderText="None"
       nextMonthButtonLabel=">"
       previousMonthButtonLabel="<"
-      popperClassName="react-datepicker-left"
       popperContainer={CalendarContainer}
       customInput={
         <div className="col-span-6 sm:col-span-3">
           <div className="flex justify-between">
-            <label className="block text-sm font-medium text-gray-700">
-              {label}
-            </label>
+            <FormLabel label={label} />
           </div>
           <div className="mt-1">
-            <button
-              type="button"
+            <DatePickerSelectButton
+              text={
+                selected ? format(new Date(selected), 'dd/MM/yyyy') : 'None'
+              }
               name={name}
-              className="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            >
-              {selected ? format(new Date(selected), 'dd/MM/yyyy') : 'None'}
-            </button>
+            />
           </div>
         </div>
       }
@@ -55,12 +58,14 @@ const DatePickerNoClear = ({
         prevMonthButtonDisabled,
         nextMonthButtonDisabled,
       }) => (
-        <div className="flex items-center justify-between px-2 py-2">
+        <div className="flex items-center justify-between px-1 py-1">
           <span className="text-lg text-gray-700">
             {format(date, 'MMMM yyyy')}
           </span>
 
           <div className="space-x-2">
+            <XButton onClick={() => onChange(null)} />
+
             <button
               onClick={decreaseMonth}
               disabled={prevMonthButtonDisabled}
@@ -94,4 +99,4 @@ const DatePickerNoClear = ({
   );
 };
 
-export default DatePickerNoClear;
+export default DatePicker;

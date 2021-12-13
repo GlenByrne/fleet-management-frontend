@@ -1,0 +1,5 @@
+mutation AddTollTag($data: AddTollTagInput!) {
+  addTollTag(data: $data) {
+    ...AddTollTagFields
+  }
+}
