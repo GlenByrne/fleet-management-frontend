@@ -99,39 +99,6 @@ const TollTags: NextPage = () => {
       changeUpdateTollTagModalState={changeUpdateTollTagModalState}
       changeDeleteTollTagModalState={changeDeleteTollTagModalState}
     />
-    // <MainLayout
-    //   hasQuickActionButton={true}
-    //   quickAction={changeAddTollTagModalState}
-    //   quickActionLabel="New Tag"
-    //   pageSearchable={true}
-    //   searchSubmitHandler={submitHandler}
-    //   setSearchCriteria={changeSearchCriteria}
-    // >
-    //   <CreateTollTagModal
-    //     modalState={addTollTagModalState}
-    //     changeModalState={changeAddTollTagModalState}
-    //   />
-    //   <UpdateTollTagModal
-    //     currentTollTag={currentTollTag}
-    //     modalState={updateTollTagModalState}
-    //     changeModalState={changeUpdateTollTagModalState}
-    //   />
-    //   <DeleteTollTagModal
-    //     searchCriteria={searchCriteria}
-    //     currentTollTag={currentTollTag}
-    //     modalState={deleteTollTagModalState}
-    //     changeModalState={changeDeleteTollTagModalState}
-    //   />
-    //   <TollTagList
-    //     data={data}
-    //     loading={loading}
-    //     error={error}
-    //     changeAddTollTagModalState={changeAddTollTagModalState}
-    //     changeDeleteTollTagModalState={changeDeleteTollTagModalState}
-    //     changeUpdateTollTagModalState={changeUpdateTollTagModalState}
-    //     changeCurrentTollTag={changeCurrentTollTag}
-    //   />
-    // </MainLayout>
   );
 };
 
