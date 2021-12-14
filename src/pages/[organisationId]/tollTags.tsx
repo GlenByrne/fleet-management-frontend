@@ -6,11 +6,7 @@ import {
   UpdateTollTagInput,
   useGetTollTagsQuery,
 } from '@/generated/graphql';
-import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
-import CreateTollTagModal from '@/components/TollTags/Modal/Create/CreateTollTagModal';
-import UpdateTollTagModal from '@/components/TollTags/Modal/Update/UpdateTollTagModal';
-import DeleteTollTagModal from '@/components/TollTags/Modal/Delete/DeleteTollTagModal';
-import TollTagList from '@/components/TollTags/List/TollTagList';
+import TollTagsPage from '@/components/Atomic/pages/tollTags';
 
 const TollTags: NextPage = () => {
   const router = useRouter();
@@ -60,7 +56,7 @@ const TollTags: NextPage = () => {
     setSearchCriteria(event.currentTarget.value);
   };
 
-  const submitHandler: FormEventHandler = (e) => {
+  const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
       data: {
@@ -70,6 +66,12 @@ const TollTags: NextPage = () => {
     });
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   // const accessToken = useAuthentication();
 
   // if (!accessToken) {
@@ -77,39 +79,59 @@ const TollTags: NextPage = () => {
   // }
 
   return (
-    <MainLayout
-      hasQuickActionButton={true}
+    <TollTagsPage
+      data={data}
+      loading={loading}
+      error={error}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={changeMobileMenuOpenState}
+      searchCriteria={searchCriteria}
+      changeSearchCriteria={changeSearchCriteria}
+      searchSubmitHandler={searchSubmitHandler}
       quickAction={changeAddTollTagModalState}
       quickActionLabel="New Tag"
-      pageSearchable={true}
-      searchSubmitHandler={submitHandler}
-      setSearchCriteria={changeSearchCriteria}
-    >
-      <CreateTollTagModal
-        modalState={addTollTagModalState}
-        changeModalState={changeAddTollTagModalState}
-      />
-      <UpdateTollTagModal
-        currentTollTag={currentTollTag}
-        modalState={updateTollTagModalState}
-        changeModalState={changeUpdateTollTagModalState}
-      />
-      <DeleteTollTagModal
-        searchCriteria={searchCriteria}
-        currentTollTag={currentTollTag}
-        modalState={deleteTollTagModalState}
-        changeModalState={changeDeleteTollTagModalState}
-      />
-      <TollTagList
-        data={data}
-        loading={loading}
-        error={error}
-        changeAddTollTagModalState={changeAddTollTagModalState}
-        changeDeleteTollTagModalState={changeDeleteTollTagModalState}
-        changeUpdateTollTagModalState={changeUpdateTollTagModalState}
-        changeCurrentTollTag={changeCurrentTollTag}
-      />
-    </MainLayout>
+      currentTollTag={currentTollTag}
+      changeCurrentTollTag={changeCurrentTollTag}
+      addTollTagModalState={addTollTagModalState}
+      updateTollTagModalState={updateTollTagModalState}
+      deleteTollTagModalState={deleteTollTagModalState}
+      changeAddTollTagModalState={changeAddTollTagModalState}
+      changeUpdateTollTagModalState={changeUpdateTollTagModalState}
+      changeDeleteTollTagModalState={changeDeleteTollTagModalState}
+    />
+    // <MainLayout
+    //   hasQuickActionButton={true}
+    //   quickAction={changeAddTollTagModalState}
+    //   quickActionLabel="New Tag"
+    //   pageSearchable={true}
+    //   searchSubmitHandler={submitHandler}
+    //   setSearchCriteria={changeSearchCriteria}
+    // >
+    //   <CreateTollTagModal
+    //     modalState={addTollTagModalState}
+    //     changeModalState={changeAddTollTagModalState}
+    //   />
+    //   <UpdateTollTagModal
+    //     currentTollTag={currentTollTag}
+    //     modalState={updateTollTagModalState}
+    //     changeModalState={changeUpdateTollTagModalState}
+    //   />
+    //   <DeleteTollTagModal
+    //     searchCriteria={searchCriteria}
+    //     currentTollTag={currentTollTag}
+    //     modalState={deleteTollTagModalState}
+    //     changeModalState={changeDeleteTollTagModalState}
+    //   />
+    //   <TollTagList
+    //     data={data}
+    //     loading={loading}
+    //     error={error}
+    //     changeAddTollTagModalState={changeAddTollTagModalState}
+    //     changeDeleteTollTagModalState={changeDeleteTollTagModalState}
+    //     changeUpdateTollTagModalState={changeUpdateTollTagModalState}
+    //     changeCurrentTollTag={changeCurrentTollTag}
+    //   />
+    // </MainLayout>
   );
 };
 

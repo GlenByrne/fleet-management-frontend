@@ -1,7 +1,12 @@
-import { FormEvent, FormEventHandler, useRef, useState } from 'react';
+import {
+  FormEvent,
+  FormEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
   successAlertStateVar,
@@ -10,27 +15,36 @@ import {
 import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
-  GetTollTagsDocument,
-  GetTollTagsQuery,
-  useAddTollTagMutation,
+  GetVehiclesDocument,
+  UpdateTollTagInput,
+  useUpdateTollTagMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/Atomic/atoms/Modal';
 import ModalFormInput from '@/components/Atomic/molecules/ModalFormInput';
+import SuccessButton from '@/components/Atomic/atoms/SuccessButton';
+import CancelButton from '@/components/Atomic/atoms/CancelButton';
 
-type CreateTollTagModalProps = {
+type UpdateTollTagModalProps = {
+  currentTollTag: UpdateTollTagInput;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
-const CreateTollTagModal = ({
+const UpdateTollTagModal = ({
+  currentTollTag,
   modalState,
   changeModalState,
-}: CreateTollTagModalProps) => {
+}: UpdateTollTagModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
   const [tagNumber, setTagNumber] = useState('');
   const [tagProvider, setTagProvider] = useState('');
+
+  useEffect(() => {
+    setTagNumber(currentTollTag.tagNumber);
+    setTagProvider(currentTollTag.tagProvider);
+  }, [currentTollTag]);
 
   const changeTagNumber = (event: FormEvent<HTMLInputElement>) => {
     setTagNumber(event.currentTarget.value);
@@ -42,30 +56,14 @@ const CreateTollTagModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addTollTag] = useAddTollTagMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newTollTag = mutationReturn?.addTollTag;
-      const currentTollTags = cache.readQuery<GetTollTagsQuery>({
-        query: GetTollTagsDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      });
-      if (currentTollTags && newTollTag) {
-        cache.writeQuery({
-          query: GetTollTagsDocument,
-          variables: {
-            data: {
-              organisationId,
-            },
-          },
-          data: { tollTags: [{ ...currentTollTags.tollTags }, newTollTag] },
-        });
-      }
-    },
+  const [updateTollTag] = useUpdateTollTagMutation({
     refetchQueries: [
+      {
+        query: GetVehiclesDocument,
+        variables: {
+          organisationId: organisationId,
+        },
+      },
       {
         query: GetSelectableItemsForAddVehicleDocument,
         variables: {
@@ -89,26 +87,21 @@ const CreateTollTagModal = ({
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-
     changeModalState(false);
-
     try {
-      await addTollTag({
+      await updateTollTag({
         variables: {
           data: {
+            id: currentTollTag.id,
             tagNumber: tagNumber != null ? tagNumber : '',
             tagProvider: tagProvider != null ? tagProvider : '',
-            organisationId,
           },
         },
       });
 
-      successTextVar('Toll Tag added successfully');
+      successTextVar('Toll Tag updated successfully');
       successAlertStateVar(true);
     } catch {}
-
-    setTagNumber('');
-    setTagProvider('');
   };
 
   return (
@@ -128,7 +121,7 @@ const CreateTollTagModal = ({
                 as="h3"
                 className="text-lg leading-6 font-medium text-gray-900"
               >
-                Add Toll Tag
+                Update Toll Tag
               </Dialog.Title>
               <div className="grid grid-cols-6 gap-6 mt-2">
                 <div className="col-span-6 sm:col-span-3">
@@ -156,20 +149,11 @@ const CreateTollTagModal = ({
             </div>
           </div>
           <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-            <button
-              type="submit"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Add
-            </button>
-            <button
-              type="button"
-              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+            <SuccessButton text="Save" type="submit" />
+            <CancelButton
               onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
-            >
-              Cancel
-            </button>
+            />
           </div>
         </form>
       </div>
@@ -177,4 +161,4 @@ const CreateTollTagModal = ({
   );
 };
 
-export default CreateTollTagModal;
+export default UpdateTollTagModal;
