@@ -1,35 +1,49 @@
-import { useReactiveVar } from '@apollo/client';
 import { TruckIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
-import { FormEvent, FormEventHandler, useRef, useState } from 'react';
+import {
+  FormEvent,
+  useEffect,
+  useState,
+  useRef,
+  FormEventHandler,
+} from 'react';
 import { useRouter } from 'next/router';
 import {
+  errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
 import {
-  GetDepotsDocument,
-  GetDepotsQuery,
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,
-  useAddDepotMutation,
+  GetVehiclesDocument,
+  UpdateDepotInput,
+  useUpdateDepotMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/Atomic/atoms/Modal';
 import ModalFormInput from '@/components/Atomic/molecules/ModalFormInput';
+import SuccessButton from '@/components/Atomic/atoms/SuccessButton';
+import CancelButton from '@/components/Atomic/atoms/CancelButton';
 
-type CreateDepotModalProps = {
+type UpdateDepotModalProps = {
+  currentDepot: UpdateDepotInput;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
-const CreateDepotModal = ({
+const UpdateDepotModal = ({
+  currentDepot,
   modalState,
   changeModalState,
-}: CreateDepotModalProps) => {
+}: UpdateDepotModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
   const [name, setName] = useState('');
+
+  useEffect(() => {
+    setName(currentDepot.name);
+  }, [currentDepot]);
 
   const changeName = (event: FormEvent<HTMLInputElement>) => {
     setName(event.currentTarget.value);
@@ -37,33 +51,16 @@ const CreateDepotModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addDepot] = useAddDepotMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newDepot = mutationReturn?.addDepot;
-      const currentDepots = cache.readQuery<GetDepotsQuery>({
-        query: GetDepotsDocument,
+  const [updateDepot] = useUpdateDepotMutation({
+    refetchQueries: [
+      {
+        query: GetVehiclesDocument,
         variables: {
           data: {
             organisationId: organisationId,
           },
         },
-      });
-
-      if (currentDepots && newDepot) {
-        cache.writeQuery({
-          query: GetDepotsDocument,
-          variables: {
-            data: {
-              organisationId: organisationId,
-            },
-          },
-          data: {
-            depots: [{ ...currentDepots.depots }, newDepot],
-          },
-        });
-      }
-    },
-    refetchQueries: [
+      },
       {
         query: GetSelectableItemsForAddVehicleDocument,
         variables: {
@@ -88,21 +85,22 @@ const CreateDepotModal = ({
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-
     try {
-      await addDepot({
+      await updateDepot({
         variables: {
           data: {
+            id: currentDepot.id,
             name: name != null ? name : '',
-            organisationId,
           },
         },
       });
-      successTextVar('Depot added successfully');
-      successAlertStateVar(true);
-    } catch {}
 
-    setName('');
+      successTextVar('Depot updated successfully');
+      successAlertStateVar(true);
+    } catch {
+      errorAlertStateVar(true);
+      throw new Error('Error updating depot');
+    }
   };
 
   return (
@@ -122,7 +120,7 @@ const CreateDepotModal = ({
                 as="h3"
                 className="text-lg leading-6 font-medium text-gray-900"
               >
-                Add Depot
+                Update Fuel Card
               </Dialog.Title>
               <div className="grid grid-cols-6 gap-6 mt-2">
                 <div className="col-span-6 sm:col-span-3">
@@ -139,20 +137,11 @@ const CreateDepotModal = ({
             </div>
           </div>
           <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-            <button
-              type="submit"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Add
-            </button>
-            <button
-              type="button"
-              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+            <SuccessButton text="Save" type="submit" />
+            <CancelButton
               onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
-            >
-              Cancel
-            </button>
+            />
           </div>
         </form>
       </div>
@@ -160,4 +149,4 @@ const CreateDepotModal = ({
   );
 };
 
-export default CreateDepotModal;
+export default UpdateDepotModal;

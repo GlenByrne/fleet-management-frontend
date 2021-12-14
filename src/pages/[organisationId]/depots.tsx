@@ -6,11 +6,12 @@ import {
   UpdateDepotInput,
   useGetDepotsQuery,
 } from '@/generated/graphql';
-import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
-import CreateDepotModal from '@/components/Depots/Modal/Create/CreateDepotModal';
-import UpdateDepotModal from '@/components/Depots/Modal/Update/UpdateDepotModal';
-import DeleteDepotModal from '@/components/Depots/Modal/Delete/DeleteDepotModal';
-import DepotList from '@/components/Depots/List/DepotList';
+import MainLayout from '@/components/Atomic/templates/DepotTemplate';
+import CreateDepotModal from '@/components/Atomic/organisms/Depots/Modal/Create/CreateDepotModal';
+import UpdateDepotModal from '@/components/Atomic/organisms/Depots/Modal/Update/UpdateDepotModal';
+import DeleteDepotModal from '@/components/Atomic/organisms/Depots/Modal/Delete/DeleteDepotModal';
+import DepotList from '@/components/Atomic/organisms/Depots/List/DepotList';
+import DepotsPage from '@/components/Atomic/pages/depots';
 
 const Depots: NextPage = () => {
   const router = useRouter();
@@ -58,7 +59,7 @@ const Depots: NextPage = () => {
     setSearchCriteria(event.currentTarget.value);
   };
 
-  const submitHandler: FormEventHandler = (e) => {
+  const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
       data: {
@@ -68,6 +69,12 @@ const Depots: NextPage = () => {
     });
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   // const accessToken = useAuthentication();
 
   // if (!accessToken) {
@@ -75,39 +82,26 @@ const Depots: NextPage = () => {
   // }
 
   return (
-    <MainLayout
-      hasQuickActionButton={true}
+    <DepotsPage
+      data={data}
+      loading={loading}
+      error={error}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={changeMobileMenuOpenState}
+      searchCriteria={searchCriteria}
+      changeSearchCriteria={changeSearchCriteria}
+      searchSubmitHandler={searchSubmitHandler}
       quickAction={changeAddDepotModalState}
       quickActionLabel="New Depot"
-      pageSearchable={true}
-      searchSubmitHandler={submitHandler}
-      setSearchCriteria={changeSearchCriteria}
-    >
-      <CreateDepotModal
-        modalState={addDepotModalState}
-        changeModalState={changeAddDepotModalState}
-      />
-      <UpdateDepotModal
-        currentDepot={currentDepot}
-        modalState={updateDepotModalState}
-        changeModalState={changeUpdateDepotModalState}
-      />
-      <DeleteDepotModal
-        searchCriteria={searchCriteria}
-        currentDepot={currentDepot}
-        modalState={deleteDepotModalState}
-        changeModalState={changeDeleteDepotModalState}
-      />
-      <DepotList
-        data={data}
-        loading={loading}
-        error={error}
-        changeAddDepotModalState={changeAddDepotModalState}
-        changeDeleteDepotModalState={changeDeleteDepotModalState}
-        changeUpdateDepotModalState={changeUpdateDepotModalState}
-        changeCurrentDepot={changeCurrentDepot}
-      />
-    </MainLayout>
+      currentDepot={currentDepot}
+      changeCurrentDepot={changeCurrentDepot}
+      addDepotModalState={addDepotModalState}
+      updateDepotModalState={updateDepotModalState}
+      deleteDepotModalState={deleteDepotModalState}
+      changeAddDepotModalState={changeAddDepotModalState}
+      changeUpdateDepotModalState={changeUpdateDepotModalState}
+      changeDeleteDepotModalState={changeDeleteDepotModalState}
+    />
   );
 };
 

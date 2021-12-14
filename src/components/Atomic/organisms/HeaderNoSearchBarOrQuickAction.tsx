@@ -1,6 +1,6 @@
 import MobileMenuHamburgerButton from '@/components/Atomic/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/Atomic/atoms/ProfileDropdownMenuItem';
-import ProfileIconButton from '@/components/Atomic/atoms/ProfileIconbutton';
+import ProfileIconButton from '@/components/Atomic/atoms/ProfileIconButton';
 import { UserNavbarOption } from '@/constants/types';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';

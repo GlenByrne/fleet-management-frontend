@@ -1,7 +1,6 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
   successAlertStateVar,
