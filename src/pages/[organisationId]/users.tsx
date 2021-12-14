@@ -4,15 +4,15 @@ import { useRouter } from 'next/router';
 import {
   Role,
   useGetUsersInOrganisationQuery,
-  User,
   UsersInOrganisationPayload,
 } from '@/generated/graphql';
 import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
-import CreateUserModal from '@/components/Users/Modals/Create/CreateUserModal';
-import UpdateUserModal from '@/components/Users/Modals/Update/UpdateUserModal';
-import RemoveUserModal from '@/components/Users/Modals/Remove/RemoveUserModal';
-import UserList from '@/components/Users/List/UserList';
+import CreateUserModal from '@/components/Atomic/organisms/Users/Modals/Create/CreateUserModal';
+import UpdateUserModal from '@/components/Atomic/organisms/Users/Modals/Update/UpdateUserModal';
+import RemoveUserModal from '@/components/Atomic/organisms/Users/Modals/Remove/RemoveUserModal';
+import UserList from '@/components/Atomic/organisms/Users/List/UserList';
 import { UserUpdateModalItem } from '@/constants/types';
+import UsersPage from '@/components/Atomic/pages/users';
 
 const Users: NextPage = () => {
   const router = useRouter();
@@ -69,7 +69,7 @@ const Users: NextPage = () => {
     setSearchCriteria(event.currentTarget.value);
   };
 
-  const submitHandler: FormEventHandler = (e) => {
+  const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
       data: {
@@ -79,6 +79,12 @@ const Users: NextPage = () => {
     });
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   // const accessToken = useAuthentication();
 
   // if (!accessToken) {
@@ -86,39 +92,59 @@ const Users: NextPage = () => {
   // }
 
   return (
-    <MainLayout
-      hasQuickActionButton={true}
+    <UsersPage
+      data={data}
+      loading={loading}
+      error={error}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={changeMobileMenuOpenState}
+      searchCriteria={searchCriteria}
+      changeSearchCriteria={changeSearchCriteria}
+      searchSubmitHandler={searchSubmitHandler}
       quickAction={changeInviteUserModalState}
-      quickActionLabel="New User"
-      pageSearchable={true}
-      searchSubmitHandler={submitHandler}
-      setSearchCriteria={changeSearchCriteria}
-    >
-      <CreateUserModal
-        modalState={inviteUserModalState}
-        changeModalState={changeInviteUserModalState}
-      />
-      <UpdateUserModal
-        currentUser={currentUser}
-        modalState={updateUserModalState}
-        changeModalState={changeUpdateUserModalState}
-      />
-      <RemoveUserModal
-        searchCriteria={searchCriteria}
-        currentUser={currentUser}
-        modalState={removeUserModalState}
-        changeModalState={changeRemoveUserModalState}
-      />
-      <UserList
-        data={data}
-        loading={loading}
-        error={error}
-        changeInviteUserModalState={changeInviteUserModalState}
-        changeRemoveUserModalState={changeRemoveUserModalState}
-        changeUpdateUserModalState={changeUpdateUserModalState}
-        changeCurrentUser={changeCurrentUser}
-      />
-    </MainLayout>
+      quickActionLabel="New Tag"
+      currentUser={currentUser}
+      changeCurrentUser={changeCurrentUser}
+      inviteUserModalState={inviteUserModalState}
+      updateUserModalState={updateUserModalState}
+      removeUserModalState={removeUserModalState}
+      changeAddUserModalState={changeInviteUserModalState}
+      changeUpdateUserModalState={changeUpdateUserModalState}
+      changeRemoveUserModalState={changeRemoveUserModalState}
+    />
+    // <MainLayout
+    //   hasQuickActionButton={true}
+    //   quickAction={changeInviteUserModalState}
+    //   quickActionLabel="New User"
+    //   pageSearchable={true}
+    //   searchSubmitHandler={submitHandler}
+    //   setSearchCriteria={changeSearchCriteria}
+    // >
+    //   <CreateUserModal
+    //     modalState={inviteUserModalState}
+    //     changeModalState={changeInviteUserModalState}
+    //   />
+    //   <UpdateUserModal
+    //     currentUser={currentUser}
+    //     modalState={updateUserModalState}
+    //     changeModalState={changeUpdateUserModalState}
+    //   />
+    //   <RemoveUserModal
+    //     searchCriteria={searchCriteria}
+    //     currentUser={currentUser}
+    //     modalState={removeUserModalState}
+    //     changeModalState={changeRemoveUserModalState}
+    //   />
+    //   <UserList
+    //     data={data}
+    //     loading={loading}
+    //     error={error}
+    //     changeInviteUserModalState={changeInviteUserModalState}
+    //     changeRemoveUserModalState={changeRemoveUserModalState}
+    //     changeUpdateUserModalState={changeUpdateUserModalState}
+    //     changeCurrentUser={changeCurrentUser}
+    //   />
+    // </MainLayout>
   );
 };
 

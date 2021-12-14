@@ -21,7 +21,7 @@ type DepotsProps = {
   quickAction: (state: boolean) => void;
   quickActionLabel: string;
   currentDepot: UpdateDepotInput;
-  changeCurrentDepot: (fuelCard: Depot) => void;
+  changeCurrentDepot: (depot: Depot) => void;
   addDepotModalState: boolean;
   updateDepotModalState: boolean;
   deleteDepotModalState: boolean;

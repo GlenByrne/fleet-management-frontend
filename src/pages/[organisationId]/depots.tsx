@@ -6,11 +6,6 @@ import {
   UpdateDepotInput,
   useGetDepotsQuery,
 } from '@/generated/graphql';
-import MainLayout from '@/components/Atomic/templates/DepotTemplate';
-import CreateDepotModal from '@/components/Atomic/organisms/Depots/Modal/Create/CreateDepotModal';
-import UpdateDepotModal from '@/components/Atomic/organisms/Depots/Modal/Update/UpdateDepotModal';
-import DeleteDepotModal from '@/components/Atomic/organisms/Depots/Modal/Delete/DeleteDepotModal';
-import DepotList from '@/components/Atomic/organisms/Depots/List/DepotList';
 import DepotsPage from '@/components/Atomic/pages/depots';
 
 const Depots: NextPage = () => {

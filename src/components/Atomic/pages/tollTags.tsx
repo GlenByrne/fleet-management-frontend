@@ -25,7 +25,7 @@ type TollTagsProps = {
   quickAction: (state: boolean) => void;
   quickActionLabel: string;
   currentTollTag: UpdateTollTagInput;
-  changeCurrentTollTag: (fuelCard: TollTag) => void;
+  changeCurrentTollTag: (tollTag: TollTag) => void;
   addTollTagModalState: boolean;
   updateTollTagModalState: boolean;
   deleteTollTagModalState: boolean;
