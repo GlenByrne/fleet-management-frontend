@@ -7,7 +7,7 @@ import {
   User,
   UsersInOrganisationPayload,
 } from '@/generated/graphql';
-import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
 import CreateUserModal from '@/components/Users/Modals/Create/CreateUserModal';
 import UpdateUserModal from '@/components/Users/Modals/Update/UpdateUserModal';
 import RemoveUserModal from '@/components/Users/Modals/Remove/RemoveUserModal';

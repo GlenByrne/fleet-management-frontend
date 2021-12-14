@@ -16,7 +16,7 @@ import {
   UpdateDepotInput,
   useDeleteDepotMutation,
 } from '@/generated/graphql';
-import Modal from '@/core/Modal/Modal';
+import Modal from '@/components/Atomic/atoms/Modal';
 
 type DeleteDepotModalProps = {
   searchCriteria: string | null;

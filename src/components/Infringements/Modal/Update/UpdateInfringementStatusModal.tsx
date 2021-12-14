@@ -2,7 +2,7 @@ import {
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
-import Modal from '@/core/Modal/Modal';
+import Modal from '@/components/Atomic/atoms/Modal';
 import {
   UpdateInfringementInput,
   useUpdateInfringementStatusMutation,

@@ -21,8 +21,8 @@ import {
   UpdateDepotInput,
   useUpdateDepotMutation,
 } from '@/generated/graphql';
-import Modal from '@/core/Modal/Modal';
-import ModalFormInput from '@/core/Modal/ModalFormInput';
+import Modal from '@/components/Atomic/atoms/Modal';
+import ModalFormInput from '@/components/Atomic/molecules/ModalFormInput';
 
 type UpdateDepotModalProps = {
   currentDepot: UpdateDepotInput;

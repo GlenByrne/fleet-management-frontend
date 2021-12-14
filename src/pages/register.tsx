@@ -8,7 +8,7 @@ import {
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
-import PasswordInput from '@/core/Modal/PasswordInput';
+import PasswordInput from '@/components/Atomic/molecules/PasswordInput';
 
 const Register: NextPage = () => {
   const router = useRouter();

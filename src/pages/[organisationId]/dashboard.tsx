@@ -1,5 +1,5 @@
 import Dashboard from '@/components/Dashboard/Dashboard';
-import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
 import { NextPage } from 'next';
 
 const Home: NextPage = () => {

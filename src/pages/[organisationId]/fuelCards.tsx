@@ -6,11 +6,7 @@ import {
   UpdateFuelCardInput,
   useGetFuelCardsQuery,
 } from '@/generated/graphql';
-import MainLayout from '@/core/Layout/MainLayout/MainLayout';
-import CreateFuelCardModal from '@/components/FuelCards/Modal/Create/CreateFuelCardModal';
-import UpdateFuelCardModal from '@/components/FuelCards/Modal/Update/UpdateFuelCardModal';
-import DeleteFuelCardModal from '@/components/FuelCards/Modal/Delete/DeleteFuelCardModal';
-import FuelCardList from '@/components/FuelCards/List/FuelCardList';
+import FuelCardsPage from '@/components/Atomic/pages/fuelCards';
 
 const FuelCards: NextPage = () => {
   const router = useRouter();
@@ -61,7 +57,7 @@ const FuelCards: NextPage = () => {
     setSearchCriteria(event.currentTarget.value);
   };
 
-  const submitHandler: FormEventHandler = (e) => {
+  const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
       data: {
@@ -71,6 +67,12 @@ const FuelCards: NextPage = () => {
     });
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   // const accessToken = useAuthentication();
 
   // if (!accessToken) {
@@ -78,39 +80,26 @@ const FuelCards: NextPage = () => {
   // }
 
   return (
-    <MainLayout
-      hasQuickActionButton={true}
+    <FuelCardsPage
+      data={data}
+      loading={loading}
+      error={error}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={changeMobileMenuOpenState}
+      searchCriteria={searchCriteria}
+      changeSearchCriteria={changeSearchCriteria}
+      searchSubmitHandler={searchSubmitHandler}
       quickAction={changeAddFuelCardModalState}
       quickActionLabel="New Card"
-      pageSearchable={true}
-      searchSubmitHandler={submitHandler}
-      setSearchCriteria={changeSearchCriteria}
-    >
-      <CreateFuelCardModal
-        modalState={addFuelCardModalState}
-        changeModalState={changeAddFuelCardModalState}
-      />
-      <UpdateFuelCardModal
-        currentFuelCard={currentFuelCard}
-        modalState={updateFuelCardModalState}
-        changeModalState={changeUpdateFuelCardModalState}
-      />
-      <DeleteFuelCardModal
-        searchCriteria={searchCriteria}
-        currentFuelCard={currentFuelCard}
-        modalState={deleteFuelCardModalState}
-        changeModalState={changeDeleteFuelCardModalState}
-      />
-      <FuelCardList
-        data={data}
-        loading={loading}
-        error={error}
-        changeAddFuelCardModalState={changeAddFuelCardModalState}
-        changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
-        changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}
-        changeCurrentFuelCard={changeCurrentFuelCard}
-      />
-    </MainLayout>
+      currentFuelCard={currentFuelCard}
+      changeCurrentFuelCard={changeCurrentFuelCard}
+      addFuelCardModalState={addFuelCardModalState}
+      updateFuelCardModalState={updateFuelCardModalState}
+      deleteFuelCardModalState={deleteFuelCardModalState}
+      changeAddFuelCardModalState={changeAddFuelCardModalState}
+      changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}
+      changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
+    />
   );
 };
 export default FuelCards;

@@ -14,8 +14,8 @@ import {
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
-import Modal from '@/core/Modal/Modal';
-import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+import Modal from '@/components/Atomic/atoms/Modal';
+import ModalFormSelect from '@/components/Atomic/molecules/ModalFormSelect';
 
 type UpdateUserModalProps = {
   currentUser: UserUpdateModalItem;

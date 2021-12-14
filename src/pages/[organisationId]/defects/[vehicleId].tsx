@@ -2,7 +2,7 @@ import DefectList from '@/components/Defects/List/DefectList';
 import CreateDefectModal from '@/components/Defects/Modal/Create/CreateDefectModal';
 import DeleteDefectModal from '@/components/Defects/Modal/Delete/DeleteDefectModal';
 import UpdateDefectModal from '@/components/Defects/Modal/Update/UpdateDefectModal';
-import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
 import { Defect, DefectStatus } from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useState } from 'react';

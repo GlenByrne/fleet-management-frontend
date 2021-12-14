@@ -17,10 +17,10 @@ import {
   successTextVar,
 } from '@/constants/apollo-client';
 import { Option } from '@/constants/types';
-import ModalFormInput from '@/core/Modal/ModalFormInput';
-import ModalFormSelect from '@/core/Modal/ModalFormSelect';
-import Modal from '@/core/Modal/Modal';
-import DatePickerNoClear from '@/components/Atomic/atoms/DatePickerNoClear';
+import ModalFormInput from '@/components/Atomic/molecules/ModalFormInput';
+import ModalFormSelect from '@/components/Atomic/molecules/ModalFormSelect';
+import Modal from '@/components/Atomic/atoms/Modal';
+import DatePickerNoClear from '@/components/Atomic/molecules/DatePickerNoClear';
 
 type UpdateInfringementModalProps = {
   currentInfringement: UpdateInfringementInput;

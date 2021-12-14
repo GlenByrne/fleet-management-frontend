@@ -6,7 +6,7 @@ import {
   UpdateDepotInput,
   useGetDepotsQuery,
 } from '@/generated/graphql';
-import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
 import CreateDepotModal from '@/components/Depots/Modal/Create/CreateDepotModal';
 import UpdateDepotModal from '@/components/Depots/Modal/Update/UpdateDepotModal';
 import DeleteDepotModal from '@/components/Depots/Modal/Delete/DeleteDepotModal';

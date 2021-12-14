@@ -16,7 +16,7 @@ import {
   UpdateTollTagInput,
   useDeleteTollTagMutation,
 } from '@/generated/graphql';
-import Modal from '@/core/Modal/Modal';
+import Modal from '@/components/Atomic/atoms/Modal';
 
 type DeleteTollTagModalProps = {
   searchCriteria: string | null;

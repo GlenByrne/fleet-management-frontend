@@ -16,7 +16,7 @@ import {
   GetVehiclesQuery,
   useDeleteVehicleMutation,
 } from '@/generated/graphql';
-import Modal from '@/core/Modal/Modal';
+import Modal from '@/components/Atomic/atoms/Modal';
 import { VehicleUpdateModalItem } from '@/constants/types';
 
 type DeleteVehicleModalProps = {

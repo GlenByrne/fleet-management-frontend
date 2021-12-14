@@ -3,7 +3,7 @@ import CreateInfringementModal from '@/components/Infringements/Modal/Create/Cre
 import DeleteInfringementModal from '@/components/Infringements/Modal/Delete/DeleteInfringementModal';
 import UpdateInfringementModal from '@/components/Infringements/Modal/Update/UpdateInfringementModal';
 import UpdateInfringementStatusModal from '@/components/Infringements/Modal/Update/UpdateInfringementStatusModal';
-import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
 import {
   Infringement,
   InfringementStatus,

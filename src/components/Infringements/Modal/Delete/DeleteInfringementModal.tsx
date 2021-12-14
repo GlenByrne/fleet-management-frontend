@@ -12,7 +12,7 @@ import {
   UpdateInfringementInput,
   useDeleteInfringementMutation,
 } from '@/generated/graphql';
-import Modal from '@/core/Modal/Modal';
+import Modal from '@/components/Atomic/atoms/Modal';
 
 type DeleteInfringementModalProps = {
   currentInfringement: UpdateInfringementInput;

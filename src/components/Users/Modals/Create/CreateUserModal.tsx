@@ -22,9 +22,9 @@ import {
   successAlertStateVar,
   successTextVar,
 } from '@/constants/apollo-client';
-import Modal from '@/core/Modal/Modal';
-import ModalFormInput from '@/core/Modal/ModalFormInput';
-import ModalFormSelect from '@/core/Modal/ModalFormSelect';
+import Modal from '@/components/Atomic/atoms/Modal';
+import ModalFormInput from '@/components/Atomic/molecules/ModalFormInput';
+import ModalFormSelect from '@/components/Atomic/molecules/ModalFormSelect';
 
 type CreateUserModalProps = {
   modalState: boolean;

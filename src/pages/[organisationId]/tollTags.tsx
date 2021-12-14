@@ -6,7 +6,7 @@ import {
   UpdateTollTagInput,
   useGetTollTagsQuery,
 } from '@/generated/graphql';
-import MainLayout from '@/core/Layout/MainLayout/MainLayout';
+import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
 import CreateTollTagModal from '@/components/TollTags/Modal/Create/CreateTollTagModal';
 import UpdateTollTagModal from '@/components/TollTags/Modal/Update/UpdateTollTagModal';
 import DeleteTollTagModal from '@/components/TollTags/Modal/Delete/DeleteTollTagModal';

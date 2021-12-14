@@ -12,7 +12,7 @@ import {
   GetUsersInOrganisationQuery,
   useRemoveUserFromOrganisationMutation,
 } from '@/generated/graphql';
-import Modal from '@/core/Modal/Modal';
+import Modal from '@/components/Atomic/atoms/Modal';
 import { UserUpdateModalItem } from '@/constants/types';
 
 type RemoveUserModalProps = {
