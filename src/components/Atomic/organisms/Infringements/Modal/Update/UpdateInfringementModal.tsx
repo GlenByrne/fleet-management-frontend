@@ -21,6 +21,8 @@ import ModalFormInput from '@/components/Atomic/molecules/ModalFormInput';
 import ModalFormSelect from '@/components/Atomic/molecules/ModalFormSelect';
 import Modal from '@/components/Atomic/atoms/Modal';
 import DatePickerNoClear from '@/components/Atomic/molecules/DatePickerNoClear';
+import SuccessButton from '@/components/Atomic/atoms/SuccessButton';
+import CancelButton from '@/components/Atomic/atoms/CancelButton';
 
 type UpdateInfringementModalProps = {
   currentInfringement: UpdateInfringementInput;
@@ -151,20 +153,11 @@ const UpdateInfringementModal = ({
             </div>
           </div>
           <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-            <button
-              type="submit"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+            <SuccessButton text="Save" type="submit" />
+            <CancelButton
               onClick={() => changeModalState(false)}
               ref={cancelButtonRef}
-            >
-              Cancel
-            </button>
+            />
           </div>
         </form>
       </div>

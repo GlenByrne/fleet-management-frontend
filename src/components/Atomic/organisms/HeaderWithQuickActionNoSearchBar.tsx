@@ -2,23 +2,51 @@ import CirclularAddButton from '@/components/Atomic/atoms/CirclularAddButton';
 import MobileMenuHamburgerButton from '@/components/Atomic/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/Atomic/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/Atomic/atoms/ProfileIconButton';
+import client, {
+  accessTokenVar,
+  loggedInUserVar,
+  successAlertStateVar,
+  successTextVar,
+} from '@/constants/apollo-client';
 import { UserNavbarOption } from '@/constants/types';
+import { useLogoutMutation } from '@/generated/graphql';
 import { Menu, Transition } from '@headlessui/react';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 
 type HeaderWithQuickActionNoSearchBarProps = {
   setMobileMenuOpen: (newState: boolean) => void;
   quickAction: (state: boolean) => void;
   quickActionLabel: string;
-  userNavigation: UserNavbarOption[];
 };
 
 const HeaderWithQuickActionNoSearchBar = ({
   setMobileMenuOpen,
   quickAction,
   quickActionLabel,
-  userNavigation,
 }: HeaderWithQuickActionNoSearchBarProps) => {
+  const router = useRouter();
+  const [logOut] = useLogoutMutation();
+
+  const handleLogOut = () => {
+    logOut();
+    accessTokenVar(null);
+    loggedInUserVar(null);
+    router.push('/login');
+    client.clearStore();
+    successTextVar('Logged out successfully');
+    successAlertStateVar(true);
+  };
+
+  const userNavigation: UserNavbarOption[] = [
+    { name: 'Your Profile', onClick: () => {} },
+    { name: 'Settings', onClick: () => {}, href: '/settings/account' },
+    {
+      name: 'Sign out',
+      onClick: handleLogOut,
+    },
+  ];
+
   return (
     <header className="w-full">
       <div className="relative z-10 shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">

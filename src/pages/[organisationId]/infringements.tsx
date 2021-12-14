@@ -1,18 +1,16 @@
-import InfringementList from '@/components/Infringements/List/InfringementList';
-import CreateInfringementModal from '@/components/Infringements/Modal/Create/CreateInfringementModal';
-import DeleteInfringementModal from '@/components/Infringements/Modal/Delete/DeleteInfringementModal';
-import UpdateInfringementModal from '@/components/Infringements/Modal/Update/UpdateInfringementModal';
-import UpdateInfringementStatusModal from '@/components/Infringements/Modal/Update/UpdateInfringementStatusModal';
-import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
+import InfringementsPage from '@/components/Atomic/pages/infringements';
 import {
   Infringement,
   InfringementStatus,
   UpdateInfringementInput,
+  useGetInfringementsQuery,
 } from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useState } from 'react';
 
 const Infringements: NextPage = () => {
+  const { data, loading, error } = useGetInfringementsQuery();
+
   const [addInfringementModalState, setAddInfringementModalState] =
     useState(false);
   const [updateInfringementModalState, setUpdateInfringementModalState] =
@@ -58,6 +56,12 @@ const Infringements: NextPage = () => {
     setCurrentInfringement(chosenInfringement);
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   // const accessToken = useAuthentication();
 
   // if (!accessToken) {
@@ -65,41 +69,62 @@ const Infringements: NextPage = () => {
   // }
 
   return (
-    <MainLayout
-      hasQuickActionButton={true}
+    <InfringementsPage
+      data={data}
+      loading={loading}
+      error={error}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={changeMobileMenuOpenState}
       quickAction={changeAddInfringementModalState}
-      quickActionLabel="New Infringement"
-      pageSearchable={false}
-    >
-      <CreateInfringementModal
-        modalState={addInfringementModalState}
-        changeModalState={changeAddInfringementModalState}
-      />
-      <UpdateInfringementModal
-        currentInfringement={currentInfringement}
-        modalState={updateInfringementModalState}
-        changeModalState={changeUpdateInfringementModalState}
-      />
-      <UpdateInfringementStatusModal
-        currentInfringement={currentInfringement}
-        modalState={updateInfringementModalState}
-        changeModalState={changeUpdateInfringementModalState}
-      />
-      <DeleteInfringementModal
-        currentInfringement={currentInfringement}
-        modalState={deleteInfringementModalState}
-        changeModalState={changeDeleteInfringementModalState}
-      />
-      <InfringementList
-        changeAddInfringementModalState={changeAddInfringementModalState}
-        changeDeleteInfringementModalState={changeDeleteInfringementModalState}
-        changeUpdateInfringementModalState={changeUpdateInfringementModalState}
-        changeUpdateInfringementStatusModalState={
-          changeUpdateInfringementStatusModalState
-        }
-        changeCurrentInfringement={changeCurrentInfringement}
-      />
-    </MainLayout>
+      quickActionLabel="New Card"
+      currentInfringement={currentInfringement}
+      changeCurrentInfringement={changeCurrentInfringement}
+      addInfringementModalState={addInfringementModalState}
+      updateInfringementModalState={updateInfringementModalState}
+      updateInfringementStatusModalState={updateInfringementStatusModalState}
+      deleteInfringementModalState={deleteInfringementModalState}
+      changeAddInfringementModalState={changeAddInfringementModalState}
+      changeUpdateInfringementModalState={changeUpdateInfringementModalState}
+      changeUpdateInfringementStatusModalState={
+        changeUpdateInfringementStatusModalState
+      }
+      changeDeleteInfringementModalState={changeDeleteInfringementModalState}
+    />
+    // <MainLayout
+    //   hasQuickActionButton={true}
+    //   quickAction={changeAddInfringementModalState}
+    //   quickActionLabel="New Infringement"
+    //   pageSearchable={false}
+    // >
+    //   <CreateInfringementModal
+    //     modalState={addInfringementModalState}
+    //     changeModalState={changeAddInfringementModalState}
+    //   />
+    //   <UpdateInfringementModal
+    //     currentInfringement={currentInfringement}
+    //     modalState={updateInfringementModalState}
+    //     changeModalState={changeUpdateInfringementModalState}
+    //   />
+    //   <UpdateInfringementStatusModal
+    //     currentInfringement={currentInfringement}
+    //     modalState={updateInfringementModalState}
+    //     changeModalState={changeUpdateInfringementModalState}
+    //   />
+    //   <DeleteInfringementModal
+    //     currentInfringement={currentInfringement}
+    //     modalState={deleteInfringementModalState}
+    //     changeModalState={changeDeleteInfringementModalState}
+    //   />
+    //   <InfringementList
+    //     changeAddInfringementModalState={changeAddInfringementModalState}
+    //     changeDeleteInfringementModalState={changeDeleteInfringementModalState}
+    //     changeUpdateInfringementModalState={changeUpdateInfringementModalState}
+    //     changeUpdateInfringementStatusModalState={
+    //       changeUpdateInfringementStatusModalState
+    //     }
+    //     changeCurrentInfringement={changeCurrentInfringement}
+    //   />
+    // </MainLayout>
   );
 };
 
