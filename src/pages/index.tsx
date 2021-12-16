@@ -1,11 +1,23 @@
-import OrganisationInviteList from '@/components/Organisations/List/OrganisationInviteList';
-import OrganisationsList from '@/components/Organisations/List/OrganisationsList';
-import CreateOrganisationModal from '@/components/Organisations/Modal/Create/CreateOrganisationModal';
-import OrganisationsMenuLayout from '@/core/Layout/OrganisationsMenuLayout/OrganisationsMenuLayout';
+import OrganisationsPage from '@/components/Atomic/pages/organisations';
+import {
+  useGetUsersOrganisationsInvitesQuery,
+  useGetUsersOrganisationsQuery,
+} from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useState } from 'react';
 
 const Organisations: NextPage = () => {
+  const {
+    data: organisationData,
+    loading: organisationLoading,
+    error: organisationError,
+  } = useGetUsersOrganisationsQuery();
+  const {
+    data: inviteData,
+    loading: inviteLoading,
+    error: inviteError,
+  } = useGetUsersOrganisationsInvitesQuery();
+
   const [addOrganisationModalState, setAddOrganisationModalState] =
     useState(false);
 
@@ -13,20 +25,26 @@ const Organisations: NextPage = () => {
     setAddOrganisationModalState(newState);
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   return (
-    <OrganisationsMenuLayout
-      mainContent={
-        <OrganisationsList
-          changeAddOrganisationModalState={changeAddOrganisationModalState}
-        />
-      }
-      rightContent={<OrganisationInviteList />}
-    >
-      <CreateOrganisationModal
-        modalState={addOrganisationModalState}
-        changeModalState={setAddOrganisationModalState}
-      />
-    </OrganisationsMenuLayout>
+    <OrganisationsPage
+      organisationsData={organisationData}
+      organisationsLoading={organisationLoading}
+      organisationsError={organisationError}
+      invitesData={inviteData}
+      invitesLoading={inviteLoading}
+      invitesError={inviteError}
+      addOrganisationModalState={addOrganisationModalState}
+      changeAddOrganisationModalState={changeAddOrganisationModalState}
+      setMobileMenuOpen={changeMobileMenuOpenState}
+      quickAction={changeAddOrganisationModalState}
+      quickActionLabel={'Add Organisation'}
+    />
   );
 };
 

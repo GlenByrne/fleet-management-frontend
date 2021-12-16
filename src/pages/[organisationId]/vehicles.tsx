@@ -2,15 +2,16 @@ import { NextPage } from 'next';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGetVehiclesQuery, Vehicle, VehicleType } from '@/generated/graphql';
-import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
-import CreateVehicleModal from '@/components/Vehicles/Modal/Create/CreateVehicleModal';
-import UpdateVehicleModal from '@/components/Vehicles/Modal/Update/UpdateVehicleModal';
-import DeleteVehicleModal from '@/components/Vehicles/Modal/Delete/DeleteVehicleModal';
-import UpdateVehicleCVRTModal from '@/components/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
-import UpdateVehicleThirteenWeekModal from '@/components/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
-import UpdateVehicleTachoCalibrationModal from '@/components/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
-import VehicleList from '@/components/Vehicles/List/VehicleList';
+import MainLayout from '@/components/Atomic/templates/VehicleTemplate';
+import CreateVehicleModal from '@/components/Atomic/organisms/Vehicles/Modal/Create/CreateVehicleModal';
+import UpdateVehicleModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleModal';
+import DeleteVehicleModal from '@/components/Atomic/organisms/Vehicles/Modal/Delete/DeleteVehicleModal';
+import UpdateVehicleCVRTModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
+import UpdateVehicleThirteenWeekModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
+import UpdateVehicleTachoCalibrationModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
+import VehicleList from '@/components/Atomic/organisms/Vehicles/List/VehicleList';
 import { VehicleUpdateModalItem } from '@/constants/types';
+import VehiclesPage from '@/components/Atomic/pages/vehicles';
 
 const Vehicles: NextPage = () => {
   const router = useRouter();
@@ -119,7 +120,7 @@ const Vehicles: NextPage = () => {
     setSearchCriteria(event.currentTarget.value);
   };
 
-  const submitHandler: FormEventHandler = (e) => {
+  const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
       data: {
@@ -135,62 +136,40 @@ const Vehicles: NextPage = () => {
   //   return <Loading />;
   // }
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   return (
-    <MainLayout
-      hasQuickActionButton={true}
+    <VehiclesPage
+      data={data}
+      loading={loading}
+      error={error}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={changeMobileMenuOpenState}
+      searchCriteria={searchCriteria}
+      changeSearchCriteria={changeSearchCriteria}
+      searchSubmitHandler={searchSubmitHandler}
       quickAction={changeAddVehicleModalState}
       quickActionLabel="New Vehicle"
-      pageSearchable={true}
-      searchSubmitHandler={submitHandler}
-      setSearchCriteria={changeSearchCriteria}
-    >
-      <CreateVehicleModal
-        modalState={addVehicleModalState}
-        changeModalState={changeAddVehicleModalState}
-      />
-      <UpdateVehicleModal
-        currentVehicle={currentVehicle}
-        modalState={updateVehicleModalState}
-        changeModalState={changeUpdateVehicleModalState}
-      />
-      <DeleteVehicleModal
-        searchCriteria={searchCriteria}
-        currentVehicle={currentVehicle}
-        modalState={deleteVehicleModalState}
-        changeModalState={changeDeleteVehicleModalState}
-      />
-      <UpdateVehicleCVRTModal
-        currentVehicle={currentVehicle}
-        modalState={updateVehicleCVRTModalState}
-        changeModalState={changeUpdateVehicleCVRTModalState}
-      />
-      <UpdateVehicleThirteenWeekModal
-        currentVehicle={currentVehicle}
-        modalState={updateVehicleThirteenWeekModalState}
-        changeModalState={changeUpdateVehicleThirteenWeekModalState}
-      />
-      <UpdateVehicleTachoCalibrationModal
-        currentVehicle={currentVehicle}
-        modalState={updateVehicleTachoCalibrationModalState}
-        changeModalState={changeUpdateVehicleTachoCalibrationModalState}
-      />
-      <VehicleList
-        data={data}
-        loading={loading}
-        error={error}
-        changeAddVehicleModalState={changeAddVehicleModalState}
-        changeDeleteVehicleModalState={changeDeleteVehicleModalState}
-        changeUpdateVehicleModalState={changeUpdateVehicleModalState}
-        changeUpdateVehicleCVRTModalState={changeUpdateVehicleCVRTModalState}
-        changeUpdateVehicleThirteenWeekModalState={
-          changeUpdateVehicleThirteenWeekModalState
-        }
-        changeUpdateVehicleTachoCalibrationModalState={
-          changeUpdateVehicleTachoCalibrationModalState
-        }
-        changeCurrentVehicle={changeCurrentVehicle}
-      />
-    </MainLayout>
+      currentVehicle={currentVehicle}
+      changeCurrentVehicle={changeCurrentVehicle}
+      addVehicleModalState={addVehicleModalState}
+      updateVehicleModalState={updateVehicleModalState}
+      deleteVehicleModalState={deleteVehicleModalState}
+      changeAddVehicleModalState={changeAddVehicleModalState}
+      changeUpdateVehicleModalState={changeUpdateVehicleModalState}
+      changeUpdateVehicleCVRTModalState={changeUpdateVehicleCVRTModalState}
+      changeUpdateVehicleThirteenWeekModalState={
+        changeUpdateVehicleThirteenWeekModalState
+      }
+      changeUpdateVehicleTachoCalibrationModalState={
+        changeUpdateVehicleTachoCalibrationModalState
+      }
+      changeDeleteVehicleModalState={changeDeleteVehicleModalState}
+    />
   );
 };
 

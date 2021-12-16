@@ -1,13 +1,32 @@
-import DefectList from '@/components/Defects/List/DefectList';
-import CreateDefectModal from '@/components/Defects/Modal/Create/CreateDefectModal';
-import DeleteDefectModal from '@/components/Defects/Modal/Delete/DeleteDefectModal';
-import UpdateDefectModal from '@/components/Defects/Modal/Update/UpdateDefectModal';
-import MainLayout from '@/components/Atomic/templates/FuelCardTemplate';
-import { Defect, DefectStatus } from '@/generated/graphql';
+import DefectsPage from '@/components/Atomic/pages/defects';
+import {
+  Defect,
+  DefectStatus,
+  useGetVehicleDefectsQuery,
+} from '@/generated/graphql';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const Defects: NextPage = () => {
+  const router = useRouter();
+  const vehicleId = String(router.query.vehicleId);
+
+  // const [shouldSkip, setShouldSkip] = useState(true);
+
+  // useEffect(() => {
+  //   if (id) {
+  //     setShouldSkip(false);
+  //   }
+  // }, [id]);
+
+  const { data, loading, error } = useGetVehicleDefectsQuery({
+    variables: {
+      vehicleId,
+    },
+    // skip: shouldSkip,
+  });
+
   const [addDefectModalState, setAddDefectModalState] = useState(false);
   const [updateDefectModalState, setUpdateDefectModalState] = useState(false);
   const [deleteDefectModalState, setDeleteDefectModalState] = useState(false);
@@ -45,34 +64,30 @@ const Defects: NextPage = () => {
     setCurrentDefect(chosenDefect);
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   return (
-    <MainLayout
-      hasQuickActionButton={true}
+    <DefectsPage
+      data={data}
+      loading={loading}
+      error={error}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={changeMobileMenuOpenState}
       quickAction={changeAddDefectModalState}
       quickActionLabel="New Defect"
-      pageSearchable={false}
-    >
-      <DefectList
-        changeAddDefectModalState={changeAddDefectModalState}
-        changeDeleteDefectModalState={changeDeleteDefectModalState}
-        changeUpdateDefectModalState={changeUpdateDefectModalState}
-        changeCurrentDefect={changeCurrentDefect}
-      />
-      <CreateDefectModal
-        modalState={addDefectModalState}
-        changeModalState={changeAddDefectModalState}
-      />
-      <UpdateDefectModal
-        currentDefect={currentDefect}
-        modalState={updateDefectModalState}
-        changeModalState={changeUpdateDefectModalState}
-      />
-      <DeleteDefectModal
-        currentDefect={currentDefect}
-        modalState={deleteDefectModalState}
-        changeModalState={changeDeleteDefectModalState}
-      />
-    </MainLayout>
+      currentDefect={currentDefect}
+      changeCurrentDefect={changeCurrentDefect}
+      addDefectModalState={addDefectModalState}
+      updateDefectModalState={updateDefectModalState}
+      deleteDefectModalState={deleteDefectModalState}
+      changeAddDefectModalState={changeAddDefectModalState}
+      changeUpdateDefectModalState={changeUpdateDefectModalState}
+      changeDeleteDefectModalState={changeDeleteDefectModalState}
+    />
   );
 };
 
