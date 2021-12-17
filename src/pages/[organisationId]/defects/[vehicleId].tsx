@@ -1,4 +1,4 @@
-import DefectsPage from '@/components/Atomic/pages/defects';
+import DefectsPage from '@/components/pages/defects';
 import {
   Defect,
   DefectStatus,

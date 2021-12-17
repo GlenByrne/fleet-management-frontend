@@ -6,7 +6,7 @@ import {
   UpdateFuelCardInput,
   useGetFuelCardsQuery,
 } from '@/generated/graphql';
-import FuelCardsPage from '@/components/Atomic/pages/fuelCards';
+import FuelCardsPage from '@/components/pages/fuelCards';
 
 const FuelCards: NextPage = () => {
   const router = useRouter();

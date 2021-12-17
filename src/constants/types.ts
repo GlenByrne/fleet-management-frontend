@@ -1,9 +1,4 @@
-import {
-  DefectStatus,
-  InfringementStatus,
-  Role,
-  VehicleType,
-} from '@/generated/graphql';
+import { Role, VehicleType } from '@/generated/graphql';
 
 export type NavbarOption = {
   name: string;

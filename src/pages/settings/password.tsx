@@ -5,7 +5,7 @@ import client, {
   successTextVar,
 } from '@/constants/apollo-client';
 import SettingsLayout from '@/core/Layout/SettingsLayout/SettingsLayout';
-import PasswordInput from '@/components/Atomic/molecules/PasswordInput';
+import PasswordInput from '@/components/molecules/PasswordInput';
 import {
   useChangePasswordMutation,
   useLogoutMutation,

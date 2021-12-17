@@ -6,7 +6,7 @@ import {
   UpdateTollTagInput,
   useGetTollTagsQuery,
 } from '@/generated/graphql';
-import TollTagsPage from '@/components/Atomic/pages/tollTags';
+import TollTagsPage from '@/components/pages/tollTags';
 
 const TollTags: NextPage = () => {
   const router = useRouter();

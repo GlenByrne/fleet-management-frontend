@@ -2,16 +2,16 @@ import { NextPage } from 'next';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGetVehiclesQuery, Vehicle, VehicleType } from '@/generated/graphql';
-import MainLayout from '@/components/Atomic/templates/VehicleTemplate';
-import CreateVehicleModal from '@/components/Atomic/organisms/Vehicles/Modal/Create/CreateVehicleModal';
-import UpdateVehicleModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleModal';
-import DeleteVehicleModal from '@/components/Atomic/organisms/Vehicles/Modal/Delete/DeleteVehicleModal';
-import UpdateVehicleCVRTModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
-import UpdateVehicleThirteenWeekModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
-import UpdateVehicleTachoCalibrationModal from '@/components/Atomic/organisms/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
-import VehicleList from '@/components/Atomic/organisms/Vehicles/List/VehicleList';
+import MainLayout from '@/components/templates/VehicleTemplate';
+import CreateVehicleModal from '@/components/organisms/Vehicles/Modal/Create/CreateVehicleModal';
+import UpdateVehicleModal from '@/components/organisms/Vehicles/Modal/Update/UpdateVehicleModal';
+import DeleteVehicleModal from '@/components/organisms/Vehicles/Modal/Delete/DeleteVehicleModal';
+import UpdateVehicleCVRTModal from '@/components/organisms/Vehicles/Modal/Update/UpdateVehicleCVRTModal';
+import UpdateVehicleThirteenWeekModal from '@/components/organisms/Vehicles/Modal/Update/UpdateVehicleThirteenWeekInspectionModal';
+import UpdateVehicleTachoCalibrationModal from '@/components/organisms/Vehicles/Modal/Update/UpdateVehicleTachoCalibrationModal';
+import VehicleList from '@/components/organisms/Vehicles/List/VehicleList';
 import { VehicleUpdateModalItem } from '@/constants/types';
-import VehiclesPage from '@/components/Atomic/pages/vehicles';
+import VehiclesPage from '@/components/pages/vehicles';
 
 const Vehicles: NextPage = () => {
   const router = useRouter();

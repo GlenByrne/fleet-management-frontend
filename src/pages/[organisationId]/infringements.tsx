@@ -1,4 +1,4 @@
-import InfringementsPage from '@/components/Atomic/pages/infringements';
+import InfringementsPage from '@/components/pages/infringements';
 import {
   Infringement,
   InfringementStatus,

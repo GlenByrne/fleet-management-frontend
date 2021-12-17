@@ -6,7 +6,7 @@ import {
   UpdateDepotInput,
   useGetDepotsQuery,
 } from '@/generated/graphql';
-import DepotsPage from '@/components/Atomic/pages/depots';
+import DepotsPage from '@/components/pages/depots';
 
 const Depots: NextPage = () => {
   const router = useRouter();

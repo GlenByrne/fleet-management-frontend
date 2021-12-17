@@ -1,4 +1,4 @@
-import OrganisationsPage from '@/components/Atomic/pages/organisations';
+import OrganisationsPage from '@/components/pages/organisations';
 import {
   useGetUsersOrganisationsInvitesQuery,
   useGetUsersOrganisationsQuery,
