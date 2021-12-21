@@ -60,13 +60,6 @@ const DefectList = ({
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {defects.map((defect) => (
-          // <DefectListItem
-          //   key={defect.id}
-          //   defect={defect}
-          //   changeCurrentDefect={changeCurrentDefect}
-          //   changeDeleteDefectModalState={changeDeleteDefectModalState}
-          //   changeUpdateDefectModalState={changeUpdateDefectModalState}
-          // />
           <li key={defect.id}>
             <Link href="#">
               <a className="block hover:bg-gray-50">

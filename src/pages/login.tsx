@@ -1,10 +1,10 @@
-import AlreadyLoggedIn from '@/components/Login/AlreadyLoggedIn';
-import LoginForm from '@/components/Login/LoginForm';
 import { accessTokenVar } from '@/constants/apollo-client';
 import Loading from '@/components/atoms/Loading';
 import { NextPage } from 'next';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import AlreadyLoggedIn from '@/components/organisms/Login/AlreadyLoggedIn';
+import LoginForm from '@/components/organisms/Login/LoginForm';
 
 const Login: NextPage = () => {
   const [loggedIn, setLoggedIn] = useState(false);

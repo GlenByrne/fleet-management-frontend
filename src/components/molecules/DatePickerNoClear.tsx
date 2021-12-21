@@ -1,12 +1,11 @@
 import { SetStateAction } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import CalendarContainer from '@/components/atoms/CalendarContainer';
-import FormLabel from '@/components/atoms/InputLabel';
 import DatePickerSelectButton from '@/components/atoms/DatePickerSelectButton';
 import ChevronLeftButton from '@/components/atoms/ChevronLeftButton';
 import ChevronRightButton from '@/components/atoms/ChevronRightButton';
+import InputLabel from '@/components/atoms/InputLabel';
 
 type DatePickProps = {
   label: string;
@@ -37,7 +36,7 @@ const DatePickerNoClear = ({
       customInput={
         <div className="col-span-6 sm:col-span-3">
           <div className="flex justify-between">
-            <FormLabel label={label} />
+            <InputLabel label={label} htmlFor={name} />
           </div>
           <div className="mt-1">
             <DatePickerSelectButton

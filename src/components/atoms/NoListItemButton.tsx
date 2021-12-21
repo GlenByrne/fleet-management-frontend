@@ -4,7 +4,7 @@ type NoListItemButtonProps = {
   text: string;
 };
 
-const NoListItemButton = ({ onClick }: NoListItemButtonProps) => {
+const NoListItemButton = ({ onClick, d, text }: NoListItemButtonProps) => {
   return (
     <button
       type="button"
@@ -23,11 +23,11 @@ const NoListItemButton = ({ onClick }: NoListItemButtonProps) => {
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+          d={d}
         />
       </svg>
       <span className="mt-2 block text-sm font-medium text-gray-900">
-        Add a new fuel card
+        {text}
       </span>
     </button>
   );
