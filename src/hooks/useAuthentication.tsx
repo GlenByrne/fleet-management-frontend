@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { accessTokenVar, loggedInUserVar } from '@/constants/apollo-client';
+import { accessTokenVar, loggedInUserVar } from 'src/apollo/apollo-client';
 
 function useAuthentication() {
   const router = useRouter();

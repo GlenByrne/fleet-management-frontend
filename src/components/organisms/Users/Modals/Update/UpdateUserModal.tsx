@@ -9,10 +9,7 @@ import {
   useUpdateUserOrgDetailsMutation,
 } from '@/generated/graphql';
 import { Option, UserUpdateModalItem } from '@/constants/types';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import ModalFormSelect from '@/components/molecules/ModalFormSelect';
 import SuccessButton from '@/components/atoms/SuccessButton';

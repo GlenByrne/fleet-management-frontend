@@ -1,4 +1,4 @@
-import { accessTokenVar } from '@/constants/apollo-client';
+import { accessTokenVar } from 'src/apollo/apollo-client';
 import Loading from '@/components/atoms/Loading';
 import { NextPage } from 'next';
 import { useEffect } from 'react';

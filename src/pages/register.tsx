@@ -4,10 +4,7 @@ import { FormEventHandler, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useRegisterMutation } from '@/generated/graphql';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import PasswordInput from '@/components/molecules/PasswordInput';
 
 const Register: NextPage = () => {

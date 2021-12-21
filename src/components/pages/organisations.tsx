@@ -1,10 +1,5 @@
-import {
-  GetUsersOrganisationsQuery,
-  Organisation,
-  UsersOnOrganisations,
-} from '@/generated/graphql';
+import { GetUsersOrganisationsQuery } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
-import { FormEvent, FormEventHandler } from 'react';
 import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import OrganisationTemplate from '@/components/templates/OrganisationTemplate';
 import CreateOrganisationModal from '@/components/organisms/Organisations/Modal/Create/CreateOrganisationModal';

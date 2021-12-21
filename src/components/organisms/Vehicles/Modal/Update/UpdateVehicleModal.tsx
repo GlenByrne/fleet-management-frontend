@@ -22,10 +22,7 @@ import {
   VehicleType,
 } from '@/generated/graphql';
 import { Option, VehicleUpdateModalItem } from '@/constants/types';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/ModalFormSelect';

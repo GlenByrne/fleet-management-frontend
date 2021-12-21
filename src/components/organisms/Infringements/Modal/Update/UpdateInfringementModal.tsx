@@ -12,10 +12,7 @@ import {
   UpdateInfringementInput,
   useUpdateInfringementMutation,
 } from '@/generated/graphql';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { Option } from '@/constants/types';
 import ModalFormInput from '@/components/molecules/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/ModalFormSelect';

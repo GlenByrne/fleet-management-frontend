@@ -1,4 +1,4 @@
-import { errorAlertStateVar, errorTextVar } from '@/constants/apollo-client';
+import { errorAlertStateVar, errorTextVar } from 'src/apollo/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon, XIcon } from '@heroicons/react/solid';

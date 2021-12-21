@@ -8,10 +8,7 @@ import {
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,

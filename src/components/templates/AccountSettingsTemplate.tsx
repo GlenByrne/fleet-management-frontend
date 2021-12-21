@@ -1,12 +1,12 @@
-import classNames from '@/utilities/classNames';
+import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
 import {
   CreditCardIcon,
   KeyIcon,
   UserCircleIcon,
 } from '@heroicons/react/solid';
+import classNames from '@/utilities/classNames';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
 
 const navigation = [
   {
@@ -24,11 +24,13 @@ const navigation = [
   { name: 'Plan & Billing', href: '#', icon: CreditCardIcon, current: false },
 ];
 
-type SettingsLayoutProps = {
+type AccountSettingsTemplateProps = {
   children: ReactNode;
 };
 
-const SettingsLayout = ({ children }: SettingsLayoutProps) => {
+const AccountSettingsTemplate = ({
+  children,
+}: AccountSettingsTemplateProps) => {
   const router = useRouter();
 
   return (
@@ -67,4 +69,4 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
   );
 };
 
-export default SettingsLayout;
+export default AccountSettingsTemplate;

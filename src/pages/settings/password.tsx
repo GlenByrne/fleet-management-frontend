@@ -3,8 +3,7 @@ import client, {
   loggedInUserVar,
   successAlertStateVar,
   successTextVar,
-} from '@/constants/apollo-client';
-import SettingsLayout from '@/core/Layout/SettingsLayout/SettingsLayout';
+} from 'src/apollo/apollo-client';
 import PasswordInput from '@/components/molecules/PasswordInput';
 import {
   useChangePasswordMutation,
@@ -13,6 +12,7 @@ import {
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FormEvent, useState, FormEventHandler } from 'react';
+import PasswordSettingsPage from '@/components/pages/passwordSettings';
 
 const Password: NextPage = () => {
   const router = useRouter();
@@ -57,7 +57,7 @@ const Password: NextPage = () => {
   };
 
   return (
-    <SettingsLayout>
+    <PasswordSettingsPage>
       <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
         <form onSubmit={submitHandler}>
           <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -95,7 +95,7 @@ const Password: NextPage = () => {
           </div>
         </form>
       </div>
-    </SettingsLayout>
+    </PasswordSettingsPage>
   );
 };
 

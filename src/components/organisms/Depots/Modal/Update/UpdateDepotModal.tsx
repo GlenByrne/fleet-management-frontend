@@ -12,7 +12,7 @@ import {
   errorAlertStateVar,
   successAlertStateVar,
   successTextVar,
-} from '@/constants/apollo-client';
+} from 'src/apollo/apollo-client';
 import {
   GetItemsForUpdateVehicleDocument,
   GetSelectableItemsForAddVehicleDocument,

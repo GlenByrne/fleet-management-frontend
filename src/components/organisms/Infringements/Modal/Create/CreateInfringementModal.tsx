@@ -20,7 +20,7 @@ import {
   errorTextVar,
   successAlertStateVar,
   successTextVar,
-} from '@/constants/apollo-client';
+} from 'src/apollo/apollo-client';
 import { Option } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/ModalFormInput';

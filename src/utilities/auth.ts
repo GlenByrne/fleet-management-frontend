@@ -2,7 +2,7 @@ import Router, { useRouter } from 'next/router';
 import client, {
   accessTokenVar,
   loggedInUserVar,
-} from '@/constants/apollo-client';
+} from 'src/apollo/apollo-client';
 import { useLogoutMutation } from '@/generated/graphql';
 
 export const checkAuth = () => {

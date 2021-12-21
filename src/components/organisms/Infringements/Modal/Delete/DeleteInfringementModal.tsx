@@ -2,10 +2,7 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useReactiveVar } from '@apollo/client';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetInfringementsDocument,
   GetInfringementsQuery,

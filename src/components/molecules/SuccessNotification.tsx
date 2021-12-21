@@ -1,7 +1,4 @@
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { CheckCircleIcon, XIcon } from '@heroicons/react/solid';

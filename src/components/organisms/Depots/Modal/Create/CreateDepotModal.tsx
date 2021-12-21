@@ -2,10 +2,7 @@ import { TruckIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetDepotsDocument,
   GetDepotsQuery,

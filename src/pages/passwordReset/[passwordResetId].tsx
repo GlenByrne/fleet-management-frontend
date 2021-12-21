@@ -1,7 +1,4 @@
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import PasswordInput from '@/components/molecules/PasswordInput';
 import { useResetPasswordMutation } from '@/generated/graphql';
 import { NextPage } from 'next';

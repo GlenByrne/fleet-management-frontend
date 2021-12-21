@@ -1,7 +1,4 @@
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { useForgotPasswordMutation } from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';

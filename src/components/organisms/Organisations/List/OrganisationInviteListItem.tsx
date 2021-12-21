@@ -1,9 +1,6 @@
 import CheckButton from '@/components/atoms/CheckButton';
 import XButton from '@/components/atoms/XButton';
-import {
-  successAlertStateVar,
-  successTextVar,
-} from '@/constants/apollo-client';
+import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetUsersOrganisationsDocument,
   GetUsersOrganisationsInvitesDocument,

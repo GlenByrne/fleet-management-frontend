@@ -7,7 +7,7 @@ import client, {
   loggedInUserVar,
   successAlertStateVar,
   successTextVar,
-} from '@/constants/apollo-client';
+} from 'src/apollo/apollo-client';
 import { UserNavbarOption } from '@/constants/types';
 import { useLogoutMutation } from '@/generated/graphql';
 import { Menu, Transition } from '@headlessui/react';

@@ -1,9 +1,9 @@
-import SettingsLayout from '@/core/Layout/SettingsLayout/SettingsLayout';
+import AccountSettingsPage from '@/components/pages/accountSettings';
 import { NextPage } from 'next';
 
 const Account: NextPage = () => {
   return (
-    <SettingsLayout>
+    <AccountSettingsPage>
       <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
         <form action="#" method="POST">
           <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -444,7 +444,7 @@ const Account: NextPage = () => {
           </div>
         </form>
       </div>
-    </SettingsLayout>
+    </AccountSettingsPage>
   );
 };
 
