@@ -1,0 +1,4 @@
+fragment AddOrganisationFields on Organisation {
+  id
+  name
+}

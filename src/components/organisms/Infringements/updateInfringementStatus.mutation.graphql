@@ -1,0 +1,5 @@
+mutation UpdateInfringementStatus($data: UpdateInfringementStatusInput!) {
+  updateInfringementStatus(data: $data) {
+    ...UpdateInfringementStatusFields
+  }
+}

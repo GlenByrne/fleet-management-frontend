@@ -1,0 +1,12 @@
+fragment AcceptInviteFields on UsersOnOrganisations {
+  role
+  inviteAccepted
+  user {
+    id
+    name
+  }
+  organisation {
+    id
+    name
+  }
+}

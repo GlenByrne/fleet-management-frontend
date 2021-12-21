@@ -1,0 +1,3 @@
+mutation ActivateAccount($data: ActivateAccountInput!) {
+  activateAccount(data: $data)
+}

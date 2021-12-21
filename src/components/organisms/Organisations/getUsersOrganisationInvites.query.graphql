@@ -1,0 +1,9 @@
+query GetUsersOrganisationsInvites {
+  usersOrganisationInvites {
+    role
+    organisation {
+      id
+      name
+    }
+  }
+}

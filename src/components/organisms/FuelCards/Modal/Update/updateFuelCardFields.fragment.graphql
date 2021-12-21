@@ -1,0 +1,5 @@
+fragment UpdateFuelCardFields on FuelCard {
+  id
+  cardNumber
+  cardProvider
+}

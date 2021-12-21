@@ -1,0 +1,6 @@
+fragment UpcomingTachoCalibrationFields on Vehicle {
+  id
+  registration
+  tachoCalibration
+  type
+}

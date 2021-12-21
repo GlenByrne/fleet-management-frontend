@@ -1,0 +1,10 @@
+fragment UpdateInfringementStatusFields on Infringement {
+  id
+  description
+  dateOccured
+  status
+  driver {
+    id
+    name
+  }
+}

@@ -1,0 +1,5 @@
+query GetVehicles($data: VehicleInputFilter!) {
+  vehicles(data: $data) {
+    ...GetVehiclesFields
+  }
+}

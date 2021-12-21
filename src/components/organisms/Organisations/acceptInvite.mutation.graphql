@@ -1,0 +1,5 @@
+mutation AcceptInvite($data: AcceptInviteInput!) {
+  acceptInvite(data: $data) {
+    ...AcceptInviteFields
+  }
+}

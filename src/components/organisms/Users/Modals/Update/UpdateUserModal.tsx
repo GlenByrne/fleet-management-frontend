@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import {
   Depot,
   Role,
-  useGetSelectableItemsForUpdateUserQuery,
+  useGetUpdateUserOptionsQuery,
   useUpdateUserOrgDetailsMutation,
 } from '@/generated/graphql';
 import { Option, UserUpdateModalItem } from '@/constants/types';
@@ -54,7 +54,7 @@ const UpdateUserModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useGetSelectableItemsForUpdateUserQuery({
+  const { data, loading, error } = useGetUpdateUserOptionsQuery({
     variables: {
       data: {
         organisationId,

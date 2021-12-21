@@ -1,0 +1,4 @@
+fragment inviteUserToOrganisationFields on Organisation {
+  id
+  name
+}

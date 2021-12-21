@@ -4,10 +4,10 @@ import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
+  GetAddVehicleOptionsDocument,
   GetDepotsDocument,
   GetDepotsQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetUpdateVehicleOptionsDocument,
   useAddDepotMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
@@ -63,7 +63,7 @@ const CreateDepotModal = ({
     },
     refetchQueries: [
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -72,7 +72,7 @@ const CreateDepotModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

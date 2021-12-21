@@ -1,0 +1,6 @@
+fragment UpcomingThirteenWeekFields on Vehicle {
+  id
+  registration
+  thirteenWeekInspection
+  type
+}

@@ -1,0 +1,7 @@
+fragment GetUsersOrganisationsFields on UsersOnOrganisations {
+  role
+  organisation {
+    id
+    name
+  }
+}

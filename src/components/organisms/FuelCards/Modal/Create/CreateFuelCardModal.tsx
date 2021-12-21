@@ -6,13 +6,12 @@ import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
   GetFuelCardsQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetUpdateVehicleOptionsDocument,
+  GetAddVehicleOptionsDocument,
   useAddFuelCardMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/ModalFormInput';
-import AddButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 import SuccessButton from '@/components/atoms/SuccessButton';
 
@@ -67,7 +66,7 @@ const CreateFuelCardModal = ({
     },
     refetchQueries: [
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -76,7 +75,7 @@ const CreateFuelCardModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

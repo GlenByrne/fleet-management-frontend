@@ -1,0 +1,7 @@
+mutation UpdateVehicleTachoCalibration(
+  $data: UpdateVehicleTachoCalibrationInput!
+) {
+  updateVehicleTachoCalibration(data: $data) {
+    ...UpdateVehicleTachoCalibrationFields
+  }
+}

@@ -1,0 +1,11 @@
+query UpcomingMaintenace($organisationId: ID!) {
+  upcomingCVRT(organisationId: $organisationId) {
+    ...UpcomingCVRTFields
+  }
+  upcomingThirteenWeek(organisationId: $organisationId) {
+    ...UpcomingThirteenWeekFields
+  }
+  upcomingTachoCalibration(organisationId: $organisationId) {
+    ...UpcomingTachoCalibrationFields
+  }
+}

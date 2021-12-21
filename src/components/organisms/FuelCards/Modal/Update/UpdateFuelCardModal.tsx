@@ -10,8 +10,8 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetUpdateVehicleOptionsDocument,
+  GetAddVehicleOptionsDocument,
   GetVehiclesDocument,
   UpdateFuelCardInput,
   useUpdateFuelCardMutation,
@@ -65,7 +65,7 @@ const UpdateFuelCardModal = ({
         },
       },
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -74,7 +74,7 @@ const UpdateFuelCardModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

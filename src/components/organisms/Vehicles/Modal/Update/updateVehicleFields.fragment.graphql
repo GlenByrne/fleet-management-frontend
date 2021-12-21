@@ -1,0 +1,23 @@
+fragment UpdateVehicleFields on Vehicle {
+  id
+  type
+  registration
+  make
+  model
+  owner
+  cvrt
+  thirteenWeekInspection
+  tachoCalibration
+  depot {
+    id
+    name
+  }
+  fuelCard {
+    id
+    cardNumber
+  }
+  tollTag {
+    id
+    tagNumber
+  }
+}

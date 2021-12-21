@@ -1,0 +1,5 @@
+mutation UpdateFuelCard($data: UpdateFuelCardInput!) {
+  updateFuelCard(data: $data) {
+    ...UpdateFuelCardFields
+  }
+}

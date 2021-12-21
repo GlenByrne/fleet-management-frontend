@@ -1,0 +1,5 @@
+mutation UpdateDefect($data: UpdateDefectInput!) {
+  updateDefect(data: $data) {
+    ...UpdateDefectFields
+  }
+}

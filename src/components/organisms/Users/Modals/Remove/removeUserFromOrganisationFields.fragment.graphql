@@ -1,0 +1,6 @@
+fragment removeUserFromOrganisationFields on UsersOnOrganisations {
+  user {
+    id
+    name
+  }
+}

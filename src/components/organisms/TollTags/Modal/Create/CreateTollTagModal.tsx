@@ -4,8 +4,8 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetUpdateVehicleOptionsDocument,
+  GetAddVehicleOptionsDocument,
   GetTollTagsDocument,
   GetTollTagsQuery,
   useAddTollTagMutation,
@@ -65,7 +65,7 @@ const CreateTollTagModal = ({
     },
     refetchQueries: [
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -74,7 +74,7 @@ const CreateTollTagModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

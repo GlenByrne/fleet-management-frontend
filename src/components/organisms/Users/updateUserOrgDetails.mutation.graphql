@@ -1,0 +1,5 @@
+mutation UpdateUserOrgDetails($data: UpdateUserOrgDetailsInput!) {
+  updateUserOrgDetails(data: $data) {
+    ...updateUserOrgDetailsFields
+  }
+}

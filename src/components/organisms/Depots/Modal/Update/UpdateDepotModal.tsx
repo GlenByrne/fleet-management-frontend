@@ -14,8 +14,8 @@ import {
   successTextVar,
 } from 'src/apollo/apollo-client';
 import {
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetAddVehicleOptionsDocument,
+  GetUpdateVehicleOptionsDocument,
   GetVehiclesDocument,
   UpdateDepotInput,
   useUpdateDepotMutation,
@@ -62,7 +62,7 @@ const UpdateDepotModal = ({
         },
       },
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -71,7 +71,7 @@ const UpdateDepotModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

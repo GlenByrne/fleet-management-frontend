@@ -1,7 +1,7 @@
 overwrite: true
 watch: true
 schema: 'http://localhost:4000'
-documents: 'src/constants/queries.graphql'
+documents: 'src/**/*.graphql'
 generates:
   src/generated/graphql.tsx:
     plugins:

@@ -4,10 +4,10 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
+  GetAddVehicleOptionsDocument,
   GetDepotsDocument,
   GetDepotsQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetUpdateVehicleOptionsDocument,
   GetVehiclesDocument,
   UpdateDepotInput,
   useDeleteDepotMutation,
@@ -70,7 +70,7 @@ const DeleteDepotModal = ({
         },
       },
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -79,7 +79,7 @@ const DeleteDepotModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

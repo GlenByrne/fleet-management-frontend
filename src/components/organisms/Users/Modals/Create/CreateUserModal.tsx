@@ -14,7 +14,7 @@ import {
   GetUsersInOrganisationDocument,
   GetUsersInOrganisationQuery,
   Role,
-  useGetSelectableItemsForAddUserQuery,
+  useGetAddUserOptionsQuery,
   useInviteUserToOrganisationMutation,
 } from '@/generated/graphql';
 import { Option } from '@/constants/types';
@@ -62,7 +62,7 @@ const CreateUserModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useGetSelectableItemsForAddUserQuery({
+  const { data, loading, error } = useGetAddUserOptionsQuery({
     variables: {
       data: {
         organisationId,

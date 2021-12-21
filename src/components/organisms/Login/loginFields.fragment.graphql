@@ -1,0 +1,13 @@
+fragment LoginFields on LoginPayload {
+  user {
+    id
+    name
+    email
+    organisations {
+      organisationId
+      role
+      inviteAccepted
+    }
+  }
+  accessToken
+}

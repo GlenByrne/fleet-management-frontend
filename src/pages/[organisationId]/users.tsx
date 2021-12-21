@@ -6,11 +6,6 @@ import {
   useGetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
 } from '@/generated/graphql';
-import MainLayout from '@/components/templates/FuelCardTemplate';
-import CreateUserModal from '@/components/organisms/Users/Modals/Create/CreateUserModal';
-import UpdateUserModal from '@/components/organisms/Users/Modals/Update/UpdateUserModal';
-import RemoveUserModal from '@/components/organisms/Users/Modals/Remove/RemoveUserModal';
-import UserList from '@/components/organisms/Users/List/UserList';
 import { UserUpdateModalItem } from '@/constants/types';
 import UsersPage from '@/components/pages/users';
 

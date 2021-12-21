@@ -1,0 +1,3 @@
+fragment DeclineInviteFields on UsersOnOrganisations {
+  organisationId
+}

@@ -1,0 +1,12 @@
+fragment GetUsersInOrganisationFields on UsersInOrganisationPayload {
+  user {
+    id
+    name
+    email
+  }
+  role
+  depot {
+    id
+    name
+  }
+}

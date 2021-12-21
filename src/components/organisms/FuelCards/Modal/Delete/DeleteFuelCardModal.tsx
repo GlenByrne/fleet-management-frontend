@@ -6,8 +6,8 @@ import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
   GetFuelCardsQuery,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetUpdateVehicleOptionsDocument,
+  GetAddVehicleOptionsDocument,
   GetVehiclesDocument,
   UpdateFuelCardInput,
   useDeleteFuelCardMutation,
@@ -72,7 +72,7 @@ const DeleteFuelCardModal = ({
         },
       },
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -81,7 +81,7 @@ const DeleteFuelCardModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

@@ -1,0 +1,5 @@
+fragment UpdateTollTagFields on TollTag {
+  id
+  tagNumber
+  tagProvider
+}

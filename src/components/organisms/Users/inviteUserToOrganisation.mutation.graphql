@@ -1,0 +1,5 @@
+mutation InviteUserToOrganisation($data: InviteUserToOrganisationInput!) {
+  inviteUserToOrganisation(data: $data) {
+    ...inviteUserToOrganisationFields
+  }
+}

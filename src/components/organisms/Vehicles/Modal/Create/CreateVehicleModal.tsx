@@ -13,15 +13,15 @@ import {
   Depot,
   FuelCard,
   GetFuelCardsDocument,
-  GetItemsForUpdateVehicleDocument,
-  GetSelectableItemsForAddVehicleDocument,
+  GetUpdateVehicleOptionsDocument,
+  GetAddVehicleOptionsDocument,
   GetTollTagsDocument,
   GetVehiclesDocument,
   GetVehiclesQuery,
   TollTag,
   useAddVehicleMutation,
-  useGetSelectableItemsForAddVehicleQuery,
   VehicleType,
+  useGetAddVehicleOptionsQuery,
 } from '@/generated/graphql';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
@@ -92,7 +92,7 @@ const CreateVehicleModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useGetSelectableItemsForAddVehicleQuery({
+  const { data, loading, error } = useGetAddVehicleOptionsQuery({
     variables: {
       organisationId,
       data: {
@@ -207,7 +207,7 @@ const CreateVehicleModal = ({
         },
       },
       {
-        query: GetSelectableItemsForAddVehicleDocument,
+        query: GetAddVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {
@@ -216,7 +216,7 @@ const CreateVehicleModal = ({
         },
       },
       {
-        query: GetItemsForUpdateVehicleDocument,
+        query: GetUpdateVehicleOptionsDocument,
         variables: {
           organisationId,
           data: {

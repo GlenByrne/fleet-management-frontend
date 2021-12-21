@@ -1,0 +1,6 @@
+mutation AddOrganisation($data: AddOrganisationInput!) {
+  addOrganisation(data: $data) {
+    id
+    name
+  }
+}

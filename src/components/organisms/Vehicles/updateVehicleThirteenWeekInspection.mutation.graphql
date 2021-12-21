@@ -1,0 +1,7 @@
+mutation UpdateVehicleThirteenWeekInspection(
+  $data: UpdateVehicleThirteenWeekInspectionInput!
+) {
+  updateVehicleThirteenWeekInspection(data: $data) {
+    ...UpdateVehicleThirteenWeekInspectionFields
+  }
+}

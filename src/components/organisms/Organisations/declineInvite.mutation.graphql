@@ -1,0 +1,5 @@
+mutation DeclineInvite($data: DeclineInviteInput!) {
+  declineInvite(data: $data) {
+    ...DeclineInviteFields
+  }
+}

@@ -1,0 +1,8 @@
+mutation RemoveUserFromOrganisation($data: RemoveUserFromOrganisationInput!) {
+  removeUserFromOrganisation(data: $data) {
+    user {
+      id
+      name
+    }
+  }
+}
