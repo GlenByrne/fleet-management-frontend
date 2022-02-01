@@ -21,7 +21,7 @@ export const loggedInUserVar = makeVar<User | null>(null);
 export const accessTokenVar = makeVar<string | null>(null);
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: 'http://localhost:4000/graphql',
   credentials: 'include',
 });
 
