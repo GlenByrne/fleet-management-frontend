@@ -1,15 +1,21 @@
 import {
   ApolloClient,
+  ApolloLink,
   createHttpLink,
+  FetchResult,
   from,
   fromPromise,
   InMemoryCache,
   makeVar,
+  Observable,
+  Operation,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import Router from 'next/router';
 import { RefreshAccessTokenDocument, User } from '@/generated/graphql';
+import { print } from 'graphql';
+import { Client, ClientOptions, createClient } from 'graphql-ws';
 
 export const successAlertStateVar = makeVar(false);
 export const successTextVar = makeVar('');
@@ -19,6 +25,42 @@ export const errorTextVar = makeVar('');
 
 export const loggedInUserVar = makeVar<User | null>(null);
 export const accessTokenVar = makeVar<string | null>(null);
+
+// class WebSocketLink extends ApolloLink {
+//   private client: Client;
+
+//   constructor(options: ClientOptions) {
+//     super();
+//     this.client = createClient(options);
+//   }
+
+//   public request(operation: Operation): Observable<FetchResult> {
+//     return new Observable((sink) => {
+//       return this.client.subscribe<FetchResult>(
+//         { ...operation, query: print(operation.query) },
+//         {
+//           next: sink.next.bind(sink),
+//           complete: sink.complete.bind(sink),
+//           error: sink.error.bind(sink),
+//         }
+//       );
+//     });
+//   }
+// }
+
+// const wsLink = new WebSocketLink({
+//   url: 'ws://localhost:4000/graphql',
+//   connectionParams: () => {
+//     // get the authentication token from local storage if it exists
+//     const token = accessTokenVar();
+//     // return the headers to the context so httpLink can read them
+//     return {
+//       headers: {
+//         Authorization: token ? `Bearer ${token}` : '',
+//       },
+//     };
+//   },
+// });
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',

@@ -1,15 +1,34 @@
-import { ApolloError } from '@apollo/client';
-import { FuelCard, GetFuelCardsQuery } from '@/generated/graphql';
+import { ApolloError, SubscribeToMoreOptions } from '@apollo/client';
+import {
+  Exact,
+  FuelCard,
+  FuelCardAddedDocument,
+  FuelCardInputFilter,
+  GetFuelCardsQuery,
+} from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import Link from 'next/link';
 import DeleteButton from '@/components/atoms/DeleteButton';
 import EditButton from '@/components/atoms/EditButton';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
+import { useEffect } from 'react';
 
 type FuelCardListProps = {
   data: GetFuelCardsQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  subscribeToMore: <
+    TSubscriptionData = GetFuelCardsQuery,
+    TSubscriptionVariables = Exact<{
+      data: FuelCardInputFilter;
+    }>
+  >(
+    options: SubscribeToMoreOptions<
+      GetFuelCardsQuery,
+      TSubscriptionVariables,
+      TSubscriptionData
+    >
+  ) => () => void;
   changeCurrentFuelCard: (fuelCard: FuelCard) => void;
   changeAddFuelCardModalState: (newState: boolean) => void;
   changeDeleteFuelCardModalState: (newState: boolean) => void;
@@ -20,11 +39,26 @@ const FuelCardList = ({
   data,
   loading,
   error,
+  subscribeToMore,
   changeCurrentFuelCard,
   changeAddFuelCardModalState,
   changeDeleteFuelCardModalState,
   changeUpdateFuelCardModalState,
 }: FuelCardListProps) => {
+  // useEffect(() => {
+  //   subscribeToMore({
+  //     document: FuelCardAddedDocument,
+  //     updateQuery: (prev, { subscriptionData }) => {
+  //       if (!subscriptionData.data) return prev;
+  //       const newCard = subscriptionData.data.newCard;
+
+  //       return Object.assign({}, prev, {
+  //         fuelCards: [newCard, ...prev.fuelCards],
+  //       });
+  //     },
+  //   });
+  // }, []);
+
   if (loading) {
     return <Loading />;
   }

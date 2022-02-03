@@ -45,13 +45,14 @@ const FuelCards: NextPage = () => {
   };
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetFuelCardsQuery({
-    variables: {
-      data: {
-        organisationId,
+  const { data, loading, error, refetch, subscribeToMore } =
+    useGetFuelCardsQuery({
+      variables: {
+        data: {
+          organisationId,
+        },
       },
-    },
-  });
+    });
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -84,6 +85,7 @@ const FuelCards: NextPage = () => {
       data={data}
       loading={loading}
       error={error}
+      subscribeToMore={subscribeToMore}
       mobileMenuOpen={mobileMenuOpen}
       setMobileMenuOpen={changeMobileMenuOpenState}
       searchCriteria={searchCriteria}
@@ -102,4 +104,21 @@ const FuelCards: NextPage = () => {
     />
   );
 };
+
+// export async function getServerSideProps() {
+//   const { data, loading, error, refetch, subscribeToMore } = await useGetFuelCardsQuery({
+//     variables: {
+//       data: {
+//         organisationId,
+//       },
+//     },
+//   });
+
+//   return {
+//     props: {
+
+//     }
+//   }
+// }
+
 export default FuelCards;

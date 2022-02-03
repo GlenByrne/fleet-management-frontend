@@ -6,17 +6,31 @@ import CreateFuelCardModal from '@/components/organisms/FuelCards/Modal/Create/C
 import DeleteFuelCardModal from '@/components/organisms/FuelCards/Modal/Delete/DeleteFuelCardModal';
 import UpdateFuelCardModal from '@/components/organisms/FuelCards/Modal/Update/UpdateFuelCardModal';
 import {
+  Exact,
   FuelCard,
+  FuelCardInputFilter,
   GetFuelCardsQuery,
   UpdateFuelCardInput,
 } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
+import { ApolloError, SubscribeToMoreOptions } from '@apollo/client';
 import { FormEvent, FormEventHandler } from 'react';
 
 type FuelCardsProps = {
   data: GetFuelCardsQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  subscribeToMore: <
+    TSubscriptionData = GetFuelCardsQuery,
+    TSubscriptionVariables = Exact<{
+      data: FuelCardInputFilter;
+    }>
+  >(
+    options: SubscribeToMoreOptions<
+      GetFuelCardsQuery,
+      TSubscriptionVariables,
+      TSubscriptionData
+    >
+  ) => () => void;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (newState: boolean) => void;
   searchSubmitHandler: FormEventHandler<Element>;
@@ -38,6 +52,7 @@ const FuelCardsPage = ({
   data,
   loading,
   error,
+  subscribeToMore,
   mobileMenuOpen,
   setMobileMenuOpen,
   searchCriteria,
@@ -92,6 +107,7 @@ const FuelCardsPage = ({
             data={data}
             loading={loading}
             error={error}
+            subscribeToMore={subscribeToMore}
             changeAddFuelCardModalState={changeAddFuelCardModalState}
             changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
             changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}

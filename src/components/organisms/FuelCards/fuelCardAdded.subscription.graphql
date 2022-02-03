@@ -1,0 +1,11 @@
+subscription FuelCardAdded {
+  newCard {
+    id
+    cardNumber
+    cardProvider
+    vehicle {
+      id
+      registration
+    }
+  }
+}
