@@ -4,7 +4,9 @@ import 'tailwindcss/tailwind.css';
 import { ApolloProvider } from '@apollo/client';
 import ErrorNotification from '@/components/molecules/ErrorNotification';
 import SuccessNotification from '@/components/molecules/SuccessNotification';
-import client from 'src/apollo/apollo-client';
+import { createGraphqlClient } from 'src/apollo/apollo-client';
+
+export const client = createGraphqlClient();
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

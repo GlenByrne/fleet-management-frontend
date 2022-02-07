@@ -5,6 +5,7 @@ import {
   FuelCardAddedDocument,
   FuelCardInputFilter,
   GetFuelCardsQuery,
+  Response,
 } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ import DeleteButton from '@/components/atoms/DeleteButton';
 import EditButton from '@/components/atoms/EditButton';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { useEffect } from 'react';
+import Button from '@/core/Table/Button';
 
 type FuelCardListProps = {
   data: GetFuelCardsQuery | undefined;
@@ -29,6 +31,7 @@ type FuelCardListProps = {
       TSubscriptionData
     >
   ) => () => void;
+  fetchMore: () => void;
   changeCurrentFuelCard: (fuelCard: FuelCard) => void;
   changeAddFuelCardModalState: (newState: boolean) => void;
   changeDeleteFuelCardModalState: (newState: boolean) => void;
@@ -40,6 +43,7 @@ const FuelCardList = ({
   loading,
   error,
   subscribeToMore,
+  fetchMore,
   changeCurrentFuelCard,
   changeAddFuelCardModalState,
   changeDeleteFuelCardModalState,
@@ -50,7 +54,7 @@ const FuelCardList = ({
   //     document: FuelCardAddedDocument,
   //     updateQuery: (prev, { subscriptionData }) => {
   //       if (!subscriptionData.data) return prev;
-  //       const newCard = subscriptionData.data.newCard;
+  //       const newCard = subscriptionData.data.fuelCards;
 
   //       return Object.assign({}, prev, {
   //         fuelCards: [newCard, ...prev.fuelCards],
@@ -71,24 +75,24 @@ const FuelCardList = ({
     return <div></div>;
   }
 
-  const fuelCards = data.fuelCards as FuelCard[];
+  const fuelCards = data.fuelCards as Response;
 
-  return fuelCards.length > 0 ? (
+  return fuelCards.edges?.length > 0 ? (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {fuelCards.map((fuelCard) => (
-          <li key={fuelCard.id}>
+        {fuelCards.edges?.map((fuelCard) => (
+          <li key={fuelCard?.node?.id}>
             <Link href="#">
               <a className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-indigo-600 truncate">
-                      {fuelCard.cardNumber}
+                      {fuelCard?.node?.cardNumber}
                     </p>
                     <div className="ml-2 shrink-0 flex">
                       <DeleteButton
                         onClick={() => {
-                          changeCurrentFuelCard(fuelCard);
+                          changeCurrentFuelCard(fuelCard?.node);
                           changeDeleteFuelCardModalState(true);
                         }}
                       />
@@ -97,12 +101,12 @@ const FuelCardList = ({
                   <div className="mt-2 sm:flex sm:justify-between">
                     <div className="sm:flex">
                       <p className="flex items-center text-sm text-gray-500">
-                        Provider: {fuelCard.cardProvider}
+                        Provider: {fuelCard?.node?.cardProvider}
                       </p>
                     </div>
                     <EditButton
                       onClick={() => {
-                        changeCurrentFuelCard(fuelCard);
+                        changeCurrentFuelCard(fuelCard?.node);
                         changeUpdateFuelCardModalState(true);
                       }}
                     />
@@ -113,6 +117,7 @@ const FuelCardList = ({
           </li>
         ))}
       </ul>
+      <Button onClick={fetchMore}>Load More</Button>
     </div>
   ) : (
     <NoListItemButton

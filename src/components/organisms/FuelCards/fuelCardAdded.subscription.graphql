@@ -1,5 +1,5 @@
 subscription FuelCardAdded {
-  newCard {
+  fuelCardAdded {
     id
     cardNumber
     cardProvider

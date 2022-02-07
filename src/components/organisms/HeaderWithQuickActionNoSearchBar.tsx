@@ -2,7 +2,7 @@ import CirclularAddButton from '@/components/atoms/CirclularAddButton';
 import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/atoms/ProfileIconButton';
-import client, {
+import {
   accessTokenVar,
   loggedInUserVar,
   successAlertStateVar,
@@ -13,6 +13,7 @@ import { useLogoutMutation } from '@/generated/graphql';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
+import { client } from '@/pages/_app';
 
 type HeaderWithQuickActionNoSearchBarProps = {
   setMobileMenuOpen: (newState: boolean) => void;

@@ -1,4 +1,4 @@
-import client, {
+import {
   accessTokenVar,
   loggedInUserVar,
   successAlertStateVar,
@@ -13,6 +13,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FormEvent, useState, FormEventHandler } from 'react';
 import PasswordSettingsPage from '@/components/pages/passwordSettings';
+import { client } from '../_app';
 
 const Password: NextPage = () => {
   const router = useRouter();

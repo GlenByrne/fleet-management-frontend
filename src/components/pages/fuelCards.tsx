@@ -31,6 +31,7 @@ type FuelCardsProps = {
       TSubscriptionData
     >
   ) => () => void;
+  fetchMore: () => void;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (newState: boolean) => void;
   searchSubmitHandler: FormEventHandler<Element>;
@@ -53,6 +54,7 @@ const FuelCardsPage = ({
   loading,
   error,
   subscribeToMore,
+  fetchMore,
   mobileMenuOpen,
   setMobileMenuOpen,
   searchCriteria,
@@ -108,6 +110,7 @@ const FuelCardsPage = ({
             loading={loading}
             error={error}
             subscribeToMore={subscribeToMore}
+            fetchMore={fetchMore}
             changeAddFuelCardModalState={changeAddFuelCardModalState}
             changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
             changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}

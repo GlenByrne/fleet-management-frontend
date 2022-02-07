@@ -3,7 +3,7 @@ import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerBut
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/atoms/ProfileIconButton';
 import SearchBar from '@/components/molecules/SearchBar';
-import client, {
+import {
   accessTokenVar,
   loggedInUserVar,
   successAlertStateVar,
@@ -14,6 +14,7 @@ import { useLogoutMutation } from '@/generated/graphql';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { FormEvent, FormEventHandler, Fragment } from 'react';
+import { client } from '@/pages/_app';
 
 type HeaderWithSearchbarAndQuickActionButtonProps = {
   setMobileMenuOpen: (newState: boolean) => void;

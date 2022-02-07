@@ -1,5 +1,14 @@
 query GetFuelCards($data: FuelCardInputFilter!) {
   fuelCards(data: $data) {
-    ...FuelCardItemFields
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        ...FuelCardItemFields
+      }
+    }
   }
 }

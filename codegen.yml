@@ -1,5 +1,3 @@
-overwrite: true
-watch: true
 schema: 'http://localhost:4000/graphql'
 documents: 'src/**/*.graphql'
 generates:
@@ -8,6 +6,8 @@ generates:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
+      - 'named-operations-object'
+      - 'typescript-apollo-client-helpers'
   ./graphql.schema.json:
     plugins:
       - 'introspection'
