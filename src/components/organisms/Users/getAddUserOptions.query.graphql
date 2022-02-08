@@ -1,5 +1,14 @@
-query GetAddUserOptions($data: DepotInputFilter!) {
-  depots(data: $data) {
-    ...AddUserOptionsDepotFields
+query GetAddUserOptions($data: DepotsInput!, $first: Int, $after: String) {
+  depots(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        ...AddUserOptionsDepotFields
+      }
+    }
   }
 }

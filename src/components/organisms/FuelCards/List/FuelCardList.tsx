@@ -4,9 +4,8 @@ import {
   FuelCard,
   FuelCardAddedDocument,
   FuelCardConnection,
-  FuelCardInputFilter,
+  FuelCardsInput,
   GetFuelCardsQuery,
-  Response,
 } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import Link from 'next/link';
@@ -24,7 +23,7 @@ type FuelCardListProps = {
   subscribeToMore: <
     TSubscriptionData = GetFuelCardsQuery,
     TSubscriptionVariables = Exact<{
-      data: FuelCardInputFilter;
+      data: FuelCardsInput;
     }>
   >(
     options: SubscribeToMoreOptions<

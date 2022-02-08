@@ -1,5 +1,14 @@
-query GetUpdateUserOptions($data: DepotInputFilter!) {
-  depots(data: $data) {
-    ...UpdateUserOptionsDepotFields
+query GetUpdateUserOptions($data: DepotsInput!, $first: Int, $after: String) {
+  depots(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        ...UpdateUserOptionsDepotFields
+      }
+    }
   }
 }

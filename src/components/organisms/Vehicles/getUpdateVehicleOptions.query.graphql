@@ -1,11 +1,26 @@
-query GetUpdateVehicleOptions($organisationId: ID!, $data: DepotInputFilter!) {
-  fuelCardsNotAssigned(organisationId: $organisationId) {
+query GetUpdateVehicleOptions(
+  $data: FuelCardsNotAssignedInput!
+  $tollTagsNotAssignedData2: TollTagsNotAssignedInput!
+  $depotsData2: DepotsInput!
+  $first: Int
+  $after: String
+) {
+  fuelCardsNotAssigned(data: $data) {
     ...UpdateVehicleOptionsFuelCardFields
   }
-  tollTagsNotAssigned(organisationId: $organisationId) {
+  tollTagsNotAssigned(data: $tollTagsNotAssignedData2) {
     ...UpdateVehicleOptionsTollTagFields
   }
-  depots(data: $data) {
-    ...UpdateVehicleOptionsDepotFields
+  depots(data: $depotsData2, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        ...UpdateVehicleOptionsDepotFields
+      }
+    }
   }
 }

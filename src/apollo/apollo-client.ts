@@ -181,6 +181,7 @@ export const createGraphqlClient = () => {
     Query: {
       fields: {
         fuelCards: relayStylePagination(),
+        depots: relayStylePagination(),
       },
     },
     FuelCard: {

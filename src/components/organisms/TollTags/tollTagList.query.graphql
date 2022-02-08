@@ -1,5 +1,14 @@
-query GetTollTags($data: TollTagInputFilter!) {
-  tollTags(data: $data) {
-    ...TollTagItemFields
+query GetTollTags($data: TollTagsInput!, $first: Int, $after: String) {
+  tollTags(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        ...TollTagItemFields
+      }
+    }
   }
 }

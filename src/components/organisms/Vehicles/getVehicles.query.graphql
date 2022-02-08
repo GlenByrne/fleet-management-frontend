@@ -1,5 +1,14 @@
-query GetVehicles($data: VehicleInputFilter!) {
-  vehicles(data: $data) {
-    ...GetVehiclesFields
+query GetVehicles($data: VehiclesInput!, $first: Int, $after: String) {
+  vehicles(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        ...GetVehiclesFields
+      }
+    }
   }
 }

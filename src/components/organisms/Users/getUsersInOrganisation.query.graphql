@@ -1,4 +1,4 @@
-query GetUsersInOrganisation($data: UsersInOrganisationInputFilter!) {
+query GetUsersInOrganisation($data: UsersInOrganisationInput!) {
   usersInOrganisation(data: $data) {
     ...GetUsersInOrganisationFields
   }

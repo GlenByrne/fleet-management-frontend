@@ -13,6 +13,7 @@ type DepotsProps = {
   data: GetDepotsQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  fetchMore: () => void;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (newState: boolean) => void;
   searchSubmitHandler: FormEventHandler<Element>;
@@ -34,6 +35,7 @@ const DepotsPage = ({
   data,
   loading,
   error,
+  fetchMore,
   mobileMenuOpen,
   setMobileMenuOpen,
   searchCriteria,
@@ -88,6 +90,7 @@ const DepotsPage = ({
             data={data}
             loading={loading}
             error={error}
+            fetchMore={fetchMore}
             changeAddDepotModalState={changeAddDepotModalState}
             changeDeleteDepotModalState={changeDeleteDepotModalState}
             changeUpdateDepotModalState={changeUpdateDepotModalState}

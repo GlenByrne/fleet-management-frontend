@@ -2,14 +2,16 @@ import DeleteButton from '@/components/atoms/DeleteButton';
 import EditButton from '@/components/atoms/EditButton';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { Depot, GetDepotsQuery } from '@/generated/graphql';
+import { Depot, DepotConnection, GetDepotsQuery } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
 import Link from 'next/link';
+import InView from 'react-intersection-observer';
 
 type DepotListProps = {
   data: GetDepotsQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  fetchMore: () => void;
   changeCurrentDepot: (depot: Depot) => void;
   changeAddDepotModalState: (newState: boolean) => void;
   changeDeleteDepotModalState: (newState: boolean) => void;
@@ -20,6 +22,7 @@ const DepotList = ({
   data,
   loading,
   error,
+  fetchMore,
   changeCurrentDepot,
   changeAddDepotModalState,
   changeDeleteDepotModalState,
@@ -37,24 +40,26 @@ const DepotList = ({
     return <div></div>;
   }
 
-  const depots = data.depots as Depot[];
+  const { hasNextPage } = data.depots?.pageInfo;
 
-  return depots.length > 0 ? (
+  const depots = data.depots as DepotConnection;
+
+  return depots.edges?.length > 0 ? (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {depots.map((depot) => (
-          <li key={depot.id}>
+        {depots.edges?.map((depot) => (
+          <li key={depot?.node?.id}>
             <Link href="#">
               <a className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-indigo-600 truncate">
-                      {depot.name}
+                      {depot?.node?.name}
                     </p>
                     <div className="ml-2 shrink-0 flex">
                       <DeleteButton
                         onClick={() => {
-                          changeCurrentDepot(depot);
+                          changeCurrentDepot(depot?.node);
                           changeDeleteDepotModalState(true);
                         }}
                       />
@@ -63,12 +68,12 @@ const DepotList = ({
                   <div className="mt-2 sm:flex sm:justify-between">
                     <div className="sm:flex">
                       <p className="flex items-center text-sm text-gray-500">
-                        Vehicles: {depot.vehicles.length}
+                        Vehicles: {depot?.node?.vehicles.length}
                       </p>
                     </div>
                     <EditButton
                       onClick={() => {
-                        changeCurrentDepot(depot);
+                        changeCurrentDepot(depot?.node);
                         changeUpdateDepotModalState(true);
                       }}
                     />
@@ -79,6 +84,17 @@ const DepotList = ({
           </li>
         ))}
       </ul>
+      <InView
+        onChange={() => {
+          if (hasNextPage == true) {
+            fetchMore();
+          }
+        }}
+      >
+        {({ inView, ref }) => (
+          <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
+        )}
+      </InView>
     </div>
   ) : (
     <NoListItemButton

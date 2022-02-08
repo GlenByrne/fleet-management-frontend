@@ -1,5 +1,14 @@
-query GetInfringements {
-  infringements {
-    ...InfringementFields
+query GetInfringements($first: Int, $after: String) {
+  infringements(first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        ...InfringementFields
+      }
+    }
   }
 }

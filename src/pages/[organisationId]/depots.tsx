@@ -41,14 +41,19 @@ const Depots: NextPage = () => {
     setCurrentDepot(chosenDepot);
   };
 
+  const first = 10;
+
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetDepotsQuery({
+  const { data, loading, error, fetchMore, refetch } = useGetDepotsQuery({
     variables: {
+      first,
       data: {
         organisationId,
       },
     },
   });
+
+  const endCursor = data?.depots?.pageInfo?.endCursor;
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -57,6 +62,7 @@ const Depots: NextPage = () => {
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
+      first,
       data: {
         searchCriteria: searchCriteria,
         organisationId,
@@ -70,6 +76,14 @@ const Depots: NextPage = () => {
     setMobileMenuOpen(newState);
   };
 
+  const fetchMoreDepots = () => {
+    fetchMore({
+      variables: {
+        after: endCursor,
+      },
+    });
+  };
+
   // const accessToken = useAuthentication();
 
   // if (!accessToken) {
@@ -81,6 +95,7 @@ const Depots: NextPage = () => {
       data={data}
       loading={loading}
       error={error}
+      fetchMore={fetchMoreDepots}
       mobileMenuOpen={mobileMenuOpen}
       setMobileMenuOpen={changeMobileMenuOpenState}
       searchCriteria={searchCriteria}

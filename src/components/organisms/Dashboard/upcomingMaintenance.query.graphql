@@ -1,11 +1,15 @@
-query UpcomingMaintenace($organisationId: ID!) {
-  upcomingCVRT(organisationId: $organisationId) {
+query UpcomingMaintenance(
+  $data: UpcomingCVRTInput!
+  $upcomingThirteenWeekData2: UpcomingThirteenWeekInput!
+  $upcomingTachoCalibrationData2: UpcomingTachoCalibrationInput!
+) {
+  upcomingCVRT(data: $data) {
     ...UpcomingCVRTFields
   }
-  upcomingThirteenWeek(organisationId: $organisationId) {
+  upcomingThirteenWeek(data: $upcomingThirteenWeekData2) {
     ...UpcomingThirteenWeekFields
   }
-  upcomingTachoCalibration(organisationId: $organisationId) {
+  upcomingTachoCalibration(data: $upcomingTachoCalibrationData2) {
     ...UpcomingTachoCalibrationFields
   }
 }

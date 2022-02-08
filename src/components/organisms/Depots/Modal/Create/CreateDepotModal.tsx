@@ -65,8 +65,13 @@ const CreateDepotModal = ({
       {
         query: GetAddVehicleOptionsDocument,
         variables: {
-          organisationId,
           data: {
+            organisationId,
+          },
+          tollTagsNotAssignedData2: {
+            organisationId,
+          },
+          depotsData2: {
             organisationId,
           },
         },
@@ -74,8 +79,13 @@ const CreateDepotModal = ({
       {
         query: GetUpdateVehicleOptionsDocument,
         variables: {
-          organisationId,
           data: {
+            organisationId,
+          },
+          tollTagsNotAssignedData2: {
+            organisationId,
+          },
+          depotsData2: {
             organisationId,
           },
         },

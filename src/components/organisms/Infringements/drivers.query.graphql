@@ -1,4 +1,4 @@
-query GetDrivers($data: DriversInOrganisationInputFilter!) {
+query GetDrivers($data: DriversInOrganisationInput!) {
   driversInOrganisation(data: $data) {
     ...DriverFields
   }

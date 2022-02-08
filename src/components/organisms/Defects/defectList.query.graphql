@@ -1,5 +1,5 @@
-query GetVehicleDefects($vehicleId: ID!) {
-  defectsForVehicle(vehicleId: $vehicleId) {
+query GetVehicleDefects($data: DefectsForVehiclesInput!) {
+  defectsForVehicles(data: $data) {
     ...DefectItemFields
   }
 }

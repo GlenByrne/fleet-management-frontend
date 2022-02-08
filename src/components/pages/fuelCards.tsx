@@ -8,7 +8,7 @@ import UpdateFuelCardModal from '@/components/organisms/FuelCards/Modal/Update/U
 import {
   Exact,
   FuelCard,
-  FuelCardInputFilter,
+  FuelCardsInput,
   GetFuelCardsQuery,
   UpdateFuelCardInput,
 } from '@/generated/graphql';
@@ -22,7 +22,7 @@ type FuelCardsProps = {
   subscribeToMore: <
     TSubscriptionData = GetFuelCardsQuery,
     TSubscriptionVariables = Exact<{
-      data: FuelCardInputFilter;
+      data: FuelCardsInput;
     }>
   >(
     options: SubscribeToMoreOptions<
