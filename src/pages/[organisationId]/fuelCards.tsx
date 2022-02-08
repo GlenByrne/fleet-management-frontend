@@ -44,18 +44,20 @@ const FuelCards: NextPage = () => {
     setCurrentFuelCard(chosenFuelCard);
   };
 
-  const first = 2;
+  const first = 10;
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
   const { data, loading, error, fetchMore, refetch, subscribeToMore } =
     useGetFuelCardsQuery({
       variables: {
+        first,
         data: {
           organisationId,
-          first,
         },
       },
     });
+
+  const endCursor = data?.fuelCards?.pageInfo?.endCursor;
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -64,10 +66,10 @@ const FuelCards: NextPage = () => {
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
+      first,
       data: {
         searchCriteria: searchCriteria,
         organisationId,
-        first,
       },
     });
   };
@@ -75,14 +77,7 @@ const FuelCards: NextPage = () => {
   const fetchMoreFuelCards = () => {
     fetchMore({
       variables: {
-        after: data?.fuelCards?.pageInfo?.endCursor,
-      },
-      updateQuery: (prevResult, { fetchMoreResult }) => {
-        fetchMoreResult.fuelCards.edges = [
-          ...prevResult.fuelCards.edges,
-          ...fetchMoreResult.fuelCards.edges,
-        ];
-        return fetchMoreResult;
+        after: endCursor,
       },
     });
   };

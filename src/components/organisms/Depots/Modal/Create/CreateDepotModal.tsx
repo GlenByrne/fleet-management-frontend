@@ -36,31 +36,31 @@ const CreateDepotModal = ({
   const cancelButtonRef = useRef(null);
 
   const [addDepot] = useAddDepotMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newDepot = mutationReturn?.addDepot;
-      const currentDepots = cache.readQuery<GetDepotsQuery>({
-        query: GetDepotsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      });
+    // update: (cache, { data: mutationReturn }) => {
+    //   const newDepot = mutationReturn?.addDepot;
+    //   const currentDepots = cache.readQuery<GetDepotsQuery>({
+    //     query: GetDepotsDocument,
+    //     variables: {
+    //       data: {
+    //         organisationId: organisationId,
+    //       },
+    //     },
+    //   });
 
-      if (currentDepots && newDepot) {
-        cache.writeQuery({
-          query: GetDepotsDocument,
-          variables: {
-            data: {
-              organisationId: organisationId,
-            },
-          },
-          data: {
-            depots: [{ ...currentDepots.depots }, newDepot],
-          },
-        });
-      }
-    },
+    //   if (currentDepots && newDepot) {
+    //     cache.writeQuery({
+    //       query: GetDepotsDocument,
+    //       variables: {
+    //         data: {
+    //           organisationId: organisationId,
+    //         },
+    //       },
+    //       data: {
+    //         depots: [{ ...currentDepots.depots }, newDepot],
+    //       },
+    //     });
+    //   }
+    // },
     refetchQueries: [
       {
         query: GetAddVehicleOptionsDocument,

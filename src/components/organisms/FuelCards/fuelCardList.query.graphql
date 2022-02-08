@@ -1,5 +1,5 @@
-query GetFuelCards($data: FuelCardInputFilter!) {
-  fuelCards(data: $data) {
+query GetFuelCards($data: FuelCardsInput!, $first: Int, $after: String) {
+  fuelCards(data: $data, first: $first, after: $after) {
     pageInfo {
       endCursor
       hasNextPage

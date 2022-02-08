@@ -3,6 +3,7 @@ import {
   Exact,
   FuelCard,
   FuelCardAddedDocument,
+  FuelCardConnection,
   FuelCardInputFilter,
   GetFuelCardsQuery,
   Response,
@@ -14,6 +15,7 @@ import EditButton from '@/components/atoms/EditButton';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { useEffect } from 'react';
 import Button from '@/core/Table/Button';
+import InView, { useInView } from 'react-intersection-observer';
 
 type FuelCardListProps = {
   data: GetFuelCardsQuery | undefined;
@@ -49,19 +51,23 @@ const FuelCardList = ({
   changeDeleteFuelCardModalState,
   changeUpdateFuelCardModalState,
 }: FuelCardListProps) => {
+  // const { ref, inView } = useInView({});
   // useEffect(() => {
-  //   subscribeToMore({
-  //     document: FuelCardAddedDocument,
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       if (!subscriptionData.data) return prev;
-  //       const newCard = subscriptionData.data.fuelCards;
+  //   // subscribeToMore({
+  //   //   document: FuelCardAddedDocument,
+  //   //   updateQuery: (prev, { subscriptionData }) => {
+  //   //     if (!subscriptionData.data) return prev;
+  //   //     const newCard = subscriptionData.data.fuelCards;
 
-  //       return Object.assign({}, prev, {
-  //         fuelCards: [newCard, ...prev.fuelCards],
-  //       });
-  //     },
-  //   });
-  // }, []);
+  //   //     return Object.assign({}, prev, {
+  //   //       fuelCards: [newCard, ...prev.fuelCards],
+  //   //     });
+  //   //   },
+  //   // });
+  //   if (inView) {
+  //     fetchMore();
+  //   }
+  // }, [inView]);
 
   if (loading) {
     return <Loading />;
@@ -75,7 +81,9 @@ const FuelCardList = ({
     return <div></div>;
   }
 
-  const fuelCards = data.fuelCards as Response;
+  const { hasNextPage } = data.fuelCards?.pageInfo;
+
+  const fuelCards = data.fuelCards as FuelCardConnection;
 
   return fuelCards.edges?.length > 0 ? (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
@@ -117,7 +125,17 @@ const FuelCardList = ({
           </li>
         ))}
       </ul>
-      <Button onClick={fetchMore}>Load More</Button>
+      <InView
+        onChange={() => {
+          if (hasNextPage == true) {
+            fetchMore();
+          }
+        }}
+      >
+        {({ inView, ref }) => (
+          <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
+        )}
+      </InView>
     </div>
   ) : (
     <NoListItemButton

@@ -33,33 +33,33 @@ const DeleteDepotModal = ({
   const organisationId = String(router.query.organisationId);
 
   const [deleteDepot] = useDeleteDepotMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentDepots = cache.readQuery<GetDepotsQuery>({
-        query: GetDepotsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      });
-      const newDepots = currentDepots?.depots?.filter((depot) =>
-        depot != null
-          ? depot.id !== mutationReturn?.deleteDepot.id
-          : currentDepots.depots
-      );
-      cache.writeQuery({
-        query: GetDepotsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-        data: { depots: newDepots },
-      });
-      cache.evict({
-        id: mutationReturn?.deleteDepot.id,
-      });
-    },
+    // update: (cache, { data: mutationReturn }) => {
+    //   const currentDepots = cache.readQuery<GetDepotsQuery>({
+    //     query: GetDepotsDocument,
+    //     variables: {
+    //       data: {
+    //         organisationId: organisationId,
+    //       },
+    //     },
+    //   });
+    //   const newDepots = currentDepots?.depots?.filter((depot) =>
+    //     depot != null
+    //       ? depot.id !== mutationReturn?.deleteDepot.id
+    //       : currentDepots.depots
+    //   );
+    //   cache.writeQuery({
+    //     query: GetDepotsDocument,
+    //     variables: {
+    //       data: {
+    //         organisationId: organisationId,
+    //       },
+    //     },
+    //     data: { depots: newDepots },
+    //   });
+    //   cache.evict({
+    //     id: mutationReturn?.deleteDepot.id,
+    //   });
+    // },
     refetchQueries: [
       {
         query: GetVehiclesDocument,

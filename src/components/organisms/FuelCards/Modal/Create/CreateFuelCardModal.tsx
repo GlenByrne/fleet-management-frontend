@@ -41,29 +41,29 @@ const CreateFuelCardModal = ({
   const cancelButtonRef = useRef(null);
 
   const [addFuelCard] = useAddFuelCardMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newFuelCard = mutationReturn?.addFuelCard;
-      const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
-        query: GetFuelCardsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      });
+    // update: (cache, { data: mutationReturn }) => {
+    //   const newFuelCard = mutationReturn?.addFuelCard;
+    //   const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
+    //     query: GetFuelCardsDocument,
+    //     variables: {
+    //       data: {
+    //         organisationId: organisationId,
+    //       },
+    //     },
+    //   });
 
-      if (currentFuelCards && newFuelCard) {
-        cache.writeQuery({
-          query: GetFuelCardsDocument,
-          variables: {
-            data: {
-              organisationId: organisationId,
-            },
-          },
-          data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
-        });
-      }
-    },
+    //   if (currentFuelCards && newFuelCard) {
+    //     cache.writeQuery({
+    //       query: GetFuelCardsDocument,
+    //       variables: {
+    //         data: {
+    //           organisationId: organisationId,
+    //         },
+    //       },
+    //       data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
+    //     });
+    //   }
+    // },
     refetchQueries: [
       {
         query: GetAddVehicleOptionsDocument,

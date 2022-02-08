@@ -183,6 +183,12 @@ export const createGraphqlClient = () => {
         fuelCards: relayStylePagination(),
       },
     },
+    FuelCard: {
+      merge: true,
+    },
+    Depot: {
+      merge: true,
+    },
   };
 
   const client = new ApolloClient({
