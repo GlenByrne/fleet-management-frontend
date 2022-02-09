@@ -8,63 +8,87 @@ import {
   Infringement,
   GetInfringementsQuery,
   UpdateInfringementInput,
+  InfringementStatus,
+  useGetInfringementsQuery,
 } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
 import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import UpdateInfringementStatusModal from '@/components/organisms/Infringements/Modal/Update/UpdateInfringementStatusModal';
+import { useState } from 'react';
 
-type InfringementsProps = {
-  data: GetInfringementsQuery | undefined;
-  loading: boolean;
-  error: ApolloError | undefined;
-  mobileMenuOpen: boolean;
-  setMobileMenuOpen: (newState: boolean) => void;
-  quickAction: (state: boolean) => void;
-  quickActionLabel: string;
-  currentInfringement: UpdateInfringementInput;
-  changeCurrentInfringement: (tollTag: Infringement) => void;
-  addInfringementModalState: boolean;
-  updateInfringementModalState: boolean;
-  updateInfringementStatusModalState: boolean;
-  deleteInfringementModalState: boolean;
-  changeAddInfringementModalState: (newState: boolean) => void;
-  changeUpdateInfringementModalState: (newState: boolean) => void;
-  changeUpdateInfringementStatusModalState: (newState: boolean) => void;
-  changeDeleteInfringementModalState: (newState: boolean) => void;
-};
+const InfringementsPage = () => {
+  const { data, loading, error } = useGetInfringementsQuery();
 
-const InfringementsPage = ({
-  data,
-  loading,
-  error,
-  mobileMenuOpen,
-  setMobileMenuOpen,
-  quickAction,
-  quickActionLabel,
-  currentInfringement,
-  changeCurrentInfringement,
-  addInfringementModalState,
-  updateInfringementModalState,
-  updateInfringementStatusModalState,
-  deleteInfringementModalState,
-  changeAddInfringementModalState,
-  changeUpdateInfringementModalState,
-  changeUpdateInfringementStatusModalState,
-  changeDeleteInfringementModalState,
-}: InfringementsProps) => {
+  const [addInfringementModalState, setAddInfringementModalState] =
+    useState(false);
+  const [updateInfringementModalState, setUpdateInfringementModalState] =
+    useState(false);
+  const [
+    updateInfringementStatusModalState,
+    setUpdateInfringementStatusModalState,
+  ] = useState(false);
+  const [deleteInfringementModalState, setDeleteInfringementModalState] =
+    useState(false);
+
+  const [currentInfringement, setCurrentInfringement] =
+    useState<UpdateInfringementInput>({
+      id: '',
+      description: '',
+      dateOccured: new Date(),
+      status: InfringementStatus.Unsigned,
+    });
+
+  const changeAddInfringementModalState = (newState: boolean) => {
+    setAddInfringementModalState(newState);
+  };
+
+  const changeUpdateInfringementModalState = (newState: boolean) => {
+    setUpdateInfringementModalState(newState);
+  };
+
+  const changeUpdateInfringementStatusModalState = (newState: boolean) => {
+    setUpdateInfringementStatusModalState(newState);
+  };
+
+  const changeDeleteInfringementModalState = (newState: boolean) => {
+    setDeleteInfringementModalState(newState);
+  };
+
+  const changeCurrentInfringement = (infringement: Infringement) => {
+    const chosenInfringement: UpdateInfringementInput = {
+      id: infringement.id,
+      description: infringement.description,
+      dateOccured: infringement.dateOccured,
+      status: infringement.status,
+    };
+    setCurrentInfringement(chosenInfringement);
+  };
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
+
   return (
     <InfringementTemplate
       header={
         <HeaderWithQuickActionNoSearchBar
-          setMobileMenuOpen={setMobileMenuOpen}
-          quickAction={quickAction}
-          quickActionLabel={quickActionLabel}
+          setMobileMenuOpen={changeMobileMenuOpenState}
+          quickAction={changeAddInfringementModalState}
+          quickActionLabel="New Infringement"
         />
       }
       sidebar={
         <SideNav
           mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
         />
       }
       content={

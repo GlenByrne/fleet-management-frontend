@@ -1,34 +1,52 @@
 import SideNav from '@/components/organisms/SideNav';
-import { ApolloError } from '@apollo/client';
-import { UpcomingMaintenaceQuery } from '@/generated/graphql';
+import { useUpcomingMaintenanceQuery } from '@/generated/graphql';
 import DashboardTemplate from '@/components/templates/DashboardTemplate';
 import HeaderNoSearchBarOrQuickAction from '@/components/organisms/HeaderNoSearchBarOrQuickAction';
 import Dashboard from '@/components/organisms/Dashboard/Dashboard';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
-type DashboardsProps = {
-  data: UpcomingMaintenaceQuery | undefined;
-  loading: boolean;
-  error: ApolloError | undefined;
-  mobileMenuOpen: boolean;
-  setMobileMenuOpen: (newState: boolean) => void;
-};
+const DashboardsPage = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
 
-const DashboardsPage = ({
-  data,
-  loading,
-  error,
-  mobileMenuOpen,
-  setMobileMenuOpen,
-}: DashboardsProps) => {
+  const { data, loading, error } = useUpcomingMaintenanceQuery({
+    variables: {
+      data: {
+        organisationId: organisationId,
+      },
+      upcomingThirteenWeekData2: {
+        organisationId: organisationId,
+      },
+      upcomingTachoCalibrationData2: {
+        organisationId: organisationId,
+      },
+    },
+  });
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
+
   return (
     <DashboardTemplate
       header={
-        <HeaderNoSearchBarOrQuickAction setMobileMenuOpen={setMobileMenuOpen} />
+        <HeaderNoSearchBarOrQuickAction
+          setMobileMenuOpen={changeMobileMenuOpenState}
+        />
       }
       sidebar={
         <SideNav
           mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
         />
       }
       content={<Dashboard data={data} loading={loading} error={error} />}

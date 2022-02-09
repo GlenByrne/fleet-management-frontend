@@ -1,45 +1,48 @@
-import { GetUsersOrganisationsQuery } from '@/generated/graphql';
+import {
+  GetUsersOrganisationsQuery,
+  useGetUsersOrganisationsInvitesQuery,
+  useGetUsersOrganisationsQuery,
+} from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
 import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import OrganisationTemplate from '@/components/templates/OrganisationTemplate';
 import CreateOrganisationModal from '@/components/organisms/Organisations/Modal/Create/CreateOrganisationModal';
 import OrganisationsList from '@/components/organisms/Organisations/List/OrganisationsList';
 import OrganisationInviteList from '@/components/organisms/Organisations/List/OrganisationInviteList';
+import { useState } from 'react';
 
-type OrganisationsProps = {
-  organisationsData: GetUsersOrganisationsQuery | undefined;
-  organisationsLoading: boolean;
-  organisationsError: ApolloError | undefined;
-  invitesData: GetUsersOrganisationsQuery | undefined;
-  invitesLoading: boolean;
-  invitesError: ApolloError | undefined;
-  setMobileMenuOpen: (newState: boolean) => void;
-  quickAction: (state: boolean) => void;
-  quickActionLabel: string;
-  addOrganisationModalState: boolean;
-  changeAddOrganisationModalState: (newState: boolean) => void;
-};
+const OrganisationsPage = () => {
+  const {
+    data: organisationsData,
+    loading: organisationsLoading,
+    error: organisationsError,
+  } = useGetUsersOrganisationsQuery();
+  const {
+    data: invitesData,
+    loading: invitesLoading,
+    error: invitesError,
+  } = useGetUsersOrganisationsInvitesQuery();
 
-const OrganisationsPage = ({
-  organisationsData,
-  organisationsLoading,
-  organisationsError,
-  invitesData,
-  invitesLoading,
-  invitesError,
-  setMobileMenuOpen,
-  quickAction,
-  quickActionLabel,
-  addOrganisationModalState,
-  changeAddOrganisationModalState,
-}: OrganisationsProps) => {
+  const [addOrganisationModalState, setAddOrganisationModalState] =
+    useState(false);
+
+  const changeAddOrganisationModalState = (newState: boolean) => {
+    setAddOrganisationModalState(newState);
+  };
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
   return (
     <OrganisationTemplate
       header={
         <HeaderWithQuickActionNoSearchBar
-          setMobileMenuOpen={setMobileMenuOpen}
-          quickAction={quickAction}
-          quickActionLabel={quickActionLabel}
+          setMobileMenuOpen={changeMobileMenuOpenState}
+          quickAction={changeAddOrganisationModalState}
+          quickActionLabel="Add Organisation"
         />
       }
       createModal={

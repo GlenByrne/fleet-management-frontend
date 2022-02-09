@@ -9,66 +9,97 @@ import {
   TollTag,
   GetTollTagsQuery,
   UpdateTollTagInput,
+  useGetTollTagsQuery,
 } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
-import { FormEvent, FormEventHandler } from 'react';
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 
-type TollTagsProps = {
-  data: GetTollTagsQuery | undefined;
-  loading: boolean;
-  error: ApolloError | undefined;
-  mobileMenuOpen: boolean;
-  setMobileMenuOpen: (newState: boolean) => void;
-  searchSubmitHandler: FormEventHandler<Element>;
-  searchCriteria: string | null;
-  changeSearchCriteria: (event: FormEvent<HTMLInputElement>) => void;
-  quickAction: (state: boolean) => void;
-  quickActionLabel: string;
-  currentTollTag: UpdateTollTagInput;
-  changeCurrentTollTag: (tollTag: TollTag) => void;
-  addTollTagModalState: boolean;
-  updateTollTagModalState: boolean;
-  deleteTollTagModalState: boolean;
-  changeAddTollTagModalState: (newState: boolean) => void;
-  changeUpdateTollTagModalState: (newState: boolean) => void;
-  changeDeleteTollTagModalState: (newState: boolean) => void;
-};
+const TollTagsPage = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
 
-const TollTagsPage = ({
-  data,
-  loading,
-  error,
-  mobileMenuOpen,
-  setMobileMenuOpen,
-  searchCriteria,
-  changeSearchCriteria,
-  searchSubmitHandler,
-  quickAction,
-  quickActionLabel,
-  currentTollTag,
-  changeCurrentTollTag,
-  addTollTagModalState,
-  updateTollTagModalState,
-  deleteTollTagModalState,
-  changeAddTollTagModalState,
-  changeUpdateTollTagModalState,
-  changeDeleteTollTagModalState,
-}: TollTagsProps) => {
+  const [addTollTagModalState, setAddTollTagModalState] = useState(false);
+  const [updateTollTagModalState, setUpdateTollTagModalState] = useState(false);
+  const [deleteTollTagModalState, setDeleteTollTagModalState] = useState(false);
+
+  const [currentTollTag, setCurrentTollTag] = useState<UpdateTollTagInput>({
+    id: '',
+    tagNumber: '',
+    tagProvider: '',
+  });
+
+  const changeAddTollTagModalState = (newState: boolean) => {
+    setAddTollTagModalState(newState);
+  };
+
+  const changeUpdateTollTagModalState = (newState: boolean) => {
+    setUpdateTollTagModalState(newState);
+  };
+
+  const changeDeleteTollTagModalState = (newState: boolean) => {
+    setDeleteTollTagModalState(newState);
+  };
+
+  const changeCurrentTollTag = (tollTag: TollTag) => {
+    const chosenTollTag: UpdateTollTagInput = {
+      id: tollTag.id,
+      tagNumber: tollTag.tagNumber,
+      tagProvider: tollTag.tagProvider,
+    };
+    setCurrentTollTag(chosenTollTag);
+  };
+
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
+  const { data, loading, error, refetch } = useGetTollTagsQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
+
   return (
     <TollTagTemplate
       header={
         <HeaderWithSearchBarAndQuickActionButton
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
           searchSubmitHandler={searchSubmitHandler}
           changeSearchCriteria={changeSearchCriteria}
-          quickAction={quickAction}
-          quickActionLabel={quickActionLabel}
+          quickAction={changeAddTollTagModalState}
+          quickActionLabel="New Tag"
         />
       }
       sidebar={
         <SideNav
           mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
         />
       }
       content={

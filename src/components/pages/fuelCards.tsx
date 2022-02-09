@@ -6,86 +6,114 @@ import CreateFuelCardModal from '@/components/organisms/FuelCards/Modal/Create/C
 import DeleteFuelCardModal from '@/components/organisms/FuelCards/Modal/Delete/DeleteFuelCardModal';
 import UpdateFuelCardModal from '@/components/organisms/FuelCards/Modal/Update/UpdateFuelCardModal';
 import {
-  Exact,
   FuelCard,
-  FuelCardsInput,
-  GetFuelCardsQuery,
   UpdateFuelCardInput,
+  useGetFuelCardsQuery,
 } from '@/generated/graphql';
-import { ApolloError, SubscribeToMoreOptions } from '@apollo/client';
-import { FormEvent, FormEventHandler } from 'react';
+import { FormEvent, FormEventHandler, useState } from 'react';
+import { useRouter } from 'next/router';
 
-type FuelCardsProps = {
-  data: GetFuelCardsQuery | undefined;
-  loading: boolean;
-  error: ApolloError | undefined;
-  subscribeToMore: <
-    TSubscriptionData = GetFuelCardsQuery,
-    TSubscriptionVariables = Exact<{
-      data: FuelCardsInput;
-    }>
-  >(
-    options: SubscribeToMoreOptions<
-      GetFuelCardsQuery,
-      TSubscriptionVariables,
-      TSubscriptionData
-    >
-  ) => () => void;
-  fetchMore: () => void;
-  mobileMenuOpen: boolean;
-  setMobileMenuOpen: (newState: boolean) => void;
-  searchSubmitHandler: FormEventHandler<Element>;
-  searchCriteria: string | null;
-  changeSearchCriteria: (event: FormEvent<HTMLInputElement>) => void;
-  quickAction: (state: boolean) => void;
-  quickActionLabel: string;
-  currentFuelCard: UpdateFuelCardInput;
-  changeCurrentFuelCard: (fuelCard: FuelCard) => void;
-  addFuelCardModalState: boolean;
-  updateFuelCardModalState: boolean;
-  deleteFuelCardModalState: boolean;
-  changeAddFuelCardModalState: (newState: boolean) => void;
-  changeUpdateFuelCardModalState: (newState: boolean) => void;
-  changeDeleteFuelCardModalState: (newState: boolean) => void;
-};
+const FuelCardsPage = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+  const [addFuelCardModalState, setAddFuelCardModalState] = useState(false);
+  const [updateFuelCardModalState, setUpdateFuelCardModalState] =
+    useState(false);
+  const [deleteFuelCardModalState, setDeleteFuelCardModalState] =
+    useState(false);
 
-const FuelCardsPage = ({
-  data,
-  loading,
-  error,
-  subscribeToMore,
-  fetchMore,
-  mobileMenuOpen,
-  setMobileMenuOpen,
-  searchCriteria,
-  changeSearchCriteria,
-  searchSubmitHandler,
-  quickAction,
-  quickActionLabel,
-  currentFuelCard,
-  changeCurrentFuelCard,
-  addFuelCardModalState,
-  updateFuelCardModalState,
-  deleteFuelCardModalState,
-  changeAddFuelCardModalState,
-  changeUpdateFuelCardModalState,
-  changeDeleteFuelCardModalState,
-}: FuelCardsProps) => {
+  const [currentFuelCard, setCurrentFuelCard] = useState<UpdateFuelCardInput>({
+    id: '',
+    cardNumber: '',
+    cardProvider: '',
+  });
+
+  const changeAddFuelCardModalState = (newState: boolean) => {
+    setAddFuelCardModalState(newState);
+  };
+
+  const changeUpdateFuelCardModalState = (newState: boolean) => {
+    setUpdateFuelCardModalState(newState);
+  };
+
+  const changeDeleteFuelCardModalState = (newState: boolean) => {
+    setDeleteFuelCardModalState(newState);
+  };
+
+  const changeCurrentFuelCard = (fuelCard: FuelCard) => {
+    const chosenFuelCard: UpdateFuelCardInput = {
+      id: fuelCard.id,
+      cardNumber: fuelCard.cardNumber,
+      cardProvider: fuelCard.cardProvider,
+    };
+    setCurrentFuelCard(chosenFuelCard);
+  };
+
+  const first = 10;
+
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
+  const { data, loading, error, fetchMore, refetch, subscribeToMore } =
+    useGetFuelCardsQuery({
+      variables: {
+        first,
+        data: {
+          organisationId,
+        },
+      },
+    });
+
+  const endCursor = data?.fuelCards?.pageInfo?.endCursor;
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      first,
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  const fetchMoreFuelCards = () => {
+    fetchMore({
+      variables: {
+        after: endCursor,
+      },
+    });
+  };
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
+
   return (
     <FuelCardTemplate
       header={
         <HeaderWithSearchBarAndQuickActionButton
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
           searchSubmitHandler={searchSubmitHandler}
           changeSearchCriteria={changeSearchCriteria}
-          quickAction={quickAction}
-          quickActionLabel={quickActionLabel}
+          quickAction={changeAddFuelCardModalState}
+          quickActionLabel="New Card"
         />
       }
       sidebar={
         <SideNav
           mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
         />
       }
       content={
@@ -110,7 +138,7 @@ const FuelCardsPage = ({
             loading={loading}
             error={error}
             subscribeToMore={subscribeToMore}
-            fetchMore={fetchMore}
+            fetchMore={fetchMoreFuelCards}
             changeAddFuelCardModalState={changeAddFuelCardModalState}
             changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
             changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}

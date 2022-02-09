@@ -5,68 +5,109 @@ import UpdateDepotModal from '@/components/organisms/Depots/Modal/Update/UpdateD
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import DepotTemplate from '@/components/templates/DepotTemplate';
-import { Depot, GetDepotsQuery, UpdateDepotInput } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
-import { FormEvent, FormEventHandler } from 'react';
+import {
+  Depot,
+  UpdateDepotInput,
+  useGetDepotsQuery,
+} from '@/generated/graphql';
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 
-type DepotsProps = {
-  data: GetDepotsQuery | undefined;
-  loading: boolean;
-  error: ApolloError | undefined;
-  fetchMore: () => void;
-  mobileMenuOpen: boolean;
-  setMobileMenuOpen: (newState: boolean) => void;
-  searchSubmitHandler: FormEventHandler<Element>;
-  searchCriteria: string | null;
-  changeSearchCriteria: (event: FormEvent<HTMLInputElement>) => void;
-  quickAction: (state: boolean) => void;
-  quickActionLabel: string;
-  currentDepot: UpdateDepotInput;
-  changeCurrentDepot: (depot: Depot) => void;
-  addDepotModalState: boolean;
-  updateDepotModalState: boolean;
-  deleteDepotModalState: boolean;
-  changeAddDepotModalState: (newState: boolean) => void;
-  changeUpdateDepotModalState: (newState: boolean) => void;
-  changeDeleteDepotModalState: (newState: boolean) => void;
-};
+const DepotsPage = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
 
-const DepotsPage = ({
-  data,
-  loading,
-  error,
-  fetchMore,
-  mobileMenuOpen,
-  setMobileMenuOpen,
-  searchCriteria,
-  changeSearchCriteria,
-  searchSubmitHandler,
-  quickAction,
-  quickActionLabel,
-  currentDepot,
-  changeCurrentDepot,
-  addDepotModalState,
-  updateDepotModalState,
-  deleteDepotModalState,
-  changeAddDepotModalState,
-  changeUpdateDepotModalState,
-  changeDeleteDepotModalState,
-}: DepotsProps) => {
+  const [addDepotModalState, setAddDepotModalState] = useState(false);
+  const [updateDepotModalState, setUpdateDepotModalState] = useState(false);
+  const [deleteDepotModalState, setDeleteDepotModalState] = useState(false);
+  const [currentDepot, setCurrentDepot] = useState<UpdateDepotInput>({
+    id: '',
+    name: '',
+  });
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeAddDepotModalState = (newState: boolean) => {
+    setAddDepotModalState(newState);
+  };
+
+  const changeUpdateDepotModalState = (newState: boolean) => {
+    setUpdateDepotModalState(newState);
+  };
+
+  const changeDeleteDepotModalState = (newState: boolean) => {
+    setDeleteDepotModalState(newState);
+  };
+
+  const changeCurrentDepot = (depot: Depot) => {
+    const chosenDepot: UpdateDepotInput = {
+      id: depot.id,
+      name: depot.name,
+    };
+    setCurrentDepot(chosenDepot);
+  };
+
+  const first = 10;
+
+  const { data, loading, error, fetchMore, refetch } = useGetDepotsQuery({
+    variables: {
+      first,
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const endCursor = data?.depots?.pageInfo?.endCursor;
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      first,
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  const changeMobileMenuOpenState = (newState: boolean) => {
+    setMobileMenuOpen(newState);
+  };
+
+  const fetchMoreDepots = () => {
+    fetchMore({
+      variables: {
+        after: endCursor,
+      },
+    });
+  };
+
+  // const accessToken = useAuthentication();
+
+  // if (!accessToken) {
+  //   return <Loading />;
+  // }
+
   return (
     <DepotTemplate
       header={
         <HeaderWithSearchBarAndQuickActionButton
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
           searchSubmitHandler={searchSubmitHandler}
           changeSearchCriteria={changeSearchCriteria}
-          quickAction={quickAction}
-          quickActionLabel={quickActionLabel}
+          quickAction={changeAddDepotModalState}
+          quickActionLabel="New Depot"
         />
       }
       sidebar={
         <SideNav
           mobileMenuOpen={mobileMenuOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
+          setMobileMenuOpen={changeMobileMenuOpenState}
         />
       }
       content={
@@ -90,7 +131,7 @@ const DepotsPage = ({
             data={data}
             loading={loading}
             error={error}
-            fetchMore={fetchMore}
+            fetchMore={fetchMoreDepots}
             changeAddDepotModalState={changeAddDepotModalState}
             changeDeleteDepotModalState={changeDeleteDepotModalState}
             changeUpdateDepotModalState={changeUpdateDepotModalState}
