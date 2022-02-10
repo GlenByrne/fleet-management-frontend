@@ -29,7 +29,7 @@ const TableRow = <T extends IdObj, K extends object>({
       {Object.keys(tableData).map((key) => {
         return <Fragment key={key}>{(tableData as any)[key]}</Fragment>;
       })}
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
         <Button
           onClick={() => {
             changeCurrentItem(item);
@@ -39,7 +39,7 @@ const TableRow = <T extends IdObj, K extends object>({
           <PencilIcon className="h-6 w-6" aria-hidden="true" />
         </Button>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
         <Button
           onClick={() => {
             changeCurrentItem(item);

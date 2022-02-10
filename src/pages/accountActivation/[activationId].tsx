@@ -41,9 +41,9 @@ const AccountActivation: NextPage = () => {
 
   return isValid ? (
     <>
-      <div className="min-h-full pt-16 pb-12 flex flex-col bg-white">
-        <main className="grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="shrink-0 flex justify-center">
+      <div className="flex min-h-full flex-col bg-white pt-16 pb-12">
+        <main className="mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 sm:px-6 lg:px-8">
+          <div className="flex shrink-0 justify-center">
             <Link href="/vehicles">
               <a className="inline-flex">
                 <span className="sr-only">Workflow</span>
@@ -57,7 +57,7 @@ const AccountActivation: NextPage = () => {
           </div>
           <div className="py-16">
             <div className="text-center">
-              <h1 className="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
+              <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
                 Account activated
               </h1>
               <p className="mt-2 text-base text-gray-500">
@@ -65,7 +65,7 @@ const AccountActivation: NextPage = () => {
               </p>
               <div className="mt-6">
                 <a
-                  className="text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+                  className="cursor-pointer text-base font-medium text-indigo-600 hover:text-indigo-500"
                   onClick={() => router.push('/login')}
                 >
                   Go back to login<span aria-hidden="true"> &rarr;</span>
@@ -78,9 +78,9 @@ const AccountActivation: NextPage = () => {
     </>
   ) : (
     <>
-      <div className="min-h-full pt-16 pb-12 flex flex-col bg-white">
-        <main className="grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="shrink-0 flex justify-center">
+      <div className="flex min-h-full flex-col bg-white pt-16 pb-12">
+        <main className="mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 sm:px-6 lg:px-8">
+          <div className="flex shrink-0 justify-center">
             <Link href="/vehicles">
               <a className="inline-flex">
                 <span className="sr-only">Workflow</span>
@@ -94,7 +94,7 @@ const AccountActivation: NextPage = () => {
           </div>
           <div className="py-16">
             <div className="text-center">
-              <h1 className="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
+              <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
                 Account could not be activated
               </h1>
               <p className="mt-2 text-base text-gray-500">
@@ -105,7 +105,7 @@ const AccountActivation: NextPage = () => {
               </p>
               <div className="mt-6">
                 <a
-                  className="text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+                  className="cursor-pointer text-base font-medium text-indigo-600 hover:text-indigo-500"
                   onClick={() => router.push('/login')}
                 >
                   Go back to login<span aria-hidden="true"> &rarr;</span>

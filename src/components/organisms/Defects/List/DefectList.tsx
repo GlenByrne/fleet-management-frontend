@@ -57,7 +57,7 @@ const DefectList = ({
   const defects = data?.defectsForVehicle as Defect[];
 
   return defects.length > 0 ? (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+    <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {defects.map((defect) => (
           <li key={defect.id}>
@@ -65,10 +65,10 @@ const DefectList = ({
               <a className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-indigo-600 truncate">
+                    <p className="truncate text-sm font-medium text-indigo-600">
                       {defect.description}
                     </p>
-                    <div className="ml-2 shrink-0 flex">
+                    <div className="ml-2 flex shrink-0">
                       <DeleteButton
                         onClick={() => {
                           changeCurrentDefect(defect);
@@ -87,7 +87,7 @@ const DefectList = ({
                       </p>
                       <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
                         <LocationMarkerIcon
-                          className="shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                          className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                           aria-hidden="true"
                         />
                         Date Completed: {defect.dateCompleted}

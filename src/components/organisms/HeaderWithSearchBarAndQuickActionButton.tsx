@@ -55,10 +55,10 @@ const HeaderWithSearchBarAndQuickActionButton = ({
 
   return (
     <header className="w-full">
-      <div className="relative z-10 shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
+      <div className="relative z-10 flex h-16 shrink-0 border-b border-gray-200 bg-white shadow-sm">
         <MobileMenuHamburgerButton setMobileMenuOpen={setMobileMenuOpen} />
-        <div className="flex-1 flex justify-between px-4 sm:px-6">
-          <div className="flex-1 flex">
+        <div className="flex flex-1 justify-between px-4 sm:px-6">
+          <div className="flex flex-1">
             <SearchBar
               onSubmit={searchSubmitHandler}
               changeSearchCriteria={changeSearchCriteria}
@@ -78,7 +78,7 @@ const HeaderWithSearchBarAndQuickActionButton = ({
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {userNavigation.map((item) => (
                     <ProfileDropdownMenuItem key={item.name} item={item} />
                   ))}

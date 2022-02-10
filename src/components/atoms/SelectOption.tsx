@@ -13,8 +13,8 @@ const SelectOption = ({ option }: SelectOptionProps) => {
       key={option.value}
       className={({ active }) =>
         classNames(
-          active ? 'text-white bg-indigo-600' : 'text-gray-900',
-          'cursor-default select-none relative py-2 pl-3 pr-9'
+          active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+          'relative cursor-default select-none py-2 pl-3 pr-9'
         )
       }
       value={option}

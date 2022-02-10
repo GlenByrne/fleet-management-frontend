@@ -17,15 +17,15 @@ const DepotTemplate = ({ header, sidebar, content }: DepotTemplateProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {sidebar}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden">
         {header}
 
         {/* Main content */}
-        <div className="flex-1 flex items-stretch overflow-hidden p-4">
+        <div className="flex flex-1 items-stretch overflow-hidden p-4">
           <main className="flex-1 overflow-y-auto">
             <section
               aria-labelledby="primary-heading"
-              className="min-w-0 flex-1 h-full flex flex-col lg:order-last"
+              className="flex h-full min-w-0 flex-1 flex-col lg:order-last"
             >
               <h1 id="primary-heading" className="sr-only">
                 Depots

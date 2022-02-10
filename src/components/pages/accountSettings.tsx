@@ -3,12 +3,12 @@ import AccountSettingsTemplate from '@/components/templates/AccountSettingsTempl
 const AccountSettingsPage = () => {
   return (
     <AccountSettingsTemplate>
-      <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
+      <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
         <form action="#" method="POST">
-          <div className="shadow sm:rounded-md sm:overflow-hidden">
-            <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+          <div className="shadow sm:overflow-hidden sm:rounded-md">
+            <div className="space-y-6 bg-white py-6 px-4 sm:p-6">
               <div>
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Profile
                 </h3>
                 <p className="mt-1 text-sm text-gray-500">
@@ -25,8 +25,8 @@ const AccountSettingsPage = () => {
                   >
                     Username
                   </label>
-                  <div className="mt-1 rounded-md shadow-sm flex">
-                    <span className="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+                  <div className="mt-1 flex rounded-md shadow-sm">
+                    <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">
                       workcation.com/
                     </span>
                     <input
@@ -34,7 +34,7 @@ const AccountSettingsPage = () => {
                       name="username"
                       id="username"
                       autoComplete="username"
-                      className="focus:ring-indigo-500 focus:border-indigo-500 grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                      className="block w-full min-w-0 grow rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -51,7 +51,7 @@ const AccountSettingsPage = () => {
                       id="about"
                       name="about"
                       rows={3}
-                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                      className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       placeholder="you@example.com"
                       defaultValue={''}
                     />
@@ -66,7 +66,7 @@ const AccountSettingsPage = () => {
                     Photo
                   </label>
                   <div className="mt-1 flex items-center">
-                    <span className="inline-block bg-gray-100 rounded-full overflow-hidden h-12 w-12">
+                    <span className="inline-block h-12 w-12 overflow-hidden rounded-full bg-gray-100">
                       <svg
                         className="h-full w-full text-gray-300"
                         fill="currentColor"
@@ -77,7 +77,7 @@ const AccountSettingsPage = () => {
                     </span>
                     <button
                       type="button"
-                      className="ml-5 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       Change
                     </button>
@@ -88,7 +88,7 @@ const AccountSettingsPage = () => {
                   <label className="block text-sm font-medium text-gray-700">
                     Cover photo
                   </label>
-                  <div className="mt-1 border-2 border-gray-300 border-dashed rounded-md px-6 pt-5 pb-6 flex justify-center">
+                  <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                     <div className="space-y-1 text-center">
                       <svg
                         className="mx-auto h-12 w-12 text-gray-400"
@@ -107,7 +107,7 @@ const AccountSettingsPage = () => {
                       <div className="flex text-sm text-gray-600">
                         <label
                           htmlFor="file-upload"
-                          className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                          className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                         >
                           <span>Upload a file</span>
                           <input
@@ -127,10 +127,10 @@ const AccountSettingsPage = () => {
                 </div>
               </div>
             </div>
-            <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
               <button
                 type="submit"
-                className="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Save
               </button>
@@ -139,10 +139,10 @@ const AccountSettingsPage = () => {
         </form>
 
         <form action="#" method="POST">
-          <div className="shadow sm:rounded-md sm:overflow-hidden">
-            <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+          <div className="shadow sm:overflow-hidden sm:rounded-md">
+            <div className="space-y-6 bg-white py-6 px-4 sm:p-6">
               <div>
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Personal Information
                 </h3>
                 <p className="mt-1 text-sm text-gray-500">
@@ -163,7 +163,7 @@ const AccountSettingsPage = () => {
                     name="first-name"
                     id="first-name"
                     autoComplete="given-name"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
 
@@ -179,7 +179,7 @@ const AccountSettingsPage = () => {
                     name="last-name"
                     id="last-name"
                     autoComplete="family-name"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
 
@@ -195,7 +195,7 @@ const AccountSettingsPage = () => {
                     name="email-address"
                     id="email-address"
                     autoComplete="email"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
 
@@ -210,7 +210,7 @@ const AccountSettingsPage = () => {
                     id="country"
                     name="country"
                     autoComplete="country-name"
-                    className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
                     <option>United States</option>
                     <option>Canada</option>
@@ -230,7 +230,7 @@ const AccountSettingsPage = () => {
                     name="street-address"
                     id="street-address"
                     autoComplete="street-address"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
 
@@ -246,7 +246,7 @@ const AccountSettingsPage = () => {
                     name="city"
                     id="city"
                     autoComplete="address-level2"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
 
@@ -262,7 +262,7 @@ const AccountSettingsPage = () => {
                     name="region"
                     id="region"
                     autoComplete="address-level1"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
 
@@ -278,15 +278,15 @@ const AccountSettingsPage = () => {
                     name="postal-code"
                     id="postal-code"
                     autoComplete="postal-code"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
             </div>
-            <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
               <button
                 type="submit"
-                className="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Save
               </button>
@@ -295,10 +295,10 @@ const AccountSettingsPage = () => {
         </form>
 
         <form action="#" method="POST">
-          <div className="shadow sm:rounded-md sm:overflow-hidden">
-            <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+          <div className="shadow sm:overflow-hidden sm:rounded-md">
+            <div className="space-y-6 bg-white py-6 px-4 sm:p-6">
               <div>
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Notifications
                 </h3>
                 <p className="mt-1 text-sm text-gray-500">
@@ -313,12 +313,12 @@ const AccountSettingsPage = () => {
                 </legend>
                 <div className="mt-4 space-y-4">
                   <div className="flex items-start">
-                    <div className="h-5 flex items-center">
+                    <div className="flex h-5 items-center">
                       <input
                         id="comments"
                         name="comments"
                         type="checkbox"
-                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                       />
                     </div>
                     <div className="ml-3 text-sm">
@@ -335,12 +335,12 @@ const AccountSettingsPage = () => {
                   </div>
                   <div>
                     <div className="flex items-start">
-                      <div className="h-5 flex items-center">
+                      <div className="flex h-5 items-center">
                         <input
                           id="candidates"
                           name="candidates"
                           type="checkbox"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                       </div>
                       <div className="ml-3 text-sm">
@@ -358,12 +358,12 @@ const AccountSettingsPage = () => {
                   </div>
                   <div>
                     <div className="flex items-start">
-                      <div className="h-5 flex items-center">
+                      <div className="flex h-5 items-center">
                         <input
                           id="offers"
                           name="offers"
                           type="checkbox"
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                       </div>
                       <div className="ml-3 text-sm">
@@ -395,7 +395,7 @@ const AccountSettingsPage = () => {
                       id="push-everything"
                       name="push-notifications"
                       type="radio"
-                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     />
                     <label htmlFor="push-everything" className="ml-3">
                       <span className="block text-sm font-medium text-gray-700">
@@ -408,7 +408,7 @@ const AccountSettingsPage = () => {
                       id="push-email"
                       name="push-notifications"
                       type="radio"
-                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     />
                     <label htmlFor="push-email" className="ml-3">
                       <span className="block text-sm font-medium text-gray-700">
@@ -421,7 +421,7 @@ const AccountSettingsPage = () => {
                       id="push-nothing"
                       name="push-notifications"
                       type="radio"
-                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     />
                     <label htmlFor="push-nothing" className="ml-3">
                       <span className="block text-sm font-medium text-gray-700">
@@ -432,10 +432,10 @@ const AccountSettingsPage = () => {
                 </div>
               </fieldset>
             </div>
-            <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
               <button
                 type="submit"
-                className="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
               >
                 Save
               </button>

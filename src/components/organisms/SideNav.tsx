@@ -66,12 +66,12 @@ const SideNav = ({ mobileMenuOpen, setMobileMenuOpen }: SideNavProps) => {
   return (
     <>
       {/* Narrow sidebar */}
-      <div className="hidden w-28 bg-indigo-700 overflow-y-auto md:block">
-        <div className="w-full py-6 flex flex-col items-center">
-          <div className="shrink-0 flex items-center">
+      <div className="hidden w-28 overflow-y-auto bg-indigo-700 md:block">
+        <div className="flex w-full flex-col items-center py-6">
+          <div className="flex shrink-0 items-center">
             <Logo />
           </div>
-          <div className="flex-1 mt-6 w-full px-2 space-y-1">
+          <div className="mt-6 w-full flex-1 space-y-1 px-2">
             {navigation.map((link) => (
               <NarrowSideNavigationLink key={link.name} link={link} />
             ))}
@@ -103,7 +103,7 @@ const SideNav = ({ mobileMenuOpen, setMobileMenuOpen }: SideNavProps) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div className="relative max-w-xs w-full bg-indigo-700 pt-5 pb-4 flex-1 flex flex-col">
+              <div className="relative flex w-full max-w-xs flex-1 flex-col bg-indigo-700 pt-5 pb-4">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -119,11 +119,11 @@ const SideNav = ({ mobileMenuOpen, setMobileMenuOpen }: SideNavProps) => {
                     />
                   </div>
                 </Transition.Child>
-                <div className="shrink-0 px-4 flex items-center">
+                <div className="flex shrink-0 items-center px-4">
                   <Logo />
                 </div>
-                <div className="mt-5 flex-1 h-0 px-2 overflow-y-auto">
-                  <nav className="h-full flex flex-col">
+                <div className="mt-5 h-0 flex-1 overflow-y-auto px-2">
+                  <nav className="flex h-full flex-col">
                     <div className="space-y-1">
                       {navigation.map((link) => (
                         <SideNavigationLinks key={link.name} link={link} />
@@ -133,7 +133,7 @@ const SideNav = ({ mobileMenuOpen, setMobileMenuOpen }: SideNavProps) => {
                 </div>
               </div>
             </Transition.Child>
-            <div className="shrink-0 w-14" aria-hidden="true">
+            <div className="w-14 shrink-0" aria-hidden="true">
               {/* Dummy element to force sidebar to shrink to fit close icon */}
             </div>
           </div>

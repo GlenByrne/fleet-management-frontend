@@ -17,7 +17,7 @@ const SideNavigationLinks = ({ link }: SideNavigationLinkProps) => {
           router.asPath === link.href
             ? 'bg-indigo-800 text-white'
             : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
-          'group py-2 px-3 rounded-md flex items-center text-sm font-medium'
+          'group flex items-center rounded-md py-2 px-3 text-sm font-medium'
         )}
         aria-current={router.asPath === link.href ? 'page' : undefined}
       >

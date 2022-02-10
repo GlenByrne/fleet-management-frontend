@@ -85,7 +85,7 @@ const FuelCardList = ({
   const fuelCards = data.fuelCards as FuelCardConnection;
 
   return fuelCards.edges?.length > 0 ? (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+    <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {fuelCards.edges?.map((fuelCard) => (
           <li key={fuelCard?.node?.id}>
@@ -93,10 +93,10 @@ const FuelCardList = ({
               <a className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-indigo-600 truncate">
+                    <p className="truncate text-sm font-medium text-indigo-600">
                       {fuelCard?.node?.cardNumber}
                     </p>
-                    <div className="ml-2 shrink-0 flex">
+                    <div className="ml-2 flex shrink-0">
                       <DeleteButton
                         onClick={() => {
                           changeCurrentFuelCard(fuelCard?.node);

@@ -45,7 +45,7 @@ const DepotList = ({
   const depots = data.depots as DepotConnection;
 
   return depots.edges?.length > 0 ? (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+    <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {depots.edges?.map((depot) => (
           <li key={depot?.node?.id}>
@@ -53,10 +53,10 @@ const DepotList = ({
               <a className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-indigo-600 truncate">
+                    <p className="truncate text-sm font-medium text-indigo-600">
                       {depot?.node?.name}
                     </p>
-                    <div className="ml-2 shrink-0 flex">
+                    <div className="ml-2 flex shrink-0">
                       <DeleteButton
                         onClick={() => {
                           changeCurrentDepot(depot?.node);

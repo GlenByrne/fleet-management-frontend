@@ -32,7 +32,7 @@ const OrganisationInviteList = ({
   const invites = data.usersOrganisationInvites as UsersOnOrganisations[];
 
   return invites.length > 0 ? (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+    <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {invites.map((invite) => (
           <OrganisationInviteListItem

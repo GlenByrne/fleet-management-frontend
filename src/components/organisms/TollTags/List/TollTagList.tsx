@@ -40,7 +40,7 @@ const TollTagList = ({
   const tollTags = data.tollTags as TollTag[];
 
   return tollTags.length > 0 ? (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+    <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {tollTags.map((tollTag) => (
           <li key={tollTag.id}>
@@ -48,10 +48,10 @@ const TollTagList = ({
               <a href="#" className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-indigo-600 truncate">
+                    <p className="truncate text-sm font-medium text-indigo-600">
                       {tollTag.tagNumber}
                     </p>
-                    <div className="ml-2 shrink-0 flex">
+                    <div className="ml-2 flex shrink-0">
                       <DeleteButton
                         onClick={() => {
                           changeCurrentTollTag(tollTag);

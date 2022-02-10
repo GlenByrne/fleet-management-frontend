@@ -24,14 +24,14 @@ const Table = <T extends IdObj>({
         </tr>
       </thead>
 
-      <tbody className="bg-white divide-y divide-gray-200">
+      <tbody className="divide-y divide-gray-200 bg-white">
         {data !== undefined && data.length > 0 ? (
           data.map((item) => (
             <Fragment key={item.id}>{renderItem(item)}</Fragment>
           ))
         ) : (
           <tr>
-            <td colSpan={12} className="text-2xl text-center">
+            <td colSpan={12} className="text-center text-2xl">
               No Items Found
             </td>
           </tr>

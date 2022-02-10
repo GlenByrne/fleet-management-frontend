@@ -18,7 +18,7 @@ const ChevronLeftButton = ({
       type="button"
       className={className}
     >
-      <ChevronLeftIcon className="w-5 h-5 text-gray-600" />
+      <ChevronLeftIcon className="h-5 w-5 text-gray-600" />
     </button>
   );
 };

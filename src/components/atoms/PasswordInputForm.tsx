@@ -27,7 +27,7 @@ const PasswordInputForm = ({
       autoComplete={autoComplete || 'off'}
       value={value}
       onChange={onChange}
-      className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
+      className="block w-full rounded-none rounded-l-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
       required={required}
     />
   );

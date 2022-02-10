@@ -10,10 +10,10 @@ const CheckButton = ({ onClick }: CheckButtonProps) => {
       onClick={onClick}
       type="button"
       className={
-        'inline-flex p-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-indigo-500'
+        'inline-flex rounded border border-gray-300 bg-white p-1 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0'
       }
     >
-      <CheckIcon className="w-5 h-5 text-gray-600" />
+      <CheckIcon className="h-5 w-5 text-gray-600" />
     </button>
   );
 };

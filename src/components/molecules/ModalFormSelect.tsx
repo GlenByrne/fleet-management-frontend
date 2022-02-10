@@ -70,7 +70,7 @@ const ModalFormSelect = ({
   return (
     <Listbox value={selected} onChange={onChange}>
       <SelectLabel htmlFor={name} label={label} />
-      <div className="mt-1 relative" ref={setTargetElement}>
+      <div className="relative mt-1" ref={setTargetElement}>
         <SelectButton selected={selected} />
 
         <Portal>
@@ -88,7 +88,7 @@ const ModalFormSelect = ({
               beforeEnter={() => setPopperElement(popperElRef.current)}
               afterLeave={() => setPopperElement(null)}
             >
-              <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {options.map((option) => (
                   <SelectOption key={option.value} option={option} />
                 ))}

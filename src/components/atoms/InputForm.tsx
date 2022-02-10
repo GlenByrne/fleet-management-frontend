@@ -27,7 +27,7 @@ const InputForm = ({
       autoComplete={autoComplete || 'off'}
       value={value}
       onChange={onChange}
-      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
       required={required}
     />
   );
