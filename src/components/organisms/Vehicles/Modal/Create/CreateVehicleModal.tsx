@@ -14,14 +14,18 @@ import {
   FuelCard,
   GetFuelCardsDocument,
   GetUpdateVehicleOptionsDocument,
-  GetAddVehicleOptionsDocument,
   GetTollTagsDocument,
   GetVehiclesDocument,
   GetVehiclesQuery,
   TollTag,
   useAddVehicleMutation,
   VehicleType,
-  useGetAddVehicleOptionsQuery,
+  useGetFuelCardsNotAssignedQuery,
+  useGetTollTagsNotAssignedQuery,
+  useGetDepotsQuery,
+  GetFuelCardsNotAssignedDocument,
+  GetTollTagsNotAssignedDocument,
+  GetDepotsDocument,
 } from '@/generated/graphql';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
@@ -92,9 +96,24 @@ const CreateVehicleModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useGetAddVehicleOptionsQuery({
+  const fuelCardsNotAssigned = useGetFuelCardsNotAssignedQuery({
     variables: {
-      organisationId,
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const tollTagsNotAssigned = useGetTollTagsNotAssignedQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const depots = useGetDepotsQuery({
+    variables: {
       data: {
         organisationId,
       },
@@ -103,13 +122,17 @@ const CreateVehicleModal = ({
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
+    getDepotOptions(depots.data?.depots as Depot[])
   );
   const [fuelCardOptions, setFuelCardOptions] = useState(
-    getFuelCardOptions(data?.fuelCardsNotAssigned as FuelCard[])
+    getFuelCardOptions(
+      fuelCardsNotAssigned.data?.fuelCardsNotAssigned as FuelCard[]
+    )
   );
   const [tollTagOptions, setTollTagOptions] = useState(
-    getTollTagOptions(data?.tollTagsNotAssigned as TollTag[])
+    getTollTagOptions(
+      tollTagsNotAssigned.data?.tollTagsNotAssigned as TollTag[]
+    )
   );
 
   const [type, setType] = useState<Option>({
@@ -139,14 +162,18 @@ const CreateVehicleModal = ({
 
   useEffect(() => {
     setTypeOptions(getVehicleTypeOptions());
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
+    setDepotOptions(getDepotOptions(depots.data?.depots as Depot[]));
     setFuelCardOptions(
-      getFuelCardOptions(data?.fuelCardsNotAssigned as FuelCard[])
+      getFuelCardOptions(
+        fuelCardsNotAssigned.data?.fuelCardsNotAssigned as FuelCard[]
+      )
     );
     setTollTagOptions(
-      getTollTagOptions(data?.tollTagsNotAssigned as TollTag[])
+      getTollTagOptions(
+        tollTagsNotAssigned.data?.tollTagsNotAssigned as TollTag[]
+      )
     );
-  }, [data]);
+  }, [depots.data, fuelCardsNotAssigned.data, tollTagsNotAssigned.data]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
     setRegistration(event.currentTarget.value);
@@ -207,7 +234,25 @@ const CreateVehicleModal = ({
         },
       },
       {
-        query: GetAddVehicleOptionsDocument,
+        query: GetFuelCardsNotAssignedDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetTollTagsNotAssignedDocument,
+        variables: {
+          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetDepotsDocument,
         variables: {
           organisationId,
           data: {
@@ -286,17 +331,17 @@ const CreateVehicleModal = ({
     setTachoCalibration(null);
   };
 
-  if (loading) {
-    return <div></div>;
-  }
+  // if (loading) {
+  //   return <div></div>;
+  // }
 
-  if (error) {
-    return <div></div>;
-  }
+  // if (error) {
+  //   return <div></div>;
+  // }
 
-  if (!data) {
-    return <div></div>;
-  }
+  // if (!data) {
+  //   return <div></div>;
+  // }
 
   return (
     <>

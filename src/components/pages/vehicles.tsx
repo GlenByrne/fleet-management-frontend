@@ -6,13 +6,7 @@ import DeleteVehicleModal from '@/components/organisms/Vehicles/Modal/Delete/Del
 import UpdateVehicleModal from '@/components/organisms/Vehicles/Modal/Update/UpdateVehicleModal';
 import VehicleTemplate from '@/components/templates/VehicleTemplate';
 import { VehicleUpdateModalItem } from '@/constants/types';
-import {
-  Vehicle,
-  GetVehiclesQuery,
-  useGetVehiclesQuery,
-  VehicleType,
-} from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
+import { Vehicle, useGetVehiclesQuery, VehicleType } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import { FormEvent, FormEventHandler, useState } from 'react';
 
@@ -110,14 +104,19 @@ const VehiclesPage = () => {
     setCurrentVehicle(chosenVehicle);
   };
 
+  const first = 10;
+
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetVehiclesQuery({
+  const { data, loading, error, fetchMore, refetch } = useGetVehiclesQuery({
     variables: {
+      first,
       data: {
         organisationId,
       },
     },
   });
+
+  const endCursor = data?.vehicles?.pageInfo.endCursor;
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -126,6 +125,7 @@ const VehiclesPage = () => {
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetch({
+      first,
       data: {
         searchCriteria: searchCriteria,
         organisationId,
@@ -133,11 +133,13 @@ const VehiclesPage = () => {
     });
   };
 
-  // const accessToken = useAuthentication();
-
-  // if (!accessToken) {
-  //   return <Loading />;
-  // }
+  const fetchMoreVehicles = () => {
+    fetchMore({
+      variables: {
+        after: endCursor,
+      },
+    });
+  };
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -182,6 +184,7 @@ const VehiclesPage = () => {
             data={data}
             loading={loading}
             error={error}
+            fetchMore={fetchMoreVehicles}
             changeAddVehicleModalState={changeAddVehicleModalState}
             changeDeleteVehicleModalState={changeDeleteVehicleModalState}
             changeUpdateVehicleModalState={changeUpdateVehicleModalState}

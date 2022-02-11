@@ -1,6 +1,10 @@
 import { format } from 'date-fns';
 import { ApolloError } from '@apollo/client';
-import { GetVehiclesQuery, Vehicle } from '@/generated/graphql';
+import {
+  GetVehiclesQuery,
+  Vehicle,
+  VehicleConnection,
+} from '@/generated/graphql';
 import Link from 'next/link';
 import { getDateClassNames } from '@/utilities/getDateClassName';
 import { dateStatus } from '@/utilities/dateStatus';
@@ -16,6 +20,7 @@ type VehicleListProps = {
   data: GetVehiclesQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  fetchMore: () => void;
   changeCurrentVehicle: (vehicle: Vehicle) => void;
   changeAddVehicleModalState: (newState: boolean) => void;
   changeDeleteVehicleModalState: (newState: boolean) => void;
@@ -29,6 +34,7 @@ const VehicleList = ({
   data,
   loading,
   error,
+  fetchMore,
   changeCurrentVehicle,
   changeAddVehicleModalState,
   changeDeleteVehicleModalState,
@@ -52,33 +58,35 @@ const VehicleList = ({
     return <div></div>;
   }
 
-  const vehicles = data.vehicles as Vehicle[];
+  const { hasNextPage } = data.vehicles?.pageInfo;
 
-  return vehicles.length > 0 ? (
+  const vehicles = data.vehicles as VehicleConnection;
+
+  return vehicles.edges?.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {vehicles.map((vehicle) => {
+        {vehicles.edges?.map((vehicle) => {
           const showDefectsHandler = () => {
             router.push(
               `/organisations/${encodeURIComponent(
                 organisationId
-              )}/defects/${encodeURIComponent(vehicle.id)}`
+              )}/defects/${encodeURIComponent(vehicle?.node?.id)}`
             );
           };
 
           return (
-            <li key={vehicle.id}>
+            <li key={vehicle?.node?.id}>
               <Link href="#">
                 <a href="#" className="block hover:bg-gray-50">
                   <div className="px-4 py-4 sm:px-6">
                     <div className="flex items-center justify-between">
                       <p className="truncate text-sm font-medium text-indigo-600">
-                        {vehicle.registration}
+                        {vehicle?.node?.registration}
                       </p>
                       <div className="ml-2 flex shrink-0">
                         <DeleteButton
                           onClick={() => {
-                            changeCurrentVehicle(vehicle);
+                            changeCurrentVehicle(vehicle.node);
                             changeDeleteVehicleModalState(true);
                           }}
                         />
@@ -87,41 +95,41 @@ const VehicleList = ({
                     <div className="mt-2 sm:flex sm:justify-between">
                       <div className="sm:flex">
                         <p className="flex items-center text-sm text-gray-500">
-                          Model: {vehicle.make} {vehicle.model}{' '}
+                          Model: {vehicle?.node?.make} {vehicle?.node?.model}{' '}
                         </p>
 
                         <button
                           type="button"
                           onClick={() => {
-                            if (vehicle.cvrt != null) {
-                              changeCurrentVehicle(vehicle);
+                            if (vehicle?.node?.cvrt != null) {
+                              changeCurrentVehicle(vehicle.node);
                               changeUpdateVehicleCVRTModalState(true);
                             }
                           }}
                           className={getDateClassNames(
-                            dateStatus(vehicle.cvrt)
+                            dateStatus(vehicle?.node?.cvrt)
                           )}
                         >
-                          {vehicle.cvrt != null
-                            ? format(new Date(vehicle.cvrt), 'dd/MM/yyyy')
+                          {vehicle?.node?.cvrt != null
+                            ? format(new Date(vehicle.node.cvrt), 'dd/MM/yyyy')
                             : 'None'}
                         </button>
 
                         <button
                           type="button"
                           onClick={() => {
-                            if (vehicle.thirteenWeekInspection != null) {
-                              changeCurrentVehicle(vehicle);
+                            if (vehicle?.node?.thirteenWeekInspection != null) {
+                              changeCurrentVehicle(vehicle.node);
                               changeUpdateVehicleThirteenWeekModalState(true);
                             }
                           }}
                           className={getDateClassNames(
-                            dateStatus(vehicle.thirteenWeekInspection)
+                            dateStatus(vehicle?.node?.thirteenWeekInspection)
                           )}
                         >
-                          {vehicle.thirteenWeekInspection != null
+                          {vehicle?.node?.thirteenWeekInspection != null
                             ? format(
-                                new Date(vehicle.thirteenWeekInspection),
+                                new Date(vehicle.node.thirteenWeekInspection),
                                 'dd/MM/yyyy'
                               )
                             : 'None'}
@@ -130,20 +138,20 @@ const VehicleList = ({
                         <button
                           type="button"
                           onClick={() => {
-                            if (vehicle.tachoCalibration != null) {
-                              changeCurrentVehicle(vehicle);
+                            if (vehicle?.node?.tachoCalibration != null) {
+                              changeCurrentVehicle(vehicle.node);
                               changeUpdateVehicleTachoCalibrationModalState(
                                 true
                               );
                             }
                           }}
                           className={getDateClassNames(
-                            dateStatus(vehicle.tachoCalibration)
+                            dateStatus(vehicle?.node?.tachoCalibration)
                           )}
                         >
-                          {vehicle.tachoCalibration
+                          {vehicle?.node?.tachoCalibration
                             ? format(
-                                new Date(vehicle.tachoCalibration),
+                                new Date(vehicle.node.tachoCalibration),
                                 'dd/MM/yyyy'
                               )
                             : 'None'}
@@ -154,12 +162,12 @@ const VehicleList = ({
                             className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                             aria-hidden="true"
                           />
-                          {vehicle.model}
+                          {vehicle?.node?.model}
                         </p>
                       </div>
                       <EditButton
                         onClick={() => {
-                          changeCurrentVehicle(vehicle);
+                          changeCurrentVehicle(vehicle?.node);
                           changeUpdateVehicleModalState(true);
                         }}
                       />
