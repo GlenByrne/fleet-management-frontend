@@ -1,5 +1,5 @@
 query GetFuelCardsNotAssigned($data: FuelCardsNotAssignedInput!) {
   fuelCardsNotAssigned(data: $data) {
-    ...AddVehicleOptionsFuelCardFields
+    ...AddVehicleFuelCardFields
   }
 }

@@ -20,8 +20,4 @@ fragment GetVehiclesFields on Vehicle {
     id
     tagNumber
   }
-  organisation {
-    id
-    name
-  }
 }

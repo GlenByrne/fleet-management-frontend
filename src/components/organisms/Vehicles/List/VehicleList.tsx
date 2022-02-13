@@ -15,6 +15,7 @@ import EditButton from '@/components/atoms/EditButton';
 import DefectsButton from '@/components/atoms/DefectsButton';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import DeleteButton from '@/components/atoms/DeleteButton';
+import InView from 'react-intersection-observer';
 
 type VehicleListProps = {
   data: GetVehiclesQuery | undefined;
@@ -58,7 +59,7 @@ const VehicleList = ({
     return <div></div>;
   }
 
-  const { hasNextPage } = data.vehicles?.pageInfo;
+  const { hasNextPage } = data.vehicles.pageInfo;
 
   const vehicles = data.vehicles as VehicleConnection;
 
@@ -180,6 +181,17 @@ const VehicleList = ({
           );
         })}
       </ul>
+      <InView
+        onChange={() => {
+          if (hasNextPage == true) {
+            fetchMore();
+          }
+        }}
+      >
+        {({ inView, ref }) => (
+          <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
+        )}
+      </InView>
     </div>
   ) : (
     <NoListItemButton

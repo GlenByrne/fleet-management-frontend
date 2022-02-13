@@ -1,4 +1,4 @@
-fragment AddVehicleOptionsTollTagFields on TollTag {
+fragment AddVehicleTollTagFields on TollTag {
   id
   tagNumber
 }

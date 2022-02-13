@@ -9,13 +9,13 @@ import UpcomingCvrtList from './UpcomingCvrtList';
 import UpcomingTachoCalibrationList from './UpcomingTachoCalibrationList';
 import UpcomingThirteenWeekList from './UpcomingThirteenWeekList';
 
-type DashboardProps = {
+type MainDashboardProps = {
   data: UpcomingMaintenaceQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
 };
 
-const Dashboard = ({ data, loading, error }: DashboardProps) => {
+const MainDashboard = ({ data, loading, error }: MainDashboardProps) => {
   if (loading) {
     return <Loading />;
   }
@@ -86,4 +86,4 @@ const Dashboard = ({ data, loading, error }: DashboardProps) => {
   );
 };
 
-export default Dashboard;
+export default MainDashboard;

@@ -10,22 +10,22 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { Option } from '@/constants/types';
 import {
-  Depot,
   FuelCard,
-  GetFuelCardsDocument,
-  GetUpdateVehicleOptionsDocument,
-  GetTollTagsDocument,
   GetVehiclesDocument,
   GetVehiclesQuery,
   TollTag,
   useAddVehicleMutation,
   VehicleType,
-  useGetFuelCardsNotAssignedQuery,
-  useGetTollTagsNotAssignedQuery,
-  useGetDepotsQuery,
+  DepotEdge,
+  namedOperations,
+  GetDepotsQueryResult,
+  GetFuelCardsNotAssignedQueryResult,
+  GetTollTagsNotAssignedQueryResult,
+  GetTollTagsDocument,
+  GetDepotsDocument,
+  GetFuelCardsDocument,
   GetFuelCardsNotAssignedDocument,
   GetTollTagsNotAssignedDocument,
-  GetDepotsDocument,
 } from '@/generated/graphql';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
@@ -38,13 +38,19 @@ import CancelButton from '@/components/atoms/CancelButton';
 type CreateVehicleModalProps = {
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
+  depots: GetDepotsQueryResult;
+  fuelCardsNotAssigned: GetFuelCardsNotAssignedQueryResult;
+  tollTagsNotAssigned: GetTollTagsNotAssignedQueryResult;
 };
 
-const getDepotOptions = (depots: Depot[]) => {
-  const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
-  );
+const getDepotOptions = (depots: DepotEdge[]) => {
+  let options: Option[] = [];
 
+  if (depots) {
+    options = depots.map(
+      (depot) => ({ value: depot.node.id, label: depot.node.name } as Option)
+    );
+  }
   options?.unshift({ value: '', label: 'None' });
 
   return options;
@@ -92,37 +98,16 @@ const getVehicleTypeOptions = () => {
 const CreateVehicleModal = ({
   modalState,
   changeModalState,
+  depots,
+  fuelCardsNotAssigned,
+  tollTagsNotAssigned,
 }: CreateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const fuelCardsNotAssigned = useGetFuelCardsNotAssignedQuery({
-    variables: {
-      data: {
-        organisationId,
-      },
-    },
-  });
-
-  const tollTagsNotAssigned = useGetTollTagsNotAssignedQuery({
-    variables: {
-      data: {
-        organisationId,
-      },
-    },
-  });
-
-  const depots = useGetDepotsQuery({
-    variables: {
-      data: {
-        organisationId,
-      },
-    },
-  });
-
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(depots.data?.depots as Depot[])
+    getDepotOptions(depots.data?.depots.edges as DepotEdge[])
   );
   const [fuelCardOptions, setFuelCardOptions] = useState(
     getFuelCardOptions(
@@ -162,7 +147,7 @@ const CreateVehicleModal = ({
 
   useEffect(() => {
     setTypeOptions(getVehicleTypeOptions());
-    setDepotOptions(getDepotOptions(depots.data?.depots as Depot[]));
+    setDepotOptions(getDepotOptions(depots.data?.depots.edges as DepotEdge[]));
     setFuelCardOptions(
       getFuelCardOptions(
         fuelCardsNotAssigned.data?.fuelCardsNotAssigned as FuelCard[]
@@ -173,7 +158,7 @@ const CreateVehicleModal = ({
         tollTagsNotAssigned.data?.tollTagsNotAssigned as TollTag[]
       )
     );
-  }, [depots.data, fuelCardsNotAssigned.data, tollTagsNotAssigned.data]);
+  }, [depots, fuelCardsNotAssigned, tollTagsNotAssigned]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
     setRegistration(event.currentTarget.value);
@@ -192,34 +177,37 @@ const CreateVehicleModal = ({
   };
 
   const [addVehicle] = useAddVehicleMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newVehicle = mutationReturn?.addVehicle;
+    // update: (cache, { data: mutationReturn }) => {
+    //   const newVehicle = mutationReturn?.addVehicle;
 
-      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
-        query: GetVehiclesDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      });
+    //   const currentVehicles = cache.readQuery<GetVehiclesQuery>({
+    //     query: GetVehiclesDocument,
+    //     variables: {
+    //       first: 10,
+    //       data: {
+    //         organisationId: organisationId,
+    //       },
+    //     },
+    //   });
 
-      if (currentVehicles && newVehicle) {
-        cache.writeQuery({
-          query: GetVehiclesDocument,
-          variables: {
-            data: {
-              organisationId,
-            },
-          },
-          data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
-        });
-      }
-    },
+    //   if (currentVehicles && newVehicle) {
+    //     cache.writeQuery({
+    //       query: GetVehiclesDocument,
+    //       variables: {
+    //         first: 10,
+    //         data: {
+    //           organisationId,
+    //         },
+    //       },
+    //       data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
+    //     });
+    //   }
+    // },
     refetchQueries: [
       {
         query: GetTollTagsDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
@@ -228,6 +216,7 @@ const CreateVehicleModal = ({
       {
         query: GetFuelCardsDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
@@ -236,7 +225,6 @@ const CreateVehicleModal = ({
       {
         query: GetFuelCardsNotAssignedDocument,
         variables: {
-          organisationId,
           data: {
             organisationId,
           },
@@ -245,7 +233,6 @@ const CreateVehicleModal = ({
       {
         query: GetTollTagsNotAssignedDocument,
         variables: {
-          organisationId,
           data: {
             organisationId,
           },
@@ -254,16 +241,7 @@ const CreateVehicleModal = ({
       {
         query: GetDepotsDocument,
         variables: {
-          organisationId,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetUpdateVehicleOptionsDocument,
-        variables: {
-          organisationId,
+          first: 10,
           data: {
             organisationId,
           },

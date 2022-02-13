@@ -7,7 +7,7 @@ query GetDepots($data: DepotsInput!, $first: Int, $after: String) {
     edges {
       cursor
       node {
-        ...AddVehicleOptionsDepotFields
+        ...AddVehicleDepotFields
       }
     }
   }

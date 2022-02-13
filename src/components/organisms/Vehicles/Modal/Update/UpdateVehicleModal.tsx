@@ -7,19 +7,22 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
-  Depot,
   FuelCard,
   GetFuelCardsDocument,
-  GetUpdateVehicleOptionsDocument,
-  GetAddVehicleOptionsDocument,
   GetTollTagsDocument,
   TollTag,
   useUpdateVehicleMutation,
   VehicleType,
-  useGetUpdateVehicleOptionsQuery,
+  GetFuelCardsNotAssignedDocument,
+  GetTollTagsNotAssignedDocument,
+  GetDepotsDocument,
+  GetDepotsQueryResult,
+  GetFuelCardsNotAssignedQueryResult,
+  GetTollTagsNotAssignedQueryResult,
+  DepotEdge,
+  namedOperations,
 } from '@/generated/graphql';
 import { Option, VehicleUpdateModalItem } from '@/constants/types';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
@@ -34,13 +37,19 @@ type UpdateVehicleModalProps = {
   currentVehicle: VehicleUpdateModalItem;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
+  depots: GetDepotsQueryResult;
+  fuelCardsNotAssigned: GetFuelCardsNotAssignedQueryResult;
+  tollTagsNotAssigned: GetTollTagsNotAssignedQueryResult;
 };
 
-const getDepotOptions = (depots: Depot[]) => {
-  const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
-  );
+const getDepotOptions = (depots: DepotEdge[]) => {
+  let options: Option[] = [];
 
+  if (depots) {
+    options = depots.map(
+      (depot) => ({ value: depot.node.id, label: depot.node.id } as Option)
+    );
+  }
   options?.unshift({ value: '', label: 'None' });
 
   return options;
@@ -105,28 +114,28 @@ const UpdateVehicleModal = ({
   currentVehicle,
   modalState,
   changeModalState,
+  depots,
+  fuelCardsNotAssigned,
+  tollTagsNotAssigned,
 }: UpdateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useGetUpdateVehicleOptionsQuery({
-    variables: {
-      organisationId,
-      data: {
-        organisationId,
-      },
-    },
-  });
-
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
+    getDepotOptions(depots.data?.depots.edges as DepotEdge[])
   );
   const [fuelCardOptions, setFuelCardOptions] = useState(
-    getFuelCardOptions(data?.fuelCardsNotAssigned as FuelCard[], currentVehicle)
+    getFuelCardOptions(
+      fuelCardsNotAssigned.data?.fuelCardsNotAssigned as FuelCard[],
+      currentVehicle
+    )
   );
   const [tollTagOptions, setTollTagOptions] = useState(
-    getTollTagOptions(data?.tollTagsNotAssigned as TollTag[], currentVehicle)
+    getTollTagOptions(
+      tollTagsNotAssigned.data?.tollTagsNotAssigned as TollTag[],
+      currentVehicle
+    )
   );
 
   const [type, setType] = useState<Option>({
@@ -155,15 +164,18 @@ const UpdateVehicleModal = ({
 
   useEffect(() => {
     setTypeOptions(getVehicleTypeOptions());
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
+    setDepotOptions(getDepotOptions(depots.data?.depots.edges as DepotEdge[]));
     setFuelCardOptions(
       getFuelCardOptions(
-        data?.fuelCardsNotAssigned as FuelCard[],
+        fuelCardsNotAssigned.data?.fuelCardsNotAssigned as FuelCard[],
         currentVehicle
       )
     );
     setTollTagOptions(
-      getTollTagOptions(data?.tollTagsNotAssigned as TollTag[], currentVehicle)
+      getTollTagOptions(
+        tollTagsNotAssigned.data?.tollTagsNotAssigned as TollTag[],
+        currentVehicle
+      )
     );
 
     setType({
@@ -205,7 +217,12 @@ const UpdateVehicleModal = ({
         ? new Date(currentVehicle.tachoCalibration)
         : null
     );
-  }, [currentVehicle, data]);
+  }, [
+    currentVehicle,
+    depots.data?.depots,
+    fuelCardsNotAssigned.data?.fuelCardsNotAssigned,
+    tollTagsNotAssigned.data?.tollTagsNotAssigned,
+  ]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
     setRegistration(event.currentTarget.value);
@@ -230,6 +247,7 @@ const UpdateVehicleModal = ({
       {
         query: GetTollTagsDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
@@ -238,24 +256,32 @@ const UpdateVehicleModal = ({
       {
         query: GetFuelCardsDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
         },
       },
       {
-        query: GetAddVehicleOptionsDocument,
+        query: GetFuelCardsNotAssignedDocument,
         variables: {
-          organisationId,
           data: {
             organisationId,
           },
         },
       },
       {
-        query: GetUpdateVehicleOptionsDocument,
+        query: GetTollTagsNotAssignedDocument,
         variables: {
-          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetDepotsDocument,
+        variables: {
+          first: 10,
           data: {
             organisationId,
           },
@@ -295,17 +321,17 @@ const UpdateVehicleModal = ({
     } catch {}
   };
 
-  if (loading) {
-    return <div></div>;
-  }
+  // if (loading) {
+  //   return <div></div>;
+  // }
 
-  if (error) {
-    return <div></div>;
-  }
+  // if (error) {
+  //   return <div></div>;
+  // }
 
-  if (!data) {
-    return <div></div>;
-  }
+  // if (!data) {
+  //   return <div></div>;
+  // }
 
   return (
     <Modal

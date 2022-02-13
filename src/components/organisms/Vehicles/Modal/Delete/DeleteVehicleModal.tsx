@@ -1,17 +1,17 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
-  GetUpdateVehicleOptionsDocument,
-  GetAddVehicleOptionsDocument,
   GetTollTagsDocument,
   GetVehiclesDocument,
   GetVehiclesQuery,
   useDeleteVehicleMutation,
+  GetDepotsDocument,
+  GetFuelCardsNotAssignedDocument,
+  GetTollTagsNotAssignedDocument,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import { VehicleUpdateModalItem } from '@/constants/types';
@@ -39,21 +39,23 @@ const DeleteVehicleModal = ({
       const currentVehicles = cache.readQuery<GetVehiclesQuery>({
         query: GetVehiclesDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
         },
       });
 
-      const newVehicles = currentVehicles?.vehicles?.filter((vehicle) =>
+      const newVehicles = currentVehicles?.vehicles.edges.filter((vehicle) =>
         vehicle != null
-          ? vehicle.id !== mutationReturn?.deleteVehicle.id
+          ? vehicle.node.id !== mutationReturn?.deleteVehicle.id
           : currentVehicles.vehicles
       );
 
       cache.writeQuery({
         query: GetVehiclesDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
@@ -69,6 +71,7 @@ const DeleteVehicleModal = ({
       {
         query: GetTollTagsDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
@@ -77,24 +80,32 @@ const DeleteVehicleModal = ({
       {
         query: GetFuelCardsDocument,
         variables: {
+          first: 10,
           data: {
             organisationId,
           },
         },
       },
       {
-        query: GetAddVehicleOptionsDocument,
+        query: GetFuelCardsNotAssignedDocument,
         variables: {
-          organisationId,
           data: {
             organisationId,
           },
         },
       },
       {
-        query: GetUpdateVehicleOptionsDocument,
+        query: GetTollTagsNotAssignedDocument,
         variables: {
-          organisationId,
+          data: {
+            organisationId,
+          },
+        },
+      },
+      {
+        query: GetDepotsDocument,
+        variables: {
+          first: 10,
           data: {
             organisationId,
           },
