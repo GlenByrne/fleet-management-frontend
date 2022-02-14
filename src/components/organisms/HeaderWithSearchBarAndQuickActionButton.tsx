@@ -2,7 +2,7 @@ import CirclularAddButton from '@/components/atoms/CirclularAddButton';
 import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/atoms/ProfileIconButton';
-import SearchBar from '@/components/molecules/SearchBar';
+import SearchBar from '@/components/molecules/Inputs/SearchBar';
 import {
   accessTokenVar,
   loggedInUserVar,
@@ -14,7 +14,7 @@ import { useLogoutMutation } from '@/generated/graphql';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { FormEvent, FormEventHandler, Fragment } from 'react';
-import { client } from '@/pages/_app';
+import { useApolloClient } from '@apollo/client';
 
 type HeaderWithSearchbarAndQuickActionButtonProps = {
   setMobileMenuOpen: (newState: boolean) => void;
@@ -33,6 +33,7 @@ const HeaderWithSearchBarAndQuickActionButton = ({
 }: HeaderWithSearchbarAndQuickActionButtonProps) => {
   const router = useRouter();
   const [logOut] = useLogoutMutation();
+  const client = useApolloClient();
 
   const handleLogOut = () => {
     logOut();

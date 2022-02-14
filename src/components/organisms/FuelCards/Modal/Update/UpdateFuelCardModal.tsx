@@ -10,14 +10,13 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
-  GetUpdateVehicleOptionsDocument,
-  GetAddVehicleOptionsDocument,
+  GetFuelCardsNotAssignedDocument,
   GetVehiclesDocument,
   UpdateFuelCardInput,
   useUpdateFuelCardMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 
@@ -65,18 +64,8 @@ const UpdateFuelCardModal = ({
         },
       },
       {
-        query: GetAddVehicleOptionsDocument,
+        query: GetFuelCardsNotAssignedDocument,
         variables: {
-          organisationId,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetUpdateVehicleOptionsDocument,
-        variables: {
-          organisationId,
           data: {
             organisationId,
           },

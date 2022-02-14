@@ -12,7 +12,7 @@ import { useLogoutMutation } from '@/generated/graphql';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { client } from '@/pages/_app';
+import { useApolloClient } from '@apollo/client';
 
 type HeaderNoSearchbarOrQuickActionButtonProps = {
   setMobileMenuOpen: (newState: boolean) => void;
@@ -23,6 +23,7 @@ const HeaderNoSearchBarOrQuickAction = ({
 }: HeaderNoSearchbarOrQuickActionButtonProps) => {
   const router = useRouter();
   const [logOut] = useLogoutMutation();
+  const client = useApolloClient();
 
   const handleLogOut = () => {
     logOut();

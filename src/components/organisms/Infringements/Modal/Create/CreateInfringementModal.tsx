@@ -10,10 +10,10 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   DriversInOrganisationPayload,
+  GetDriversQueryResult,
   GetInfringementsDocument,
   GetInfringementsQuery,
   useAddInfringementMutation,
-  useGetDriversQuery,
 } from '@/generated/graphql';
 import {
   errorAlertStateVar,
@@ -23,13 +23,14 @@ import {
 } from 'src/apollo/apollo-client';
 import { Option } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
-import ModalFormSelect from '@/components/molecules/ModalFormSelect';
-import DatePickerNoClear from '@/components/molecules/DatePickerNoClear';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
+import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
+import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 
 type CreateInfringementModalProps = {
+  drivers: GetDriversQueryResult;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
@@ -43,19 +44,14 @@ const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
 };
 
 const CreateInfringementModal = ({
+  drivers,
   modalState,
   changeModalState,
 }: CreateInfringementModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useGetDriversQuery({
-    variables: {
-      data: {
-        organisationId,
-      },
-    },
-  });
+  const { data, loading, error } = drivers;
 
   const [driverOptions, setDriverOptions] = useState(
     getDriverOptions(

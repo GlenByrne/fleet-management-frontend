@@ -1,4 +1,0 @@
-fragment AddUserOptionsDepotFields on Depot {
-  id
-  name
-}

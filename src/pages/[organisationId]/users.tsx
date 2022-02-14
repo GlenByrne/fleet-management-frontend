@@ -9,6 +9,7 @@ import UserList from '@/components/organisms/Users/List/UserList';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import {
   Role,
+  useGetDepotsQuery,
   useGetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
 } from '@/generated/graphql';
@@ -58,8 +59,17 @@ const Users: NextPage = () => {
   };
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetUsersInOrganisationQuery({
+  const users = useGetUsersInOrganisationQuery({
     variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const depots = useGetDepotsQuery({
+    variables: {
+      first: 10,
       data: {
         organisationId,
       },
@@ -72,13 +82,23 @@ const Users: NextPage = () => {
 
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    refetch({
+    users.refetch({
       data: {
         searchCriteria: searchCriteria,
         organisationId,
       },
     });
   };
+
+  // const endCursor = users.data?.usersInOrganisation.pageInfo.endCursor;
+
+  // const fetchMoreUsers = () => {
+  //   users.fetchMore({
+  //     variables: {
+  //       after: endCursor,
+  //     },
+  //   });
+  // };
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -112,10 +132,12 @@ const Users: NextPage = () => {
       content={
         <>
           <CreateUserModal
+            depots={depots}
             modalState={inviteUserModalState}
             changeModalState={changeInviteUserModalState}
           />
           <UpdateUserModal
+            depots={depots}
             currentUser={currentUser}
             modalState={updateUserModalState}
             changeModalState={changeUpdateUserModalState}
@@ -127,9 +149,10 @@ const Users: NextPage = () => {
             changeModalState={changeRemoveUserModalState}
           />
           <UserList
-            data={data}
-            loading={loading}
-            error={error}
+            data={users.data}
+            loading={users.loading}
+            error={users.error}
+            // fetchMore={}
             changeInviteUserModalState={changeInviteUserModalState}
             changeRemoveUserModalState={changeRemoveUserModalState}
             changeUpdateUserModalState={changeUpdateUserModalState}

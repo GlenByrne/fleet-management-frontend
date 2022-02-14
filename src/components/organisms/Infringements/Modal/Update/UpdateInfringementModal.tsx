@@ -14,10 +14,10 @@ import {
 } from '@/generated/graphql';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { Option } from '@/constants/types';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
-import ModalFormSelect from '@/components/molecules/ModalFormSelect';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
+import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import Modal from '@/components/atoms/Modal';
-import DatePickerNoClear from '@/components/molecules/DatePickerNoClear';
+import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 

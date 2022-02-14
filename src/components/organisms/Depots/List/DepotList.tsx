@@ -2,7 +2,12 @@ import DeleteButton from '@/components/atoms/DeleteButton';
 import EditButton from '@/components/atoms/EditButton';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { Depot, DepotConnection, GetDepotsQuery } from '@/generated/graphql';
+import {
+  Depot,
+  DepotConnection,
+  DepotEdge,
+  GetDepotsQuery,
+} from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
 import Link from 'next/link';
 import InView from 'react-intersection-observer';
@@ -42,13 +47,13 @@ const DepotList = ({
 
   const { hasNextPage } = data.depots?.pageInfo;
 
-  const depots = data.depots as DepotConnection;
+  const depots = data.depots.edges as DepotEdge[];
 
-  return depots.edges?.length > 0 ? (
+  return depots.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {depots.edges?.map((depot) => (
-          <li key={depot?.node?.id}>
+        {depots.map((depot) => (
+          <li key={depot.node.id}>
             <Link href="#">
               <a className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
@@ -59,7 +64,7 @@ const DepotList = ({
                     <div className="ml-2 flex shrink-0">
                       <DeleteButton
                         onClick={() => {
-                          changeCurrentDepot(depot?.node);
+                          changeCurrentDepot(depot.node);
                           changeDeleteDepotModalState(true);
                         }}
                       />
@@ -68,12 +73,12 @@ const DepotList = ({
                   <div className="mt-2 sm:flex sm:justify-between">
                     <div className="sm:flex">
                       <p className="flex items-center text-sm text-gray-500">
-                        Vehicles: {depot?.node?.vehicles.length}
+                        Vehicles: {depot.node.vehicles.length}
                       </p>
                     </div>
                     <EditButton
                       onClick={() => {
-                        changeCurrentDepot(depot?.node);
+                        changeCurrentDepot(depot.node);
                         changeUpdateDepotModalState(true);
                       }}
                     />

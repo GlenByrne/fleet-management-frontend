@@ -13,7 +13,6 @@ import {
   accessTokenVar,
   loggedInUserVar,
 } from 'src/apollo/apollo-client';
-import { client } from '../_app';
 
 const Password: NextPage = () => {
   const router = useRouter();

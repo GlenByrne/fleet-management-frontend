@@ -15,8 +15,8 @@ import {
 } from '@/generated/graphql';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
-import ModalFormSelect from '@/components/molecules/ModalFormSelect';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
+import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 

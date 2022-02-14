@@ -14,14 +14,12 @@ import {
   successTextVar,
 } from 'src/apollo/apollo-client';
 import {
-  GetAddVehicleOptionsDocument,
-  GetUpdateVehicleOptionsDocument,
   GetVehiclesDocument,
   UpdateDepotInput,
   useUpdateDepotMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 
@@ -58,24 +56,6 @@ const UpdateDepotModal = ({
         variables: {
           data: {
             organisationId: organisationId,
-          },
-        },
-      },
-      {
-        query: GetAddVehicleOptionsDocument,
-        variables: {
-          organisationId,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetUpdateVehicleOptionsDocument,
-        variables: {
-          organisationId,
-          data: {
-            organisationId,
           },
         },
       },

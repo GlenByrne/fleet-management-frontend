@@ -14,6 +14,7 @@ type UserListProps = {
   data: GetUsersInOrganisationQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
+  // fetchMore: () => void;
   changeCurrentUser: (user: UsersInOrganisationPayload) => void;
   changeInviteUserModalState: (newState: boolean) => void;
   changeRemoveUserModalState: (newState: boolean) => void;
@@ -24,6 +25,7 @@ const UserList = ({
   data,
   loading,
   error,
+  // fetchMore,
   changeCurrentUser,
   changeInviteUserModalState,
   changeRemoveUserModalState,

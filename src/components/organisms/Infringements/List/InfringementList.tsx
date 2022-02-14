@@ -2,6 +2,7 @@ import Loading from '@/components/atoms/Loading';
 import {
   GetInfringementsQuery,
   Infringement,
+  InfringementEdge,
   InfringementStatus,
 } from '@/generated/graphql';
 import Link from 'next/link';
@@ -46,24 +47,27 @@ const InfringementList = ({
     return <div></div>;
   }
 
-  const infringements = data.infringements as Infringement[];
+  const infringements = data.infringements?.edges as InfringementEdge[];
 
   return infringements.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
         {infringements.map((infringement) => (
-          <li key={infringement.id}>
+          <li key={infringement.node.id}>
             <Link href="#">
               <a href="#" className="block hover:bg-gray-50">
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
                     <p className="truncate text-sm font-medium text-indigo-600">
-                      {format(new Date(infringement.dateOccured), 'dd/MM/yyyy')}
+                      {format(
+                        new Date(infringement.node.dateOccured),
+                        'dd/MM/yyyy'
+                      )}
                     </p>
                     <div className="ml-2 flex shrink-0">
                       <DeleteButton
                         onClick={() => {
-                          changeCurrentInfringement(infringement);
+                          changeCurrentInfringement(infringement.node);
                           changeDeleteInfringementModalState(true);
                         }}
                       />
@@ -72,24 +76,25 @@ const InfringementList = ({
                   <div className="mt-2 sm:flex sm:justify-between">
                     <div className="sm:flex">
                       <p className="flex items-center text-sm text-gray-500">
-                        Driver: {infringement.driver?.name}
+                        Driver: {infringement.node.driver?.name}
                       </p>
 
                       <button
                         type="button"
                         onClick={() => {
                           if (
-                            infringement.status != InfringementStatus.Signed
+                            infringement.node.status !=
+                            InfringementStatus.Signed
                           ) {
-                            changeCurrentInfringement(infringement);
+                            changeCurrentInfringement(infringement.node);
                             changeUpdateInfringementStatusModalState(true);
                           }
                         }}
                         className={getInfringementClassNames(
-                          infringement.status
+                          infringement.node.status
                         )}
                       >
-                        {infringement.status}
+                        {infringement.node.status}
                       </button>
 
                       <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
@@ -97,13 +102,13 @@ const InfringementList = ({
                           className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                           aria-hidden="true"
                         />
-                        {infringement.description}
+                        {infringement.node.description}
                       </p>
                     </div>
 
                     <EditButton
                       onClick={() => {
-                        changeCurrentInfringement(infringement);
+                        changeCurrentInfringement(infringement.node);
                         changeUpdateInfringementModalState(true);
                       }}
                     />

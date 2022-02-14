@@ -29,12 +29,12 @@ const DeleteInfringementModal = ({
       const currentInfringements = cache.readQuery<GetInfringementsQuery>({
         query: GetInfringementsDocument,
       });
-      const newInfringements = currentInfringements?.infringements?.filter(
-        (infringement) =>
+      const newInfringements =
+        currentInfringements?.infringements?.edges.filter((infringement) =>
           infringement != null
-            ? infringement.id !== mutationReturn?.deleteInfringement.id
+            ? infringement.node.id !== mutationReturn?.deleteInfringement.id
             : currentInfringements.infringements
-      );
+        );
       cache.writeQuery({
         query: GetInfringementsDocument,
         data: { infringements: newInfringements },

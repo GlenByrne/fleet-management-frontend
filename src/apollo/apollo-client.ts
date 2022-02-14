@@ -189,15 +189,15 @@ export const createGraphqlClient = () => {
         vehicles: relayStylePagination(),
       },
     },
-    FuelCard: {
-      merge: true,
-    },
-    Depot: {
-      merge: true,
-    },
-    Vehicle: {
-      merge: true,
-    },
+    // FuelCard: {
+    //   merge: true,
+    // },
+    // Depot: {
+    //   merge: true,
+    // },
+    // Vehicle: {
+    //   merge: true,
+    // },
   };
 
   const client = new ApolloClient({

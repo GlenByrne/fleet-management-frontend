@@ -1,6 +1,6 @@
 import Loading from '@/components/atoms/Loading';
 import {
-  UpcomingMaintenaceQuery,
+  UpcomingMaintenanceQuery,
   Vehicle,
   VehicleType,
 } from '@/generated/graphql';
@@ -10,7 +10,7 @@ import UpcomingTachoCalibrationList from './UpcomingTachoCalibrationList';
 import UpcomingThirteenWeekList from './UpcomingThirteenWeekList';
 
 type MainDashboardProps = {
-  data: UpcomingMaintenaceQuery | undefined;
+  data: UpcomingMaintenanceQuery | undefined;
   loading: boolean;
   error: ApolloError | undefined;
 };

@@ -4,6 +4,7 @@ import {
   GetVehiclesQuery,
   Vehicle,
   VehicleConnection,
+  VehicleEdge,
 } from '@/generated/graphql';
 import Link from 'next/link';
 import { getDateClassNames } from '@/utilities/getDateClassName';
@@ -61,28 +62,28 @@ const VehicleList = ({
 
   const { hasNextPage } = data.vehicles.pageInfo;
 
-  const vehicles = data.vehicles as VehicleConnection;
+  const vehicles = data.vehicles.edges as VehicleEdge[];
 
-  return vehicles.edges?.length > 0 ? (
+  return vehicles.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {vehicles.edges?.map((vehicle) => {
+        {vehicles.map((vehicle) => {
           const showDefectsHandler = () => {
             router.push(
-              `/organisations/${encodeURIComponent(
+              `/${encodeURIComponent(
                 organisationId
-              )}/defects/${encodeURIComponent(vehicle?.node?.id)}`
+              )}/defects/${encodeURIComponent(vehicle.node.id)}`
             );
           };
 
           return (
-            <li key={vehicle?.node?.id}>
+            <li key={vehicle.node.id}>
               <Link href="#">
                 <a href="#" className="block hover:bg-gray-50">
                   <div className="px-4 py-4 sm:px-6">
                     <div className="flex items-center justify-between">
                       <p className="truncate text-sm font-medium text-indigo-600">
-                        {vehicle?.node?.registration}
+                        {vehicle.node.registration}
                       </p>
                       <div className="ml-2 flex shrink-0">
                         <DeleteButton
@@ -96,19 +97,19 @@ const VehicleList = ({
                     <div className="mt-2 sm:flex sm:justify-between">
                       <div className="sm:flex">
                         <p className="flex items-center text-sm text-gray-500">
-                          Model: {vehicle?.node?.make} {vehicle?.node?.model}{' '}
+                          Model: {vehicle.node.make} {vehicle.node.model}{' '}
                         </p>
 
                         <button
                           type="button"
                           onClick={() => {
-                            if (vehicle?.node?.cvrt != null) {
+                            if (vehicle.node.cvrt != null) {
                               changeCurrentVehicle(vehicle.node);
                               changeUpdateVehicleCVRTModalState(true);
                             }
                           }}
                           className={getDateClassNames(
-                            dateStatus(vehicle?.node?.cvrt)
+                            dateStatus(vehicle.node.cvrt)
                           )}
                         >
                           {vehicle?.node?.cvrt != null
@@ -119,16 +120,16 @@ const VehicleList = ({
                         <button
                           type="button"
                           onClick={() => {
-                            if (vehicle?.node?.thirteenWeekInspection != null) {
+                            if (vehicle.node.thirteenWeekInspection != null) {
                               changeCurrentVehicle(vehicle.node);
                               changeUpdateVehicleThirteenWeekModalState(true);
                             }
                           }}
                           className={getDateClassNames(
-                            dateStatus(vehicle?.node?.thirteenWeekInspection)
+                            dateStatus(vehicle.node.thirteenWeekInspection)
                           )}
                         >
-                          {vehicle?.node?.thirteenWeekInspection != null
+                          {vehicle.node.thirteenWeekInspection != null
                             ? format(
                                 new Date(vehicle.node.thirteenWeekInspection),
                                 'dd/MM/yyyy'
@@ -139,7 +140,7 @@ const VehicleList = ({
                         <button
                           type="button"
                           onClick={() => {
-                            if (vehicle?.node?.tachoCalibration != null) {
+                            if (vehicle.node.tachoCalibration != null) {
                               changeCurrentVehicle(vehicle.node);
                               changeUpdateVehicleTachoCalibrationModalState(
                                 true
@@ -147,10 +148,10 @@ const VehicleList = ({
                             }
                           }}
                           className={getDateClassNames(
-                            dateStatus(vehicle?.node?.tachoCalibration)
+                            dateStatus(vehicle.node.tachoCalibration)
                           )}
                         >
-                          {vehicle?.node?.tachoCalibration
+                          {vehicle.node.tachoCalibration
                             ? format(
                                 new Date(vehicle.node.tachoCalibration),
                                 'dd/MM/yyyy'
@@ -163,12 +164,12 @@ const VehicleList = ({
                             className="mr-1.5 h-5 w-5 shrink-0 text-gray-400"
                             aria-hidden="true"
                           />
-                          {vehicle?.node?.model}
+                          {vehicle.node.model}
                         </p>
                       </div>
                       <EditButton
                         onClick={() => {
-                          changeCurrentVehicle(vehicle?.node);
+                          changeCurrentVehicle(vehicle.node);
                           changeUpdateVehicleModalState(true);
                         }}
                       />

@@ -2,11 +2,7 @@ import DeleteButton from '@/components/atoms/DeleteButton';
 import EditButton from '@/components/atoms/EditButton';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import {
-  Defect,
-  GetVehicleDefectsQuery,
-  useGetVehicleDefectsQuery,
-} from '@/generated/graphql';
+import { Defect, GetVehicleDefectsQuery } from '@/generated/graphql';
 import { ApolloError } from '@apollo/client';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
@@ -54,7 +50,7 @@ const DefectList = ({
     <div></div>;
   }
 
-  const defects = data?.defectsForVehicle as Defect[];
+  const defects = data?.defectsForVehicles as Defect[];
 
   return defects.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">

@@ -3,15 +3,9 @@ import { Dialog } from '@headlessui/react';
 import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
-import {
-  GetAddVehicleOptionsDocument,
-  GetDepotsDocument,
-  GetDepotsQuery,
-  GetUpdateVehicleOptionsDocument,
-  useAddDepotMutation,
-} from '@/generated/graphql';
+import { useAddDepotMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 
@@ -61,36 +55,7 @@ const CreateDepotModal = ({
     //     });
     //   }
     // },
-    refetchQueries: [
-      {
-        query: GetAddVehicleOptionsDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-          tollTagsNotAssignedData2: {
-            organisationId,
-          },
-          depotsData2: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetUpdateVehicleOptionsDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-          tollTagsNotAssignedData2: {
-            organisationId,
-          },
-          depotsData2: {
-            organisationId,
-          },
-        },
-      },
-    ],
+    refetchQueries: [],
   });
 
   const submitHandler: FormEventHandler = async (e) => {

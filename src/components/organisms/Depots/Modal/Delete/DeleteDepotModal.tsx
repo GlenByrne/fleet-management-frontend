@@ -4,10 +4,6 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
-  GetAddVehicleOptionsDocument,
-  GetDepotsDocument,
-  GetDepotsQuery,
-  GetUpdateVehicleOptionsDocument,
   GetVehiclesDocument,
   UpdateDepotInput,
   useDeleteDepotMutation,
@@ -66,24 +62,6 @@ const DeleteDepotModal = ({
         variables: {
           data: {
             organisationId: organisationId,
-          },
-        },
-      },
-      {
-        query: GetAddVehicleOptionsDocument,
-        variables: {
-          organisationId,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetUpdateVehicleOptionsDocument,
-        variables: {
-          organisationId,
-          data: {
-            organisationId,
           },
         },
       },

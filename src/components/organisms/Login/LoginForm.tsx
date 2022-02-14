@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useLoginMutation, User } from '@/generated/graphql';
 import { accessTokenVar, loggedInUserVar } from 'src/apollo/apollo-client';
-import PasswordInput from '@/components/molecules/PasswordInput';
+import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
 import { FormEvent, FormEventHandler, useState } from 'react';
 
 const LoginForm = () => {

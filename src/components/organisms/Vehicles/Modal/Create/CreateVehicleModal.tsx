@@ -29,9 +29,9 @@ import {
 } from '@/generated/graphql';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
-import ModalFormSelect from '@/components/molecules/ModalFormSelect';
-import DatePicker from '@/components/molecules/DatePick';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
+import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
+import DatePicker from '@/components/molecules/Datepickers/DatePick';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 
@@ -177,32 +177,30 @@ const CreateVehicleModal = ({
   };
 
   const [addVehicle] = useAddVehicleMutation({
-    // update: (cache, { data: mutationReturn }) => {
-    //   const newVehicle = mutationReturn?.addVehicle;
+    update: (cache, { data: mutationReturn }) => {
+      const newVehicle = mutationReturn?.addVehicle;
 
-    //   const currentVehicles = cache.readQuery<GetVehiclesQuery>({
-    //     query: GetVehiclesDocument,
-    //     variables: {
-    //       first: 10,
-    //       data: {
-    //         organisationId: organisationId,
-    //       },
-    //     },
-    //   });
+      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
+        query: GetVehiclesDocument,
+        variables: {
+          data: {
+            organisationId: organisationId,
+          },
+        },
+      });
 
-    //   if (currentVehicles && newVehicle) {
-    //     cache.writeQuery({
-    //       query: GetVehiclesDocument,
-    //       variables: {
-    //         first: 10,
-    //         data: {
-    //           organisationId,
-    //         },
-    //       },
-    //       data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
-    //     });
-    //   }
-    // },
+      if (currentVehicles && newVehicle) {
+        cache.writeQuery({
+          query: GetVehiclesDocument,
+          variables: {
+            data: {
+              organisationId,
+            },
+          },
+          data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
+        });
+      }
+    },
     refetchQueries: [
       {
         query: GetTollTagsDocument,

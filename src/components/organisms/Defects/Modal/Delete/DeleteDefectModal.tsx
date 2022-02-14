@@ -35,10 +35,10 @@ const DeleteDefectModal = ({
           vehicleId: vehicleId,
         },
       });
-      const newDefects = currentDefects?.defectsForVehicle?.filter((defect) =>
+      const newDefects = currentDefects?.defectsForVehicles?.filter((defect) =>
         defect != null
           ? defect.id !== mutationReturn?.deleteDefect.id
-          : currentDefects.defectsForVehicle
+          : currentDefects.defectsForVehicles
       );
       cache.writeQuery({
         query: GetVehicleDefectsDocument,

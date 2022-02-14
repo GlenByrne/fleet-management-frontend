@@ -1,4 +1,4 @@
-query GetDepotList($data: DepotsInput!, $first: Int, $after: String) {
+query GetDepotsWithVehicles($data: DepotsInput!, $first: Int, $after: String) {
   depots(data: $data, first: $first, after: $after) {
     pageInfo {
       endCursor

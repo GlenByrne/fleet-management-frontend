@@ -10,6 +10,7 @@ import {
   UpdateDepotInput,
   Depot,
   useGetDepotsQuery,
+  useGetDepotsWithVehiclesQuery,
 } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import { useState, FormEvent, FormEventHandler } from 'react';
@@ -50,14 +51,15 @@ const Depots: NextPage = () => {
 
   const first = 10;
 
-  const { data, loading, error, fetchMore, refetch } = useGetDepotsQuery({
-    variables: {
-      first,
-      data: {
-        organisationId,
+  const { data, loading, error, fetchMore, refetch } =
+    useGetDepotsWithVehiclesQuery({
+      variables: {
+        first,
+        data: {
+          organisationId,
+        },
       },
-    },
-  });
+    });
 
   const endCursor = data?.depots?.pageInfo?.endCursor;
 

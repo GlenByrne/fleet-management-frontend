@@ -27,9 +27,9 @@ import {
 import { Option, VehicleUpdateModalItem } from '@/constants/types';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
-import ModalFormSelect from '@/components/molecules/ModalFormSelect';
-import DatePicker from '@/components/molecules/DatePick';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
+import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
+import DatePicker from '@/components/molecules/Datepickers/DatePick';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 
@@ -47,7 +47,7 @@ const getDepotOptions = (depots: DepotEdge[]) => {
 
   if (depots) {
     options = depots.map(
-      (depot) => ({ value: depot.node.id, label: depot.node.id } as Option)
+      (depot) => ({ value: depot.node.id, label: depot.node.name } as Option)
     );
   }
   options?.unshift({ value: '', label: 'None' });

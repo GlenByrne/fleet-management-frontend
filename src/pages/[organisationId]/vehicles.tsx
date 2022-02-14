@@ -112,13 +112,11 @@ const Vehicles: NextPage = () => {
     setCurrentVehicle(chosenVehicle);
   };
 
-  const first = 10;
-
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
 
   const vehicles = useGetVehiclesQuery({
     variables: {
-      first,
+      first: 10,
       data: {
         organisationId,
       },
@@ -143,7 +141,7 @@ const Vehicles: NextPage = () => {
 
   const depots = useGetDepotsQuery({
     variables: {
-      first,
+      first: 10,
       data: {
         organisationId,
       },
@@ -171,7 +169,7 @@ const Vehicles: NextPage = () => {
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     vehicles.refetch({
-      first,
+      first: 10,
       data: {
         searchCriteria: searchCriteria,
         organisationId,

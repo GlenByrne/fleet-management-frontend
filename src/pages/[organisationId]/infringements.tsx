@@ -10,13 +10,29 @@ import {
   Infringement,
   InfringementStatus,
   UpdateInfringementInput,
+  useGetDriversQuery,
   useGetInfringementsQuery,
 } from '@/generated/graphql';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const Infringements: NextPage = () => {
-  const { data, loading, error } = useGetInfringementsQuery();
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+
+  const infringements = useGetInfringementsQuery({
+    variables: {
+      first: 10,
+    },
+  });
+  const drivers = useGetDriversQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const [addInfringementModalState, setAddInfringementModalState] =
     useState(false);
@@ -93,6 +109,7 @@ const Infringements: NextPage = () => {
       content={
         <>
           <CreateInfringementModal
+            drivers={drivers}
             modalState={addInfringementModalState}
             changeModalState={changeAddInfringementModalState}
           />
@@ -112,9 +129,9 @@ const Infringements: NextPage = () => {
             changeModalState={changeDeleteInfringementModalState}
           />
           <InfringementList
-            data={data}
-            loading={loading}
-            error={error}
+            data={infringements.data}
+            loading={infringements.loading}
+            error={infringements.error}
             changeAddInfringementModalState={changeAddInfringementModalState}
             changeDeleteInfringementModalState={
               changeDeleteInfringementModalState

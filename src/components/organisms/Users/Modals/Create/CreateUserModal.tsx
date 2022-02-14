@@ -7,32 +7,32 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
-  Depot,
+  DepotEdge,
+  GetDepotsQueryResult,
   GetUsersInOrganisationDocument,
   GetUsersInOrganisationQuery,
   Role,
-  useGetAddUserOptionsQuery,
   useInviteUserToOrganisationMutation,
 } from '@/generated/graphql';
 import { Option } from '@/constants/types';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
-import ModalFormSelect from '@/components/molecules/ModalFormSelect';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
+import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import CancelButton from '@/components/atoms/CancelButton';
 import SuccessButton from '@/components/atoms/SuccessButton';
 
 type CreateUserModalProps = {
+  depots: GetDepotsQueryResult;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
-const getDepotOptions = (depots: Depot[]) => {
+const getDepotOptions = (depots: DepotEdge[]) => {
   const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
+    (depot) => ({ value: depot.node.id, label: depot.node.name } as Option)
   );
 
   options?.unshift({ value: '', label: 'None' });
@@ -56,19 +56,14 @@ const getRoleOptions = () => {
 };
 
 const CreateUserModal = ({
+  depots,
   modalState,
   changeModalState,
 }: CreateUserModalProps) => {
+  const { data, loading, error } = depots;
+
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-
-  const { data, loading, error } = useGetAddUserOptionsQuery({
-    variables: {
-      data: {
-        organisationId,
-      },
-    },
-  });
 
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
   const [email, setEmail] = useState('');
@@ -83,13 +78,13 @@ const CreateUserModal = ({
   });
 
   const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
+    getDepotOptions(data?.depots.edges as DepotEdge[])
   );
 
   useEffect(() => {
     setRoleOptions(getRoleOptions());
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
-  }, [data]);
+    setDepotOptions(getDepotOptions(data?.depots.edges as DepotEdge[]));
+  }, [data?.depots.edges]);
 
   const changeEmail = (event: FormEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);

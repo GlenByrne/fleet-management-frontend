@@ -3,27 +3,28 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
-  Depot,
+  DepotEdge,
+  GetDepotsQueryResult,
   Role,
-  useGetUpdateUserOptionsQuery,
   useUpdateUserOrgDetailsMutation,
 } from '@/generated/graphql';
 import { Option, UserUpdateModalItem } from '@/constants/types';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
-import ModalFormSelect from '@/components/molecules/ModalFormSelect';
+import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
 
 type UpdateUserModalProps = {
+  depots: GetDepotsQueryResult;
   currentUser: UserUpdateModalItem;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
-const getDepotOptions = (depots: Depot[]) => {
+const getDepotOptions = (depots: DepotEdge[]) => {
   const options = depots?.map(
-    (depot) => ({ value: depot.id, label: depot.name } as Option)
+    (depot) => ({ value: depot.node.id, label: depot.node.name } as Option)
   );
 
   options?.unshift({ value: '', label: 'None' });
@@ -47,6 +48,7 @@ const getRoleOptions = () => {
 };
 
 const UpdateUserModal = ({
+  depots,
   currentUser,
   modalState,
   changeModalState,
@@ -54,13 +56,7 @@ const UpdateUserModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useGetUpdateUserOptionsQuery({
-    variables: {
-      data: {
-        organisationId,
-      },
-    },
-  });
+  const { data, loading, error } = depots;
 
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
 
@@ -74,12 +70,12 @@ const UpdateUserModal = ({
   });
 
   const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(data?.depots as Depot[])
+    getDepotOptions(data?.depots.edges as DepotEdge[])
   );
 
   useEffect(() => {
     setRoleOptions(getRoleOptions());
-    setDepotOptions(getDepotOptions(data?.depots as Depot[]));
+    setDepotOptions(getDepotOptions(data?.depots.edges as DepotEdge[]));
 
     setDepot({
       value: currentUser.depot != null ? currentUser.depot.id : '',

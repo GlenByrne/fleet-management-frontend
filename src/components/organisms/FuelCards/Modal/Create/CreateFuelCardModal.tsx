@@ -5,13 +5,12 @@ import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
+  GetFuelCardsNotAssignedDocument,
   GetFuelCardsQuery,
-  GetUpdateVehicleOptionsDocument,
-  GetAddVehicleOptionsDocument,
   useAddFuelCardMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import ModalFormInput from '@/components/molecules/ModalFormInput';
+import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import CancelButton from '@/components/atoms/CancelButton';
 import SuccessButton from '@/components/atoms/SuccessButton';
 
@@ -41,43 +40,35 @@ const CreateFuelCardModal = ({
   const cancelButtonRef = useRef(null);
 
   const [addFuelCard] = useAddFuelCardMutation({
-    // update: (cache, { data: mutationReturn }) => {
-    //   const newFuelCard = mutationReturn?.addFuelCard;
-    //   const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
-    //     query: GetFuelCardsDocument,
-    //     variables: {
-    //       data: {
-    //         organisationId: organisationId,
-    //       },
-    //     },
-    //   });
-
-    //   if (currentFuelCards && newFuelCard) {
-    //     cache.writeQuery({
-    //       query: GetFuelCardsDocument,
-    //       variables: {
-    //         data: {
-    //           organisationId: organisationId,
-    //         },
-    //       },
-    //       data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
-    //     });
-    //   }
-    // },
-    refetchQueries: [
-      {
-        query: GetAddVehicleOptionsDocument,
+    update: (cache, { data: mutationReturn }) => {
+      const newFuelCard = mutationReturn?.addFuelCard;
+      const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
+        query: GetFuelCardsDocument,
         variables: {
-          organisationId,
+          first: 10,
           data: {
-            organisationId,
+            organisationId: organisationId,
           },
         },
-      },
+      });
+
+      if (currentFuelCards && newFuelCard) {
+        cache.writeQuery({
+          query: GetFuelCardsDocument,
+          variables: {
+            first: 10,
+            data: {
+              organisationId: organisationId,
+            },
+          },
+          data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
+        });
+      }
+    },
+    refetchQueries: [
       {
-        query: GetUpdateVehicleOptionsDocument,
+        query: GetFuelCardsNotAssignedDocument,
         variables: {
-          organisationId,
           data: {
             organisationId,
           },

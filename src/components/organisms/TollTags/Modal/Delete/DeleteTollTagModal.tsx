@@ -4,9 +4,8 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
-  GetUpdateVehicleOptionsDocument,
-  GetAddVehicleOptionsDocument,
   GetTollTagsDocument,
+  GetTollTagsNotAssignedDocument,
   GetTollTagsQuery,
   GetVehiclesDocument,
   UpdateTollTagInput,
@@ -42,9 +41,9 @@ const DeleteTollTagModal = ({
           },
         },
       });
-      const newTollTags = currentTollTags?.tollTags?.filter((tollTag) =>
+      const newTollTags = currentTollTags?.tollTags?.edges.filter((tollTag) =>
         tollTag != null
-          ? tollTag.id !== mutationReturn?.deleteTollTag.id
+          ? tollTag.node.id !== mutationReturn?.deleteTollTag.id
           : currentTollTags.tollTags
       );
       cache.writeQuery({
@@ -70,18 +69,8 @@ const DeleteTollTagModal = ({
         },
       },
       {
-        query: GetAddVehicleOptionsDocument,
+        query: GetTollTagsNotAssignedDocument,
         variables: {
-          organisationId,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetUpdateVehicleOptionsDocument,
-        variables: {
-          organisationId,
           data: {
             organisationId,
           },

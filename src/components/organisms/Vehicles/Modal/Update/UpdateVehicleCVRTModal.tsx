@@ -1,4 +1,4 @@
-import DatePickerNoClear from '@/components/molecules/DatePickerNoClear';
+import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { VehicleUpdateModalItem } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';

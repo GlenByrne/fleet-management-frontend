@@ -5,9 +5,8 @@ import { useRouter } from 'next/router';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
+  GetFuelCardsNotAssignedDocument,
   GetFuelCardsQuery,
-  GetUpdateVehicleOptionsDocument,
-  GetAddVehicleOptionsDocument,
   GetVehiclesDocument,
   UpdateFuelCardInput,
   useDeleteFuelCardMutation,
@@ -43,10 +42,11 @@ const DeleteFuelCardModal = ({
           },
         },
       });
-      const newFuelCards = currentFuelCards?.fuelCards?.filter((fuelCard) =>
-        fuelCard != null
-          ? fuelCard.id !== mutationReturn?.deleteFuelCard.id
-          : currentFuelCards.fuelCards
+      const newFuelCards = currentFuelCards?.fuelCards.edges.filter(
+        (fuelCard) =>
+          fuelCard != null
+            ? fuelCard.node.id !== mutationReturn?.deleteFuelCard.id
+            : currentFuelCards.fuelCards
       );
       cache.writeQuery({
         query: GetFuelCardsDocument,
@@ -66,24 +66,15 @@ const DeleteFuelCardModal = ({
       {
         query: GetVehiclesDocument,
         variables: {
+          first: 10,
           data: {
             organisationId: organisationId,
           },
         },
       },
       {
-        query: GetAddVehicleOptionsDocument,
+        query: GetFuelCardsNotAssignedDocument,
         variables: {
-          organisationId,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetUpdateVehicleOptionsDocument,
-        variables: {
-          organisationId,
           data: {
             organisationId,
           },

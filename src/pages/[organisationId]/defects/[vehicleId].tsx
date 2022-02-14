@@ -28,7 +28,9 @@ const Defects: NextPage = () => {
 
   const { data, loading, error } = useGetVehicleDefectsQuery({
     variables: {
-      vehicleId,
+      data: {
+        vehicleId,
+      },
     },
     // skip: shouldSkip,
   });

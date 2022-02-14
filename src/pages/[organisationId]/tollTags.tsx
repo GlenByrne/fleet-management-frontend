@@ -52,6 +52,7 @@ const TollTags: NextPage = () => {
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
   const { data, loading, error, refetch } = useGetTollTagsQuery({
     variables: {
+      first: 10,
       data: {
         organisationId,
       },
