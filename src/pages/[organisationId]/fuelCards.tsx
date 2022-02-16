@@ -10,9 +10,11 @@ import {
   UpdateFuelCardInput,
   FuelCard,
   useGetFuelCardsQuery,
+  useFuelCardAddedSubscription,
 } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import { useState, FormEvent, FormEventHandler } from 'react';
+import { useSubscription } from 'urql';
 
 const FuelCards: NextPage = () => {
   const router = useRouter();
@@ -53,17 +55,22 @@ const FuelCards: NextPage = () => {
   const first = 10;
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, fetchMore, refetch, subscribeToMore } =
-    useGetFuelCardsQuery({
-      variables: {
-        first,
-        data: {
-          organisationId,
-        },
+  const [fuelCards, refetchFuelCards] = useGetFuelCardsQuery({
+    variables: {
+      first,
+      data: {
+        organisationId,
       },
-    });
+    },
+  });
 
-  const endCursor = data?.fuelCards?.pageInfo?.endCursor;
+  const handleSubscription = (fuelCards = [], response) => {
+    return [response.newFuelCards, ...fuelCards];
+  };
+
+  const [res] = useFuelCardAddedSubscription(handleSubscription);
+
+  const endCursor = fuelCards.data?.fuelCards.pageInfo.endCursor;
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -71,7 +78,7 @@ const FuelCards: NextPage = () => {
 
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    refetch({
+    refetchFuelCards({
       first,
       data: {
         searchCriteria: searchCriteria,

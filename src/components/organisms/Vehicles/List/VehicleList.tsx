@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { ApolloError } from '@apollo/client';
 import {
   GetVehiclesQuery,
   Vehicle,
@@ -17,12 +16,13 @@ import DefectsButton from '@/components/atoms/DefectsButton';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import DeleteButton from '@/components/atoms/DeleteButton';
 import InView from 'react-intersection-observer';
+import { CombinedError } from 'urql';
 
 type VehicleListProps = {
   data: GetVehiclesQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
-  fetchMore: () => void;
+  error: CombinedError | undefined;
+  // fetchMore: () => void;
   changeCurrentVehicle: (vehicle: Vehicle) => void;
   changeAddVehicleModalState: (newState: boolean) => void;
   changeDeleteVehicleModalState: (newState: boolean) => void;
@@ -36,7 +36,7 @@ const VehicleList = ({
   data,
   loading,
   error,
-  fetchMore,
+  // fetchMore,
   changeCurrentVehicle,
   changeAddVehicleModalState,
   changeDeleteVehicleModalState,
@@ -182,7 +182,7 @@ const VehicleList = ({
           );
         })}
       </ul>
-      <InView
+      {/* <InView
         onChange={() => {
           if (hasNextPage == true) {
             fetchMore();
@@ -192,7 +192,7 @@ const VehicleList = ({
         {({ inView, ref }) => (
           <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
         )}
-      </InView>
+      </InView> */}
     </div>
   ) : (
     <NoListItemButton

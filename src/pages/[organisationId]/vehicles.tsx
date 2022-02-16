@@ -114,7 +114,7 @@ const Vehicles: NextPage = () => {
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
 
-  const vehicles = useGetVehiclesQuery({
+  const [vehicles, refetchGetVehicles] = useGetVehiclesQuery({
     variables: {
       first: 10,
       data: {
@@ -123,23 +123,25 @@ const Vehicles: NextPage = () => {
     },
   });
 
-  const fuelCardsNotAssigned = useGetFuelCardsNotAssignedQuery({
-    variables: {
-      data: {
-        organisationId,
+  const [fuelCardsNotAssigned, refetchGetFuelCards] =
+    useGetFuelCardsNotAssignedQuery({
+      variables: {
+        data: {
+          organisationId,
+        },
       },
-    },
-  });
+    });
 
-  const tollTagsNotAssigned = useGetTollTagsNotAssignedQuery({
-    variables: {
-      data: {
-        organisationId,
+  const [tollTagsNotAssigned, refetchGetTollTags] =
+    useGetTollTagsNotAssignedQuery({
+      variables: {
+        data: {
+          organisationId,
+        },
       },
-    },
-  });
+    });
 
-  const depots = useGetDepotsQuery({
+  const [depots, refetchGetDepots] = useGetDepotsQuery({
     variables: {
       first: 10,
       data: {
@@ -155,10 +157,10 @@ const Vehicles: NextPage = () => {
     depots.error;
 
   const loading =
-    vehicles.loading ||
-    fuelCardsNotAssigned.loading ||
-    tollTagsNotAssigned.loading ||
-    depots.loading;
+    vehicles.fetching ||
+    fuelCardsNotAssigned.fetching ||
+    tollTagsNotAssigned.fetching ||
+    depots.fetching;
 
   const endCursor = vehicles.data?.vehicles?.pageInfo.endCursor;
 
@@ -168,7 +170,7 @@ const Vehicles: NextPage = () => {
 
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    vehicles.refetch({
+    refetchGetVehicles({
       first: 10,
       data: {
         searchCriteria: searchCriteria,
@@ -177,13 +179,13 @@ const Vehicles: NextPage = () => {
     });
   };
 
-  const fetchMoreVehicles = () => {
-    vehicles.fetchMore({
-      variables: {
-        after: endCursor,
-      },
-    });
-  };
+  // const fetchMoreVehicles = () => {
+  //   vehicles.fetchMore({
+  //     variables: {
+  //       after: endCursor,
+  //     },
+  //   });
+  // };
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -232,9 +234,9 @@ const Vehicles: NextPage = () => {
           />
           <VehicleList
             data={vehicles.data}
-            loading={vehicles.loading}
+            loading={vehicles.fetching}
             error={vehicles.error}
-            fetchMore={fetchMoreVehicles}
+            // fetchMore={fetchMoreVehicles}
             changeAddVehicleModalState={changeAddVehicleModalState}
             changeDeleteVehicleModalState={changeDeleteVehicleModalState}
             changeUpdateVehicleModalState={changeUpdateVehicleModalState}

@@ -17,15 +17,14 @@ import {
   useAddVehicleMutation,
   VehicleType,
   DepotEdge,
-  namedOperations,
-  GetDepotsQueryResult,
-  GetFuelCardsNotAssignedQueryResult,
-  GetTollTagsNotAssignedQueryResult,
   GetTollTagsDocument,
   GetDepotsDocument,
   GetFuelCardsDocument,
   GetFuelCardsNotAssignedDocument,
   GetTollTagsNotAssignedDocument,
+  GetDepotsQuery,
+  GetFuelCardsNotAssignedQuery,
+  GetTollTagsNotAssignedQuery,
 } from '@/generated/graphql';
 import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
@@ -34,13 +33,14 @@ import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import DatePicker from '@/components/molecules/Datepickers/DatePick';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
+import { UseQueryState } from 'urql';
 
 type CreateVehicleModalProps = {
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
-  depots: GetDepotsQueryResult;
-  fuelCardsNotAssigned: GetFuelCardsNotAssignedQueryResult;
-  tollTagsNotAssigned: GetTollTagsNotAssignedQueryResult;
+  depots: UseQueryState<GetDepotsQuery, object>;
+  fuelCardsNotAssigned: UseQueryState<GetFuelCardsNotAssignedQuery, object>;
+  tollTagsNotAssigned: UseQueryState<GetTollTagsNotAssignedQuery, object>;
 };
 
 const getDepotOptions = (depots: DepotEdge[]) => {
@@ -176,107 +176,102 @@ const CreateVehicleModal = ({
     setOwner(event.currentTarget.value);
   };
 
-  const [addVehicle] = useAddVehicleMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newVehicle = mutationReturn?.addVehicle;
+  const [addVehicleResult, addVehicle] = useAddVehicleMutation();
+  // update: (cache, { data: mutationReturn }) => {
+  //   const newVehicle = mutationReturn?.addVehicle;
 
-      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
-        query: GetVehiclesDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      });
+  //   const currentVehicles = cache.readQuery<GetVehiclesQuery>({
+  //     query: GetVehiclesDocument,
+  //     variables: {
+  //       data: {
+  //         organisationId: organisationId,
+  //       },
+  //     },
+  //   });
 
-      if (currentVehicles && newVehicle) {
-        cache.writeQuery({
-          query: GetVehiclesDocument,
-          variables: {
-            data: {
-              organisationId,
-            },
-          },
-          data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
-        });
-      }
-    },
-    refetchQueries: [
-      {
-        query: GetTollTagsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetTollTagsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetDepotsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  //   if (currentVehicles && newVehicle) {
+  //     cache.writeQuery({
+  //       query: GetVehiclesDocument,
+  //       variables: {
+  //         data: {
+  //           organisationId,
+  //         },
+  //       },
+  //       data: { vehicles: [{ ...currentVehicles.vehicles }, newVehicle] },
+  //     });
+  //   }
+  // },
+  // refetchQueries: [
+  //   {
+  //     query: GetTollTagsDocument,
+  //     variables: {
+  //       first: 10,
+  //       data: {
+  //         organisationId,
+  //       },
+  //     },
+  //   },
+  //   {
+  //     query: GetFuelCardsDocument,
+  //     variables: {
+  //       first: 10,
+  //       data: {
+  //         organisationId,
+  //       },
+  //     },
+  //   },
+  //   {
+  //     query: GetFuelCardsNotAssignedDocument,
+  //     variables: {
+  //       data: {
+  //         organisationId,
+  //       },
+  //     },
+  //   },
+  //   {
+  //     query: GetTollTagsNotAssignedDocument,
+  //     variables: {
+  //       data: {
+  //         organisationId,
+  //       },
+  //     },
+  //   },
+  //   {
+  //     query: GetDepotsDocument,
+  //     variables: {
+  //       first: 10,
+  //       data: {
+  //         organisationId,
+  //       },
+  //     },
+  //   },
+  // ],
 
   const cancelButtonRef = useRef(null);
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    try {
-      await addVehicle({
-        variables: {
-          data: {
-            type:
-              type.value != null
-                ? (type.value as VehicleType)
-                : VehicleType.Van,
-            registration: registration != null ? registration : '',
-            make: make != null ? make : '',
-            model: model != null ? model : '',
-            owner: owner != null ? owner : '',
-            cvrt: cvrt != null ? cvrt : null,
-            thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
-            tachoCalibration:
-              tachoCalibration != null ? tachoCalibration : null,
+    const variables = {
+      data: {
+        type:
+          type.value != null ? (type.value as VehicleType) : VehicleType.Van,
+        registration: registration != null ? registration : '',
+        make: make != null ? make : '',
+        model: model != null ? model : '',
+        owner: owner != null ? owner : '',
+        cvrt: cvrt != null ? cvrt : null,
+        thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
+        tachoCalibration: tachoCalibration != null ? tachoCalibration : null,
 
-            depotId: depot.value != null ? depot.value : '',
-            fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
-            tollTagId: tollTag.value === '' ? null : tollTag.value,
-            organisationId,
-          },
-        },
-      });
+        depotId: depot.value != null ? depot.value : '',
+        fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+        tollTagId: tollTag.value === '' ? null : tollTag.value,
+        organisationId,
+      },
+    };
+    try {
+      await addVehicle(variables);
 
       successTextVar('Vehicle added successfully');
       successAlertStateVar(true);

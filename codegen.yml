@@ -5,7 +5,7 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - 'typescript-react-apollo'
+      - 'typescript-urql'
       - 'named-operations-object'
       - 'typescript-apollo-client-helpers'
   ./graphql.schema.json:
