@@ -22,13 +22,27 @@ import {
 } from '@/generated/graphql';
 import { refocusExchange } from '@urql/exchange-refocus';
 import { cacheExchange } from '@urql/exchange-graphcache';
-import {
-  getAccessToken,
-  getIsLoggedIn,
-  setAccessToken,
-} from '@/utilities/authentication';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+
+let accessToken: string | null | undefined = null;
+let isLoggedIn: boolean = false;
+
+export const getAccessToken = () => {
+  return accessToken;
+};
+
+export const setAccessToken = (token: string | null | undefined) => {
+  accessToken = token;
+};
+
+export const getIsLoggedIn = () => {
+  return isLoggedIn;
+};
+
+export const setIsLoggedIn = (state: boolean) => {
+  isLoggedIn = state;
+};
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();

@@ -5,7 +5,7 @@ import ProfileIconButton from '@/components/atoms/ProfileIconButton';
 import SearchBar from '@/components/molecules/Inputs/SearchBar';
 import { UserNavbarOption } from '@/constants/types';
 import { useLogoutMutation } from '@/generated/graphql';
-import { setAccessToken } from '@/utilities/authentication';
+import { setAccessToken } from '@/pages/_app';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { FormEvent, FormEventHandler, Fragment } from 'react';

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import AlreadyLoggedIn from '@/components/organisms/Login/AlreadyLoggedIn';
 import LoginForm from '@/components/organisms/Login/LoginForm';
-import { getAccessToken } from '@/utilities/authentication';
+import { getAccessToken } from './_app';
 
 const Login: NextPage = () => {
   const [loggedIn, setLoggedIn] = useState(false);
