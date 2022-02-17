@@ -2,7 +2,6 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetTollTagsDocument,
   GetTollTagsNotAssignedDocument,
@@ -31,67 +30,17 @@ const DeleteTollTagModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [deleteTollTag] = useDeleteTollTagMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentTollTags = cache.readQuery<GetTollTagsQuery>({
-        query: GetTollTagsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      });
-      const newTollTags = currentTollTags?.tollTags?.edges.filter((tollTag) =>
-        tollTag != null
-          ? tollTag.node.id !== mutationReturn?.deleteTollTag.id
-          : currentTollTags.tollTags
-      );
-      cache.writeQuery({
-        query: GetTollTagsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-        data: { tollTags: newTollTags },
-      });
-      cache.evict({
-        id: mutationReturn?.deleteTollTag.id,
-      });
-    },
-    refetchQueries: [
-      {
-        query: GetVehiclesDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      },
-      {
-        query: GetTollTagsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [deleteTollTagResult, deleteTollTag] = useDeleteTollTagMutation();
 
   const deleteTagHandler = async (id: string) => {
     changeModalState(false);
     try {
-      await deleteTollTag({
-        variables: {
-          data: {
-            id: id,
-          },
+      const variables = {
+        data: {
+          id: id,
         },
-      });
-
-      successTextVar('Toll Tag deleted successfully');
-      successAlertStateVar(true);
+      };
+      await deleteTollTag(variables);
     } catch {}
   };
 

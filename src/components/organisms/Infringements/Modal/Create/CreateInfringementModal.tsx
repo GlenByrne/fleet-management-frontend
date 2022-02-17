@@ -10,17 +10,9 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   DriversInOrganisationPayload,
-  GetDriversQueryResult,
-  GetInfringementsDocument,
-  GetInfringementsQuery,
+  GetDriversQuery,
   useAddInfringementMutation,
 } from '@/generated/graphql';
-import {
-  errorAlertStateVar,
-  errorTextVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'src/apollo/apollo-client';
 import { Option } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
@@ -28,9 +20,10 @@ import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
+import { UseQueryState } from 'urql';
 
 type CreateInfringementModalProps = {
-  drivers: GetDriversQueryResult;
+  drivers: UseQueryState<GetDriversQuery, object>;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
@@ -51,7 +44,7 @@ const CreateInfringementModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = drivers;
+  const { data, fetching, error } = drivers;
 
   const [driverOptions, setDriverOptions] = useState(
     getDriverOptions(
@@ -77,33 +70,7 @@ const CreateInfringementModal = ({
     setDescription(event.currentTarget.value);
   };
 
-  const [addInfringement] = useAddInfringementMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newInfringement = mutationReturn?.addInfringement;
-
-      const currentInfringements = cache.readQuery<GetInfringementsQuery>({
-        query: GetInfringementsDocument,
-        variables: {
-          organisationId: organisationId,
-        },
-      });
-
-      if (currentInfringements && newInfringement) {
-        cache.writeQuery({
-          query: GetInfringementsDocument,
-          variables: {
-            organisationId: organisationId,
-          },
-          data: {
-            infringements: [
-              { ...currentInfringements.infringements },
-              newInfringement,
-            ],
-          },
-        });
-      }
-    },
-  });
+  const [addInfringementResult, addInfringement] = useAddInfringementMutation();
 
   const cancelButtonRef = useRef(null);
 
@@ -111,20 +78,16 @@ const CreateInfringementModal = ({
     e.preventDefault();
     if (driver.value != null) {
       changeModalState(false);
+      const variables = {
+        data: {
+          description: description,
+          driverId: driver.value,
+          dateOccured: dateOccured,
+          organisationId,
+        },
+      };
       try {
-        await addInfringement({
-          variables: {
-            data: {
-              description: description,
-              driverId: driver.value,
-              dateOccured: dateOccured,
-              organisationId,
-            },
-          },
-        });
-
-        successTextVar('Infringement added successfully');
-        successAlertStateVar(true);
+        await addInfringement(variables);
       } catch {}
 
       setDescription('');
@@ -134,12 +97,10 @@ const CreateInfringementModal = ({
         label: 'None',
       });
     } else {
-      errorTextVar('A driver must be assigned to add an infringement');
-      errorAlertStateVar(true);
     }
   };
 
-  if (loading) {
+  if (fetching) {
     return <div></div>;
   }
 

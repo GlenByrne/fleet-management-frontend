@@ -1,8 +1,6 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import { useReactiveVar } from '@apollo/client';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetInfringementsDocument,
   GetInfringementsQuery,
@@ -24,40 +22,18 @@ const DeleteInfringementModal = ({
   modalState,
   changeModalState,
 }: DeleteInfringementModalProps) => {
-  const [deleteInfringement] = useDeleteInfringementMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentInfringements = cache.readQuery<GetInfringementsQuery>({
-        query: GetInfringementsDocument,
-      });
-      const newInfringements =
-        currentInfringements?.infringements?.edges.filter((infringement) =>
-          infringement != null
-            ? infringement.node.id !== mutationReturn?.deleteInfringement.id
-            : currentInfringements.infringements
-        );
-      cache.writeQuery({
-        query: GetInfringementsDocument,
-        data: { infringements: newInfringements },
-      });
-      cache.evict({
-        id: mutationReturn?.deleteInfringement.id,
-      });
-    },
-  });
+  const [deleteInfringementResult, deleteInfringement] =
+    useDeleteInfringementMutation();
 
   const deleteTagHandler = async (id: string) => {
     changeModalState(false);
+    const variables = {
+      data: {
+        id: id,
+      },
+    };
     try {
-      await deleteInfringement({
-        variables: {
-          data: {
-            id: id,
-          },
-        },
-      });
-
-      successTextVar('Infringement deleted successfully');
-      successAlertStateVar(true);
+      await deleteInfringement(variables);
     } catch {}
   };
 

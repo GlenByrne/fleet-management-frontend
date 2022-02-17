@@ -51,7 +51,7 @@ const Depots: NextPage = () => {
 
   const first = 10;
 
-  const { data, loading, error, fetchMore, refetch } =
+  const [depotsWithVehicles, refetchDepotsWithVehicles] =
     useGetDepotsWithVehiclesQuery({
       variables: {
         first,
@@ -61,7 +61,7 @@ const Depots: NextPage = () => {
       },
     });
 
-  const endCursor = data?.depots?.pageInfo?.endCursor;
+  const endCursor = depotsWithVehicles.data?.depots?.pageInfo?.endCursor;
 
   const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
     setSearchCriteria(event.currentTarget.value);
@@ -69,7 +69,7 @@ const Depots: NextPage = () => {
 
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    refetch({
+    refetchDepotsWithVehicles({
       first,
       data: {
         searchCriteria: searchCriteria,
@@ -83,11 +83,11 @@ const Depots: NextPage = () => {
   };
 
   const fetchMoreDepots = () => {
-    fetchMore({
-      variables: {
-        after: endCursor,
-      },
-    });
+    // fetchMore({
+    //   variables: {
+    //     after: endCursor,
+    //   },
+    // });
   };
 
   // const accessToken = useAuthentication();
@@ -131,9 +131,9 @@ const Depots: NextPage = () => {
             changeModalState={changeDeleteDepotModalState}
           />
           <DepotList
-            data={data}
-            loading={loading}
-            error={error}
+            data={depotsWithVehicles.data}
+            loading={depotsWithVehicles.fetching}
+            error={depotsWithVehicles.error}
             fetchMore={fetchMoreDepots}
             changeAddDepotModalState={changeAddDepotModalState}
             changeDeleteDepotModalState={changeDeleteDepotModalState}

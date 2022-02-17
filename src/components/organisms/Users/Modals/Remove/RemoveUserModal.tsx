@@ -2,7 +2,6 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetUsersInOrganisationDocument,
   GetUsersInOrganisationQuery,
@@ -29,43 +28,19 @@ const RemoveUserModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [removeUser] = useRemoveUserFromOrganisationMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentUsers = cache.readQuery<GetUsersInOrganisationQuery>({
-        query: GetUsersInOrganisationDocument,
-      });
-
-      const newUsers = currentUsers?.usersInOrganisation?.filter((user) =>
-        user != null
-          ? user.user.id !== mutationReturn?.removeUserFromOrganisation.user.id
-          : currentUsers.usersInOrganisation
-      );
-
-      cache.writeQuery({
-        query: GetUsersInOrganisationDocument,
-        data: { usersInOrganisation: newUsers },
-      });
-
-      cache.evict({
-        id: mutationReturn?.removeUserFromOrganisation.user.id,
-      });
-    },
-  });
+  const [removeUserResult, removeUser] =
+    useRemoveUserFromOrganisationMutation();
 
   const removeUserHandler = async (userId: string) => {
     changeModalState(false);
     try {
-      await removeUser({
-        variables: {
-          data: {
-            userId,
-            organisationId,
-          },
+      const variables = {
+        data: {
+          userId,
+          organisationId,
         },
-      });
-
-      successTextVar('User removed from organisation successfully');
-      successAlertStateVar(true);
+      };
+      await removeUser(variables);
     } catch {}
   };
 

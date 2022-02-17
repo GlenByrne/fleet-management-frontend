@@ -1,4 +1,3 @@
-import { ApolloError } from '@apollo/client';
 import {
   GetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
@@ -9,11 +8,12 @@ import EditButton from '@/components/atoms/EditButton';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
+import { CombinedError } from 'urql';
 
 type UserListProps = {
   data: GetUsersInOrganisationQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: CombinedError | undefined;
   // fetchMore: () => void;
   changeCurrentUser: (user: UsersInOrganisationPayload) => void;
   changeInviteUserModalState: (newState: boolean) => void;

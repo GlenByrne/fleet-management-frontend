@@ -2,7 +2,6 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   Defect,
   GetVehicleDefectsDocument,
@@ -27,46 +26,17 @@ const DeleteDefectModal = ({
   const router = useRouter();
   const vehicleId = String(router.query.id);
 
-  const [deleteDefect] = useDeleteDefectMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentDefects = cache.readQuery<GetVehicleDefectsQuery>({
-        query: GetVehicleDefectsDocument,
-        variables: {
-          vehicleId: vehicleId,
-        },
-      });
-      const newDefects = currentDefects?.defectsForVehicles?.filter((defect) =>
-        defect != null
-          ? defect.id !== mutationReturn?.deleteDefect.id
-          : currentDefects.defectsForVehicles
-      );
-      cache.writeQuery({
-        query: GetVehicleDefectsDocument,
-        data: { defectsForVehicle: newDefects },
-        variables: {
-          vehicleId: vehicleId,
-        },
-      });
-      cache.evict({
-        id: mutationReturn?.deleteDefect.id,
-      });
-    },
-    refetchQueries: [],
-  });
+  const [deleteDefectResult, deleteDefect] = useDeleteDefectMutation();
 
   const deleteDefectHandler = async (id: string) => {
     changeModalState(false);
+    const variables = {
+      data: {
+        id: id,
+      },
+    };
     try {
-      await deleteDefect({
-        variables: {
-          data: {
-            id: id,
-          },
-        },
-      });
-
-      successTextVar('Defect deleted successfully');
-      successAlertStateVar(true);
+      await deleteDefect(variables);
     } catch {}
   };
 

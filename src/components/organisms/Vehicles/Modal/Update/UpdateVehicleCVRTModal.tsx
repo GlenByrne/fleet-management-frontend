@@ -1,5 +1,4 @@
 import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { VehicleUpdateModalItem } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
 import { useUpdateVehicleCvrtMutation } from '@/generated/graphql';
@@ -18,22 +17,19 @@ const UpdateVehicleCVRTModal = ({
   modalState,
   changeModalState,
 }: UpdateVehicleCVRTModalProps) => {
-  const [updateCVRT] = useUpdateVehicleCvrtMutation();
+  const [updateCVRTResult, updateCVRT] = useUpdateVehicleCvrtMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      await updateCVRT({
-        variables: {
-          data: {
-            id: currentVehicle.id,
-          },
+      const variables = {
+        data: {
+          id: currentVehicle.id,
         },
-      });
-      successTextVar('Vehicle CVRT date updated successfully');
-      successAlertStateVar(true);
+      };
+      await updateCVRT(variables);
     } catch {}
   };
 

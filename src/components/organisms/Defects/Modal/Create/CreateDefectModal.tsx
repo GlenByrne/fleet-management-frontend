@@ -2,12 +2,7 @@ import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
-import {
-  GetVehicleDefectsDocument,
-  GetVehicleDefectsQuery,
-  useAddDefectMutation,
-} from '@/generated/graphql';
+import { useAddDefectMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/SuccessButton';
@@ -33,50 +28,19 @@ const CreateDefectModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addDefect] = useAddDefectMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newDefect = mutationReturn?.addDefect;
-      const currentDefects = cache.readQuery<GetVehicleDefectsQuery>({
-        query: GetVehicleDefectsDocument,
-        variables: {
-          vehicleId: vehicleId,
-        },
-      });
-
-      if (currentDefects && newDefect) {
-        cache.writeQuery({
-          query: GetVehicleDefectsDocument,
-          data: {
-            defectsForVehicle: [
-              { ...currentDefects.defectsForVehicles },
-              newDefect,
-            ],
-          },
-          variables: {
-            vehicleId: vehicleId,
-          },
-        });
-      }
-    },
-    refetchQueries: [],
-  });
+  const [addDefectResult, addDefect] = useAddDefectMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-
+    const variables = {
+      data: {
+        description: description != null ? description : '',
+        vehicleId: vehicleId,
+      },
+    };
     try {
-      await addDefect({
-        variables: {
-          data: {
-            description: description != null ? description : '',
-            vehicleId: vehicleId,
-          },
-        },
-      });
-
-      successTextVar('Defect added successfully');
-      successAlertStateVar(true);
+      await addDefect(variables);
     } catch {}
 
     setDescription('');

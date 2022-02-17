@@ -11,13 +11,13 @@ import DeleteButton from '@/components/atoms/DeleteButton';
 import EditButton from '@/components/atoms/EditButton';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import { getInfringementClassNames } from '@/utilities/getInfringementClassNames';
-import { ApolloError } from '@apollo/client';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
+import { CombinedError } from 'urql';
 
 type InfringementListProps = {
   data: GetInfringementsQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: CombinedError | undefined;
   changeCurrentInfringement: (infringement: Infringement) => void;
   changeAddInfringementModalState: (newState: boolean) => void;
   changeDeleteInfringementModalState: (newState: boolean) => void;

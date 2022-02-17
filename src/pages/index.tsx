@@ -11,16 +11,8 @@ import { NextPage } from 'next';
 import { useState } from 'react';
 
 const Organisations: NextPage = () => {
-  const {
-    data: organisationsData,
-    loading: organisationsLoading,
-    error: organisationsError,
-  } = useGetUsersOrganisationsQuery();
-  const {
-    data: invitesData,
-    loading: invitesLoading,
-    error: invitesError,
-  } = useGetUsersOrganisationsInvitesQuery();
+  const [usersOrganistions] = useGetUsersOrganisationsQuery();
+  const [organisationInvites] = useGetUsersOrganisationsInvitesQuery();
 
   const [addOrganisationModalState, setAddOrganisationModalState] =
     useState(false);
@@ -52,17 +44,17 @@ const Organisations: NextPage = () => {
       }
       leftColumn={
         <OrganisationsList
-          data={organisationsData}
-          loading={organisationsLoading}
-          error={organisationsError}
+          data={usersOrganistions.data}
+          loading={usersOrganistions.fetching}
+          error={usersOrganistions.error}
           changeAddOrganisationModalState={changeAddOrganisationModalState}
         />
       }
       rightColumn={
         <OrganisationInviteList
-          data={invitesData}
-          loading={invitesLoading}
-          error={invitesError}
+          data={organisationInvites.data}
+          loading={organisationInvites.fetching}
+          error={organisationInvites.error}
         />
       }
     />

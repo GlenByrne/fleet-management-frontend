@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import PasswordInput from '@/components/molecules/PasswordInput';
 import PasswordSettingsTemplate from '@/components/templates/PasswordSettingsTemplate';
 import {
   useLogoutMutation,
@@ -7,32 +6,16 @@ import {
 } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import { useState, FormEvent, FormEventHandler } from 'react';
-import {
-  successTextVar,
-  successAlertStateVar,
-  accessTokenVar,
-  loggedInUserVar,
-} from 'src/apollo/apollo-client';
+import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
+import { setAccessToken } from '@/utilities/authentication';
 
 const Password: NextPage = () => {
   const router = useRouter();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [logOut] = useLogoutMutation();
+  const [logOutResult, logOut] = useLogoutMutation();
 
-  const [changePassword] = useChangePasswordMutation({
-    onCompleted: ({ changePassword }) => {
-      successTextVar(changePassword.message);
-      successAlertStateVar(true);
-      logOut();
-      accessTokenVar(null);
-      loggedInUserVar(null);
-      router.push('/login');
-      client.clearStore();
-      setCurrentPassword('');
-      setNewPassword('');
-    },
-  });
+  const [changePasswordResult, changePassword] = useChangePasswordMutation();
 
   const changeCurrentPassword = (event: FormEvent<HTMLInputElement>) => {
     setCurrentPassword(event.currentTarget.value);
@@ -46,12 +29,17 @@ const Password: NextPage = () => {
     e.preventDefault();
     try {
       await changePassword({
-        variables: {
-          data: {
-            currentPassword,
-            newPassword,
-          },
+        data: {
+          currentPassword,
+          newPassword,
         },
+      }).then((result) => {
+        logOut();
+        setAccessToken(null);
+        router.push('/login');
+        // client.clearStore();
+        setCurrentPassword('');
+        setNewPassword('');
       });
     } catch {}
   };

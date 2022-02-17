@@ -1,8 +1,6 @@
 import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useReactiveVar } from '@apollo/client';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetUsersOrganisationsDocument,
   GetUsersOrganisationsQuery,
@@ -30,26 +28,7 @@ const CreateOrganisationModal = ({
     setName(event.currentTarget.value);
   };
 
-  const [addOrganisation] = useAddOrganisationMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newOrganisation = mutationReturn?.addOrganisation;
-      const currentOrganisations = cache.readQuery<GetUsersOrganisationsQuery>({
-        query: GetUsersOrganisationsDocument,
-      });
-
-      if (currentOrganisations && newOrganisation) {
-        cache.writeQuery({
-          query: GetUsersOrganisationsDocument,
-          data: {
-            usersOrganisations: [
-              { ...currentOrganisations.usersOrganisations },
-              newOrganisation,
-            ],
-          },
-        });
-      }
-    },
-  });
+  const [addOrganisationResult, addOrganisation] = useAddOrganisationMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -57,16 +36,12 @@ const CreateOrganisationModal = ({
     changeModalState(false);
 
     try {
-      await addOrganisation({
-        variables: {
-          data: {
-            name: name != null ? name : '',
-          },
+      const variables = {
+        data: {
+          name: name != null ? name : '',
         },
-      });
-
-      successTextVar('Organisation created successfully');
-      successAlertStateVar(true);
+      };
+      await addOrganisation(variables);
     } catch {}
 
     setName('');

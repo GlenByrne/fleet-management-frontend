@@ -59,7 +59,7 @@ const Users: NextPage = () => {
   };
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const users = useGetUsersInOrganisationQuery({
+  const [users, refetchUsers] = useGetUsersInOrganisationQuery({
     variables: {
       data: {
         organisationId,
@@ -67,7 +67,7 @@ const Users: NextPage = () => {
     },
   });
 
-  const depots = useGetDepotsQuery({
+  const [depots, refetchDepots] = useGetDepotsQuery({
     variables: {
       first: 10,
       data: {
@@ -82,7 +82,7 @@ const Users: NextPage = () => {
 
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    users.refetch({
+    refetchUsers({
       data: {
         searchCriteria: searchCriteria,
         organisationId,
@@ -150,7 +150,7 @@ const Users: NextPage = () => {
           />
           <UserList
             data={users.data}
-            loading={users.loading}
+            loading={users.fetching}
             error={users.error}
             // fetchMore={}
             changeInviteUserModalState={changeInviteUserModalState}

@@ -1,0 +1,5 @@
+query GetUpcomingTachoCalibration($data: UpcomingTachoCalibrationInput!) {
+  upcomingTachoCalibration(data: $data) {
+    ...UpcomingTachoCalibrationFields
+  }
+}

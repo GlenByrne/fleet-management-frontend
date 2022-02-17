@@ -10,22 +10,20 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   DepotEdge,
-  GetDepotsQueryResult,
-  GetUsersInOrganisationDocument,
-  GetUsersInOrganisationQuery,
+  GetDepotsQuery,
   Role,
   useInviteUserToOrganisationMutation,
 } from '@/generated/graphql';
 import { Option } from '@/constants/types';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import CancelButton from '@/components/atoms/CancelButton';
 import SuccessButton from '@/components/atoms/SuccessButton';
+import { UseQueryState } from 'urql';
 
 type CreateUserModalProps = {
-  depots: GetDepotsQueryResult;
+  depots: UseQueryState<GetDepotsQuery, object>;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
@@ -60,7 +58,7 @@ const CreateUserModal = ({
   modalState,
   changeModalState,
 }: CreateUserModalProps) => {
-  const { data, loading, error } = depots;
+  const { data, fetching, error } = depots;
 
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
@@ -90,27 +88,8 @@ const CreateUserModal = ({
     setEmail(event.currentTarget.value);
   };
 
-  const [inviteUserToOrganisation] = useInviteUserToOrganisationMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newUser = mutationReturn?.inviteUserToOrganisation;
-
-      const currentUsers = cache.readQuery<GetUsersInOrganisationQuery>({
-        query: GetUsersInOrganisationDocument,
-      });
-
-      if (currentUsers && newUser) {
-        cache.writeQuery({
-          query: GetUsersInOrganisationDocument,
-          data: {
-            usersInOrganisation: [
-              { ...currentUsers.usersInOrganisation },
-              newUser,
-            ],
-          },
-        });
-      }
-    },
-  });
+  const [inviteUserToOrganisationResult, inviteUserToOrganisation] =
+    useInviteUserToOrganisationMutation();
 
   const cancelButtonRef = useRef(null);
 
@@ -119,19 +98,15 @@ const CreateUserModal = ({
     changeModalState(false);
 
     try {
-      await inviteUserToOrganisation({
-        variables: {
-          data: {
-            email: email,
-            organisationId,
-            depotId: depot.value != null ? depot.value : '',
-            role: role.value != null ? (role.value as Role) : Role.User,
-          },
+      const variables = {
+        data: {
+          email: email,
+          organisationId,
+          depotId: depot.value != null ? depot.value : '',
+          role: role.value != null ? (role.value as Role) : Role.User,
         },
-      });
-
-      successTextVar('Invite sent to user');
-      successAlertStateVar(true);
+      };
+      await inviteUserToOrganisation(variables);
     } catch {}
 
     setEmail('');
@@ -141,7 +116,7 @@ const CreateUserModal = ({
     });
   };
 
-  if (loading) {
+  if (fetching) {
     return <div></div>;
   }
 

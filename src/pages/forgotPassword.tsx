@@ -1,4 +1,3 @@
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { useForgotPasswordMutation } from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -8,23 +7,17 @@ const ForgotPassword: NextPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
 
-  const [forgotPassword] = useForgotPasswordMutation({
-    onCompleted: () => {
-      successTextVar('Password reset email sent');
-      successAlertStateVar(true);
-      router.push('/login');
-      setEmail('');
-    },
-  });
+  const [forgotPasswordResult, forgotPassword] = useForgotPasswordMutation();
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     forgotPassword({
-      variables: {
-        data: {
-          email: email,
-        },
+      data: {
+        email: email,
       },
+    }).then(() => {
+      router.push('/login');
+      setEmail('');
     });
   };
 

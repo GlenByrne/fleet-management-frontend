@@ -2,7 +2,6 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
   GetFuelCardsNotAssignedDocument,
@@ -31,70 +30,17 @@ const DeleteFuelCardModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [deleteFuelCard] = useDeleteFuelCardMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
-        query: GetFuelCardsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-            searchCriteria: searchCriteria != null ? searchCriteria : undefined,
-          },
-        },
-      });
-      const newFuelCards = currentFuelCards?.fuelCards.edges.filter(
-        (fuelCard) =>
-          fuelCard != null
-            ? fuelCard.node.id !== mutationReturn?.deleteFuelCard.id
-            : currentFuelCards.fuelCards
-      );
-      cache.writeQuery({
-        query: GetFuelCardsDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-            searchCriteria: searchCriteria != null ? searchCriteria : undefined,
-          },
-        },
-        data: { fuelCards: newFuelCards },
-      });
-      cache.evict({
-        id: mutationReturn?.deleteFuelCard.id,
-      });
-    },
-    refetchQueries: [
-      {
-        query: GetVehiclesDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [deleteFuelCardResult, deleteFuelCard] = useDeleteFuelCardMutation();
 
   const deleteCardHandler = async (id: string) => {
     changeModalState(false);
+    const variables = {
+      data: {
+        id: id,
+      },
+    };
     try {
-      await deleteFuelCard({
-        variables: {
-          data: {
-            id: id,
-          },
-        },
-      });
-      successTextVar('Fuel Card deleted successfully');
-      successAlertStateVar(true);
+      await deleteFuelCard(variables);
     } catch {}
   };
 

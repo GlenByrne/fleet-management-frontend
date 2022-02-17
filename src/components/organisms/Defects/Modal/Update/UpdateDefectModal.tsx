@@ -13,7 +13,6 @@ import {
   DefectStatus,
   useUpdateDefectMutation,
 } from '@/generated/graphql';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
@@ -70,25 +69,20 @@ const UpdateDefectModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateDefect] = useUpdateDefectMutation();
+  const [updateDefectResult, updateDefect] = useUpdateDefectMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-
+    const variables = {
+      data: {
+        id: currentDefect.id,
+        description: description != null ? description : '',
+        status: status.value as DefectStatus,
+      },
+    };
     try {
-      await updateDefect({
-        variables: {
-          data: {
-            id: currentDefect.id,
-            description: description != null ? description : '',
-            status: status.value as DefectStatus,
-          },
-        },
-      });
-
-      successTextVar('Defect updated successfully');
-      successAlertStateVar(true);
+      await updateDefect(variables);
     } catch {}
   };
 

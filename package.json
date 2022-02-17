@@ -18,9 +18,7 @@
     "test": "jest --watch"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.8",
     "@graphql-codegen/named-operations-object": "^2.2.1",
-    "@graphql-codegen/typescript-apollo-client-helpers": "^2.1.10",
     "@graphql-codegen/typescript-urql": "^3.5.1",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
@@ -33,7 +31,6 @@
     "@urql/exchange-retry": "^0.3.2",
     "graphql": "^16.3.0",
     "graphql-ws": "^5.5.5",
-    "js-cookie": "^3.0.1",
     "next": "^12.0.10",
     "react": "^17.0.2",
     "react-datepicker": "^4.6.0",
@@ -51,7 +48,6 @@
     "@graphql-codegen/typescript-document-nodes": "^2.2.3",
     "@graphql-codegen/typescript-graphql-files-modules": "^2.1.1",
     "@graphql-codegen/typescript-operations": "^2.3.0",
-    "@graphql-codegen/typescript-react-apollo": "^3.2.5",
     "@storybook/addon-actions": "^6.4.19",
     "@storybook/addon-docs": "^6.4.19",
     "@storybook/addon-essentials": "^6.4.19",
@@ -60,7 +56,6 @@
     "@storybook/react": "^6.4.19",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
-    "@types/js-cookie": "^3.0.1",
     "@types/react": "^17.0.39",
     "@types/react-datepicker": "^4.3.4",
     "@types/react-dom": "^17.0.11",

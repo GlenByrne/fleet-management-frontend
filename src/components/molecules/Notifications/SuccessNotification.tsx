@@ -1,18 +1,16 @@
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
-import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { CheckCircleIcon, XIcon } from '@heroicons/react/solid';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 const SuccessNotification = () => {
-  const alertState = useReactiveVar(successAlertStateVar);
-  const successText = useReactiveVar(successTextVar);
+  const [alertState, setAlertState] = useState(false);
+  const [alertText, setAlertText] = useState<string | null>(null);
 
   useEffect(() => {
     if (alertState === true) {
       setTimeout(() => {
-        successAlertStateVar(false);
-        successTextVar('');
+        setAlertState(false);
+        setAlertText('');
       }, 3000);
     }
   });
@@ -47,14 +45,14 @@ const SuccessNotification = () => {
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className="text-sm font-medium text-gray-900">
-                      {successText}
+                      {alertText}
                     </p>
                   </div>
                   <div className="ml-4 flex shrink-0">
                     <button
                       className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={() => {
-                        successAlertStateVar(false);
+                        setAlertState(false);
                       }}
                     >
                       <span className="sr-only">Close</span>

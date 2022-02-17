@@ -21,12 +21,13 @@ const Infringements: NextPage = () => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const infringements = useGetInfringementsQuery({
+  const [infringements, refetchInfringements] = useGetInfringementsQuery({
     variables: {
       first: 10,
     },
   });
-  const drivers = useGetDriversQuery({
+
+  const [drivers, refetchDrivers] = useGetDriversQuery({
     variables: {
       data: {
         organisationId,
@@ -130,7 +131,7 @@ const Infringements: NextPage = () => {
           />
           <InfringementList
             data={infringements.data}
-            loading={infringements.loading}
+            loading={infringements.fetching}
             error={infringements.error}
             changeAddInfringementModalState={changeAddInfringementModalState}
             changeDeleteInfringementModalState={

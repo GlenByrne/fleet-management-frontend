@@ -2,7 +2,6 @@ import { TruckIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { useAddDepotMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
@@ -29,50 +28,19 @@ const CreateDepotModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addDepot] = useAddDepotMutation({
-    // update: (cache, { data: mutationReturn }) => {
-    //   const newDepot = mutationReturn?.addDepot;
-    //   const currentDepots = cache.readQuery<GetDepotsQuery>({
-    //     query: GetDepotsDocument,
-    //     variables: {
-    //       data: {
-    //         organisationId: organisationId,
-    //       },
-    //     },
-    //   });
-
-    //   if (currentDepots && newDepot) {
-    //     cache.writeQuery({
-    //       query: GetDepotsDocument,
-    //       variables: {
-    //         data: {
-    //           organisationId: organisationId,
-    //         },
-    //       },
-    //       data: {
-    //         depots: [{ ...currentDepots.depots }, newDepot],
-    //       },
-    //     });
-    //   }
-    // },
-    refetchQueries: [],
-  });
+  const [addDepotResult, addDepot] = useAddDepotMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-
+    const variables = {
+      data: {
+        name: name != null ? name : '',
+        organisationId,
+      },
+    };
     try {
-      await addDepot({
-        variables: {
-          data: {
-            name: name != null ? name : '',
-            organisationId,
-          },
-        },
-      });
-      successTextVar('Depot added successfully');
-      successAlertStateVar(true);
+      await addDepot(variables);
     } catch {}
 
     setName('');

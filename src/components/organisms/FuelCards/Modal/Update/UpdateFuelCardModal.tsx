@@ -8,7 +8,6 @@ import {
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsNotAssignedDocument,
   GetVehiclesDocument,
@@ -53,43 +52,20 @@ const UpdateFuelCardModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateFuelCard] = useUpdateFuelCardMutation({
-    refetchQueries: [
-      {
-        query: GetVehiclesDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [updateFuelCardResult, updateFuelCard] = useUpdateFuelCardMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
+    const variables = {
+      data: {
+        id: currentFuelCard.id,
+        cardNumber: cardNumber != null ? cardNumber : '',
+        cardProvider: cardProvider != null ? cardProvider : '',
+      },
+    };
     try {
-      await updateFuelCard({
-        variables: {
-          data: {
-            id: currentFuelCard.id,
-            cardNumber: cardNumber != null ? cardNumber : '',
-            cardProvider: cardProvider != null ? cardProvider : '',
-          },
-        },
-      });
-
-      successTextVar('Fuel Card updated successfully');
-      successAlertStateVar(true);
+      await updateFuelCard(variables);
     } catch {}
   };
 

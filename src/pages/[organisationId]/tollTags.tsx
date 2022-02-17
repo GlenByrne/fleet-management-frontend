@@ -50,7 +50,7 @@ const TollTags: NextPage = () => {
   };
 
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const { data, loading, error, refetch } = useGetTollTagsQuery({
+  const [tollTags, refetchTollTags] = useGetTollTagsQuery({
     variables: {
       first: 10,
       data: {
@@ -65,7 +65,7 @@ const TollTags: NextPage = () => {
 
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    refetch({
+    refetchTollTags({
       data: {
         searchCriteria: searchCriteria,
         organisationId,
@@ -120,9 +120,9 @@ const TollTags: NextPage = () => {
             changeModalState={changeDeleteTollTagModalState}
           />
           <TollTagList
-            data={data}
-            loading={loading}
-            error={error}
+            data={tollTags.data}
+            loading={tollTags.fetching}
+            error={tollTags.error}
             changeAddTollTagModalState={changeAddTollTagModalState}
             changeDeleteTollTagModalState={changeDeleteTollTagModalState}
             changeUpdateTollTagModalState={changeUpdateTollTagModalState}

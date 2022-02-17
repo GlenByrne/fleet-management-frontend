@@ -1,5 +1,4 @@
 import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { VehicleUpdateModalItem } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
 import { useUpdateVehicleTachoCalibrationMutation } from '@/generated/graphql';
@@ -18,23 +17,21 @@ const UpdateVehicleTachoCalibrationModal = ({
   modalState,
   changeModalState,
 }: UpdateVehicleTachoCalibrationModalProps) => {
-  const [updateTachoCalibration] = useUpdateVehicleTachoCalibrationMutation();
+  const [updateTachoCalibrationResult, updateTachoCalibration] =
+    useUpdateVehicleTachoCalibrationMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      await updateTachoCalibration({
-        variables: {
-          data: {
-            id: currentVehicle.id,
-            completionDate: completionDate,
-          },
+      const variables = {
+        data: {
+          id: currentVehicle.id,
+          completionDate: completionDate,
         },
-      });
-      successTextVar('Vehicle tacho calibration date updated successfully');
-      successAlertStateVar(true);
+      };
+      await updateTachoCalibration(variables);
     } catch {}
   };
 

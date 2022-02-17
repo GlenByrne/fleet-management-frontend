@@ -3,13 +3,13 @@ import EditButton from '@/components/atoms/EditButton';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { GetTollTagsQuery, TollTag, TollTagEdge } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
 import Link from 'next/link';
+import { CombinedError } from 'urql';
 
 type TollTagListProps = {
   data: GetTollTagsQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: CombinedError | undefined;
   changeCurrentTollTag: (tollTag: TollTag) => void;
   changeAddTollTagModalState: (newState: boolean) => void;
   changeDeleteTollTagModalState: (newState: boolean) => void;

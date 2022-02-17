@@ -1,11 +1,10 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import 'tailwindcss/tailwind.css';
-import ErrorNotification from '@/components/molecules/Notifications/ErrorNotification';
-import SuccessNotification from '@/components/molecules/Notifications/SuccessNotification';
 import {
   createClient,
   dedupExchange,
+  errorExchange,
   fetchExchange,
   makeOperation,
   Provider,
@@ -17,13 +16,23 @@ import { devtoolsExchange } from '@urql/devtools';
 import { retryExchange } from '@urql/exchange-retry';
 import { RetryExchangeOptions } from '@urql/exchange-retry/dist/types/retryExchange';
 import { authExchange } from '@urql/exchange-auth';
-import { RefreshAccessTokenDocument } from '@/generated/graphql';
+import {
+  RefreshAccessTokenDocument,
+  useLogoutMutation,
+} from '@/generated/graphql';
 import { refocusExchange } from '@urql/exchange-refocus';
-import { useState } from 'react';
 import { cacheExchange } from '@urql/exchange-graphcache';
+import {
+  getAccessToken,
+  getIsLoggedIn,
+  setAccessToken,
+} from '@/utilities/authentication';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const [accessToken, setAccessToken] = useState(null);
+  const router = useRouter();
+  const [logOutResult, logOut] = useLogoutMutation();
 
   const isServerSide = typeof window === 'undefined';
 
@@ -39,8 +48,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   const getAuth = async ({ authState, mutate }: any) => {
     if (!authState) {
-      if (accessToken) {
-        return { accessToken };
+      const token = getAccessToken();
+      if (token) {
+        return { token };
       }
       return null;
     }
@@ -53,7 +63,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       return { accessToken: newAccessToken };
     }
 
-    //logout
+    logOut();
+    setAccessToken(null);
+    router.push('/login');
 
     return null;
   };
@@ -103,9 +115,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     return false;
   };
 
-  const wsClient = createWSClient({
-    url: 'ws://localhost:4000/graphql',
-  });
+  // const wsClient = createWSClient({
+  //   url: 'ws://localhost:4000/graphql',
+  // });
 
   const ssr = ssrExchange({
     isClient: !isServerSide,
@@ -113,11 +125,26 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   const client = createClient({
     url: 'http://localhost:4000/graphql',
+    fetchOptions: {
+      credentials: 'include',
+    },
     exchanges: [
       devtoolsExchange,
       dedupExchange,
       refocusExchange(),
       cacheExchange({}),
+      errorExchange({
+        onError: (error) => {
+          const isAuthError = error.graphQLErrors.some(
+            (e) => e.message === 'Not Authorised!'
+          );
+          if (isAuthError) {
+            logOut();
+            setAccessToken(null);
+            router.push('/login');
+          }
+        },
+      }),
       authExchange({
         getAuth,
         addAuthToOperation,
@@ -125,13 +152,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       }),
       retryExchange(retryOptions),
       ssr,
-      subscriptionExchange({
-        forwardSubscription: (operation) => ({
-          subscribe: (sink) => ({
-            unsubscribe: wsClient.subscribe(operation, sink),
-          }),
-        }),
-      }),
+      // subscriptionExchange({
+      //   forwardSubscription: (operation) => ({
+      //     subscribe: (sink) => ({
+      //       unsubscribe: wsClient.subscribe(operation, sink),
+      //     }),
+      //   }),
+      // }),
       fetchExchange,
     ],
   });
@@ -142,8 +169,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider value={client}>
-      <ErrorNotification />
-      <SuccessNotification />
       <Component {...pageProps} />
     </Provider>
   );

@@ -26,7 +26,6 @@ import {
   GetFuelCardsNotAssignedQuery,
   GetTollTagsNotAssignedQuery,
 } from '@/generated/graphql';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
@@ -252,29 +251,27 @@ const CreateVehicleModal = ({
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const variables = {
-      data: {
-        type:
-          type.value != null ? (type.value as VehicleType) : VehicleType.Van,
-        registration: registration != null ? registration : '',
-        make: make != null ? make : '',
-        model: model != null ? model : '',
-        owner: owner != null ? owner : '',
-        cvrt: cvrt != null ? cvrt : null,
-        thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
-        tachoCalibration: tachoCalibration != null ? tachoCalibration : null,
 
-        depotId: depot.value != null ? depot.value : '',
-        fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
-        tollTagId: tollTag.value === '' ? null : tollTag.value,
-        organisationId,
-      },
-    };
     try {
-      await addVehicle(variables);
+      const variables = {
+        data: {
+          type:
+            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
+          registration: registration != null ? registration : '',
+          make: make != null ? make : '',
+          model: model != null ? model : '',
+          owner: owner != null ? owner : '',
+          cvrt: cvrt != null ? cvrt : null,
+          thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
+          tachoCalibration: tachoCalibration != null ? tachoCalibration : null,
 
-      successTextVar('Vehicle added successfully');
-      successAlertStateVar(true);
+          depotId: depot.value != null ? depot.value : '',
+          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+          tollTagId: tollTag.value === '' ? null : tollTag.value,
+          organisationId,
+        },
+      };
+      await addVehicle(variables);
     } catch {}
 
     setType({

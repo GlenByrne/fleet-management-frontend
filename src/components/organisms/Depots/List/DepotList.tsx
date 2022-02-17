@@ -8,14 +8,14 @@ import {
   DepotEdge,
   GetDepotsQuery,
 } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
 import Link from 'next/link';
 import InView from 'react-intersection-observer';
+import { CombinedError } from 'urql';
 
 type DepotListProps = {
   data: GetDepotsQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: CombinedError | undefined;
   fetchMore: () => void;
   changeCurrentDepot: (depot: Depot) => void;
   changeAddDepotModalState: (newState: boolean) => void;

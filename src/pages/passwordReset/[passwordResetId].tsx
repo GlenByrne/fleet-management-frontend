@@ -1,33 +1,27 @@
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
-import PasswordInput from '@/components/molecules/PasswordInput';
 import { useResetPasswordMutation } from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState, FormEventHandler, FormEvent } from 'react';
+import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
 
 const PasswordReset: NextPage = () => {
   const router = useRouter();
   const token = String(router.query.passwordResetId);
   const [password, setPassword] = useState('');
 
-  const [resetPassword] = useResetPasswordMutation({
-    onCompleted: ({ resetPassword }) => {
-      successTextVar(resetPassword.message);
-      successAlertStateVar(true);
-      router.push('/login');
-      setPassword('');
-    },
-  });
+  const [resetPasswordResult, resetPassword] = useResetPasswordMutation();
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    resetPassword({
-      variables: {
-        data: {
-          resetPasswordToken: token,
-          newPassword: password,
-        },
+    const variables = {
+      data: {
+        resetPasswordToken: token,
+        newPassword: password,
       },
+    };
+    resetPassword(variables).then((result) => {
+      router.push('/login');
+      setPassword('');
     });
   };
 

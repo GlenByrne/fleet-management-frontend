@@ -3,13 +3,13 @@ import {
   GetUsersOrganisationsInvitesQuery,
   UsersOnOrganisations,
 } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
+import { CombinedError } from 'urql';
 import OrganisationInviteListItem from './OrganisationInviteListItem';
 
 type OrganisationInviteListProps = {
   data: GetUsersOrganisationsInvitesQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: CombinedError | undefined;
 };
 
 const OrganisationInviteList = ({

@@ -4,13 +4,13 @@ import {
   GetUsersOrganisationsQuery,
   UsersOnOrganisations,
 } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
 import Link from 'next/link';
+import { CombinedError } from 'urql';
 
 type OrganisationListProps = {
   data: GetUsersOrganisationsQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: CombinedError | undefined;
   changeAddOrganisationModalState: (newState: boolean) => void;
 };
 

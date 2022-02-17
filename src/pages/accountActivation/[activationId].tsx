@@ -11,17 +11,16 @@ const AccountActivation: NextPage = () => {
   const router = useRouter();
   const token = String(router.query.activationId);
 
-  const [activateAccount] = useActivateAccountMutation({
-    variables: {
-      data: {
-        token,
-      },
-    },
-  });
+  const [activateAccountResult, activateAccount] = useActivateAccountMutation();
 
   useEffect(() => {
     async function handleAccountActivation() {
-      const isValid = await activateAccount();
+      const variables = {
+        data: {
+          token,
+        },
+      };
+      const isValid = (await activateAccount(variables)).data?.activateAccount;
       if (isValid === true) {
         setIsValid(true);
       } else {

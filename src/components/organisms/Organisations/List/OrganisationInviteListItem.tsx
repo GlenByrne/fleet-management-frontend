@@ -1,6 +1,5 @@
 import CheckButton from '@/components/atoms/CheckButton';
 import XButton from '@/components/atoms/XButton';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetUsersOrganisationsDocument,
   GetUsersOrganisationsInvitesDocument,
@@ -17,80 +16,29 @@ type OrganisationInvitesListItemProps = {
 const OrganisationInviteListItem = ({
   invite,
 }: OrganisationInvitesListItemProps) => {
-  const [acceptInvite] = useAcceptInviteMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentOrganisationInvites =
-        cache.readQuery<GetUsersOrganisationsInvitesQuery>({
-          query: GetUsersOrganisationsInvitesDocument,
-        });
-      const newOrganisationInvites =
-        currentOrganisationInvites?.usersOrganisationInvites?.filter((invite) =>
-          invite != null
-            ? invite.organisation.id !==
-              mutationReturn?.acceptInvite.organisation.id
-            : currentOrganisationInvites.usersOrganisationInvites
-        );
-      cache.writeQuery({
-        query: GetUsersOrganisationsInvitesDocument,
-        data: { usersOrganisationInvites: newOrganisationInvites },
-      });
-      cache.evict({
-        id: mutationReturn?.acceptInvite.organisation.id,
-      });
-    },
-    refetchQueries: [{ query: GetUsersOrganisationsDocument }],
-  });
+  const [acceptInviteResult, acceptInvite] = useAcceptInviteMutation();
 
-  const [declineInvite] = useDeclineInviteMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentOrganisationInvites =
-        cache.readQuery<GetUsersOrganisationsInvitesQuery>({
-          query: GetUsersOrganisationsInvitesDocument,
-        });
-      const newOrganisationInvites =
-        currentOrganisationInvites?.usersOrganisationInvites?.filter((invite) =>
-          invite != null
-            ? invite.organisation.id !==
-              mutationReturn?.declineInvite.organisationId
-            : currentOrganisationInvites.usersOrganisationInvites
-        );
-      cache.writeQuery({
-        query: GetUsersOrganisationsInvitesDocument,
-        data: { usersOrganisationInvites: newOrganisationInvites },
-      });
-      cache.evict({
-        id: mutationReturn?.declineInvite.organisationId,
-      });
-    },
-  });
+  const [declineInviteResult, declineInvite] = useDeclineInviteMutation();
 
   const handleAcceptInvite = async () => {
     try {
-      await acceptInvite({
-        variables: {
-          data: {
-            organisationId: invite.organisation.id,
-          },
+      const variables = {
+        data: {
+          organisationId: invite.organisation.id,
         },
-      });
-
-      successTextVar('Invite accepted');
-      successAlertStateVar(true);
+      };
+      await acceptInvite(variables);
     } catch {}
   };
 
   const handleDeclineInvite = async () => {
     try {
-      await declineInvite({
-        variables: {
-          data: {
-            organisationId: invite.organisation.id,
-          },
+      const variables = {
+        data: {
+          organisationId: invite.organisation.id,
         },
-      });
-
-      successTextVar('Invite declined');
-      successAlertStateVar(true);
+      };
+      await declineInvite(variables);
     } catch {}
   };
 

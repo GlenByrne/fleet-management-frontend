@@ -2,7 +2,6 @@ import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
   GetFuelCardsNotAssignedDocument,
@@ -39,62 +38,21 @@ const CreateFuelCardModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addFuelCard] = useAddFuelCardMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newFuelCard = mutationReturn?.addFuelCard;
-      const currentFuelCards = cache.readQuery<GetFuelCardsQuery>({
-        query: GetFuelCardsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      });
-
-      if (currentFuelCards && newFuelCard) {
-        cache.writeQuery({
-          query: GetFuelCardsDocument,
-          variables: {
-            first: 10,
-            data: {
-              organisationId: organisationId,
-            },
-          },
-          data: { fuelCards: [{ ...currentFuelCards.fuelCards }, newFuelCard] },
-        });
-      }
-    },
-    refetchQueries: [
-      {
-        query: GetFuelCardsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [addFuelCardResult, addFuelCard] = useAddFuelCardMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
 
     changeModalState(false);
-
+    const variables = {
+      data: {
+        cardNumber: cardNumber != null ? cardNumber : '',
+        cardProvider: cardProvider != null ? cardProvider : '',
+        organisationId,
+      },
+    };
     try {
-      await addFuelCard({
-        variables: {
-          data: {
-            cardNumber: cardNumber != null ? cardNumber : '',
-            cardProvider: cardProvider != null ? cardProvider : '',
-            organisationId,
-          },
-        },
-      });
-
-      successTextVar('Fuel Card added successfully');
-      successAlertStateVar(true);
+      await addFuelCard(variables);
     } catch {}
 
     setCardNumber('');

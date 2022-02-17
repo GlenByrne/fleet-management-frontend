@@ -26,7 +26,7 @@ const Defects: NextPage = () => {
   //   }
   // }, [id]);
 
-  const { data, loading, error } = useGetVehicleDefectsQuery({
+  const [defects] = useGetVehicleDefectsQuery({
     variables: {
       data: {
         vehicleId,
@@ -109,9 +109,9 @@ const Defects: NextPage = () => {
             changeModalState={changeDeleteDefectModalState}
           />
           <DefectList
-            data={data}
-            loading={loading}
-            error={error}
+            data={defects.data}
+            loading={defects.fetching}
+            error={defects.error}
             changeAddDefectModalState={changeAddDefectModalState}
             changeDeleteDefectModalState={changeDeleteDefectModalState}
             changeUpdateDefectModalState={changeUpdateDefectModalState}

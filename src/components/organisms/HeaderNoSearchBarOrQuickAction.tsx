@@ -1,18 +1,12 @@
 import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/atoms/ProfileIconButton';
-import {
-  accessTokenVar,
-  loggedInUserVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'src/apollo/apollo-client';
 import { UserNavbarOption } from '@/constants/types';
 import { useLogoutMutation } from '@/generated/graphql';
+import { setAccessToken } from '@/utilities/authentication';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { useApolloClient } from '@apollo/client';
 
 type HeaderNoSearchbarOrQuickActionButtonProps = {
   setMobileMenuOpen: (newState: boolean) => void;
@@ -22,17 +16,13 @@ const HeaderNoSearchBarOrQuickAction = ({
   setMobileMenuOpen,
 }: HeaderNoSearchbarOrQuickActionButtonProps) => {
   const router = useRouter();
-  const [logOut] = useLogoutMutation();
-  const client = useApolloClient();
+  const [logOutResult, logOut] = useLogoutMutation();
 
   const handleLogOut = () => {
     logOut();
-    accessTokenVar(null);
-    loggedInUserVar(null);
+    setAccessToken(null);
     router.push('/login');
-    client.clearStore();
-    successTextVar('Logged out successfully');
-    successAlertStateVar(true);
+    // client.clearStore();
   };
 
   const userNavigation: UserNavbarOption[] = [

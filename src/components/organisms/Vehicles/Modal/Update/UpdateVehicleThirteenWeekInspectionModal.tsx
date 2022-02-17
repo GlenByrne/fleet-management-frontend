@@ -1,9 +1,7 @@
 import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { VehicleUpdateModalItem } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
 import { useUpdateVehicleThirteenWeekInspectionMutation } from '@/generated/graphql';
-import { useReactiveVar } from '@apollo/client';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/solid';
 import { useRef, useState, FormEventHandler } from 'react';
@@ -19,25 +17,21 @@ const UpdateVehicleThirteenWeekModal = ({
   modalState,
   changeModalState,
 }: UpdateVehicleThirteenWeekInspectionModalProps) => {
-  const [updateThirteenWeek] = useUpdateVehicleThirteenWeekInspectionMutation();
+  const [updateThirteenWeekResult, updateThirteenWeek] =
+    useUpdateVehicleThirteenWeekInspectionMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      await updateThirteenWeek({
-        variables: {
-          data: {
-            id: currentVehicle.id,
-            completionDate: completionDate,
-          },
+      const variables = {
+        data: {
+          id: currentVehicle.id,
+          completionDate: completionDate,
         },
-      });
-      successTextVar(
-        'Vehicle thirteen week inspection date updated successfully'
-      );
-      successAlertStateVar(true);
+      };
+      await updateThirteenWeek(variables);
     } catch {}
   };
 

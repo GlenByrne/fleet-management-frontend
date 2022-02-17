@@ -12,7 +12,6 @@ import {
   UpdateInfringementInput,
   useUpdateInfringementMutation,
 } from '@/generated/graphql';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import { Option } from '@/constants/types';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
@@ -74,25 +73,22 @@ const UpdateInfringementModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateInfringement] = useUpdateInfringementMutation();
+  const [updateInfringementResult, updateInfringement] =
+    useUpdateInfringementMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
+    const variables = {
+      data: {
+        id: currentInfringement.id,
+        description: description,
+        dateOccured: dateOccured,
+        status: status.value as InfringementStatus,
+      },
+    };
     try {
-      await updateInfringement({
-        variables: {
-          data: {
-            id: currentInfringement.id,
-            description: description,
-            dateOccured: dateOccured,
-            status: status.value as InfringementStatus,
-          },
-        },
-      });
-
-      successTextVar('Infringement updated successfully');
-      successAlertStateVar(true);
+      await updateInfringement(variables);
     } catch {}
   };
 

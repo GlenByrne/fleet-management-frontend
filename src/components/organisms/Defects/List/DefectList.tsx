@@ -3,15 +3,15 @@ import EditButton from '@/components/atoms/EditButton';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { Defect, GetVehicleDefectsQuery } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { CombinedError } from 'urql';
 
 type DefectListProps = {
   data: GetVehicleDefectsQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: CombinedError | undefined;
   changeCurrentDefect: (defect: Defect) => void;
   changeAddDefectModalState: (newState: boolean) => void;
   changeDeleteDefectModalState: (newState: boolean) => void;

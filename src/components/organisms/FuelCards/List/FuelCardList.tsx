@@ -1,4 +1,3 @@
-import { ApolloError, SubscribeToMoreOptions } from '@apollo/client';
 import {
   Exact,
   FuelCard,
@@ -15,23 +14,24 @@ import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { useEffect } from 'react';
 import Button from '@/core/Table/Button';
 import InView, { useInView } from 'react-intersection-observer';
+import { CombinedError } from 'urql';
 
 type FuelCardListProps = {
   data: GetFuelCardsQuery | undefined;
   loading: boolean;
-  error: ApolloError | undefined;
-  subscribeToMore: <
-    TSubscriptionData = GetFuelCardsQuery,
-    TSubscriptionVariables = Exact<{
-      data: FuelCardsInput;
-    }>
-  >(
-    options: SubscribeToMoreOptions<
-      GetFuelCardsQuery,
-      TSubscriptionVariables,
-      TSubscriptionData
-    >
-  ) => () => void;
+  error: CombinedError | undefined;
+  // subscribeToMore: <
+  //   TSubscriptionData = GetFuelCardsQuery,
+  //   TSubscriptionVariables = Exact<{
+  //     data: FuelCardsInput;
+  //   }>
+  // >(
+  //   options: SubscribeToMoreOptions<
+  //     GetFuelCardsQuery,
+  //     TSubscriptionVariables,
+  //     TSubscriptionData
+  //   >
+  // ) => () => void;
   fetchMore: () => void;
   changeCurrentFuelCard: (fuelCard: FuelCard) => void;
   changeAddFuelCardModalState: (newState: boolean) => void;
@@ -43,7 +43,7 @@ const FuelCardList = ({
   data,
   loading,
   error,
-  subscribeToMore,
+  // subscribeToMore,
   fetchMore,
   changeCurrentFuelCard,
   changeAddFuelCardModalState,

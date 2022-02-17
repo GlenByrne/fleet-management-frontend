@@ -1,24 +1,33 @@
-import { errorAlertStateVar, errorTextVar } from 'src/apollo/apollo-client';
-import { useReactiveVar } from '@apollo/client';
 import { Transition } from '@headlessui/react';
 import { XCircleIcon, XIcon } from '@heroicons/react/solid';
-import { Fragment, useEffect } from 'react';
+import { createContext, Fragment, useEffect, useState } from 'react';
 
-const ErrorNotification = () => {
-  const alertState = useReactiveVar(errorAlertStateVar);
-  const errorText = useReactiveVar(errorTextVar);
+const ErrorAlertContext = createContext({
+  alertState: false,
+  alertText: '',
+});
+ErrorAlertContext.displayName = 'ErrorAlertContext';
+
+const ErrorAlertProvider = () => {
+  const [alertState, setAlertState] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   useEffect(() => {
     if (alertState === true) {
       setTimeout(() => {
-        errorAlertStateVar(false);
-        errorTextVar('');
+        setAlertState(false);
+        setAlertText('');
       }, 3000);
     }
   });
 
   return (
-    <>
+    <ErrorAlertContext.Provider
+      value={{
+        alertState: alertState,
+        alertText: alertText,
+      }}
+    >
       {/* Global notification live region, render this permanently at the end of the document */}
       <div
         aria-live="assertive"
@@ -47,14 +56,14 @@ const ErrorNotification = () => {
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className="text-sm font-medium text-gray-900">
-                      {errorText}
+                      {alertText}
                     </p>
                   </div>
                   <div className="ml-4 flex shrink-0">
                     <button
                       className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={() => {
-                        errorAlertStateVar(false);
+                        setAlertState(false);
                       }}
                     >
                       <span className="sr-only">Close</span>
@@ -67,7 +76,7 @@ const ErrorNotification = () => {
           </Transition>
         </div>
       </div>
-    </>
+    </ErrorAlertContext.Provider>
   );
 };
 

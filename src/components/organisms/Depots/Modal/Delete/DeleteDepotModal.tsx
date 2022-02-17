@@ -2,7 +2,6 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetVehiclesDocument,
   UpdateDepotInput,
@@ -28,59 +27,17 @@ const DeleteDepotModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [deleteDepot] = useDeleteDepotMutation({
-    // update: (cache, { data: mutationReturn }) => {
-    //   const currentDepots = cache.readQuery<GetDepotsQuery>({
-    //     query: GetDepotsDocument,
-    //     variables: {
-    //       data: {
-    //         organisationId: organisationId,
-    //       },
-    //     },
-    //   });
-    //   const newDepots = currentDepots?.depots?.filter((depot) =>
-    //     depot != null
-    //       ? depot.id !== mutationReturn?.deleteDepot.id
-    //       : currentDepots.depots
-    //   );
-    //   cache.writeQuery({
-    //     query: GetDepotsDocument,
-    //     variables: {
-    //       data: {
-    //         organisationId: organisationId,
-    //       },
-    //     },
-    //     data: { depots: newDepots },
-    //   });
-    //   cache.evict({
-    //     id: mutationReturn?.deleteDepot.id,
-    //   });
-    // },
-    refetchQueries: [
-      {
-        query: GetVehiclesDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [deleteDepotResult, deleteDepot] = useDeleteDepotMutation();
 
   const deleteDepotHandler = async (id: string) => {
     changeModalState(false);
+    const variables = {
+      data: {
+        id: id,
+      },
+    };
     try {
-      await deleteDepot({
-        variables: {
-          data: {
-            id: id,
-          },
-        },
-      });
-
-      successTextVar('Depot deleted successfully');
-      successAlertStateVar(true);
+      await deleteDepot(variables);
     } catch {}
   };
 

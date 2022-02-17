@@ -2,24 +2,38 @@ import { NextPage } from 'next';
 import HeaderNoSearchBarOrQuickAction from '@/components/organisms/HeaderNoSearchBarOrQuickAction';
 import SideNav from '@/components/organisms/SideNav';
 import DashboardTemplate from '@/components/templates/DashboardTemplate';
-import { useUpcomingMaintenanceQuery } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import MainDashboard from '@/components/organisms/Dashboard/MainDashboard';
+import {
+  useGetUpcomingCvrtQuery,
+  useGetUpcomingTachoCalibrationQuery,
+  useGetUpcomingThirteenWeekQuery,
+} from '@/generated/graphql';
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = useUpcomingMaintenanceQuery({
+  const [upcomingCVRT] = useGetUpcomingCvrtQuery({
     variables: {
       data: {
         organisationId: organisationId,
       },
-      upcomingThirteenWeekData2: {
+    },
+  });
+
+  const [upcomingThirteenWeek] = useGetUpcomingThirteenWeekQuery({
+    variables: {
+      data: {
         organisationId: organisationId,
       },
-      upcomingTachoCalibrationData2: {
+    },
+  });
+
+  const [upcomingTachoCalibration] = useGetUpcomingTachoCalibrationQuery({
+    variables: {
+      data: {
         organisationId: organisationId,
       },
     },
@@ -50,7 +64,13 @@ const Dashboard: NextPage = () => {
           setMobileMenuOpen={changeMobileMenuOpenState}
         />
       }
-      content={<MainDashboard data={data} loading={loading} error={error} />}
+      content={
+        <MainDashboard
+          upcomingCVRT={upcomingCVRT}
+          upcomingThirteenWeek={upcomingThirteenWeek}
+          upcomingTachoCalibration={upcomingTachoCalibration}
+        />
+      }
     />
   );
 };

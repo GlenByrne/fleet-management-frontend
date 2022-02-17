@@ -64,11 +64,11 @@ const FuelCards: NextPage = () => {
     },
   });
 
-  const handleSubscription = (fuelCards = [], response) => {
-    return [response.newFuelCards, ...fuelCards];
-  };
+  // const handleSubscription = (fuelCards = [], response) => {
+  //   return [response.newFuelCards, ...fuelCards];
+  // };
 
-  const [res] = useFuelCardAddedSubscription(handleSubscription);
+  // const [res] = useFuelCardAddedSubscription(handleSubscription);
 
   const endCursor = fuelCards.data?.fuelCards.pageInfo.endCursor;
 
@@ -88,11 +88,11 @@ const FuelCards: NextPage = () => {
   };
 
   const fetchMoreFuelCards = () => {
-    fetchMore({
-      variables: {
-        after: endCursor,
-      },
-    });
+    // fetchMore({
+    //   variables: {
+    //     after: endCursor,
+    //   },
+    // });
   };
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -142,10 +142,10 @@ const FuelCards: NextPage = () => {
             changeModalState={changeDeleteFuelCardModalState}
           />
           <FuelCardList
-            data={data}
-            loading={loading}
-            error={error}
-            subscribeToMore={subscribeToMore}
+            data={fuelCards.data}
+            loading={fuelCards.fetching}
+            error={fuelCards.error}
+            // subscribeToMore={subscribeToMore}
             fetchMore={fetchMoreFuelCards}
             changeAddFuelCardModalState={changeAddFuelCardModalState}
             changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}

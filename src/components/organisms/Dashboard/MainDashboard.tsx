@@ -1,21 +1,40 @@
 import Loading from '@/components/atoms/Loading';
 import {
-  UpcomingMaintenanceQuery,
+  GetUpcomingCvrtQuery,
+  GetUpcomingTachoCalibrationQuery,
+  GetUpcomingThirteenWeekQuery,
   Vehicle,
   VehicleType,
 } from '@/generated/graphql';
-import { ApolloError } from '@apollo/client';
+import { UseQueryState } from 'urql';
 import UpcomingCvrtList from './UpcomingCvrtList';
 import UpcomingTachoCalibrationList from './UpcomingTachoCalibrationList';
 import UpcomingThirteenWeekList from './UpcomingThirteenWeekList';
 
 type MainDashboardProps = {
-  data: UpcomingMaintenanceQuery | undefined;
-  loading: boolean;
-  error: ApolloError | undefined;
+  upcomingCVRT: UseQueryState<GetUpcomingCvrtQuery, object>;
+  upcomingThirteenWeek: UseQueryState<GetUpcomingThirteenWeekQuery, object>;
+  upcomingTachoCalibration: UseQueryState<
+    GetUpcomingTachoCalibrationQuery,
+    object
+  >;
 };
 
-const MainDashboard = ({ data, loading, error }: MainDashboardProps) => {
+const MainDashboard = ({
+  upcomingCVRT,
+  upcomingThirteenWeek,
+  upcomingTachoCalibration,
+}: MainDashboardProps) => {
+  const error =
+    upcomingCVRT.error ||
+    upcomingThirteenWeek.error ||
+    upcomingTachoCalibration.error;
+
+  const loading =
+    upcomingCVRT.fetching ||
+    upcomingThirteenWeek.fetching ||
+    upcomingTachoCalibration.fetching;
+
   if (loading) {
     return <Loading />;
   }
@@ -24,14 +43,11 @@ const MainDashboard = ({ data, loading, error }: MainDashboardProps) => {
     return <h2>Error</h2>;
   }
 
-  if (!data) {
-    <div></div>;
-  }
-
-  const vehiclesUpcomingCVRT = data?.upcomingCVRT as Vehicle[];
-  const vehiclesUpcomingThirteenWeek = data?.upcomingThirteenWeek as Vehicle[];
-  const vehiclesUpcomingTachoCalibration =
-    data?.upcomingTachoCalibration as Vehicle[];
+  const vehiclesUpcomingCVRT = upcomingCVRT.data?.upcomingCVRT as Vehicle[];
+  const vehiclesUpcomingThirteenWeek = upcomingThirteenWeek.data
+    ?.upcomingThirteenWeek as Vehicle[];
+  const vehiclesUpcomingTachoCalibration = upcomingTachoCalibration.data
+    ?.upcomingTachoCalibration as Vehicle[];
 
   const vansUpcomingCVRT = vehiclesUpcomingCVRT.filter(
     (vehicle) => vehicle.type === VehicleType.Van

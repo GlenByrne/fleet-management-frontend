@@ -8,7 +8,6 @@ import {
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetTollTagsNotAssignedDocument,
   GetVehiclesDocument,
@@ -52,41 +51,20 @@ const UpdateTollTagModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateTollTag] = useUpdateTollTagMutation({
-    refetchQueries: [
-      {
-        query: GetVehiclesDocument,
-        variables: {
-          organisationId: organisationId,
-        },
-      },
-      {
-        query: GetTollTagsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [updateTollTagResult, updateTollTag] = useUpdateTollTagMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      await updateTollTag({
-        variables: {
-          data: {
-            id: currentTollTag.id,
-            tagNumber: tagNumber != null ? tagNumber : '',
-            tagProvider: tagProvider != null ? tagProvider : '',
-          },
+      const variables = {
+        data: {
+          id: currentTollTag.id,
+          tagNumber: tagNumber != null ? tagNumber : '',
+          tagProvider: tagProvider != null ? tagProvider : '',
         },
-      });
-
-      successTextVar('Toll Tag updated successfully');
-      successAlertStateVar(true);
+      };
+      await updateTollTag(variables);
     } catch {}
   };
 

@@ -1,35 +1,31 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useLoginMutation, User } from '@/generated/graphql';
-import { accessTokenVar, loggedInUserVar } from 'src/apollo/apollo-client';
 import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
 import { FormEvent, FormEventHandler, useState } from 'react';
+import { setAccessToken } from '@/utilities/authentication';
 
 const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [login] = useLoginMutation({
-    onCompleted: ({ login }) => {
-      accessTokenVar(login.accessToken);
-      loggedInUserVar(login.user as User);
-      router.push('/');
-      setEmail('');
-      setPassword('');
-    },
-  });
+  const [loginResult, login] = useLoginMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     try {
-      await login({
-        variables: {
-          data: {
-            email: email,
-            password: password,
-          },
+      const variables = {
+        data: {
+          email: email,
+          password: password,
         },
+      };
+      await login(variables).then((result) => {
+        setAccessToken(result.data?.login.accessToken);
+        router.push('/');
+        setEmail('');
+        setPassword('');
       });
     } catch {}
   };

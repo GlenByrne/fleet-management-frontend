@@ -1,4 +1,3 @@
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import {
   UpdateInfringementInput,
@@ -21,21 +20,19 @@ const UpdateInfringementStatusModal = ({
   modalState,
   changeModalState,
 }: UpdateInfringementStatusModalProps) => {
-  const [updateStatus] = useUpdateInfringementStatusMutation();
+  const [updateStatusResult, updateStatus] =
+    useUpdateInfringementStatusMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
+    const result = {
+      data: {
+        id: currentInfringement.id,
+      },
+    };
     try {
-      await updateStatus({
-        variables: {
-          data: {
-            id: currentInfringement.id,
-          },
-        },
-      });
-      successTextVar('Infringement status updated successfully');
-      successAlertStateVar(true);
+      await updateStatus(result);
     } catch {}
   };
 

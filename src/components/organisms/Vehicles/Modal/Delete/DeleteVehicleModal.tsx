@@ -2,7 +2,6 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetFuelCardsDocument,
   GetTollTagsDocument,
@@ -34,98 +33,17 @@ const DeleteVehicleModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [deleteVehicle] = useDeleteVehicleMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const currentVehicles = cache.readQuery<GetVehiclesQuery>({
-        query: GetVehiclesDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      });
-
-      const newVehicles = currentVehicles?.vehicles.edges.filter((vehicle) =>
-        vehicle != null
-          ? vehicle.node.id !== mutationReturn?.deleteVehicle.id
-          : currentVehicles.vehicles
-      );
-
-      cache.writeQuery({
-        query: GetVehiclesDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-        data: { vehicles: newVehicles },
-      });
-
-      cache.evict({
-        id: mutationReturn?.deleteVehicle.id,
-      });
-    },
-    refetchQueries: [
-      {
-        query: GetTollTagsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetTollTagsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetDepotsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [deleteVehicleResult, deleteVehicle] = useDeleteVehicleMutation();
 
   const deleteVehicleHandler = async (id: string) => {
     changeModalState(false);
     try {
-      await deleteVehicle({
-        variables: {
-          data: {
-            id: id,
-          },
+      const variables = {
+        data: {
+          id: id,
         },
-      });
-      successTextVar('Vehicle deleted successfully');
-      successAlertStateVar(true);
+      };
+      await deleteVehicle(variables);
     } catch {}
   };
 

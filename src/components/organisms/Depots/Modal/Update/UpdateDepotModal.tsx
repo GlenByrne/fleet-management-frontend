@@ -9,11 +9,6 @@ import {
 } from 'react';
 import { useRouter } from 'next/router';
 import {
-  errorAlertStateVar,
-  successAlertStateVar,
-  successTextVar,
-} from 'src/apollo/apollo-client';
-import {
   GetVehiclesDocument,
   UpdateDepotInput,
   useUpdateDepotMutation,
@@ -49,36 +44,20 @@ const UpdateDepotModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateDepot] = useUpdateDepotMutation({
-    refetchQueries: [
-      {
-        query: GetVehiclesDocument,
-        variables: {
-          data: {
-            organisationId: organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [updateDepotResult, updateDepot] = useUpdateDepotMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
+    const variables = {
+      data: {
+        id: currentDepot.id,
+        name: name != null ? name : '',
+      },
+    };
     try {
-      await updateDepot({
-        variables: {
-          data: {
-            id: currentDepot.id,
-            name: name != null ? name : '',
-          },
-        },
-      });
-
-      successTextVar('Depot updated successfully');
-      successAlertStateVar(true);
+      await updateDepot(variables);
     } catch {
-      errorAlertStateVar(true);
       throw new Error('Error updating depot');
     }
   };

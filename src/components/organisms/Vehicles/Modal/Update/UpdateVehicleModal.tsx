@@ -10,36 +10,30 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   FuelCard,
-  GetFuelCardsDocument,
-  GetTollTagsDocument,
   TollTag,
   useUpdateVehicleMutation,
   VehicleType,
-  GetFuelCardsNotAssignedDocument,
-  GetTollTagsNotAssignedDocument,
-  GetDepotsDocument,
-  GetDepotsQueryResult,
-  GetFuelCardsNotAssignedQueryResult,
-  GetTollTagsNotAssignedQueryResult,
   DepotEdge,
-  namedOperations,
+  GetDepotsQuery,
+  GetFuelCardsNotAssignedQuery,
+  GetTollTagsNotAssignedQuery,
 } from '@/generated/graphql';
 import { Option, VehicleUpdateModalItem } from '@/constants/types';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import DatePicker from '@/components/molecules/Datepickers/DatePick';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
+import { UseQueryState } from 'urql';
 
 type UpdateVehicleModalProps = {
   currentVehicle: VehicleUpdateModalItem;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
-  depots: GetDepotsQueryResult;
-  fuelCardsNotAssigned: GetFuelCardsNotAssignedQueryResult;
-  tollTagsNotAssigned: GetTollTagsNotAssignedQueryResult;
+  depots: UseQueryState<GetDepotsQuery, object>;
+  fuelCardsNotAssigned: UseQueryState<GetFuelCardsNotAssignedQuery, object>;
+  tollTagsNotAssigned: UseQueryState<GetTollTagsNotAssignedQuery, object>;
 };
 
 const getDepotOptions = (depots: DepotEdge[]) => {
@@ -242,82 +236,30 @@ const UpdateVehicleModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateVehicle] = useUpdateVehicleMutation({
-    refetchQueries: [
-      {
-        query: GetTollTagsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetFuelCardsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetTollTagsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-      {
-        query: GetDepotsDocument,
-        variables: {
-          first: 10,
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [updateVehicleResult, updateVehicle] = useUpdateVehicleMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      await updateVehicle({
-        variables: {
-          data: {
-            id: currentVehicle.id,
-            type:
-              type.value != null
-                ? (type.value as VehicleType)
-                : VehicleType.Van,
-            registration: registration != null ? registration : '',
-            make: make != null ? make : '',
-            model: model != null ? model : '',
-            owner: owner != null ? owner : '',
-            cvrt: cvrt != null ? cvrt : null,
-            thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
-            tachoCalibration:
-              tachoCalibration != null ? tachoCalibration : null,
-            depotId: depot.value != null ? depot.value : '',
-            fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
-            tollTagId: tollTag.value === '' ? null : tollTag.value,
-          },
+      const variables = {
+        data: {
+          id: currentVehicle.id,
+          type:
+            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
+          registration: registration != null ? registration : '',
+          make: make != null ? make : '',
+          model: model != null ? model : '',
+          owner: owner != null ? owner : '',
+          cvrt: cvrt != null ? cvrt : null,
+          thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
+          tachoCalibration: tachoCalibration != null ? tachoCalibration : null,
+          depotId: depot.value != null ? depot.value : '',
+          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+          tollTagId: tollTag.value === '' ? null : tollTag.value,
         },
-      });
-      successTextVar('Vehicle updated successfully');
-      successAlertStateVar(true);
+      };
+      await updateVehicle(variables);
     } catch {}
   };
 

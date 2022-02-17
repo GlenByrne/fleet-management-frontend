@@ -2,7 +2,6 @@ import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import {
   GetTollTagsDocument,
   GetTollTagsNotAssignedDocument,
@@ -39,40 +38,7 @@ const CreateTollTagModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addTollTag] = useAddTollTagMutation({
-    update: (cache, { data: mutationReturn }) => {
-      const newTollTag = mutationReturn?.addTollTag;
-      const currentTollTags = cache.readQuery<GetTollTagsQuery>({
-        query: GetTollTagsDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      });
-      if (currentTollTags && newTollTag) {
-        cache.writeQuery({
-          query: GetTollTagsDocument,
-          variables: {
-            data: {
-              organisationId,
-            },
-          },
-          data: { tollTags: [{ ...currentTollTags.tollTags }, newTollTag] },
-        });
-      }
-    },
-    refetchQueries: [
-      {
-        query: GetTollTagsNotAssignedDocument,
-        variables: {
-          data: {
-            organisationId,
-          },
-        },
-      },
-    ],
-  });
+  const [addTollTagResult, addTollTag] = useAddTollTagMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -80,18 +46,14 @@ const CreateTollTagModal = ({
     changeModalState(false);
 
     try {
-      await addTollTag({
-        variables: {
-          data: {
-            tagNumber: tagNumber != null ? tagNumber : '',
-            tagProvider: tagProvider != null ? tagProvider : '',
-            organisationId,
-          },
+      const variables = {
+        data: {
+          tagNumber: tagNumber != null ? tagNumber : '',
+          tagProvider: tagProvider != null ? tagProvider : '',
+          organisationId,
         },
-      });
-
-      successTextVar('Toll Tag added successfully');
-      successAlertStateVar(true);
+      };
+      await addTollTag(variables);
     } catch {}
 
     setTagNumber('');

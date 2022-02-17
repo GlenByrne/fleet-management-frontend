@@ -4,19 +4,20 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   DepotEdge,
-  GetDepotsQueryResult,
+  GetDepotsQuery,
   Role,
   useUpdateUserOrgDetailsMutation,
 } from '@/generated/graphql';
 import { Option, UserUpdateModalItem } from '@/constants/types';
-import { successAlertStateVar, successTextVar } from 'src/apollo/apollo-client';
 import Modal from '@/components/atoms/Modal';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import SuccessButton from '@/components/atoms/SuccessButton';
 import CancelButton from '@/components/atoms/CancelButton';
+import { UseQueryState } from 'urql';
 
 type UpdateUserModalProps = {
-  depots: GetDepotsQueryResult;
+  depots: UseQueryState<GetDepotsQuery, object>;
+
   currentUser: UserUpdateModalItem;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
@@ -56,7 +57,7 @@ const UpdateUserModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, loading, error } = depots;
+  const { data, fetching, error } = depots;
 
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
 
@@ -89,29 +90,25 @@ const UpdateUserModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateUser] = useUpdateUserOrgDetailsMutation();
+  const [updateUserResult, updateUser] = useUpdateUserOrgDetailsMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      await updateUser({
-        variables: {
-          data: {
-            userId: currentUser.id,
-            organisationId,
-            depotId: depot.value != null ? depot.value : '',
-            role: role.value != null ? (role.value as Role) : Role.User,
-          },
+      const variables = {
+        data: {
+          userId: currentUser.id,
+          organisationId,
+          depotId: depot.value != null ? depot.value : '',
+          role: role.value != null ? (role.value as Role) : Role.User,
         },
-      });
-
-      successTextVar('User updated successfully');
-      successAlertStateVar(true);
+      };
+      await updateUser(variables);
     } catch {}
   };
 
-  if (loading) {
+  if (fetching) {
     return <div></div>;
   }
 
