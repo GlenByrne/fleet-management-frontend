@@ -3,7 +3,7 @@ import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem'
 import ProfileIconButton from '@/components/atoms/ProfileIconButton';
 import { UserNavbarOption } from '@/constants/types';
 import { useLogoutMutation } from '@/generated/graphql';
-import { setAccessToken } from '@/pages/_app';
+import { getAccessToken, setAccessToken, setIsLoggedIn } from '@/pages/_app';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
@@ -21,8 +21,9 @@ const HeaderNoSearchBarOrQuickAction = ({
   const handleLogOut = () => {
     logOut();
     setAccessToken(null);
+    setIsLoggedIn(false);
     router.push('/login');
-    // client.clearStore();
+    console.log(getAccessToken());
   };
 
   const userNavigation: UserNavbarOption[] = [

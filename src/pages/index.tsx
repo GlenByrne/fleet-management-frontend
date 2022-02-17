@@ -6,6 +6,7 @@ import OrganisationTemplate from '@/components/templates/OrganisationTemplate';
 import {
   useGetUsersOrganisationsQuery,
   useGetUsersOrganisationsInvitesQuery,
+  useRefreshAccessTokenMutation,
 } from '@/generated/graphql';
 import { NextPage } from 'next';
 import { useState } from 'react';

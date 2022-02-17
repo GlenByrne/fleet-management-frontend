@@ -26,7 +26,7 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 let accessToken: string | null | undefined = null;
-let isLoggedIn: boolean = false;
+let isLoggedIn: boolean | null;
 
 export const getAccessToken = () => {
   return accessToken;
@@ -63,22 +63,35 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const getAuth = async ({ authState, mutate }: any) => {
     if (!authState) {
       const token = getAccessToken();
+
       if (token) {
         return { token };
       }
+
+      const result = await mutate(RefreshAccessTokenDocument);
+
+      if (result.data) {
+        const { accessToken } = result.data.refreshAccessToken;
+        setAccessToken(accessToken);
+        setIsLoggedIn(true);
+        return { token: accessToken };
+      }
+
       return null;
     }
 
-    const { data } = await mutate(RefreshAccessTokenDocument);
+    // const result = await mutate(RefreshAccessTokenDocument);
 
-    if (data.refreshAccessToken) {
-      const { newAccessToken } = data.refreshAccessToken;
-      setAccessToken(newAccessToken);
-      return { accessToken: newAccessToken };
-    }
+    // if (result.data) {
+    //   const { accessToken } = result.data.refreshAccessToken;
+    //   setAccessToken(accessToken);
+    //   setIsLoggedIn(true);
+    //   return { token: accessToken };
+    // }
 
     logOut();
     setAccessToken(null);
+    setIsLoggedIn(false);
     router.push('/login');
 
     return null;
@@ -137,48 +150,58 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     isClient: !isServerSide,
   });
 
-  const client = createClient({
-    url: 'http://localhost:4000/graphql',
-    fetchOptions: {
-      credentials: 'include',
-    },
-    exchanges: [
-      devtoolsExchange,
-      dedupExchange,
-      refocusExchange(),
-      cacheExchange({}),
-      errorExchange({
-        onError: (error) => {
-          const isAuthError = error.graphQLErrors.some(
-            (e) => e.message === 'Not Authorised!'
-          );
-          if (isAuthError) {
-            logOut();
-            setAccessToken(null);
-            router.push('/login');
-          }
-        },
-      }),
-      authExchange({
-        getAuth,
-        addAuthToOperation,
-        willAuthError,
-      }),
-      retryExchange(retryOptions),
-      ssr,
-      // subscriptionExchange({
-      //   forwardSubscription: (operation) => ({
-      //     subscribe: (sink) => ({
-      //       unsubscribe: wsClient.subscribe(operation, sink),
-      //     }),
-      //   }),
-      // }),
-      fetchExchange,
-    ],
-  });
+  const client = useMemo(() => {
+    if (isLoggedIn === null) {
+      return null;
+    }
+
+    return createClient({
+      url: 'http://localhost:4000/graphql',
+      fetchOptions: {
+        credentials: 'include',
+      },
+      exchanges: [
+        devtoolsExchange,
+        dedupExchange,
+        refocusExchange(),
+        cacheExchange({}),
+        errorExchange({
+          onError: (error) => {
+            const isAuthError = error.graphQLErrors.some(
+              (e) => e.message === 'Not Authorised!'
+            );
+            if (isAuthError) {
+              logOut();
+              setAccessToken(null);
+              router.push('/login');
+            }
+          },
+        }),
+        authExchange({
+          getAuth,
+          addAuthToOperation,
+          willAuthError,
+        }),
+        retryExchange(retryOptions),
+        ssr,
+        // subscriptionExchange({
+        //   forwardSubscription: (operation) => ({
+        //     subscribe: (sink) => ({
+        //       unsubscribe: wsClient.subscribe(operation, sink),
+        //     }),
+        //   }),
+        // }),
+        fetchExchange,
+      ],
+    });
+  }, [getAuth, logOut, router, ssr]);
 
   if (pageProps.urqlState) {
     ssr.restoreData(pageProps.urqlState);
+  }
+
+  if (!client) {
+    return null;
   }
 
   return (
