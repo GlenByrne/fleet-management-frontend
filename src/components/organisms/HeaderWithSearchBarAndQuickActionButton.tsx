@@ -1,7 +1,7 @@
 import CirclularAddButton from '@/components/atoms/CirclularAddButton';
 import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
-import ProfileIconButton from '@/components/atoms/ProfileIconButton';
+import ProfileIconButton from '@/components/atoms/Button/ProfileIconButton';
 import SearchBar from '@/components/molecules/Inputs/SearchBar';
 import { UserNavbarOption } from '@/constants/types';
 import { useLogoutMutation } from '@/generated/graphql';

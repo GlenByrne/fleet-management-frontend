@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import PasswordSettingsTemplate from '@/components/templates/PasswordSettingsTemplate';
+import PasswordSettingsTemplate from 'src/templates/PasswordSettingsTemplate';
 import {
   useLogoutMutation,
   useChangePasswordMutation,
@@ -7,7 +7,7 @@ import {
 import { useRouter } from 'next/router';
 import { useState, FormEvent, FormEventHandler } from 'react';
 import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
-import { setAccessToken } from '@/utilities/authentication';
+import { setAccessToken } from '../_app';
 
 const Password: NextPage = () => {
   const router = useRouter();

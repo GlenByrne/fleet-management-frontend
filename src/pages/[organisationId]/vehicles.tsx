@@ -3,7 +3,7 @@ import SideNav from '@/components/organisms/SideNav';
 import CreateVehicleModal from '@/components/organisms/Vehicles/Modal/Create/CreateVehicleModal';
 import UpdateVehicleModal from '@/components/organisms/Vehicles/Modal/Update/UpdateVehicleModal';
 import DeleteVehicleModal from '@/components/organisms/Vehicles/Modal/Delete/DeleteVehicleModal';
-import VehicleList from '@/components/organisms/Vehicles/List/VehicleList';
+import VehicleList from 'src/features/vehicles/components/VehicleList';
 import { VehicleUpdateModalItem } from '@/constants/types';
 import {
   useGetDepotsQuery,
@@ -15,7 +15,7 @@ import {
 } from '@/generated/graphql';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
-import VehicleTemplate from '@/components/templates/VehicleTemplate';
+import VehicleTemplate from 'src/templates/VehicleTemplate';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 
 const Vehicles: NextPage = () => {

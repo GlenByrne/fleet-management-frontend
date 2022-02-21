@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
-import UserTemplate from '@/components/templates/UserTemplate';
+import UserTemplate from 'src/templates/UserTemplate';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import CreateUserModal from '@/components/organisms/Users/Modals/Create/CreateUserModal';
-import UpdateUserModal from '@/components/organisms/Users/Modals/Update/UpdateUserModal';
+import UpdateUserModal from 'src/features/users/UpdateUserModal';
 import RemoveUserModal from '@/components/organisms/Users/Modals/Remove/RemoveUserModal';
 import UserList from '@/components/organisms/Users/List/UserList';
 import { FormEvent, FormEventHandler, useState } from 'react';

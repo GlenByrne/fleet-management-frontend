@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
-import TollTagTemplate from '@/components/templates/TollTagTemplate';
+import TollTagTemplate from 'src/templates/TollTagTemplate';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import CreateTollTagModal from '@/components/organisms/TollTags/Modal/Create/CreateTollTagModal';
-import UpdateTollTagModal from '@/components/organisms/TollTags/Modal/Update/UpdateTollTagModal';
+import UpdateTollTagModal from 'src/features/tollTags/Update/UpdateTollTagModal';
 import DeleteTollTagModal from '@/components/organisms/TollTags/Modal/Delete/DeleteTollTagModal';
 import TollTagList from '@/components/organisms/TollTags/List/TollTagList';
 import { FormEvent, FormEventHandler, useState } from 'react';

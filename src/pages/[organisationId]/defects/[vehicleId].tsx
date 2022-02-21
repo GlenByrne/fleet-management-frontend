@@ -4,7 +4,7 @@ import DeleteDefectModal from '@/components/organisms/Defects/Modal/Delete/Delet
 import UpdateDefectModal from '@/components/organisms/Defects/Modal/Update/UpdateDefectModal';
 import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import SideNav from '@/components/organisms/SideNav';
-import DefectTemplate from '@/components/templates/DefectTemplate';
+import DefectTemplate from 'src/templates/DefectTemplate';
 import {
   useGetVehicleDefectsQuery,
   Defect,

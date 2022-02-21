@@ -2,7 +2,7 @@ import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQ
 import OrganisationInviteList from '@/components/organisms/Organisations/List/OrganisationInviteList';
 import OrganisationsList from '@/components/organisms/Organisations/List/OrganisationsList';
 import CreateOrganisationModal from '@/components/organisms/Organisations/Modal/Create/CreateOrganisationModal';
-import OrganisationTemplate from '@/components/templates/OrganisationTemplate';
+import OrganisationTemplate from 'src/templates/OrganisationTemplate';
 import {
   useGetUsersOrganisationsQuery,
   useGetUsersOrganisationsInvitesQuery,

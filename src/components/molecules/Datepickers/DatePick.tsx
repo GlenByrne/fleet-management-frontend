@@ -3,7 +3,7 @@ import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 import CalendarContainer from '../../atoms/CalendarContainer';
 import DatePickerSelectButton from '@/components/atoms/DatePickerSelectButton';
-import XButton from '@/components/atoms/XButton';
+import XButton from '@/components/atoms/Button/XButton';
 import ChevronLeftButton from '@/components/atoms/ChevronLeftButton';
 import ChevronRightButton from '@/components/atoms/ChevronRightButton';
 import InputLabel from '@/components/atoms/InputLabel';

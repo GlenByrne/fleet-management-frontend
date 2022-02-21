@@ -1,4 +1,4 @@
-import AccountSettingsTemplate from '@/components/templates/AccountSettingsTemplate';
+import AccountSettingsTemplate from 'src/templates/AccountSettingsTemplate';
 import { NextPage } from 'next';
 
 const Account: NextPage = () => {

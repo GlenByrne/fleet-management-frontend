@@ -1,4 +1,4 @@
-import InputForm from '@/components/atoms/InputForm';
+import InputForm from '@/components/atoms/Forms/InputForm';
 import InputLabel from '@/components/atoms/InputLabel';
 import OptionalFormText from '@/components/atoms/OptionalFormText';
 import { ChangeEventHandler } from 'react';

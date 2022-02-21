@@ -5,7 +5,7 @@ import DeleteDepotModal from '@/components/organisms/Depots/Modal/Delete/DeleteD
 import UpdateDepotModal from '@/components/organisms/Depots/Modal/Update/UpdateDepotModal';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
-import DepotTemplate from '@/components/templates/DepotTemplate';
+import DepotTemplate from 'src/templates/DepotTemplate';
 import {
   UpdateDepotInput,
   Depot,

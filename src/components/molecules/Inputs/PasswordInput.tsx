@@ -1,7 +1,7 @@
-import InputForm from '@/components/atoms/InputForm';
+import InputForm from '@/components/atoms/Forms/InputForm';
 import InputLabel from '@/components/atoms/InputLabel';
-import PasswordInputForm from '@/components/atoms/PasswordInputForm';
-import ShowPasswordButton from '@/components/atoms/ShowPasswordButton';
+import PasswordInputForm from '@/components/atoms/Forms/PasswordInputForm';
+import ShowPasswordButton from '@/components/atoms/Button/ShowPasswordButton';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import { ChangeEventHandler, useState } from 'react';
 

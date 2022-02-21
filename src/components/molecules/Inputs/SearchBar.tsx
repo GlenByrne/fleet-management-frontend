@@ -1,4 +1,4 @@
-import SearchInput from '@/components/atoms/SearchInput';
+import SearchInput from '@/components/atoms/Forms/SearchInput';
 import { SearchIcon } from '@heroicons/react/solid';
 import { FormEvent, FormEventHandler } from 'react';
 

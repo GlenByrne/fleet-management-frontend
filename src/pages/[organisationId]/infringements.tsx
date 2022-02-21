@@ -5,7 +5,7 @@ import DeleteInfringementModal from '@/components/organisms/Infringements/Modal/
 import UpdateInfringementModal from '@/components/organisms/Infringements/Modal/Update/UpdateInfringementModal';
 import UpdateInfringementStatusModal from '@/components/organisms/Infringements/Modal/Update/UpdateInfringementStatusModal';
 import SideNav from '@/components/organisms/SideNav';
-import InfringementTemplate from '@/components/templates/InfringementTemplate';
+import InfringementTemplate from 'src/templates/InfringementTemplate';
 import {
   Infringement,
   InfringementStatus,

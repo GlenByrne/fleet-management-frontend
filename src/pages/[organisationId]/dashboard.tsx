@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
 import HeaderNoSearchBarOrQuickAction from '@/components/organisms/HeaderNoSearchBarOrQuickAction';
 import SideNav from '@/components/organisms/SideNav';
-import DashboardTemplate from '@/components/templates/DashboardTemplate';
+import DashboardTemplate from 'src/templates/DashboardTemplate';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import MainDashboard from '@/components/organisms/Dashboard/MainDashboard';
+import MainDashboard from 'src/features/dashboard/MainDashboard';
 import {
   useGetUpcomingCvrtQuery,
   useGetUpcomingTachoCalibrationQuery,
