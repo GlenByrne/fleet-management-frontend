@@ -130,7 +130,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             definition.kind === 'OperationDefinition' &&
             definition.selectionSet.selections.some((node: any) => {
               // The field name is just an example, since signup may also be an exception
-              return node.kind === 'Field' && node.name.value === 'login';
+              return (
+                node.kind === 'Field' &&
+                (node.name.value === 'login' || node.name.value === 'register')
+              );
             })
           );
         })
@@ -164,7 +167,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         devtoolsExchange,
         dedupExchange,
         refocusExchange(),
-        cacheExchange({}),
+        cacheExchange({
+          keys: {
+            UsersOnOrganisations: (data) =>
+              `${data.organisationId};${data.userId}`,
+          },
+        }),
         errorExchange({
           onError: (error) => {
             const isAuthError = error.graphQLErrors.some(

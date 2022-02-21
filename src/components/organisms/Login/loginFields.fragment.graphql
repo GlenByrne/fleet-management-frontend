@@ -5,6 +5,7 @@ fragment LoginFields on LoginPayload {
     email
     organisations {
       organisationId
+      userId
       role
       inviteAccepted
     }
