@@ -1,13 +1,7 @@
-import {
-  FuelCard,
-  GetFuelCardsQuery,
-  useGetFuelCardsQuery,
-} from '@/generated/graphql';
+import { FuelCard, GetFuelCardsQuery } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { FormEvent, FormEventHandler, useState } from 'react';
 import InView from 'react-intersection-observer';
-import { useRouter } from 'next/router';
 import FuelCardListItem from './FuelCardListItem';
 import { UseQueryState } from 'urql';
 
