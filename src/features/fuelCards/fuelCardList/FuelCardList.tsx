@@ -1,10 +1,15 @@
-import { FuelCard, useGetFuelCardsQuery } from '@/generated/graphql';
+import {
+  FuelCard,
+  GetFuelCardsQuery,
+  useGetFuelCardsQuery,
+} from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import InView from 'react-intersection-observer';
 import { useRouter } from 'next/router';
 import FuelCardListItem from './FuelCardListItem';
+import { UseQueryState } from 'urql';
 
 type FuelCardListProps = {
   variables: {
@@ -13,6 +18,7 @@ type FuelCardListProps = {
   };
   isLastPage: boolean;
   onLoadMore: (after: string) => void;
+  fuelCardsList: UseQueryState<GetFuelCardsQuery, object>;
   changeCurrentFuelCard: (fuelCard: FuelCard) => void;
   changeAddFuelCardModalState: (newState: boolean) => void;
   changeDeleteFuelCardModalState: (newState: boolean) => void;
@@ -23,38 +29,13 @@ const FuelCardList = ({
   variables,
   isLastPage,
   onLoadMore,
+  fuelCardsList,
   changeCurrentFuelCard,
   changeAddFuelCardModalState,
   changeDeleteFuelCardModalState,
   changeUpdateFuelCardModalState,
 }: FuelCardListProps) => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-
-  const [{ data, fetching, error }, refetchFuelCards] = useGetFuelCardsQuery({
-    variables: {
-      ...variables,
-      data: {
-        organisationId,
-      },
-    },
-  });
-
-  const searchSubmitHandler: FormEventHandler = (e) => {
-    e.preventDefault();
-    refetchFuelCards({
-      ...variables,
-      data: {
-        searchCriteria: searchCriteria,
-        organisationId,
-      },
-    });
-  };
-
-  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
-    setSearchCriteria(event.currentTarget.value);
-  };
+  const { data, fetching, error } = fuelCardsList;
 
   if (fetching) {
     return <Loading />;
