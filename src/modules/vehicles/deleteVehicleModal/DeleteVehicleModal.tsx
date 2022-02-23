@@ -2,19 +2,10 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import {
-  GetFuelCardsDocument,
-  GetTollTagsDocument,
-  GetVehiclesDocument,
-  GetVehiclesQuery,
-  useDeleteVehicleMutation,
-  GetDepotsDocument,
-  GetFuelCardsNotAssignedDocument,
-  GetTollTagsNotAssignedDocument,
-} from '@/generated/graphql';
+import { useDeleteVehicleMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import { VehicleUpdateModalItem } from '@/constants/types';
-import DangerButton from '@/components/atoms/DangerButton';
+import DangerButton from '@/components/atoms/Button/DangerButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
 
 type DeleteVehicleModalProps = {
