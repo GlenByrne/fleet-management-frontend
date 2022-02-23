@@ -7,9 +7,9 @@ import {
   VehicleType,
 } from '@/generated/graphql';
 import { UseQueryState } from 'urql';
-import UpcomingCvrtList from './UpcomingCvrtList';
-import UpcomingTachoCalibrationList from './UpcomingTachoCalibrationList';
-import UpcomingThirteenWeekList from './UpcomingThirteenWeekList';
+import UpcomingCvrtList from '../upcomingCVRTList/UpcomingCvrtList';
+import UpcomingTachoCalibrationList from '../upcomingTachoCalibrationList/UpcomingTachoCalibrationList';
+import UpcomingThirteenWeekList from '../upcomingThirteenWeekInspection/UpcomingThirteenWeekList';
 
 type MainDashboardProps = {
   upcomingCVRT: UseQueryState<GetUpcomingCvrtQuery, object>;
