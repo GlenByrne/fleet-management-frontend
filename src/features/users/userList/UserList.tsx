@@ -22,6 +22,9 @@ type UserListProps = {
 };
 
 const UserList = ({
+  variables,
+  isLastPage,
+  onLoadMore,
   usersList,
   changeCurrentUser,
   changeInviteUserModalState,

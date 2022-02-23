@@ -1,11 +1,7 @@
 import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import {
-  GetUsersOrganisationsDocument,
-  GetUsersOrganisationsQuery,
-  useAddOrganisationMutation,
-} from '@/generated/graphql';
+import { useAddOrganisationMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
