@@ -5,7 +5,7 @@ import {
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { UseQueryState } from 'urql';
-import UsersListItem from '@/features/users/userList/UserListItem';
+import UsersListItem from 'src/modules/users/userList/UserListItem';
 
 type UserListProps = {
   variables: {

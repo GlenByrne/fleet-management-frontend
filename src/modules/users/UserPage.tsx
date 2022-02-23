@@ -1,10 +1,10 @@
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import { UserUpdateModalItem } from '@/constants/types';
-import CreateUserModal from '@/features/users/addUserModal/CreateUserModal';
-import RemoveUserModal from '@/features/users/deleteUserModal/RemoveUserModal';
-import UpdateUserModal from '@/features/users/updateUserModal/UpdateUserModal';
-import UserList from '@/features/users/userList/UserList';
+import CreateUserModal from 'src/modules/users/addUserModal/CreateUserModal';
+import RemoveUserModal from 'src/modules/users/deleteUserModal/RemoveUserModal';
+import UpdateUserModal from 'src/modules/users/updateUserModal/UpdateUserModal';
+import UserList from 'src/modules/users/userList/UserList';
 import {
   Role,
   UsersInOrganisationPayload,

@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import AccountSettingsPage from '@/features/settings/accountSettings/AccountSettingsPage';
+import AccountSettingsPage from 'src/modules/settings/accountSettings/AccountSettingsPage';
 
 const Account: NextPage = () => {
   return <AccountSettingsPage />;

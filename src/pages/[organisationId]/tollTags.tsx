@@ -1,4 +1,4 @@
-import TollTagPage from '@/features/tollTags/TollTagPage';
+import TollTagPage from 'src/modules/tollTags/TollTagPage';
 import { NextPage } from 'next';
 
 const TollTags: NextPage = () => {

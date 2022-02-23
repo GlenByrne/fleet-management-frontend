@@ -1,10 +1,10 @@
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import { VehicleUpdateModalItem } from '@/constants/types';
-import CreateVehicleModal from '@/features/vehicles/addVehicleModal/CreateVehicleModal';
-import DeleteVehicleModal from '@/features/vehicles/deleteVehicleModal/DeleteVehicleModal';
-import UpdateVehicleModal from '@/features/vehicles/updateVehicleModal/UpdateVehicleModal';
-import VehicleList from '@/features/vehicles/vehicleList/VehicleList';
+import CreateVehicleModal from 'src/modules/vehicles/addVehicleModal/CreateVehicleModal';
+import DeleteVehicleModal from 'src/modules/vehicles/deleteVehicleModal/DeleteVehicleModal';
+import UpdateVehicleModal from 'src/modules/vehicles/updateVehicleModal/UpdateVehicleModal';
+import VehicleList from 'src/modules/vehicles/vehicleList/VehicleList';
 import {
   VehicleType,
   Vehicle,

@@ -1,4 +1,4 @@
-import PasswordSettingsPage from '@/features/settings/passwordSettings/PasswordSettingsPage';
+import PasswordSettingsPage from 'src/modules/settings/passwordSettings/PasswordSettingsPage';
 import { NextPage } from 'next';
 
 const Password: NextPage = () => {

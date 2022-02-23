@@ -1,4 +1,4 @@
-import PasswordResetPage from '@/features/passwordReset/PasswordResetPage';
+import PasswordResetPage from 'src/modules/passwordReset/PasswordResetPage';
 import { NextPage } from 'next';
 
 const PasswordReset: NextPage = () => {
