@@ -17,8 +17,6 @@ import {
   useGetUpdateVehicleFuelCardOptionsQuery,
   useGetUpdateVehicleTollTagOptionsQuery,
   useGetUpdateVehicleDepotOptionsQuery,
-  useGetChosenVehicleToUpdateQuery,
-  Vehicle,
 } from '@/generated/graphql';
 import { Option, VehicleUpdateModalItem } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
@@ -31,7 +29,7 @@ import CancelButton from '@/components/atoms/Button/CancelButton';
 type UpdateVehicleModalProps = {
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
-  curretVehicleId: string;
+  currentVehicle: VehicleUpdateModalItem;
 };
 
 const getDepotOptions = (depots: DepotEdge[]) => {
@@ -47,16 +45,19 @@ const getDepotOptions = (depots: DepotEdge[]) => {
   return options;
 };
 
-const getFuelCardOptions = (fuelCards: FuelCard[], vehicle: Vehicle) => {
+const getFuelCardOptions = (
+  fuelCards: FuelCard[],
+  vehicle: VehicleUpdateModalItem
+) => {
   const options = fuelCards?.map(
     (fuelCard) => ({ value: fuelCard.id, label: fuelCard.cardNumber } as Option)
   );
 
-  vehicle.fuelCard?.id === ''
+  vehicle.fuelCard.id === ''
     ? options?.unshift({ value: '', label: 'None' })
     : options?.unshift(
         { value: '', label: 'None' },
-        { value: vehicle.fuelCard?.id, label: vehicle.fuelCard?.cardNumber }
+        { value: vehicle.fuelCard.id, label: vehicle.fuelCard.cardNumber }
       );
 
   return options;
@@ -102,7 +103,7 @@ const getVehicleTypeOptions = () => {
 const UpdateVehicleModal = ({
   modalState,
   changeModalState,
-  curretVehicleId,
+  currentVehicle,
 }: UpdateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
@@ -135,18 +136,22 @@ const UpdateVehicleModal = ({
     },
   });
 
-  const [vehicle, refetchVehicle] = useGetChosenVehicleToUpdateQuery({
-    variables: {
-      data: {
-        vehicleId: curretVehicleId,
-      },
-    },
-  });
-
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
-  const [depotOptions, setDepotOptions] = useState();
-  const [fuelCardOptions, setFuelCardOptions] = useState();
-  const [tollTagOptions, setTollTagOptions] = useState();
+  const [depotOptions, setDepotOptions] = useState(
+    getDepotOptions(depots.data?.depots.edges as DepotEdge[])
+  );
+  const [fuelCardOptions, setFuelCardOptions] = useState(
+    getFuelCardOptions(
+      fuelCards.data?.fuelCardsNotAssigned as FuelCard[],
+      currentVehicle
+    )
+  );
+  const [tollTagOptions, setTollTagOptions] = useState(
+    getTollTagOptions(
+      tollTags.data?.tollTagsNotAssigned as TollTag[],
+      currentVehicle
+    )
+  );
 
   const [type, setType] = useState<Option>({
     value: '',
@@ -171,6 +176,68 @@ const UpdateVehicleModal = ({
   const [cvrt, setCVRT] = useState<Date | null>(null);
   const [thirteenWeek, setThirteenWeek] = useState<Date | null>(null);
   const [tachoCalibration, setTachoCalibration] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setTypeOptions(getVehicleTypeOptions());
+    setDepotOptions(getDepotOptions(depots.data?.depots.edges as DepotEdge[]));
+    setFuelCardOptions(
+      getFuelCardOptions(
+        fuelCards.data?.fuelCardsNotAssigned as FuelCard[],
+        currentVehicle
+      )
+    );
+    setTollTagOptions(
+      getTollTagOptions(
+        tollTags.data?.tollTagsNotAssigned as TollTag[],
+        currentVehicle
+      )
+    );
+
+    setType({
+      value: currentVehicle.type,
+      label: currentVehicle.type,
+    });
+    setRegistration(currentVehicle.registration);
+    setMake(currentVehicle.make);
+    setModel(currentVehicle.model);
+    setOwner(currentVehicle.owner);
+    setDepot({
+      value: currentVehicle.depot.id != null ? currentVehicle.depot.id : '',
+      label:
+        currentVehicle.depot.name != null ? currentVehicle.depot.name : 'None',
+    });
+    setFuelCard({
+      value:
+        currentVehicle.fuelCard.id != null ? currentVehicle.fuelCard.id : '',
+      label:
+        currentVehicle.fuelCard.cardNumber != null
+          ? currentVehicle.fuelCard.cardNumber
+          : 'None',
+    });
+    setTollTag({
+      value: currentVehicle.tollTag.id != null ? currentVehicle.tollTag.id : '',
+      label:
+        currentVehicle.tollTag.tagNumber != null
+          ? currentVehicle.tollTag.tagNumber
+          : 'None',
+    });
+    setCVRT(currentVehicle.cvrt != null ? new Date(currentVehicle.cvrt) : null);
+    setThirteenWeek(
+      currentVehicle.thirteenWeekInspection != null
+        ? new Date(currentVehicle.thirteenWeekInspection)
+        : null
+    );
+    setTachoCalibration(
+      currentVehicle.tachoCalibration != null
+        ? new Date(currentVehicle.tachoCalibration)
+        : null
+    );
+  }, [
+    currentVehicle,
+    depots.data?.depots,
+    fuelCards.data?.fuelCardsNotAssigned,
+    tollTags.data?.tollTagsNotAssigned,
+  ]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
     setRegistration(event.currentTarget.value);
@@ -198,7 +265,7 @@ const UpdateVehicleModal = ({
     try {
       const variables = {
         data: {
-          id: vehicle.data?.vehicle?.id,
+          id: currentVehicle.id,
           type:
             type.value != null ? (type.value as VehicleType) : VehicleType.Van,
           registration: registration != null ? registration : '',

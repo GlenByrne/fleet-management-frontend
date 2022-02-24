@@ -5,7 +5,7 @@ import CreateVehicleModal from '@/modules/vehicles/addVehicleModal/CreateVehicle
 import DeleteVehicleModal from '@/modules/vehicles/deleteVehicleModal/DeleteVehicleModal';
 import UpdateVehicleModal from '@/modules/vehicles/updateVehicleModal/UpdateVehicleModal';
 import VehicleList from '@/modules/vehicles/vehicleList/VehicleList';
-import { Vehicle, useGetVehiclesQuery } from '@/generated/graphql';
+import { Vehicle, useGetVehiclesQuery, VehicleType } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import React, { FormEvent, FormEventHandler, useState } from 'react';
 import VehicleTemplate from 'src/templates/VehicleTemplate';
@@ -35,7 +35,29 @@ const VehiclePage = () => {
 
   const [deleteVehicleModalState, setDeleteVehicleModalState] = useState(false);
 
-  const [currentVehicleId, setCurrentVehicleId] = useState<string>('');
+  const [currentVehicle, setCurrentVehicle] = useState<VehicleUpdateModalItem>({
+    id: '',
+    type: VehicleType.Van,
+    registration: '',
+    make: '',
+    model: '',
+    owner: '',
+    cvrt: new Date(),
+    tachoCalibration: new Date(),
+    thirteenWeekInspection: new Date(),
+    depot: {
+      id: '',
+      name: 'None',
+    },
+    fuelCard: {
+      id: '',
+      cardNumber: 'None',
+    },
+    tollTag: {
+      id: '',
+      tagNumber: 'None',
+    },
+  });
 
   const changeAddVehicleModalState = (newState: boolean) => {
     setAddVehicleModalState(newState);
@@ -61,8 +83,31 @@ const VehiclePage = () => {
     setDeleteVehicleModalState(newState);
   };
 
-  const changeCurrentVehicleId = (id: string) => {
-    setCurrentVehicleId(id);
+  const changeCurrentVehicle = (vehicle: Vehicle) => {
+    const chosenVehicle: VehicleUpdateModalItem = {
+      id: vehicle.id,
+      type: vehicle.type,
+      registration: vehicle.registration,
+      make: vehicle.make,
+      model: vehicle.model,
+      owner: vehicle.owner,
+      cvrt: vehicle.cvrt,
+      tachoCalibration: vehicle.tachoCalibration,
+      thirteenWeekInspection: vehicle.thirteenWeekInspection,
+      depot: {
+        id: vehicle.depot != null ? vehicle.depot.id : '',
+        name: vehicle.depot != null ? vehicle.depot.name : '',
+      },
+      fuelCard: {
+        id: vehicle.fuelCard == null ? '' : vehicle.fuelCard.id,
+        cardNumber: vehicle.fuelCard == null ? '' : vehicle.fuelCard.cardNumber,
+      },
+      tollTag: {
+        id: vehicle.tollTag == null ? '' : vehicle.tollTag.id,
+        tagNumber: vehicle.tollTag == null ? '' : vehicle.tollTag.tagNumber,
+      },
+    };
+    setCurrentVehicle(chosenVehicle);
   };
 
   const [vehicles, refetchGetVehicles] = useGetVehiclesQuery({
@@ -118,16 +163,13 @@ const VehiclePage = () => {
             changeModalState={changeAddVehicleModalState}
           />
           <UpdateVehicleModal
-            currentVehicleId={currentVehicleId}
+            currentVehicle={currentVehicle}
             modalState={updateVehicleModalState}
             changeModalState={changeUpdateVehicleModalState}
-            depots={depots}
-            fuelCardsNotAssigned={fuelCardsNotAssigned}
-            tollTagsNotAssigned={tollTagsNotAssigned}
           />
           <DeleteVehicleModal
             searchCriteria={searchCriteria}
-            currentVehicleId={currentVehicleId}
+            currentVehicle={currentVehicle}
             modalState={deleteVehicleModalState}
             changeModalState={changeDeleteVehicleModalState}
           />
@@ -152,7 +194,7 @@ const VehiclePage = () => {
               changeUpdateVehicleTachoCalibrationModalState={
                 changeUpdateVehicleTachoCalibrationModalState
               }
-              changeCurrentVehicleId={changeCurrentVehicleId}
+              changeCurrentVehicle={changeCurrentVehicle}
             />
           ))}
         </>
