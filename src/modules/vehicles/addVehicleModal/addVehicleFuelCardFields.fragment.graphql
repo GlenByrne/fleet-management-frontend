@@ -1,4 +1,0 @@
-fragment AddVehicleFuelCardFields on FuelCard {
-  id
-  cardNumber
-}

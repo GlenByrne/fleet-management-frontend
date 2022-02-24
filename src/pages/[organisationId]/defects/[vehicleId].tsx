@@ -1,4 +1,4 @@
-import DefectPage from 'src/modules/defects/DefectPage';
+import DefectPage from '@/modules/defects/DefectPage';
 import { NextPage } from 'next';
 
 const Defects: NextPage = () => {

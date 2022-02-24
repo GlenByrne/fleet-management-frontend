@@ -1,5 +1,0 @@
-query GetFuelCardsNotAssigned($data: FuelCardsNotAssignedInput!) {
-  fuelCardsNotAssigned(data: $data) {
-    ...AddVehicleFuelCardFields
-  }
-}

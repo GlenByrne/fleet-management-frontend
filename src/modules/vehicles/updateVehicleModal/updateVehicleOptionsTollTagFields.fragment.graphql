@@ -1,4 +1,0 @@
-fragment UpdateVehicleOptionsTollTagFields on TollTag {
-  id
-  tagNumber
-}

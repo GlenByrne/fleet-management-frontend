@@ -12,9 +12,9 @@ import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { NavbarOption } from '@/constants/types';
 import Logo from '@/components/atoms/Logo';
-import CloseSideNavButton from '@/components/atoms/CloseSideNavButton';
 import NarrowSideNavigationLink from '@/components/atoms/NarrowSideNavigationLink';
 import SideNavigationLinks from '@/components/atoms/SideNavigationLinks';
+import CloseSideNavButton from '../atoms/Button/CloseSideNavButton';
 
 type SideNavProps = {
   mobileMenuOpen: boolean;

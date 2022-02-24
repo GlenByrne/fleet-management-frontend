@@ -1,4 +1,4 @@
-import DashboardPage from 'src/modules/dashboard/DashboardPage';
+import DashboardPage from '@/modules/dashboard/DashboardPage';
 import { NextPage } from 'next';
 
 const Dashboard: NextPage = () => {

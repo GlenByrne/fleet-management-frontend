@@ -41,7 +41,7 @@ const OrganisationPage = () => {
       }
       leftColumn={
         <OrganisationList
-          organisations={organistionsList}
+          organisationList={organistionsList}
           changeAddOrganisationModalState={changeAddOrganisationModalState}
         />
       }

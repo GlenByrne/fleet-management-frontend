@@ -1,4 +1,4 @@
-import VehiclePage from 'src/modules/vehicles/VehiclePage';
+import VehiclePage from '@/modules/vehicles/VehiclePage';
 import { NextPage } from 'next';
 
 const Vehicles: NextPage = () => {

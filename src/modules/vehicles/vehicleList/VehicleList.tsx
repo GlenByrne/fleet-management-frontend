@@ -2,7 +2,7 @@ import { GetVehiclesQuery, Vehicle, VehicleEdge } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { UseQueryState } from 'urql';
-import VehicleListItem from 'src/modules/vehicles/vehicleList/VehicleListItem';
+import VehicleListItem from '@/modules/vehicles/vehicleList/VehicleListItem';
 import InView from 'react-intersection-observer';
 
 type VehicleListProps = {

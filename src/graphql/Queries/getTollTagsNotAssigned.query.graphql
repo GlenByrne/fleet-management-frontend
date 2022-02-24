@@ -1,5 +1,0 @@
-query GetTollTagsNotAssigned($data: TollTagsNotAssignedInput!) {
-  tollTagsNotAssigned(data: $data) {
-    ...AddVehicleTollTagFields
-  }
-}

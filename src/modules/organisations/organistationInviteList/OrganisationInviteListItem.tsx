@@ -1,9 +1,6 @@
-import CheckButton from '@/components/atoms/CheckButton';
+import CheckButton from '@/components/atoms/Button/CheckButton';
 import XButton from '@/components/atoms/Button/XButton';
 import {
-  GetUsersOrganisationsDocument,
-  GetUsersOrganisationsInvitesDocument,
-  GetUsersOrganisationsInvitesQuery,
   useAcceptInviteMutation,
   useDeclineInviteMutation,
   UsersOnOrganisations,

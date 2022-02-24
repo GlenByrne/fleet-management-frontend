@@ -1,4 +1,3 @@
-import CirclularAddButton from '@/components/atoms/CirclularAddButton';
 import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/atoms/Button/ProfileIconButton';
@@ -8,6 +7,7 @@ import { getAccessToken, setAccessToken, setIsLoggedIn } from '@/pages/_app';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
+import CirclularAddButton from '../atoms/Button/CirclularAddButton';
 
 type HeaderWithQuickActionNoSearchBarProps = {
   setMobileMenuOpen: (newState: boolean) => void;

@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import OrganisationPage from 'src/modules/organisations/OrganisationPage';
+import OrganisationPage from '@/modules/organisations/OrganisationPage';
 
 const Organisations: NextPage = () => {
   return <OrganisationPage />;

@@ -1,4 +1,4 @@
-import RegistrationForm from 'src/modules/registration/RegistrationForm';
+import RegistrationForm from '@/modules/registration/RegistrationForm';
 import { NextPage } from 'next';
 
 const Register: NextPage = () => {

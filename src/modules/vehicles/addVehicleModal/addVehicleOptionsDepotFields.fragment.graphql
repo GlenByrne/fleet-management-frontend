@@ -1,4 +1,0 @@
-fragment AddVehicleDepotFields on Depot {
-  id
-  name
-}

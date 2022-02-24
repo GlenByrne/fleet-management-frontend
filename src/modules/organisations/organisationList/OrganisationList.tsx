@@ -8,15 +8,15 @@ import { UseQueryState } from 'urql';
 import OrganisationListItem from './OrganisationListItem';
 
 type OrganisationListProps = {
-  organisationsList: UseQueryState<GetUsersOrganisationsQuery, object>;
+  organisationList: UseQueryState<GetUsersOrganisationsQuery, object>;
   changeAddOrganisationModalState: (newState: boolean) => void;
 };
 
 const OrganisationList = ({
-  organisationsList,
+  organisationList,
   changeAddOrganisationModalState,
 }: OrganisationListProps) => {
-  const { data, fetching, error } = organisationsList;
+  const { data, fetching, error } = organisationList;
 
   if (fetching) {
     return <Loading />;

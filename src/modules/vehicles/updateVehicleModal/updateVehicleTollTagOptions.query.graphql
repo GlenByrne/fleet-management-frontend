@@ -1,0 +1,6 @@
+query GetUpdateVehicleTollTagOptions($data: TollTagsNotAssignedInput!) {
+  tollTagsNotAssigned(data: $data) {
+    id
+    tagNumber
+  }
+}

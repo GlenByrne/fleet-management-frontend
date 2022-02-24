@@ -1,4 +1,4 @@
-import UserPage from 'src/modules/users/UserPage';
+import UserPage from '@/modules/users/UserPage';
 import { NextPage } from 'next';
 
 const Users: NextPage = () => {

@@ -1,4 +1,8 @@
-query GetDepots($data: DepotsInput!, $first: Int, $after: String) {
+query GetAddVehicleDepotOptions(
+  $data: DepotsInput!
+  $first: Int
+  $after: String
+) {
   depots(data: $data, first: $first, after: $after) {
     pageInfo {
       endCursor
@@ -7,7 +11,8 @@ query GetDepots($data: DepotsInput!, $first: Int, $after: String) {
     edges {
       cursor
       node {
-        ...AddVehicleDepotFields
+        id
+        name
       }
     }
   }

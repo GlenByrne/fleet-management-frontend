@@ -1,4 +1,4 @@
-import DepotPage from 'src/modules/depots/DepotPage';
+import DepotPage from '@/modules/depots/DepotPage';
 import { NextPage } from 'next';
 
 const Depots: NextPage = () => {

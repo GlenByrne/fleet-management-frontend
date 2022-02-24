@@ -1,4 +1,4 @@
-import LoginPage from 'src/modules/login/LoginPage';
+import LoginPage from '@/modules/login/LoginPage';
 import { NextPage } from 'next';
 
 const Login: NextPage = () => {

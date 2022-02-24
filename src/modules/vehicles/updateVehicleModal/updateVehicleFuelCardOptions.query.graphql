@@ -1,0 +1,6 @@
+query GetUpdateVehicleFuelCardOptions($data: FuelCardsNotAssignedInput!) {
+  fuelCardsNotAssigned(data: $data) {
+    id
+    cardNumber
+  }
+}

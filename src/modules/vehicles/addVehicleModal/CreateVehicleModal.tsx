@@ -11,20 +11,13 @@ import { useRouter } from 'next/router';
 import { Option } from '@/constants/types';
 import {
   FuelCard,
-  GetVehiclesDocument,
-  GetVehiclesQuery,
   TollTag,
   useAddVehicleMutation,
   VehicleType,
   DepotEdge,
-  GetTollTagsDocument,
-  GetDepotsDocument,
-  GetFuelCardsDocument,
-  GetFuelCardsNotAssignedDocument,
-  GetTollTagsNotAssignedDocument,
-  GetDepotsQuery,
-  GetFuelCardsNotAssignedQuery,
-  GetTollTagsNotAssignedQuery,
+  useGetAddVehicleFuelCardOptionsQuery,
+  useGetAddVehicleTollTagOptionsQuery,
+  useGetAddVehicleDepotOptionsQuery,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
@@ -32,14 +25,10 @@ import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import DatePicker from '@/components/molecules/Datepickers/DatePick';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
-import { UseQueryState } from 'urql';
 
 type CreateVehicleModalProps = {
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
-  depots: UseQueryState<GetDepotsQuery, object>;
-  fuelCardsNotAssigned: UseQueryState<GetFuelCardsNotAssignedQuery, object>;
-  tollTagsNotAssigned: UseQueryState<GetTollTagsNotAssignedQuery, object>;
 };
 
 const getDepotOptions = (depots: DepotEdge[]) => {
@@ -97,26 +86,46 @@ const getVehicleTypeOptions = () => {
 const CreateVehicleModal = ({
   modalState,
   changeModalState,
-  depots,
-  fuelCardsNotAssigned,
-  tollTagsNotAssigned,
 }: CreateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
+
+  const [fuelCards, refetchGetFuelCards] = useGetAddVehicleFuelCardOptionsQuery(
+    {
+      variables: {
+        data: {
+          organisationId,
+        },
+      },
+    }
+  );
+
+  const [tollTags, refetchGetTollTags] = useGetAddVehicleTollTagOptionsQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const [depots, refetchGetDepots] = useGetAddVehicleDepotOptionsQuery({
+    variables: {
+      first: 10,
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
     getDepotOptions(depots.data?.depots.edges as DepotEdge[])
   );
   const [fuelCardOptions, setFuelCardOptions] = useState(
-    getFuelCardOptions(
-      fuelCardsNotAssigned.data?.fuelCardsNotAssigned as FuelCard[]
-    )
+    getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
   );
   const [tollTagOptions, setTollTagOptions] = useState(
-    getTollTagOptions(
-      tollTagsNotAssigned.data?.tollTagsNotAssigned as TollTag[]
-    )
+    getTollTagOptions(tollTags.data?.tollTagsNotAssigned as TollTag[])
   );
 
   const [type, setType] = useState<Option>({
@@ -148,16 +157,16 @@ const CreateVehicleModal = ({
     setTypeOptions(getVehicleTypeOptions());
     setDepotOptions(getDepotOptions(depots.data?.depots.edges as DepotEdge[]));
     setFuelCardOptions(
-      getFuelCardOptions(
-        fuelCardsNotAssigned.data?.fuelCardsNotAssigned as FuelCard[]
-      )
+      getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
     );
     setTollTagOptions(
-      getTollTagOptions(
-        tollTagsNotAssigned.data?.tollTagsNotAssigned as TollTag[]
-      )
+      getTollTagOptions(tollTags.data?.tollTagsNotAssigned as TollTag[])
     );
-  }, [depots, fuelCardsNotAssigned, tollTagsNotAssigned]);
+  }, [
+    depots.data?.depots.edges,
+    fuelCards.data?.fuelCardsNotAssigned,
+    tollTags.data?.tollTagsNotAssigned,
+  ]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
     setRegistration(event.currentTarget.value);
