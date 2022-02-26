@@ -7,7 +7,14 @@ query GetInfringements($first: Int, $after: String) {
     edges {
       cursor
       node {
-        ...InfringementFields
+        id
+        description
+        dateOccured
+        status
+        driver {
+          id
+          name
+        }
       }
     }
   }

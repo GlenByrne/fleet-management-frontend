@@ -7,7 +7,13 @@ query GetTollTags($data: TollTagsInput!, $first: Int, $after: String) {
     edges {
       cursor
       node {
-        ...TollTagItemFields
+        id
+        tagNumber
+        tagProvider
+        vehicle {
+          id
+          registration
+        }
       }
     }
   }

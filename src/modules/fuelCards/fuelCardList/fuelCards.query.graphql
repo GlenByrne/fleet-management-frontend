@@ -7,7 +7,13 @@ query GetFuelCards($data: FuelCardsInput!, $first: Int, $after: String) {
     edges {
       cursor
       node {
-        ...FuelCardItemFields
+        id
+        cardNumber
+        cardProvider
+        vehicle {
+          id
+          registration
+        }
       }
     }
   }

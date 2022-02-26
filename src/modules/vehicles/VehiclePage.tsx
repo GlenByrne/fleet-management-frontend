@@ -14,12 +14,27 @@ const VehiclePage = () => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const [pageVariables, setPageVariables] = useState([
-    {
-      first: 5,
-      after: '',
-    },
-  ]);
+  const [vehiclesPaginationVariables, setVehiclesPaginationVariables] =
+    useState([
+      {
+        first: 5,
+        after: '',
+      },
+    ]);
+  const [fuelCardsPaginationVariables, setFuelCardsPaginationVariables] =
+    useState([
+      {
+        first: 5,
+        after: '',
+      },
+    ]);
+  const [tollTagsPaginationVariables, setTollTagsPaginationVariables] =
+    useState([
+      {
+        first: 5,
+        after: '',
+      },
+    ]);
   const [addVehicleModalState, setAddVehicleModalState] = useState(false);
   const [updateVehicleModalState, setUpdateVehicleModalState] = useState(false);
   const [updateVehicleCVRTModalState, setUpdateVehicleCVRTModalState] =
@@ -112,7 +127,7 @@ const VehiclePage = () => {
 
   const [vehicles, refetchGetVehicles] = useGetVehiclesQuery({
     variables: {
-      ...pageVariables,
+      ...fuelCardsPaginationVariables,
       data: {
         organisationId,
       },
@@ -126,7 +141,7 @@ const VehiclePage = () => {
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetchGetVehicles({
-      ...pageVariables,
+      ...fuelCardsPaginationVariables,
       data: {
         searchCriteria: searchCriteria,
         organisationId,
@@ -173,13 +188,16 @@ const VehiclePage = () => {
             modalState={deleteVehicleModalState}
             changeModalState={changeDeleteVehicleModalState}
           />
-          {pageVariables.map((variables, i) => (
+          {fuelCardsPaginationVariables.map((variables, i) => (
             <VehicleList
               key={'' + variables.after}
               variables={variables}
-              isLastPage={i === pageVariables.length - 1}
+              isLastPage={i === fuelCardsPaginationVariables.length - 1}
               onLoadMore={(after: string) =>
-                setPageVariables([...pageVariables, { after, first: 10 }])
+                setFuelCardsPaginationVariables([
+                  ...fuelCardsPaginationVariables,
+                  { after, first: 10 },
+                ])
               }
               vehiclesList={vehicles}
               changeAddVehicleModalState={changeAddVehicleModalState}

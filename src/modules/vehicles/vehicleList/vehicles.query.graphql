@@ -1,0 +1,34 @@
+query GetVehicles($data: VehiclesInput!, $first: Int, $after: String) {
+  vehicles(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        type
+        registration
+        make
+        model
+        owner
+        cvrt
+        thirteenWeekInspection
+        tachoCalibration
+        depot {
+          id
+          name
+        }
+        fuelCard {
+          id
+          cardNumber
+        }
+        tollTag {
+          id
+          tagNumber
+        }
+      }
+    }
+  }
+}
