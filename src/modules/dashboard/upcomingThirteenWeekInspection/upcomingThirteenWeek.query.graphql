@@ -1,0 +1,21 @@
+query GetUpcomingThirteenWeek(
+  $data: UpcomingThirteenWeekInput!
+  $first: Int
+  $after: String
+) {
+  upcomingThirteenWeek(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        registration
+        thirteenWeekInspection
+        type
+      }
+    }
+  }
+}

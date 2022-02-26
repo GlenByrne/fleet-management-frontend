@@ -1,7 +1,0 @@
-fragment GetUsersOrganisationInvitesFields on UsersOnOrganisations {
-  role
-  organisation {
-    id
-    name
-  }
-}

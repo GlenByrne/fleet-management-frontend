@@ -1,5 +1,0 @@
-query GetUpcomingCVRT($data: UpcomingCVRTInput!) {
-  upcomingCVRT(data: $data) {
-    ...UpcomingCVRTFields
-  }
-}

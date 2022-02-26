@@ -1,5 +1,0 @@
-query GetUpcomingThirteenWeek($data: UpcomingThirteenWeekInput!) {
-  upcomingThirteenWeek(data: $data) {
-    ...UpcomingThirteenWeekFields
-  }
-}

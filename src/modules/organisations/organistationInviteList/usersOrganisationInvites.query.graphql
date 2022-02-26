@@ -1,0 +1,18 @@
+query GetUsersOrganisationInvites($first: Int, $after: String) {
+  usersOrganisationInvites(first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        role
+        organisation {
+          id
+          name
+        }
+      }
+    }
+  }
+}

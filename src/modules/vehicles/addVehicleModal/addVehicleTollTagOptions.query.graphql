@@ -1,6 +1,19 @@
-query GetAddVehicleTollTagOptions($data: TollTagsNotAssignedInput!) {
-  tollTagsNotAssigned(data: $data) {
-    id
-    tagNumber
+query GetAddVehicleTollTagOptions(
+  $data: TollTagsNotAssignedInput!
+  $first: Int
+  $after: String
+) {
+  tollTagsNotAssigned(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        tagNumber
+      }
+    }
   }
 }

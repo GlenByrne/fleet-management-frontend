@@ -1,9 +1,0 @@
-query GetUsersOrganisations {
-  usersOrganisations {
-    role
-    organisation {
-      id
-      name
-    }
-  }
-}

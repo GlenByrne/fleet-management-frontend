@@ -1,6 +1,0 @@
-fragment UpcomingCVRTFields on Vehicle {
-  id
-  registration
-  cvrt
-  type
-}

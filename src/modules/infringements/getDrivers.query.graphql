@@ -1,0 +1,33 @@
+query GetDrivers(
+  $data: DriversInOrganisationInput!
+  $first: Int
+  $after: String
+) {
+  driversInOrganisation(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        user {
+          id
+          name
+          email
+          infringements {
+            id
+            description
+            dateOccured
+            status
+          }
+        }
+        role
+        depot {
+          id
+          name
+        }
+      }
+    }
+  }
+}

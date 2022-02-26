@@ -1,8 +1,0 @@
-fragment DefectItemFields on Defect {
-  id
-  description
-  reporter
-  dateReported
-  dateCompleted
-  status
-}

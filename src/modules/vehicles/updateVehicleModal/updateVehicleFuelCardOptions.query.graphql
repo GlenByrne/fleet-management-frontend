@@ -1,6 +1,19 @@
-query GetUpdateVehicleFuelCardOptions($data: FuelCardsNotAssignedInput!) {
-  fuelCardsNotAssigned(data: $data) {
-    id
-    cardNumber
+query GetUpdateVehicleFuelCardOptions(
+  $data: FuelCardsNotAssignedInput!
+  $first: Int
+  $after: String
+) {
+  fuelCardsNotAssigned(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        cardNumber
+      }
+    }
   }
 }

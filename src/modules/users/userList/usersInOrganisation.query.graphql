@@ -1,0 +1,27 @@
+query GetUsersInOrganisation(
+  $data: UsersInOrganisationInput!
+  $first: Int
+  $after: String
+) {
+  usersInOrganisation(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        user {
+          id
+          name
+          email
+        }
+        role
+        depot {
+          id
+          name
+        }
+      }
+    }
+  }
+}

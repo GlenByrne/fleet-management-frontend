@@ -1,0 +1,23 @@
+query GetVehicleDefects(
+  $data: DefectsForVehicleInput!
+  $first: Int
+  $after: String
+) {
+  defectsForVehicle(data: $data, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        description
+        reporter
+        dateReported
+        dateCompleted
+        status
+      }
+    }
+  }
+}
