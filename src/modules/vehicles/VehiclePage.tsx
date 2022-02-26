@@ -21,20 +21,7 @@ const VehiclePage = () => {
         after: '',
       },
     ]);
-  const [fuelCardsPaginationVariables, setFuelCardsPaginationVariables] =
-    useState([
-      {
-        first: 5,
-        after: '',
-      },
-    ]);
-  const [tollTagsPaginationVariables, setTollTagsPaginationVariables] =
-    useState([
-      {
-        first: 5,
-        after: '',
-      },
-    ]);
+
   const [addVehicleModalState, setAddVehicleModalState] = useState(false);
   const [updateVehicleModalState, setUpdateVehicleModalState] = useState(false);
   const [updateVehicleCVRTModalState, setUpdateVehicleCVRTModalState] =
@@ -127,7 +114,7 @@ const VehiclePage = () => {
 
   const [vehicles, refetchGetVehicles] = useGetVehiclesQuery({
     variables: {
-      ...fuelCardsPaginationVariables,
+      ...vehiclesPaginationVariables,
       data: {
         organisationId,
       },
@@ -141,7 +128,7 @@ const VehiclePage = () => {
   const searchSubmitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     refetchGetVehicles({
-      ...fuelCardsPaginationVariables,
+      ...vehiclesPaginationVariables,
       data: {
         searchCriteria: searchCriteria,
         organisationId,
@@ -188,14 +175,14 @@ const VehiclePage = () => {
             modalState={deleteVehicleModalState}
             changeModalState={changeDeleteVehicleModalState}
           />
-          {fuelCardsPaginationVariables.map((variables, i) => (
+          {vehiclesPaginationVariables.map((variables, i) => (
             <VehicleList
               key={'' + variables.after}
               variables={variables}
-              isLastPage={i === fuelCardsPaginationVariables.length - 1}
+              isLastPage={i === vehiclesPaginationVariables.length - 1}
               onLoadMore={(after: string) =>
-                setFuelCardsPaginationVariables([
-                  ...fuelCardsPaginationVariables,
+                setVehiclesPaginationVariables([
+                  ...vehiclesPaginationVariables,
                   { after, first: 10 },
                 ])
               }

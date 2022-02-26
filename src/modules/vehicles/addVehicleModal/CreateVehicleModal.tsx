@@ -18,6 +18,8 @@ import {
   useGetAddVehicleFuelCardOptionsQuery,
   useGetAddVehicleTollTagOptionsQuery,
   useGetAddVehicleDepotOptionsQuery,
+  FuelCardEdge,
+  TollTagEdge,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
@@ -39,27 +41,37 @@ const getDepotOptions = (depots: DepotEdge[]) => {
       (depot) => ({ value: depot.node.id, label: depot.node.name } as Option)
     );
   }
-  options?.unshift({ value: '', label: 'None' });
+  options.unshift({ value: '', label: 'None' });
 
   return options;
 };
 
-const getFuelCardOptions = (fuelCards: FuelCard[]) => {
-  const options = fuelCards?.map(
-    (fuelCard) => ({ value: fuelCard.id, label: fuelCard.cardNumber } as Option)
-  );
+const getFuelCardOptions = (fuelCards: FuelCardEdge[]) => {
+  let options: Option[] = [];
 
-  options?.unshift({ value: '', label: 'None' });
+  if (fuelCards) {
+    options = fuelCards.map(
+      (fuelCard) =>
+        ({ value: fuelCard.node.id, label: fuelCard.node.cardNumber } as Option)
+    );
+  }
+
+  options.unshift({ value: '', label: 'None' });
 
   return options;
 };
 
-const getTollTagOptions = (tollTags: TollTag[]) => {
-  const options = tollTags?.map(
-    (tollTag) => ({ value: tollTag.id, label: tollTag.tagNumber } as Option)
-  );
+const getTollTagOptions = (tollTags: TollTagEdge[]) => {
+  let options: Option[] = [];
 
-  options?.unshift({ value: '', label: 'None' });
+  if (tollTags) {
+    options = tollTags.map(
+      (tollTag) =>
+        ({ value: tollTag.node.id, label: tollTag.node.tagNumber } as Option)
+    );
+  }
+
+  options.unshift({ value: '', label: 'None' });
 
   return options;
 };
@@ -89,9 +101,32 @@ const CreateVehicleModal = ({
 }: CreateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
+  const [fuelCardsPaginationVariables, setFuelCardsPaginationVariables] =
+    useState([
+      {
+        first: 5,
+        after: '',
+      },
+    ]);
+
+  const [tollTagsPaginationVariables, setTollTagsPaginationVariables] =
+    useState([
+      {
+        first: 5,
+        after: '',
+      },
+    ]);
+
+  const [depotsPaginationVariables, setDepotsPaginationVariables] = useState([
+    {
+      first: 5,
+      after: '',
+    },
+  ]);
 
   const [fuelCards, refetchGetFuelCards] = useGetAddVehicleFuelCardOptionsQuery(
     {
+      ...fuelCardsPaginationVariables,
       variables: {
         data: {
           organisationId,
@@ -101,6 +136,7 @@ const CreateVehicleModal = ({
   );
 
   const [tollTags, refetchGetTollTags] = useGetAddVehicleTollTagOptionsQuery({
+    ...tollTagsPaginationVariables,
     variables: {
       data: {
         organisationId,
@@ -109,6 +145,7 @@ const CreateVehicleModal = ({
   });
 
   const [depots, refetchGetDepots] = useGetAddVehicleDepotOptionsQuery({
+    ...depotsPaginationVariables,
     variables: {
       first: 10,
       data: {
@@ -122,10 +159,12 @@ const CreateVehicleModal = ({
     getDepotOptions(depots.data?.depots.edges as DepotEdge[])
   );
   const [fuelCardOptions, setFuelCardOptions] = useState(
-    getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
+    getFuelCardOptions(
+      fuelCards.data?.fuelCardsNotAssigned.edges as FuelCardEdge[]
+    )
   );
   const [tollTagOptions, setTollTagOptions] = useState(
-    getTollTagOptions(tollTags.data?.tollTagsNotAssigned as TollTag[])
+    getTollTagOptions(tollTags.data?.tollTagsNotAssigned.edges as TollTagEdge[])
   );
 
   const [type, setType] = useState<Option>({
@@ -157,10 +196,14 @@ const CreateVehicleModal = ({
     setTypeOptions(getVehicleTypeOptions());
     setDepotOptions(getDepotOptions(depots.data?.depots.edges as DepotEdge[]));
     setFuelCardOptions(
-      getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
+      getFuelCardOptions(
+        fuelCards.data?.fuelCardsNotAssigned.edges as FuelCardEdge[]
+      )
     );
     setTollTagOptions(
-      getTollTagOptions(tollTags.data?.tollTagsNotAssigned as TollTag[])
+      getTollTagOptions(
+        tollTags.data?.tollTagsNotAssigned.edges as TollTagEdge[]
+      )
     );
   }, [
     depots.data?.depots.edges,
