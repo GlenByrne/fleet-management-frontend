@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useLoginMutation, User } from '@/generated/graphql';
+import { useLoginMutation } from '@/generated/graphql';
 import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
 import { FormEvent, FormEventHandler, useState } from 'react';
 import { setAccessToken, setIsLoggedIn } from '@/pages/_app';
@@ -10,23 +10,26 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [loginResult, login] = useLoginMutation();
+  const [login] = useLoginMutation({
+    onCompleted: ({ login }) => {
+      setAccessToken(login.accessToken);
+      setIsLoggedIn(true);
+      router.push('/');
+      setEmail('');
+      setPassword('');
+    },
+  });
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     try {
-      const variables = {
-        data: {
-          email: email,
-          password: password,
+      await login({
+        variables: {
+          data: {
+            email,
+            password,
+          },
         },
-      };
-      await login(variables).then((result) => {
-        setAccessToken(result.data?.login.accessToken);
-        setIsLoggedIn(true);
-        router.push('/');
-        setEmail('');
-        setPassword('');
       });
     } catch {}
   };

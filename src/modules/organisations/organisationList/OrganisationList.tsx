@@ -1,24 +1,39 @@
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import {
-  GetUsersOrganisationsQuery,
+  useGetUsersOrganisationsQuery,
   UsersOnOrganisations,
 } from '@/generated/graphql';
-import { UseQueryState } from 'urql';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import OrganisationListItem from './OrganisationListItem';
 
 type OrganisationListProps = {
-  organisationList: UseQueryState<GetUsersOrganisationsQuery, object>;
   changeAddOrganisationModalState: (newState: boolean) => void;
 };
 
 const OrganisationList = ({
-  organisationList,
   changeAddOrganisationModalState,
 }: OrganisationListProps) => {
-  const { data, fetching, error } = organisationList;
+  const { data, loading, error, fetchMore } = useGetUsersOrganisationsQuery({
+    variables: {
+      first: 10,
+    },
+  });
 
-  if (fetching) {
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView && data?.usersOrganisations.pageInfo.hasNextPage) {
+      fetchMore({
+        variables: {
+          after: data.usersOrganisations.pageInfo.endCursor,
+        },
+      });
+    }
+  });
+
+  if (loading) {
     return <Loading />;
   }
 
@@ -31,17 +46,23 @@ const OrganisationList = ({
   }
 
   const organisations = data.usersOrganisations;
+  const { hasNextPage } = data.usersOrganisations.pageInfo;
 
-  return organisations.length > 0 ? (
+  return organisations.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {organisations.map((organisation) => (
+        {organisations.edges.map((organisation) => (
           <OrganisationListItem
-            key={organisation?.organisation.id}
-            organisation={organisation as UsersOnOrganisations}
+            key={organisation.node.organisation.id}
+            organisation={organisation.node as UsersOnOrganisations}
           />
         ))}
       </ul>
+      {hasNextPage && (
+        <div ref={ref}>
+          <Loading />
+        </div>
+      )}
     </div>
   ) : (
     <NoListItemButton

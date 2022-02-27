@@ -1,22 +1,32 @@
 import Loading from '@/components/atoms/Loading';
 import {
-  GetUsersOrganisationsInvitesQuery,
+  useGetUsersOrganisationInvitesQuery,
   UsersOnOrganisations,
 } from '@/generated/graphql';
-import { CombinedError } from 'urql';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import OrganisationInviteListItem from './OrganisationInviteListItem';
 
-type OrganisationInviteListProps = {
-  data: GetUsersOrganisationsInvitesQuery | undefined;
-  loading: boolean;
-  error: CombinedError | undefined;
-};
+const OrganisationInviteList = () => {
+  const { data, loading, error, fetchMore } =
+    useGetUsersOrganisationInvitesQuery({
+      variables: {
+        first: 10,
+      },
+    });
 
-const OrganisationInviteList = ({
-  data,
-  loading,
-  error,
-}: OrganisationInviteListProps) => {
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView && data?.usersOrganisationInvites.pageInfo.hasNextPage) {
+      fetchMore({
+        variables: {
+          after: data.usersOrganisationInvites.pageInfo.endCursor,
+        },
+      });
+    }
+  });
+
   if (loading) {
     return <Loading />;
   }
@@ -29,18 +39,24 @@ const OrganisationInviteList = ({
     return <div></div>;
   }
 
-  const invites = data.usersOrganisationInvites as UsersOnOrganisations[];
+  const invites = data.usersOrganisationInvites;
+  const { hasNextPage } = data.usersOrganisationInvites.pageInfo;
 
-  return invites.length > 0 ? (
+  return invites.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {invites.map((invite) => (
+        {invites.edges.map((invite) => (
           <OrganisationInviteListItem
-            key={invite.organisation.id}
-            invite={invite}
+            key={invite.node.organisation.id}
+            invite={invite.node as UsersOnOrganisations}
           />
         ))}
       </ul>
+      {hasNextPage && (
+        <div ref={ref}>
+          <Loading />
+        </div>
+      )}
     </div>
   ) : (
     <h2>No Invites</h2>

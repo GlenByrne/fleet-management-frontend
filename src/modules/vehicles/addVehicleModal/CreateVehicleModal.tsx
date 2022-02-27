@@ -27,6 +27,7 @@ import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import DatePicker from '@/components/molecules/Datepickers/DatePick';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
+import Example from './Combobox';
 
 type CreateVehicleModalProps = {
   modalState: boolean;
@@ -46,15 +47,10 @@ const getDepotOptions = (depots: DepotEdge[]) => {
   return options;
 };
 
-const getFuelCardOptions = (fuelCards: FuelCardEdge[]) => {
-  let options: Option[] = [];
-
-  if (fuelCards) {
-    options = fuelCards.map(
-      (fuelCard) =>
-        ({ value: fuelCard.node.id, label: fuelCard.node.cardNumber } as Option)
-    );
-  }
+const getFuelCardOptions = (fuelCards: FuelCard[]) => {
+  const options = fuelCards.map(
+    (fuelCard) => ({ value: fuelCard.id, label: fuelCard.cardNumber } as Option)
+  );
 
   options.unshift({ value: '', label: 'None' });
 
@@ -101,13 +97,6 @@ const CreateVehicleModal = ({
 }: CreateVehicleModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-  const [fuelCardsPaginationVariables, setFuelCardsPaginationVariables] =
-    useState([
-      {
-        first: 5,
-        after: '',
-      },
-    ]);
 
   const [tollTagsPaginationVariables, setTollTagsPaginationVariables] =
     useState([
@@ -126,7 +115,6 @@ const CreateVehicleModal = ({
 
   const [fuelCards, refetchGetFuelCards] = useGetAddVehicleFuelCardOptionsQuery(
     {
-      ...fuelCardsPaginationVariables,
       variables: {
         data: {
           organisationId,
@@ -159,9 +147,7 @@ const CreateVehicleModal = ({
     getDepotOptions(depots.data?.depots.edges as DepotEdge[])
   );
   const [fuelCardOptions, setFuelCardOptions] = useState(
-    getFuelCardOptions(
-      fuelCards.data?.fuelCardsNotAssigned.edges as FuelCardEdge[]
-    )
+    getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
   );
   const [tollTagOptions, setTollTagOptions] = useState(
     getTollTagOptions(tollTags.data?.tollTagsNotAssigned.edges as TollTagEdge[])
@@ -196,9 +182,7 @@ const CreateVehicleModal = ({
     setTypeOptions(getVehicleTypeOptions());
     setDepotOptions(getDepotOptions(depots.data?.depots.edges as DepotEdge[]));
     setFuelCardOptions(
-      getFuelCardOptions(
-        fuelCards.data?.fuelCardsNotAssigned.edges as FuelCardEdge[]
-      )
+      getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
     );
     setTollTagOptions(
       getTollTagOptions(
@@ -452,7 +436,14 @@ const CreateVehicleModal = ({
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <ModalFormSelect
+                    {/* <ModalFormSelect
+                      label="Fuel Card"
+                      name="fuelCard"
+                      selected={fuelCard}
+                      onChange={setFuelCard}
+                      options={fuelCardOptions}
+                    /> */}
+                    <Example
                       label="Fuel Card"
                       name="fuelCard"
                       selected={fuelCard}

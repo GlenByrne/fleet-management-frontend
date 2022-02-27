@@ -2,12 +2,7 @@ import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import {
-  GetFuelCardsDocument,
-  GetFuelCardsNotAssignedDocument,
-  GetFuelCardsQuery,
-  useAddFuelCardMutation,
-} from '@/generated/graphql';
+import { useAddFuelCardMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import CancelButton from '@/components/atoms/Button/CancelButton';
