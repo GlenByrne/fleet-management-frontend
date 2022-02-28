@@ -1,18 +1,12 @@
-import { GetVehiclesQuery, Vehicle, VehicleEdge } from '@/generated/graphql';
+import { useGetVehiclesQuery, Vehicle } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { UseQueryState } from 'urql';
 import VehicleListItem from '@/modules/vehicles/vehicleList/VehicleListItem';
 import InView from 'react-intersection-observer';
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 
 type VehicleListProps = {
-  variables: {
-    first: number;
-    after: string;
-  };
-  isLastPage: boolean;
-  onLoadMore: (after: string) => void;
-  vehiclesList: UseQueryState<GetVehiclesQuery, object>;
   changeCurrentVehicle: (vehicle: Vehicle) => void;
   changeAddVehicleModalState: (newState: boolean) => void;
   changeDeleteVehicleModalState: (newState: boolean) => void;
@@ -23,10 +17,6 @@ type VehicleListProps = {
 };
 
 const VehicleList = ({
-  variables,
-  isLastPage,
-  onLoadMore,
-  vehiclesList,
   changeCurrentVehicle,
   changeAddVehicleModalState,
   changeDeleteVehicleModalState,
@@ -35,9 +25,35 @@ const VehicleList = ({
   changeUpdateVehicleThirteenWeekModalState,
   changeUpdateVehicleTachoCalibrationModalState,
 }: VehicleListProps) => {
-  const { data, fetching, error } = vehiclesList;
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
 
-  if (fetching) {
+  const { data, loading, error, refetch } = useGetVehiclesQuery({
+    variables: {
+      first: 5,
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      first: 5,
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  if (loading) {
     return <Loading />;
   }
 

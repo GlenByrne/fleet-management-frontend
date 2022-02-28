@@ -5,31 +5,14 @@ import CreateUserModal from '@/modules/users/addUserModal/CreateUserModal';
 import RemoveUserModal from '@/modules/users/deleteUserModal/RemoveUserModal';
 import UpdateUserModal from '@/modules/users/updateUserModal/UpdateUserModal';
 import UserList from '@/modules/users/userList/UserList';
-import {
-  Role,
-  UsersInOrganisationPayload,
-  useGetUsersInOrganisationQuery,
-  useGetDepotsQuery,
-} from '@/generated/graphql';
-import { useRouter } from 'next/router';
-import React, { FormEvent, FormEventHandler, useState } from 'react';
+import { Role, UsersInOrganisationPayload } from '@/generated/graphql';
+import React, { useState } from 'react';
 import UserTemplate from 'src/templates/UserTemplate';
 
 const UserPage = () => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-  const [pageVariables, setPageVariables] = useState([
-    {
-      first: 5,
-      after: '',
-    },
-  ]);
-  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-
   const [inviteUserModalState, setInviteUserModalState] = useState(false);
   const [updateUserModalState, setUpdateUserModalState] = useState(false);
   const [removeUserModalState, setRemoveUserModalState] = useState(false);
-
   const [currentUser, setCurrentUser] = useState<UserUpdateModalItem>({
     id: '',
     name: '',
@@ -37,6 +20,7 @@ const UserPage = () => {
     role: Role.User,
     depot: null,
   });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const changeInviteUserModalState = (newState: boolean) => {
     setInviteUserModalState(newState);
@@ -64,41 +48,6 @@ const UserPage = () => {
     setCurrentUser(chosenUser);
   };
 
-  const [users, refetchUsers] = useGetUsersInOrganisationQuery({
-    variables: {
-      ...pageVariables,
-      data: {
-        organisationId,
-      },
-    },
-  });
-
-  const [depots, refetchDepots] = useGetDepotsQuery({
-    variables: {
-      first: 10,
-      data: {
-        organisationId,
-      },
-    },
-  });
-
-  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
-    setSearchCriteria(event.currentTarget.value);
-  };
-
-  const searchSubmitHandler: FormEventHandler = (e) => {
-    e.preventDefault();
-    refetchUsers({
-      ...pageVariables,
-      data: {
-        searchCriteria: searchCriteria,
-        organisationId,
-      },
-    });
-  };
-
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const changeMobileMenuOpenState = (newState: boolean) => {
     setMobileMenuOpen(newState);
   };
@@ -123,12 +72,10 @@ const UserPage = () => {
       content={
         <>
           <CreateUserModal
-            depots={depots}
             modalState={inviteUserModalState}
             changeModalState={changeInviteUserModalState}
           />
           <UpdateUserModal
-            depots={depots}
             currentUser={currentUser}
             modalState={updateUserModalState}
             changeModalState={changeUpdateUserModalState}
@@ -139,21 +86,12 @@ const UserPage = () => {
             modalState={removeUserModalState}
             changeModalState={changeRemoveUserModalState}
           />
-          {pageVariables.map((variables, i) => (
-            <UserList
-              key={'' + variables.after}
-              variables={variables}
-              isLastPage={i === pageVariables.length - 1}
-              onLoadMore={(after: string) =>
-                setPageVariables([...pageVariables, { after, first: 10 }])
-              }
-              usersList={users}
-              changeInviteUserModalState={changeInviteUserModalState}
-              changeRemoveUserModalState={changeRemoveUserModalState}
-              changeUpdateUserModalState={changeUpdateUserModalState}
-              changeCurrentUser={changeCurrentUser}
-            />
-          ))}
+          <UserList
+            changeInviteUserModalState={changeInviteUserModalState}
+            changeRemoveUserModalState={changeRemoveUserModalState}
+            changeUpdateUserModalState={changeUpdateUserModalState}
+            changeCurrentUser={changeCurrentUser}
+          />
         </>
       }
     />

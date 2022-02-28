@@ -24,7 +24,7 @@ const CreateOrganisationModal = ({
     setName(event.currentTarget.value);
   };
 
-  const [addOrganisationResult, addOrganisation] = useAddOrganisationMutation();
+  const [addOrganisation] = useAddOrganisationMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -32,12 +32,13 @@ const CreateOrganisationModal = ({
     changeModalState(false);
 
     try {
-      const variables = {
-        data: {
-          name: name != null ? name : '',
+      await addOrganisation({
+        variables: {
+          data: {
+            name: name != null ? name : '',
+          },
         },
-      };
-      await addOrganisation(variables);
+      });
     } catch {}
 
     setName('');

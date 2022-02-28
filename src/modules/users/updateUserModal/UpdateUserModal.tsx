@@ -4,8 +4,8 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   DepotEdge,
-  GetDepotsQuery,
   Role,
+  useGetDepotsQuery,
   useUpdateUserOrgDetailsMutation,
 } from '@/generated/graphql';
 import { Option, UserUpdateModalItem } from '@/constants/types';
@@ -13,11 +13,8 @@ import Modal from '@/components/atoms/Modal';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
-import { UseQueryState } from 'urql';
 
 type UpdateUserModalProps = {
-  depots: UseQueryState<GetDepotsQuery, object>;
-
   currentUser: UserUpdateModalItem;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
@@ -49,7 +46,6 @@ const getRoleOptions = () => {
 };
 
 const UpdateUserModal = ({
-  depots,
   currentUser,
   modalState,
   changeModalState,
@@ -57,7 +53,14 @@ const UpdateUserModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, fetching, error } = depots;
+  const { data, loading, error } = useGetDepotsQuery({
+    variables: {
+      first: 5,
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
 
@@ -90,25 +93,26 @@ const UpdateUserModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateUserResult, updateUser] = useUpdateUserOrgDetailsMutation();
+  const [updateUser] = useUpdateUserOrgDetailsMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          userId: currentUser.id,
-          organisationId,
-          depotId: depot.value != null ? depot.value : '',
-          role: role.value != null ? (role.value as Role) : Role.User,
+      await updateUser({
+        variables: {
+          data: {
+            userId: currentUser.id,
+            organisationId,
+            depotId: depot.value != null ? depot.value : '',
+            role: role.value != null ? (role.value as Role) : Role.User,
+          },
         },
-      };
-      await updateUser(variables);
+      });
     } catch {}
   };
 
-  if (fetching) {
+  if (loading) {
     return <div></div>;
   }
 

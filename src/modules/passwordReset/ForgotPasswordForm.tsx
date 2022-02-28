@@ -6,17 +6,21 @@ const ForgotPasswordForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
 
-  const [forgotPasswordResult, forgotPassword] = useForgotPasswordMutation();
+  const [forgotPassword] = useForgotPasswordMutation({
+    onCompleted: () => {
+      router.push('/login');
+      setEmail('');
+    },
+  });
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
     forgotPassword({
-      data: {
-        email: email,
+      variables: {
+        data: {
+          email: email,
+        },
       },
-    }).then(() => {
-      router.push('/login');
-      setEmail('');
     });
   };
 

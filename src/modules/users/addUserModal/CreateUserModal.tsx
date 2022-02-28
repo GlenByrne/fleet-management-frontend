@@ -12,6 +12,7 @@ import {
   DepotEdge,
   GetDepotsQuery,
   Role,
+  useGetDepotsQuery,
   useInviteUserToOrganisationMutation,
 } from '@/generated/graphql';
 import { Option } from '@/constants/types';
@@ -20,10 +21,8 @@ import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import CancelButton from '@/components/atoms/Button/CancelButton';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
-import { UseQueryState } from 'urql';
 
 type CreateUserModalProps = {
-  depots: UseQueryState<GetDepotsQuery, object>;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
@@ -54,14 +53,20 @@ const getRoleOptions = () => {
 };
 
 const CreateUserModal = ({
-  depots,
   modalState,
   changeModalState,
 }: CreateUserModalProps) => {
-  const { data, fetching, error } = depots;
-
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
+
+  const { data, loading, error } = useGetDepotsQuery({
+    variables: {
+      first: 10,
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const [roleOptions, setRoleOptions] = useState(getRoleOptions());
   const [email, setEmail] = useState('');
@@ -88,8 +93,7 @@ const CreateUserModal = ({
     setEmail(event.currentTarget.value);
   };
 
-  const [inviteUserToOrganisationResult, inviteUserToOrganisation] =
-    useInviteUserToOrganisationMutation();
+  const [inviteUserToOrganisation] = useInviteUserToOrganisationMutation();
 
   const cancelButtonRef = useRef(null);
 
@@ -98,15 +102,16 @@ const CreateUserModal = ({
     changeModalState(false);
 
     try {
-      const variables = {
-        data: {
-          email: email,
-          organisationId,
-          depotId: depot.value != null ? depot.value : '',
-          role: role.value != null ? (role.value as Role) : Role.User,
+      await inviteUserToOrganisation({
+        variables: {
+          data: {
+            email: email,
+            organisationId,
+            depotId: depot.value != null ? depot.value : '',
+            role: role.value != null ? (role.value as Role) : Role.User,
+          },
         },
-      };
-      await inviteUserToOrganisation(variables);
+      });
     } catch {}
 
     setEmail('');
@@ -116,7 +121,7 @@ const CreateUserModal = ({
     });
   };
 
-  if (fetching) {
+  if (loading) {
     return <div></div>;
   }
 

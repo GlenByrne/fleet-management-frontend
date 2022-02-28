@@ -12,9 +12,17 @@ const PasswordSettingsPage = () => {
   const router = useRouter();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [logOutResult, logOut] = useLogoutMutation();
 
-  const [changePasswordResult, changePassword] = useChangePasswordMutation();
+  const [logOut] = useLogoutMutation();
+  const [changePassword] = useChangePasswordMutation({
+    onCompleted: ({ changePassword }) => {
+      logOut();
+      setAccessToken(null);
+      router.push('/login');
+      setCurrentPassword('');
+      setNewPassword('');
+    },
+  });
 
   const changeCurrentPassword = (event: FormEvent<HTMLInputElement>) => {
     setCurrentPassword(event.currentTarget.value);
@@ -28,16 +36,12 @@ const PasswordSettingsPage = () => {
     e.preventDefault();
     try {
       await changePassword({
-        data: {
-          currentPassword,
-          newPassword,
+        variables: {
+          data: {
+            currentPassword,
+            newPassword,
+          },
         },
-      }).then((result) => {
-        logOut();
-        setAccessToken(null);
-        router.push('/login');
-        setCurrentPassword('');
-        setNewPassword('');
       });
     } catch {}
   };

@@ -9,8 +9,6 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
-  GetTollTagsNotAssignedDocument,
-  GetVehiclesDocument,
   UpdateTollTagInput,
   useUpdateTollTagMutation,
 } from '@/generated/graphql';
@@ -51,20 +49,21 @@ const UpdateTollTagModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateTollTagResult, updateTollTag] = useUpdateTollTagMutation();
+  const [updateTollTag] = useUpdateTollTagMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          id: currentTollTag.id,
-          tagNumber: tagNumber != null ? tagNumber : '',
-          tagProvider: tagProvider != null ? tagProvider : '',
+      await updateTollTag({
+        variables: {
+          data: {
+            id: currentTollTag.id,
+            tagNumber: tagNumber != null ? tagNumber : '',
+            tagProvider: tagProvider != null ? tagProvider : '',
+          },
         },
-      };
-      await updateTollTag(variables);
+      });
     } catch {}
   };
 

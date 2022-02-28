@@ -10,22 +10,26 @@ const RegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [registerResult, register] = useRegisterMutation();
+  const [register] = useRegisterMutation({
+    onCompleted: ({ register }) => {
+      router.push('/login');
+      setName('');
+      setEmail('');
+      setPassword('');
+    },
+  });
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     try {
       await register({
-        data: {
-          name: name,
-          email: email,
-          password: password,
+        variables: {
+          data: {
+            name: name,
+            email: email,
+            password: password,
+          },
         },
-      }).then((result) => {
-        router.push('/login');
-        setName('');
-        setEmail('');
-        setPassword('');
       });
     } catch {}
   };

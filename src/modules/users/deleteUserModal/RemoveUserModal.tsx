@@ -2,15 +2,11 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import {
-  GetUsersInOrganisationDocument,
-  GetUsersInOrganisationQuery,
-  useRemoveUserFromOrganisationMutation,
-} from '@/generated/graphql';
+import { useRemoveUserFromOrganisationMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import { UserUpdateModalItem } from '@/constants/types';
 import CancelButton from '@/components/atoms/Button/CancelButton';
-import DangerButton from '@/components/atoms/DangerButton';
+import DangerButton from '@/components/atoms/Button/DangerButton';
 
 type RemoveUserModalProps = {
   searchCriteria: string | null;
@@ -28,19 +24,19 @@ const RemoveUserModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [removeUserResult, removeUser] =
-    useRemoveUserFromOrganisationMutation();
+  const [removeUser] = useRemoveUserFromOrganisationMutation();
 
   const removeUserHandler = async (userId: string) => {
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          userId,
-          organisationId,
+      await removeUser({
+        variables: {
+          data: {
+            userId,
+            organisationId,
+          },
         },
-      };
-      await removeUser(variables);
+      });
     } catch {}
   };
 

@@ -8,19 +8,22 @@ const PasswordResetForm = () => {
   const token = String(router.query.passwordResetId);
   const [password, setPassword] = useState('');
 
-  const [resetPasswordResult, resetPassword] = useResetPasswordMutation();
+  const [resetPassword] = useResetPasswordMutation({
+    onCompleted: ({ resetPassword }) => {
+      router.push('/login');
+      setPassword('');
+    },
+  });
 
   const submitHandler: FormEventHandler = (e) => {
     e.preventDefault();
-    const variables = {
-      data: {
-        resetPasswordToken: token,
-        newPassword: password,
+    resetPassword({
+      variables: {
+        data: {
+          resetPasswordToken: token,
+          newPassword: password,
+        },
       },
-    };
-    resetPassword(variables).then((result) => {
-      router.push('/login');
-      setPassword('');
     });
   };
 

@@ -1,20 +1,11 @@
-import DeleteButton from '@/components/atoms/Button/DeleteButton';
-import EditButton from '@/components/atoms/Button/EditButton';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { GetTollTagsQuery, TollTag, TollTagEdge } from '@/generated/graphql';
-import Link from 'next/link';
-import { UseQueryState } from 'urql';
+import { TollTag, useGetTollTagsQuery } from '@/generated/graphql';
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 import TollTagListItem from './TollTagListItem';
 
 type TollTagListProps = {
-  variables: {
-    first: number;
-    after: string;
-  };
-  isLastPage: boolean;
-  onLoadMore: (after: string) => void;
-  tollTagList: UseQueryState<GetTollTagsQuery, object>;
   changeCurrentTollTag: (tollTag: TollTag) => void;
   changeAddTollTagModalState: (newState: boolean) => void;
   changeDeleteTollTagModalState: (newState: boolean) => void;
@@ -22,18 +13,40 @@ type TollTagListProps = {
 };
 
 const TollTagList = ({
-  variables,
-  isLastPage,
-  onLoadMore,
-  tollTagList,
   changeCurrentTollTag,
   changeAddTollTagModalState,
   changeDeleteTollTagModalState,
   changeUpdateTollTagModalState,
 }: TollTagListProps) => {
-  const { data, fetching, error } = tollTagList;
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
 
-  if (fetching) {
+  const { data, loading, error, refetch } = useGetTollTagsQuery({
+    variables: {
+      first: 5,
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      first: 5,
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  if (loading) {
     return <Loading />;
   }
 

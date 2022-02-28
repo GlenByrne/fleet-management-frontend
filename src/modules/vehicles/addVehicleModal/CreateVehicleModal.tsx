@@ -18,8 +18,6 @@ import {
   useGetAddVehicleFuelCardOptionsQuery,
   useGetAddVehicleTollTagOptionsQuery,
   useGetAddVehicleDepotOptionsQuery,
-  FuelCardEdge,
-  TollTagEdge,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
@@ -57,15 +55,10 @@ const getFuelCardOptions = (fuelCards: FuelCard[]) => {
   return options;
 };
 
-const getTollTagOptions = (tollTags: TollTagEdge[]) => {
-  let options: Option[] = [];
-
-  if (tollTags) {
-    options = tollTags.map(
-      (tollTag) =>
-        ({ value: tollTag.node.id, label: tollTag.node.tagNumber } as Option)
-    );
-  }
+const getTollTagOptions = (tollTags: TollTag[]) => {
+  const options = tollTags.map(
+    (tollTag) => ({ value: tollTag.id, label: tollTag.tagNumber } as Option)
+  );
 
   options.unshift({ value: '', label: 'None' });
 
@@ -113,18 +106,11 @@ const CreateVehicleModal = ({
     },
   ]);
 
-  const [fuelCards, refetchGetFuelCards] = useGetAddVehicleFuelCardOptionsQuery(
-    {
-      variables: {
-        data: {
-          organisationId,
-        },
-      },
-    }
-  );
-
-  const [tollTags, refetchGetTollTags] = useGetAddVehicleTollTagOptionsQuery({
-    ...tollTagsPaginationVariables,
+  const {
+    data: fuelCardsData,
+    loading: fuelCardsLoading,
+    error: fuelCardsError,
+  } = useGetAddVehicleFuelCardOptionsQuery({
     variables: {
       data: {
         organisationId,
@@ -132,8 +118,23 @@ const CreateVehicleModal = ({
     },
   });
 
-  const [depots, refetchGetDepots] = useGetAddVehicleDepotOptionsQuery({
-    ...depotsPaginationVariables,
+  const {
+    data: tollTagsData,
+    loading: tollTagsLoading,
+    error: tollTagsError,
+  } = useGetAddVehicleTollTagOptionsQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const {
+    data: depotsData,
+    loading: depotsLoading,
+    error: depotsError,
+  } = useGetAddVehicleDepotOptionsQuery({
     variables: {
       first: 10,
       data: {
@@ -144,13 +145,13 @@ const CreateVehicleModal = ({
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(
-    getDepotOptions(depots.data?.depots.edges as DepotEdge[])
+    getDepotOptions(depotsData?.depots.edges as DepotEdge[])
   );
   const [fuelCardOptions, setFuelCardOptions] = useState(
-    getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
+    getFuelCardOptions(fuelCardsData?.fuelCardsNotAssigned as FuelCard[])
   );
   const [tollTagOptions, setTollTagOptions] = useState(
-    getTollTagOptions(tollTags.data?.tollTagsNotAssigned.edges as TollTagEdge[])
+    getTollTagOptions(tollTagsData?.tollTagsNotAssigned as TollTag[])
   );
 
   const [type, setType] = useState<Option>({
@@ -180,19 +181,17 @@ const CreateVehicleModal = ({
 
   useEffect(() => {
     setTypeOptions(getVehicleTypeOptions());
-    setDepotOptions(getDepotOptions(depots.data?.depots.edges as DepotEdge[]));
+    setDepotOptions(getDepotOptions(depotsData?.depots.edges as DepotEdge[]));
     setFuelCardOptions(
-      getFuelCardOptions(fuelCards.data?.fuelCardsNotAssigned as FuelCard[])
+      getFuelCardOptions(fuelCardsData?.fuelCardsNotAssigned as FuelCard[])
     );
     setTollTagOptions(
-      getTollTagOptions(
-        tollTags.data?.tollTagsNotAssigned.edges as TollTagEdge[]
-      )
+      getTollTagOptions(tollTagsData?.tollTagsNotAssigned as TollTag[])
     );
   }, [
-    depots.data?.depots.edges,
-    fuelCards.data?.fuelCardsNotAssigned,
-    tollTags.data?.tollTagsNotAssigned,
+    depotsData?.depots.edges,
+    fuelCardsData?.fuelCardsNotAssigned,
+    tollTagsData?.tollTagsNotAssigned,
   ]);
 
   const changeRegistration = (event: FormEvent<HTMLInputElement>) => {
@@ -211,7 +210,7 @@ const CreateVehicleModal = ({
     setOwner(event.currentTarget.value);
   };
 
-  const [addVehicleResult, addVehicle] = useAddVehicleMutation();
+  const [addVehicle] = useAddVehicleMutation();
   // update: (cache, { data: mutationReturn }) => {
   //   const newVehicle = mutationReturn?.addVehicle;
 
@@ -289,25 +288,28 @@ const CreateVehicleModal = ({
     changeModalState(false);
 
     try {
-      const variables = {
-        data: {
-          type:
-            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
-          registration: registration != null ? registration : '',
-          make: make != null ? make : '',
-          model: model != null ? model : '',
-          owner: owner != null ? owner : '',
-          cvrt: cvrt != null ? cvrt : null,
-          thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
-          tachoCalibration: tachoCalibration != null ? tachoCalibration : null,
-
-          depotId: depot.value != null ? depot.value : '',
-          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
-          tollTagId: tollTag.value === '' ? null : tollTag.value,
-          organisationId,
+      await addVehicle({
+        variables: {
+          data: {
+            type:
+              type.value != null
+                ? (type.value as VehicleType)
+                : VehicleType.Van,
+            registration: registration != null ? registration : '',
+            make: make != null ? make : '',
+            model: model != null ? model : '',
+            owner: owner != null ? owner : '',
+            cvrt: cvrt != null ? cvrt : null,
+            thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
+            tachoCalibration:
+              tachoCalibration != null ? tachoCalibration : null,
+            depotId: depot.value != null ? depot.value : '',
+            fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+            tollTagId: tollTag.value === '' ? null : tollTag.value,
+            organisationId,
+          },
         },
-      };
-      await addVehicle(variables);
+      });
     } catch {}
 
     setType({

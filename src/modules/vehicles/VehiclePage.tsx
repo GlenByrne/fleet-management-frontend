@@ -11,17 +11,6 @@ import React, { FormEvent, FormEventHandler, useState } from 'react';
 import VehicleTemplate from 'src/templates/VehicleTemplate';
 
 const VehiclePage = () => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const [vehiclesPaginationVariables, setVehiclesPaginationVariables] =
-    useState([
-      {
-        first: 5,
-        after: '',
-      },
-    ]);
-
   const [addVehicleModalState, setAddVehicleModalState] = useState(false);
   const [updateVehicleModalState, setUpdateVehicleModalState] = useState(false);
   const [updateVehicleCVRTModalState, setUpdateVehicleCVRTModalState] =
@@ -110,30 +99,6 @@ const VehiclePage = () => {
       },
     };
     setCurrentVehicle(chosenVehicle);
-  };
-
-  const [vehicles, refetchGetVehicles] = useGetVehiclesQuery({
-    variables: {
-      ...vehiclesPaginationVariables,
-      data: {
-        organisationId,
-      },
-    },
-  });
-
-  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
-    setSearchCriteria(event.currentTarget.value);
-  };
-
-  const searchSubmitHandler: FormEventHandler = (e) => {
-    e.preventDefault();
-    refetchGetVehicles({
-      ...vehiclesPaginationVariables,
-      data: {
-        searchCriteria: searchCriteria,
-        organisationId,
-      },
-    });
   };
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

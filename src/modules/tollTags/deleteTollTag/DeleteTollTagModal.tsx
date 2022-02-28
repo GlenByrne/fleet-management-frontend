@@ -3,16 +3,12 @@ import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import {
-  GetTollTagsDocument,
-  GetTollTagsNotAssignedDocument,
-  GetTollTagsQuery,
-  GetVehiclesDocument,
   UpdateTollTagInput,
   useDeleteTollTagMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import DangerButton from '@/components/atoms/DangerButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
+import DangerButton from '@/components/atoms/Button/DangerButton';
 
 type DeleteTollTagModalProps = {
   searchCriteria: string | null;
@@ -30,17 +26,18 @@ const DeleteTollTagModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [deleteTollTagResult, deleteTollTag] = useDeleteTollTagMutation();
+  const [deleteTollTag] = useDeleteTollTagMutation();
 
   const deleteTagHandler = async (id: string) => {
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          id: id,
+      await deleteTollTag({
+        variables: {
+          data: {
+            id: id,
+          },
         },
-      };
-      await deleteTollTag(variables);
+      });
     } catch {}
   };
 

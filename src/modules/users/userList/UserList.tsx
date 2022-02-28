@@ -1,20 +1,14 @@
 import {
-  GetUsersInOrganisationQuery,
+  useGetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
 } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { UseQueryState } from 'urql';
 import UsersListItem from '@/modules/users/userList/UserListItem';
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 
 type UserListProps = {
-  variables: {
-    first: number;
-    after: string;
-  };
-  isLastPage: boolean;
-  onLoadMore: (after: string) => void;
-  usersList: UseQueryState<GetUsersInOrganisationQuery, object>;
   changeCurrentUser: (user: UsersInOrganisationPayload) => void;
   changeInviteUserModalState: (newState: boolean) => void;
   changeRemoveUserModalState: (newState: boolean) => void;
@@ -22,18 +16,40 @@ type UserListProps = {
 };
 
 const UserList = ({
-  variables,
-  isLastPage,
-  onLoadMore,
-  usersList,
   changeCurrentUser,
   changeInviteUserModalState,
   changeRemoveUserModalState,
   changeUpdateUserModalState,
 }: UserListProps) => {
-  const { data, fetching, error } = usersList;
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
 
-  if (fetching) {
+  const { data, loading, error, refetch } = useGetUsersInOrganisationQuery({
+    variables: {
+      first: 5,
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      first: 5,
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  if (loading) {
     return <Loading />;
   }
 
@@ -47,13 +63,13 @@ const UserList = ({
 
   const users = data.usersInOrganisation;
 
-  return users?.length > 0 ? (
+  return users.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {users?.map((user) => (
+        {users.edges.map((user) => (
           <UsersListItem
-            key={user?.user.id}
-            user={user as UsersInOrganisationPayload}
+            key={user.node.user.id}
+            user={user.node as UsersInOrganisationPayload}
             changeCurrentUser={changeCurrentUser}
             changeRemoveUserModalState={changeRemoveUserModalState}
             changeUpdateUserModalState={changeUpdateUserModalState}

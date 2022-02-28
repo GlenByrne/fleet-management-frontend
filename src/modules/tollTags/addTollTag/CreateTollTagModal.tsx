@@ -2,12 +2,7 @@ import { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import {
-  GetTollTagsDocument,
-  GetTollTagsNotAssignedDocument,
-  GetTollTagsQuery,
-  useAddTollTagMutation,
-} from '@/generated/graphql';
+import { useAddTollTagMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
@@ -38,7 +33,7 @@ const CreateTollTagModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addTollTagResult, addTollTag] = useAddTollTagMutation();
+  const [addTollTag] = useAddTollTagMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
@@ -46,14 +41,15 @@ const CreateTollTagModal = ({
     changeModalState(false);
 
     try {
-      const variables = {
-        data: {
-          tagNumber: tagNumber != null ? tagNumber : '',
-          tagProvider: tagProvider != null ? tagProvider : '',
-          organisationId,
+      await addTollTag({
+        variables: {
+          data: {
+            tagNumber: tagNumber != null ? tagNumber : '',
+            tagProvider: tagProvider != null ? tagProvider : '',
+            organisationId,
+          },
         },
-      };
-      await addTollTag(variables);
+      });
     } catch {}
 
     setTagNumber('');
