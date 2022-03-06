@@ -1,3 +1,4 @@
+import Loading from '@/components/atoms/Loading';
 import {
   useGetUpcomingTachoCalibrationQuery,
   VehicleEdge,
@@ -12,11 +13,24 @@ const UpcomingTachoCalibrationList = () => {
 
   const { data, loading, error } = useGetUpcomingTachoCalibrationQuery({
     variables: {
+      first: 10,
       data: {
         organisationId: organisationId,
       },
     },
   });
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <p>Error</p>;
+  }
+
+  if (!data) {
+    return <p>No data found</p>;
+  }
 
   const vehiclesUpcomingTachoCalibration = data?.upcomingTachoCalibration
     .edges as VehicleEdge[];

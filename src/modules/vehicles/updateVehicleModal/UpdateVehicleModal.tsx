@@ -108,26 +108,23 @@ const UpdateVehicleModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [fuelCards, refetchGetFuelCards] =
-    useGetUpdateVehicleFuelCardOptionsQuery({
-      variables: {
-        data: {
-          organisationId,
-        },
+  const fuelCards = useGetUpdateVehicleFuelCardOptionsQuery({
+    variables: {
+      data: {
+        organisationId,
       },
-    });
+    },
+  });
 
-  const [tollTags, refetchGetTollTags] = useGetUpdateVehicleTollTagOptionsQuery(
-    {
-      variables: {
-        data: {
-          organisationId,
-        },
+  const tollTags = useGetUpdateVehicleTollTagOptionsQuery({
+    variables: {
+      data: {
+        organisationId,
       },
-    }
-  );
+    },
+  });
 
-  const [depots, refetchGetDepots] = useGetUpdateVehicleDepotOptionsQuery({
+  const depots = useGetUpdateVehicleDepotOptionsQuery({
     variables: {
       first: 10,
       data: {
@@ -257,30 +254,34 @@ const UpdateVehicleModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateVehicleResult, updateVehicle] = useUpdateVehicleMutation();
+  const [updateVehicle] = useUpdateVehicleMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          id: currentVehicle.id,
-          type:
-            type.value != null ? (type.value as VehicleType) : VehicleType.Van,
-          registration: registration != null ? registration : '',
-          make: make != null ? make : '',
-          model: model != null ? model : '',
-          owner: owner != null ? owner : '',
-          cvrt: cvrt != null ? cvrt : null,
-          thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
-          tachoCalibration: tachoCalibration != null ? tachoCalibration : null,
-          depotId: depot.value != null ? depot.value : '',
-          fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
-          tollTagId: tollTag.value === '' ? null : tollTag.value,
+      await updateVehicle({
+        variables: {
+          data: {
+            id: currentVehicle.id,
+            type:
+              type.value != null
+                ? (type.value as VehicleType)
+                : VehicleType.Van,
+            registration: registration != null ? registration : '',
+            make: make != null ? make : '',
+            model: model != null ? model : '',
+            owner: owner != null ? owner : '',
+            cvrt: cvrt != null ? cvrt : null,
+            thirteenWeekInspection: thirteenWeek != null ? thirteenWeek : null,
+            tachoCalibration:
+              tachoCalibration != null ? tachoCalibration : null,
+            depotId: depot.value != null ? depot.value : '',
+            fuelCardId: fuelCard.value === '' ? null : fuelCard.value,
+            tollTagId: tollTag.value === '' ? null : tollTag.value,
+          },
         },
-      };
-      await updateVehicle(variables);
+      });
     } catch {}
   };
 

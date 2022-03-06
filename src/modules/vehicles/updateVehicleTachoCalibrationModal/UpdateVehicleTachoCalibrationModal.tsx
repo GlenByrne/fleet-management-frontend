@@ -17,21 +17,21 @@ const UpdateVehicleTachoCalibrationModal = ({
   modalState,
   changeModalState,
 }: UpdateVehicleTachoCalibrationModalProps) => {
-  const [updateTachoCalibrationResult, updateTachoCalibration] =
-    useUpdateVehicleTachoCalibrationMutation();
+  const [updateTachoCalibration] = useUpdateVehicleTachoCalibrationMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          id: currentVehicle.id,
-          completionDate: completionDate,
+      await updateTachoCalibration({
+        variables: {
+          data: {
+            id: currentVehicle.id,
+            completionDate: completionDate,
+          },
         },
-      };
-      await updateTachoCalibration(variables);
+      });
     } catch {}
   };
 

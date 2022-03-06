@@ -12,28 +12,27 @@ import CirclularAddButton from '../atoms/Button/CirclularAddButton';
 
 type HeaderWithSearchbarAndQuickActionButtonProps = {
   setMobileMenuOpen: (newState: boolean) => void;
-  searchSubmitHandler: FormEventHandler<Element>;
-  changeSearchCriteria: (event: FormEvent<HTMLInputElement>) => void;
+  // searchSubmitHandler: FormEventHandler<Element>;
+  // changeSearchCriteria: (event: FormEvent<HTMLInputElement>) => void;
   quickAction: (state: boolean) => void;
   quickActionLabel: string;
 };
 
 const HeaderWithSearchBarAndQuickActionButton = ({
   setMobileMenuOpen,
-  searchSubmitHandler,
-  changeSearchCriteria,
+  // searchSubmitHandler,
+  // changeSearchCriteria,
   quickAction,
   quickActionLabel,
 }: HeaderWithSearchbarAndQuickActionButtonProps) => {
   const router = useRouter();
-  const [logOutResult, logOut] = useLogoutMutation();
+  const [logOut] = useLogoutMutation();
 
   const handleLogOut = () => {
     logOut();
     setAccessToken(null);
     setIsLoggedIn(false);
     router.push('/login');
-    console.log(getAccessToken());
   };
 
   const userNavigation: UserNavbarOption[] = [
@@ -51,10 +50,10 @@ const HeaderWithSearchBarAndQuickActionButton = ({
         <MobileMenuHamburgerButton setMobileMenuOpen={setMobileMenuOpen} />
         <div className="flex flex-1 justify-between px-4 sm:px-6">
           <div className="flex flex-1">
-            <SearchBar
+            {/* <SearchBar
               onSubmit={searchSubmitHandler}
               changeSearchCriteria={changeSearchCriteria}
-            />
+            /> */}
           </div>
 
           <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">

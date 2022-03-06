@@ -17,19 +17,20 @@ const UpdateVehicleCVRTModal = ({
   modalState,
   changeModalState,
 }: UpdateVehicleCVRTModalProps) => {
-  const [updateCVRTResult, updateCVRT] = useUpdateVehicleCvrtMutation();
+  const [updateCVRT] = useUpdateVehicleCvrtMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          id: currentVehicle.id,
+      await updateCVRT({
+        variables: {
+          data: {
+            id: currentVehicle.id,
+          },
         },
-      };
-      await updateCVRT(variables);
+      });
     } catch {}
   };
 

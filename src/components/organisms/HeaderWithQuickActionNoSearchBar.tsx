@@ -21,14 +21,13 @@ const HeaderWithQuickActionNoSearchBar = ({
   quickActionLabel,
 }: HeaderWithQuickActionNoSearchBarProps) => {
   const router = useRouter();
-  const [logOutResult, logOut] = useLogoutMutation();
+  const [logOut] = useLogoutMutation();
 
   const handleLogOut = () => {
     logOut();
     setAccessToken(null);
     setIsLoggedIn(false);
     router.push('/login');
-    console.log(getAccessToken());
   };
 
   const userNavigation: UserNavbarOption[] = [

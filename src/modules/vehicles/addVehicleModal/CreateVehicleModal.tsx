@@ -91,21 +91,6 @@ const CreateVehicleModal = ({
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const [tollTagsPaginationVariables, setTollTagsPaginationVariables] =
-    useState([
-      {
-        first: 5,
-        after: '',
-      },
-    ]);
-
-  const [depotsPaginationVariables, setDepotsPaginationVariables] = useState([
-    {
-      first: 5,
-      after: '',
-    },
-  ]);
-
   const {
     data: fuelCardsData,
     loading: fuelCardsLoading,
@@ -142,6 +127,10 @@ const CreateVehicleModal = ({
       },
     },
   });
+  console.log(fuelCardsData);
+
+  const errors = fuelCardsError || tollTagsError || depotsError;
+  const loading = fuelCardsLoading || tollTagsLoading || depotsLoading;
 
   const [typeOptions, setTypeOptions] = useState(getVehicleTypeOptions());
   const [depotOptions, setDepotOptions] = useState(

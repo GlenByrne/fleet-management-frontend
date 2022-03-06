@@ -111,8 +111,8 @@ const VehiclePage = () => {
       header={
         <HeaderWithSearchBarAndQuickActionButton
           setMobileMenuOpen={changeMobileMenuOpenState}
-          searchSubmitHandler={searchSubmitHandler}
-          changeSearchCriteria={changeSearchCriteria}
+          // searchSubmitHandler={searchSubmitHandler}
+          // changeSearchCriteria={changeSearchCriteria}
           quickAction={changeAddVehicleModalState}
           quickActionLabel="New Vehicle"
         />
@@ -135,38 +135,25 @@ const VehiclePage = () => {
             changeModalState={changeUpdateVehicleModalState}
           />
           <DeleteVehicleModal
-            searchCriteria={searchCriteria}
             currentVehicle={currentVehicle}
             modalState={deleteVehicleModalState}
             changeModalState={changeDeleteVehicleModalState}
           />
-          {vehiclesPaginationVariables.map((variables, i) => (
-            <VehicleList
-              key={'' + variables.after}
-              variables={variables}
-              isLastPage={i === vehiclesPaginationVariables.length - 1}
-              onLoadMore={(after: string) =>
-                setVehiclesPaginationVariables([
-                  ...vehiclesPaginationVariables,
-                  { after, first: 10 },
-                ])
-              }
-              vehiclesList={vehicles}
-              changeAddVehicleModalState={changeAddVehicleModalState}
-              changeDeleteVehicleModalState={changeDeleteVehicleModalState}
-              changeUpdateVehicleModalState={changeUpdateVehicleModalState}
-              changeUpdateVehicleCVRTModalState={
-                changeUpdateVehicleCVRTModalState
-              }
-              changeUpdateVehicleThirteenWeekModalState={
-                changeUpdateVehicleThirteenWeekModalState
-              }
-              changeUpdateVehicleTachoCalibrationModalState={
-                changeUpdateVehicleTachoCalibrationModalState
-              }
-              changeCurrentVehicle={changeCurrentVehicle}
-            />
-          ))}
+          <VehicleList
+            changeAddVehicleModalState={changeAddVehicleModalState}
+            changeDeleteVehicleModalState={changeDeleteVehicleModalState}
+            changeUpdateVehicleModalState={changeUpdateVehicleModalState}
+            changeUpdateVehicleCVRTModalState={
+              changeUpdateVehicleCVRTModalState
+            }
+            changeUpdateVehicleThirteenWeekModalState={
+              changeUpdateVehicleThirteenWeekModalState
+            }
+            changeUpdateVehicleTachoCalibrationModalState={
+              changeUpdateVehicleTachoCalibrationModalState
+            }
+            changeCurrentVehicle={changeCurrentVehicle}
+          />
         </>
       }
     />

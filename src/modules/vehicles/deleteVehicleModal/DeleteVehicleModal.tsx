@@ -9,32 +9,28 @@ import DangerButton from '@/components/atoms/Button/DangerButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
 
 type DeleteVehicleModalProps = {
-  searchCriteria: string | null;
   currentVehicle: VehicleUpdateModalItem;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
 const DeleteVehicleModal = ({
-  searchCriteria,
   currentVehicle,
   modalState,
   changeModalState,
 }: DeleteVehicleModalProps) => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-
-  const [deleteVehicleResult, deleteVehicle] = useDeleteVehicleMutation();
+  const [deleteVehicle] = useDeleteVehicleMutation();
 
   const deleteVehicleHandler = async (id: string) => {
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          id: id,
+      await deleteVehicle({
+        variables: {
+          data: {
+            id: id,
+          },
         },
-      };
-      await deleteVehicle(variables);
+      });
     } catch {}
   };
 

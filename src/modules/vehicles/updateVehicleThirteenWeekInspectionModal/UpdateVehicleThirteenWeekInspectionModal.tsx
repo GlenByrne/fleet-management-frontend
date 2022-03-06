@@ -17,21 +17,21 @@ const UpdateVehicleThirteenWeekModal = ({
   modalState,
   changeModalState,
 }: UpdateVehicleThirteenWeekInspectionModalProps) => {
-  const [updateThirteenWeekResult, updateThirteenWeek] =
-    useUpdateVehicleThirteenWeekInspectionMutation();
+  const [updateThirteenWeek] = useUpdateVehicleThirteenWeekInspectionMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
     try {
-      const variables = {
-        data: {
-          id: currentVehicle.id,
-          completionDate: completionDate,
+      await updateThirteenWeek({
+        variables: {
+          data: {
+            id: currentVehicle.id,
+            completionDate: completionDate,
+          },
         },
-      };
-      await updateThirteenWeek(variables);
+      });
     } catch {}
   };
 

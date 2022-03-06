@@ -1,3 +1,4 @@
+import Loading from '@/components/atoms/Loading';
 import {
   useGetUpcomingCvrtQuery,
   Vehicle,
@@ -13,11 +14,24 @@ const UpcomingCvrtList = () => {
 
   const { data, loading, error } = useGetUpcomingCvrtQuery({
     variables: {
+      first: 10,
       data: {
         organisationId: organisationId,
       },
     },
   });
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <p>Error</p>;
+  }
+
+  if (!data) {
+    return <p>No data found</p>;
+  }
 
   const vehiclesUpcomingCVRT = data?.upcomingCVRT.edges as VehicleEdge[];
 

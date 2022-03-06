@@ -91,7 +91,7 @@ const VehicleList = ({
           />;
         })}
       </ul>
-      <InView
+      {/* <InView
         onChange={() => {
           if (hasNextPage == true) {
             onLoadMore(vehicles.pageInfo.endCursor as string);
@@ -101,7 +101,7 @@ const VehicleList = ({
         {({ inView, ref }) => (
           <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
         )}
-      </InView>
+      </InView> */}
     </div>
   ) : (
     <NoListItemButton
