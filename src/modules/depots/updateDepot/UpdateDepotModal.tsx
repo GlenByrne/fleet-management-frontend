@@ -29,9 +29,6 @@ const UpdateDepotModal = ({
   modalState,
   changeModalState,
 }: UpdateDepotModalProps) => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-
   const [name, setName] = useState('');
 
   useEffect(() => {
@@ -44,19 +41,20 @@ const UpdateDepotModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateDepotResult, updateDepot] = useUpdateDepotMutation();
+  const [updateDepot] = useUpdateDepotMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const variables = {
-      data: {
-        id: currentDepot.id,
-        name: name != null ? name : '',
-      },
-    };
     try {
-      await updateDepot(variables);
+      await updateDepot({
+        variables: {
+          data: {
+            id: currentDepot.id,
+            name: name != null ? name : '',
+          },
+        },
+      });
     } catch {
       throw new Error('Error updating depot');
     }

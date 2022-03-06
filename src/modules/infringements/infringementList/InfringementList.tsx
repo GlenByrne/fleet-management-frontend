@@ -1,15 +1,9 @@
 import Loading from '@/components/atoms/Loading';
-import {
-  GetInfringementsQuery,
-  Infringement,
-  InfringementEdge,
-} from '@/generated/graphql';
+import { Infringement, useGetInfringementsQuery } from '@/generated/graphql';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { UseQueryState } from 'urql';
 import InfringementListItem from './InfringementListItem';
 
 type InfringementListProps = {
-  infringementList: UseQueryState<GetInfringementsQuery, object>;
   changeCurrentInfringement: (infringement: Infringement) => void;
   changeAddInfringementModalState: (newState: boolean) => void;
   changeDeleteInfringementModalState: (newState: boolean) => void;
@@ -18,16 +12,19 @@ type InfringementListProps = {
 };
 
 const InfringementList = ({
-  infringementList,
   changeCurrentInfringement,
   changeAddInfringementModalState,
   changeDeleteInfringementModalState,
   changeUpdateInfringementModalState,
   changeUpdateInfringementStatusModalState,
 }: InfringementListProps) => {
-  const { data, fetching, error } = infringementList;
+  const { data, loading, error } = useGetInfringementsQuery({
+    variables: {
+      first: 10,
+    },
+  });
 
-  if (fetching) {
+  if (loading) {
     return <Loading />;
   }
 

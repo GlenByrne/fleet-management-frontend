@@ -33,21 +33,21 @@ const CreateFuelCardModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addFuelCardResult, addFuelCard] = useAddFuelCardMutation();
+  const [addFuelCard] = useAddFuelCardMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
-
     changeModalState(false);
-    const variables = {
-      data: {
-        cardNumber: cardNumber != null ? cardNumber : '',
-        cardProvider: cardProvider != null ? cardProvider : '',
-        organisationId,
-      },
-    };
     try {
-      await addFuelCard(variables);
+      await addFuelCard({
+        variables: {
+          data: {
+            cardNumber: cardNumber != null ? cardNumber : '',
+            cardProvider: cardProvider != null ? cardProvider : '',
+            organisationId,
+          },
+        },
+      });
     } catch {}
 
     setCardNumber('');

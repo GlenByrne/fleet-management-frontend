@@ -2,14 +2,12 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import {
-  GetInfringementsDocument,
-  GetInfringementsQuery,
   UpdateInfringementInput,
   useDeleteInfringementMutation,
 } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import DangerButton from '@/components/atoms/DangerButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
+import DangerButton from '@/components/atoms/Button/DangerButton';
 
 type DeleteInfringementModalProps = {
   currentInfringement: UpdateInfringementInput;
@@ -22,18 +20,18 @@ const DeleteInfringementModal = ({
   modalState,
   changeModalState,
 }: DeleteInfringementModalProps) => {
-  const [deleteInfringementResult, deleteInfringement] =
-    useDeleteInfringementMutation();
+  const [deleteInfringement] = useDeleteInfringementMutation();
 
   const deleteTagHandler = async (id: string) => {
     changeModalState(false);
-    const variables = {
-      data: {
-        id: id,
-      },
-    };
     try {
-      await deleteInfringement(variables);
+      await deleteInfringement({
+        variables: {
+          data: {
+            id: id,
+          },
+        },
+      });
     } catch {}
   };
 

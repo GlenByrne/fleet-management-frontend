@@ -1,21 +1,12 @@
-import DeleteButton from '@/components/atoms/Button/DeleteButton';
-import EditButton from '@/components/atoms/Button/EditButton';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import {
-  Depot,
-  DepotEdge,
-  GetDepotsQuery,
-  GetDepotsWithVehiclesQuery,
-} from '@/generated/graphql';
-import Link from 'next/link';
+import { Depot, useGetDepotsQuery } from '@/generated/graphql';
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 import InView from 'react-intersection-observer';
-import { UseQueryState } from 'urql';
 import DepotListItem from './DepotListItem';
 
 type DepotListProps = {
-  depotList: UseQueryState<GetDepotsWithVehiclesQuery, object>;
-  fetchMore: () => void;
   changeCurrentDepot: (depot: Depot) => void;
   changeAddDepotModalState: (newState: boolean) => void;
   changeDeleteDepotModalState: (newState: boolean) => void;
@@ -23,16 +14,40 @@ type DepotListProps = {
 };
 
 const DepotList = ({
-  depotList,
-  fetchMore,
   changeCurrentDepot,
   changeAddDepotModalState,
   changeDeleteDepotModalState,
   changeUpdateDepotModalState,
 }: DepotListProps) => {
-  const { data, fetching, error } = depotList;
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
 
-  if (fetching) {
+  const { data, loading, error, refetch } = useGetDepotsQuery({
+    variables: {
+      first: 10,
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      first: 10,
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  if (loading) {
     return <Loading />;
   }
 
@@ -61,7 +76,7 @@ const DepotList = ({
           />
         ))}
       </ul>
-      <InView
+      {/* <InView
         onChange={() => {
           if (hasNextPage == true) {
             fetchMore();
@@ -71,7 +86,7 @@ const DepotList = ({
         {({ inView, ref }) => (
           <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
         )}
-      </InView>
+      </InView> */}
     </div>
   ) : (
     <NoListItemButton

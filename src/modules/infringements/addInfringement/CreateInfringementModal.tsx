@@ -12,6 +12,7 @@ import {
   DriversInOrganisationPayload,
   GetDriversQuery,
   useAddInfringementMutation,
+  useGetDriversQuery,
 } from '@/generated/graphql';
 import { Option } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
@@ -20,10 +21,8 @@ import ModalFormSelect from '@/components/molecules/Inputs/ModalFormSelect';
 import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
-import { UseQueryState } from 'urql';
 
 type CreateInfringementModalProps = {
-  drivers: UseQueryState<GetDriversQuery, object>;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
@@ -37,18 +36,23 @@ const getDriverOptions = (drivers: DriversInOrganisationPayload[]) => {
 };
 
 const CreateInfringementModal = ({
-  drivers,
   modalState,
   changeModalState,
 }: CreateInfringementModalProps) => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
-  const { data, fetching, error } = drivers;
+  const { data, loading, error } = useGetDriversQuery({
+    variables: {
+      data: {
+        organisationId,
+      },
+    },
+  });
 
   const [driverOptions, setDriverOptions] = useState(
     getDriverOptions(
-      data?.driversInOrganisation as DriversInOrganisationPayload[]
+      data?.driversInOrganisation.edges as DriversInOrganisationPayload[]
     )
   );
   const [description, setDescription] = useState('');
@@ -70,7 +74,7 @@ const CreateInfringementModal = ({
     setDescription(event.currentTarget.value);
   };
 
-  const [addInfringementResult, addInfringement] = useAddInfringementMutation();
+  const [addInfringement] = useAddInfringementMutation();
 
   const cancelButtonRef = useRef(null);
 
@@ -78,16 +82,17 @@ const CreateInfringementModal = ({
     e.preventDefault();
     if (driver.value != null) {
       changeModalState(false);
-      const variables = {
-        data: {
-          description: description,
-          driverId: driver.value,
-          dateOccured: dateOccured,
-          organisationId,
-        },
-      };
       try {
-        await addInfringement(variables);
+        await addInfringement({
+          variables: {
+            data: {
+              description: description,
+              driverId: driver.value,
+              dateOccured: dateOccured,
+              organisationId,
+            },
+          },
+        });
       } catch {}
 
       setDescription('');
@@ -100,7 +105,7 @@ const CreateInfringementModal = ({
     }
   };
 
-  if (fetching) {
+  if (loading) {
     return <div></div>;
   }
 

@@ -13,29 +13,32 @@ type OrganisationInvitesListItemProps = {
 const OrganisationInviteListItem = ({
   invite,
 }: OrganisationInvitesListItemProps) => {
-  const [acceptInviteResult, acceptInvite] = useAcceptInviteMutation();
+  const [acceptInvite] = useAcceptInviteMutation();
 
-  const [declineInviteResult, declineInvite] = useDeclineInviteMutation();
+  const [declineInvite] = useDeclineInviteMutation();
 
   const handleAcceptInvite = async () => {
     try {
-      const variables = {
-        data: {
-          organisationId: invite.organisation.id,
+      const variables = {};
+      await acceptInvite({
+        variables: {
+          data: {
+            organisationId: invite.organisation.id,
+          },
         },
-      };
-      await acceptInvite(variables);
+      });
     } catch {}
   };
 
   const handleDeclineInvite = async () => {
     try {
-      const variables = {
-        data: {
-          organisationId: invite.organisation.id,
+      await declineInvite({
+        variables: {
+          data: {
+            organisationId: invite.organisation.id,
+          },
         },
-      };
-      await declineInvite(variables);
+      });
     } catch {}
   };
 

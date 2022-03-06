@@ -69,20 +69,22 @@ const UpdateDefectModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateDefectResult, updateDefect] = useUpdateDefectMutation();
+  const [updateDefect] = useUpdateDefectMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const variables = {
-      data: {
-        id: currentDefect.id,
-        description: description != null ? description : '',
-        status: status.value as DefectStatus,
-      },
-    };
+
     try {
-      await updateDefect(variables);
+      await updateDefect({
+        variables: {
+          data: {
+            id: currentDefect.id,
+            description: description != null ? description : '',
+            status: status.value as DefectStatus,
+          },
+        },
+      });
     } catch {}
   };
 

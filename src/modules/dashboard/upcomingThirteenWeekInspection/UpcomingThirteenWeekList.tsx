@@ -1,17 +1,36 @@
-import { Vehicle } from '@/generated/graphql';
+import {
+  useGetUpcomingThirteenWeekQuery,
+  VehicleEdge,
+  VehicleType,
+} from '@/generated/graphql';
+import { useRouter } from 'next/router';
 import UpcomingThirteenWeekListItem from './UpcomingThirteenWeekListItem';
 
-type UpcomingThirteenWeekListProps = {
-  vans: Vehicle[];
-  trucks: Vehicle[];
-  trailers: Vehicle[];
-};
+const UpcomingThirteenWeekList = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
 
-const UpcomingThirteenWeekList = ({
-  vans,
-  trucks,
-  trailers,
-}: UpcomingThirteenWeekListProps) => {
+  const { data, loading, error } = useGetUpcomingThirteenWeekQuery({
+    variables: {
+      data: {
+        organisationId: organisationId,
+      },
+    },
+  });
+
+  const vehiclesUpcomingThirteenWeek = data?.upcomingThirteenWeek
+    .edges as VehicleEdge[];
+
+  const vans = vehiclesUpcomingThirteenWeek.filter(
+    (vehicle) => vehicle.node.type === VehicleType.Van
+  );
+  const trucks = vehiclesUpcomingThirteenWeek.filter(
+    (vehicle) => vehicle.node.type === VehicleType.Truck
+  );
+  const trailers = vehiclesUpcomingThirteenWeek.filter(
+    (vehicle) => vehicle.node.type === VehicleType.Trailer
+  );
+
   return (
     <div className="overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="grid grid-cols-5 gap-0">
@@ -24,8 +43,8 @@ const UpcomingThirteenWeekList = ({
           <ul role="list" className="divide-y divide-gray-200">
             {vans.map((vehicle) => (
               <UpcomingThirteenWeekListItem
-                key={vehicle.id}
-                vehicle={vehicle}
+                key={vehicle.node.id}
+                vehicle={vehicle.node}
               />
             ))}
           </ul>
@@ -39,8 +58,8 @@ const UpcomingThirteenWeekList = ({
           <ul role="list" className="divide-y divide-gray-200">
             {trucks.map((vehicle) => (
               <UpcomingThirteenWeekListItem
-                key={vehicle.id}
-                vehicle={vehicle}
+                key={vehicle.node.id}
+                vehicle={vehicle.node}
               />
             ))}
           </ul>
@@ -54,8 +73,8 @@ const UpcomingThirteenWeekList = ({
           <ul role="list" className="divide-y divide-gray-200">
             {trailers.map((vehicle) => (
               <UpcomingThirteenWeekListItem
-                key={vehicle.id}
-                vehicle={vehicle}
+                key={vehicle.node.id}
+                vehicle={vehicle.node}
               />
             ))}
           </ul>

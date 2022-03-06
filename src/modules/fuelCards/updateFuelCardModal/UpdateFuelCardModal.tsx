@@ -9,8 +9,6 @@ import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
-  GetFuelCardsNotAssignedDocument,
-  GetVehiclesDocument,
   UpdateFuelCardInput,
   useUpdateFuelCardMutation,
 } from '@/generated/graphql';
@@ -30,10 +28,6 @@ const UpdateFuelCardModal = ({
   modalState,
   changeModalState,
 }: UpdateFuelCardModalProps) => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-  // const [modalState, setModalState] = useState(false);
-
   const [cardNumber, setCardNumber] = useState('');
   const [cardProvider, setCardProvider] = useState('');
 
@@ -52,20 +46,21 @@ const UpdateFuelCardModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateFuelCardResult, updateFuelCard] = useUpdateFuelCardMutation();
+  const [updateFuelCard] = useUpdateFuelCardMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const variables = {
-      data: {
-        id: currentFuelCard.id,
-        cardNumber: cardNumber != null ? cardNumber : '',
-        cardProvider: cardProvider != null ? cardProvider : '',
-      },
-    };
     try {
-      await updateFuelCard(variables);
+      await updateFuelCard({
+        variables: {
+          data: {
+            id: currentFuelCard.id,
+            cardNumber: cardNumber != null ? cardNumber : '',
+            cardProvider: cardProvider != null ? cardProvider : '',
+          },
+        },
+      });
     } catch {}
   };
 

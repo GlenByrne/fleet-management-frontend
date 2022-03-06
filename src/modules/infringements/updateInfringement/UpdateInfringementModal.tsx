@@ -73,22 +73,22 @@ const UpdateInfringementModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [updateInfringementResult, updateInfringement] =
-    useUpdateInfringementMutation();
+  const [updateInfringement] = useUpdateInfringementMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const variables = {
-      data: {
-        id: currentInfringement.id,
-        description: description,
-        dateOccured: dateOccured,
-        status: status.value as InfringementStatus,
-      },
-    };
     try {
-      await updateInfringement(variables);
+      await updateInfringement({
+        variables: {
+          data: {
+            id: currentInfringement.id,
+            description: description,
+            dateOccured: dateOccured,
+            status: status.value as InfringementStatus,
+          },
+        },
+      });
     } catch {}
   };
 

@@ -28,19 +28,20 @@ const CreateDepotModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addDepotResult, addDepot] = useAddDepotMutation();
+  const [addDepot] = useAddDepotMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const variables = {
-      data: {
-        name: name != null ? name : '',
-        organisationId,
-      },
-    };
     try {
-      await addDepot(variables);
+      await addDepot({
+        variables: {
+          data: {
+            name: name != null ? name : '',
+            organisationId,
+          },
+        },
+      });
     } catch {}
 
     setName('');

@@ -1,11 +1,10 @@
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import { Defect, GetVehicleDefectsQuery } from '@/generated/graphql';
-import { UseQueryState } from 'urql';
+import { Defect, useGetVehicleDefectsQuery } from '@/generated/graphql';
+import { useRouter } from 'next/router';
 import DefectListItem from './DefectListItem';
 
 type DefectListProps = {
-  defectList: UseQueryState<GetVehicleDefectsQuery, object>;
   changeCurrentDefect: (defect: Defect) => void;
   changeAddDefectModalState: (newState: boolean) => void;
   changeDeleteDefectModalState: (newState: boolean) => void;
@@ -13,15 +12,25 @@ type DefectListProps = {
 };
 
 const DefectList = ({
-  defectList,
   changeCurrentDefect,
   changeAddDefectModalState,
   changeDeleteDefectModalState,
   changeUpdateDefectModalState,
 }: DefectListProps) => {
-  const { data, fetching, error } = defectList;
+  const router = useRouter();
+  const vehicleId = String(router.query.vehicleId);
+  const organisationId = String(router.query.organisationId);
 
-  if (fetching) {
+  const { data, loading, error } = useGetVehicleDefectsQuery({
+    variables: {
+      data: {
+        organisationId,
+        vehicleId,
+      },
+    },
+  });
+
+  if (loading) {
     return <Loading />;
   }
 
@@ -33,15 +42,15 @@ const DefectList = ({
     <div></div>;
   }
 
-  const defects = data?.defectsForVehicles;
+  const defects = data?.defectsForVehicle;
 
-  return defects.length > 0 ? (
+  return defects?.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
       <ul role="list" className="divide-y divide-gray-200">
-        {defects.map((defect) => (
+        {defects?.edges.map((defect) => (
           <DefectListItem
             key={defect?.id}
-            defect={defect as Defect}
+            defect={defect.node as Defect}
             changeCurrentDefect={changeCurrentDefect}
             changeDeleteDefectModalState={changeDeleteDefectModalState}
             changeUpdateDefectModalState={changeUpdateDefectModalState}

@@ -28,19 +28,20 @@ const CreateDefectModal = ({
 
   const cancelButtonRef = useRef(null);
 
-  const [addDefectResult, addDefect] = useAddDefectMutation();
+  const [addDefect] = useAddDefectMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const variables = {
-      data: {
-        description: description != null ? description : '',
-        vehicleId: vehicleId,
-      },
-    };
     try {
-      await addDefect(variables);
+      await addDefect({
+        variables: {
+          data: {
+            description: description != null ? description : '',
+            vehicleId: vehicleId,
+          },
+        },
+      });
     } catch {}
 
     setDescription('');

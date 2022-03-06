@@ -1,7 +1,6 @@
 import HeaderNoSearchBarOrQuickAction from '@/components/organisms/HeaderNoSearchBarOrQuickAction';
 import SideNav from '@/components/organisms/SideNav';
 import {
-  useGetUpcomingCvrtQuery,
   useGetUpcomingThirteenWeekQuery,
   useGetUpcomingTachoCalibrationQuery,
 } from '@/generated/graphql';
@@ -13,30 +12,6 @@ import MainDashboard from './mainDashboard/MainDashboard';
 const DashboardPage = () => {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
-
-  const [upcomingCVRT] = useGetUpcomingCvrtQuery({
-    variables: {
-      data: {
-        organisationId: organisationId,
-      },
-    },
-  });
-
-  const [upcomingThirteenWeek] = useGetUpcomingThirteenWeekQuery({
-    variables: {
-      data: {
-        organisationId: organisationId,
-      },
-    },
-  });
-
-  const [upcomingTachoCalibration] = useGetUpcomingTachoCalibrationQuery({
-    variables: {
-      data: {
-        organisationId: organisationId,
-      },
-    },
-  });
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -57,13 +32,7 @@ const DashboardPage = () => {
           setMobileMenuOpen={changeMobileMenuOpenState}
         />
       }
-      content={
-        <MainDashboard
-          upcomingCVRT={upcomingCVRT}
-          upcomingThirteenWeek={upcomingThirteenWeek}
-          upcomingTachoCalibration={upcomingTachoCalibration}
-        />
-      }
+      content={<MainDashboard />}
     />
   );
 };

@@ -1,18 +1,12 @@
-import { FuelCard, GetFuelCardsQuery } from '@/generated/graphql';
+import { FuelCard, useGetFuelCardsQuery } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import InView from 'react-intersection-observer';
 import FuelCardListItem from './FuelCardListItem';
-import { UseQueryState } from 'urql';
+import { FormEvent, FormEventHandler, useState } from 'react';
+import { useRouter } from 'next/router';
 
 type FuelCardListProps = {
-  variables: {
-    first: number;
-    after: string;
-  };
-  isLastPage: boolean;
-  onLoadMore: (after: string) => void;
-  fuelCardsList: UseQueryState<GetFuelCardsQuery, object>;
   changeCurrentFuelCard: (fuelCard: FuelCard) => void;
   changeAddFuelCardModalState: (newState: boolean) => void;
   changeDeleteFuelCardModalState: (newState: boolean) => void;
@@ -20,18 +14,40 @@ type FuelCardListProps = {
 };
 
 const FuelCardList = ({
-  variables,
-  isLastPage,
-  onLoadMore,
-  fuelCardsList,
   changeCurrentFuelCard,
   changeAddFuelCardModalState,
   changeDeleteFuelCardModalState,
   changeUpdateFuelCardModalState,
 }: FuelCardListProps) => {
-  const { data, fetching, error } = fuelCardsList;
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
+  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
 
-  if (fetching) {
+  const { data, loading, error, refetch } = useGetFuelCardsQuery({
+    variables: {
+      first: 5,
+      data: {
+        organisationId,
+      },
+    },
+  });
+
+  const searchSubmitHandler: FormEventHandler = (e) => {
+    e.preventDefault();
+    refetch({
+      first: 5,
+      data: {
+        searchCriteria: searchCriteria,
+        organisationId,
+      },
+    });
+  };
+
+  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
+    setSearchCriteria(event.currentTarget.value);
+  };
+
+  if (loading) {
     return <Loading />;
   }
 
@@ -60,17 +76,6 @@ const FuelCardList = ({
           />
         ))}
       </ul>
-      <InView
-        onChange={() => {
-          if (hasNextPage) {
-            onLoadMore(fuelCards.pageInfo.endCursor as string);
-          }
-        }}
-      >
-        {({ inView, ref }) => (
-          <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
-        )}
-      </InView>
     </div>
   ) : (
     <NoListItemButton
@@ -79,24 +84,6 @@ const FuelCardList = ({
       text="Add a new fuel card"
     />
   );
-
-  // const { ref, inView } = useInView({});
-  // useEffect(() => {
-  //   // subscribeToMore({
-  //   //   document: FuelCardAddedDocument,
-  //   //   updateQuery: (prev, { subscriptionData }) => {
-  //   //     if (!subscriptionData.data) return prev;
-  //   //     const newCard = subscriptionData.data.fuelCards;
-
-  //   //     return Object.assign({}, prev, {
-  //   //       fuelCards: [newCard, ...prev.fuelCards],
-  //   //     });
-  //   //   },
-  //   // });
-  //   if (inView) {
-  //     fetchMore();
-  //   }
-  // }, [inView]);
 };
 
 export default FuelCardList;

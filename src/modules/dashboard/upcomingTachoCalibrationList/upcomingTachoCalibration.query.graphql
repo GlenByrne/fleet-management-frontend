@@ -1,9 +1,9 @@
 query GetUpcomingTachoCalibration(
-  $data: DriversInOrganisationInput!
+  $data: UpcomingTachoCalibrationInput!
   $first: Int
-  $after: String
+  $last: Int
 ) {
-  driversInOrganisation(data: $data, first: $first, after: $after) {
+  upcomingTachoCalibration(data: $data, first: $first, last: $last) {
     pageInfo {
       endCursor
       hasNextPage
@@ -11,22 +11,10 @@ query GetUpcomingTachoCalibration(
     edges {
       cursor
       node {
-        user {
-          id
-          name
-          email
-          infringements {
-            id
-            description
-            dateOccured
-            status
-          }
-        }
-        role
-        depot {
-          id
-          name
-        }
+        id
+        registration
+        tachoCalibration
+        type
       }
     }
   }

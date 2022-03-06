@@ -1,17 +1,36 @@
-import { Vehicle } from '@/generated/graphql';
+import {
+  useGetUpcomingTachoCalibrationQuery,
+  VehicleEdge,
+  VehicleType,
+} from '@/generated/graphql';
+import { useRouter } from 'next/router';
 import UpcomingTachoCalibrationListItem from './UpcomingTachoCalibrationListItem';
 
-type UpcomingTachoCalibrationListProps = {
-  vans: Vehicle[];
-  trucks: Vehicle[];
-  trailers: Vehicle[];
-};
+const UpcomingTachoCalibrationList = () => {
+  const router = useRouter();
+  const organisationId = String(router.query.organisationId);
 
-const UpcomingTachoCalibrationList = ({
-  vans,
-  trucks,
-  trailers,
-}: UpcomingTachoCalibrationListProps) => {
+  const { data, loading, error } = useGetUpcomingTachoCalibrationQuery({
+    variables: {
+      data: {
+        organisationId: organisationId,
+      },
+    },
+  });
+
+  const vehiclesUpcomingTachoCalibration = data?.upcomingTachoCalibration
+    .edges as VehicleEdge[];
+
+  const vans = vehiclesUpcomingTachoCalibration.filter(
+    (vehicle) => vehicle.node.type === VehicleType.Van
+  );
+  const trucks = vehiclesUpcomingTachoCalibration.filter(
+    (vehicle) => vehicle.node.type === VehicleType.Truck
+  );
+  const trailers = vehiclesUpcomingTachoCalibration.filter(
+    (vehicle) => vehicle.node.type === VehicleType.Trailer
+  );
+
   return (
     <div className="overflow-hidden bg-white shadow sm:rounded-lg">
       <div className="grid grid-cols-5 gap-0">
@@ -24,8 +43,8 @@ const UpcomingTachoCalibrationList = ({
           <ul role="list" className="divide-y divide-gray-200">
             {vans.map((vehicle) => (
               <UpcomingTachoCalibrationListItem
-                key={vehicle.id}
-                vehicle={vehicle}
+                key={vehicle.node.id}
+                vehicle={vehicle.node}
               />
             ))}
           </ul>
@@ -39,8 +58,8 @@ const UpcomingTachoCalibrationList = ({
           <ul role="list" className="divide-y divide-gray-200">
             {trucks.map((vehicle) => (
               <UpcomingTachoCalibrationListItem
-                key={vehicle.id}
-                vehicle={vehicle}
+                key={vehicle.node.id}
+                vehicle={vehicle.node}
               />
             ))}
           </ul>
@@ -54,8 +73,8 @@ const UpcomingTachoCalibrationList = ({
           <ul role="list" className="divide-y divide-gray-200">
             {trailers.map((vehicle) => (
               <UpcomingTachoCalibrationListItem
-                key={vehicle.id}
-                vehicle={vehicle}
+                key={vehicle.node.id}
+                vehicle={vehicle.node}
               />
             ))}
           </ul>

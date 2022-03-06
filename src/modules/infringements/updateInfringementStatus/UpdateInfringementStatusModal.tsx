@@ -20,19 +20,19 @@ const UpdateInfringementStatusModal = ({
   modalState,
   changeModalState,
 }: UpdateInfringementStatusModalProps) => {
-  const [updateStatusResult, updateStatus] =
-    useUpdateInfringementStatusMutation();
+  const [updateStatus] = useUpdateInfringementStatusMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
     e.preventDefault();
     changeModalState(false);
-    const result = {
-      data: {
-        id: currentInfringement.id,
-      },
-    };
     try {
-      await updateStatus(result);
+      await updateStatus({
+        variables: {
+          data: {
+            id: currentInfringement.id,
+          },
+        },
+      });
     } catch {}
   };
 

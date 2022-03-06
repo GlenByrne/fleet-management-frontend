@@ -1,16 +1,10 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
-import {
-  Defect,
-  GetVehicleDefectsDocument,
-  GetVehicleDefectsQuery,
-  useDeleteDefectMutation,
-} from '@/generated/graphql';
+import { Defect, useDeleteDefectMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import DangerButton from '@/components/atoms/DangerButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
+import DangerButton from '@/components/atoms/Button/DangerButton';
 
 type DeleteDefectModalProps = {
   currentDefect: Defect;
@@ -23,20 +17,18 @@ const DeleteDefectModal = ({
   modalState,
   changeModalState,
 }: DeleteDefectModalProps) => {
-  const router = useRouter();
-  const vehicleId = String(router.query.id);
-
-  const [deleteDefectResult, deleteDefect] = useDeleteDefectMutation();
+  const [deleteDefect] = useDeleteDefectMutation();
 
   const deleteDefectHandler = async (id: string) => {
     changeModalState(false);
-    const variables = {
-      data: {
-        id: id,
-      },
-    };
     try {
-      await deleteDefect(variables);
+      await deleteDefect({
+        variables: {
+          data: {
+            id: id,
+          },
+        },
+      });
     } catch {}
   };
 

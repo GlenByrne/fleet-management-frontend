@@ -22,20 +22,18 @@ const DeleteFuelCardModal = ({
   modalState,
   changeModalState,
 }: DeleteFuelCardModalProps) => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-
-  const [deleteFuelCardResult, deleteFuelCard] = useDeleteFuelCardMutation();
+  const [deleteFuelCard] = useDeleteFuelCardMutation();
 
   const deleteCardHandler = async (id: string) => {
     changeModalState(false);
-    const variables = {
-      data: {
-        id: id,
-      },
-    };
     try {
-      await deleteFuelCard(variables);
+      await deleteFuelCard({
+        variables: {
+          data: {
+            id: id,
+          },
+        },
+      });
     } catch {}
   };
 

@@ -2,42 +2,34 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
-import {
-  GetVehiclesDocument,
-  UpdateDepotInput,
-  useDeleteDepotMutation,
-} from '@/generated/graphql';
+import { UpdateDepotInput, useDeleteDepotMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
-import DangerButton from '@/components/atoms/DangerButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
+import DangerButton from '@/components/atoms/Button/DangerButton';
 
 type DeleteDepotModalProps = {
-  searchCriteria: string | null;
   currentDepot: UpdateDepotInput;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
 const DeleteDepotModal = ({
-  searchCriteria,
   currentDepot,
   modalState,
   changeModalState,
 }: DeleteDepotModalProps) => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-
-  const [deleteDepotResult, deleteDepot] = useDeleteDepotMutation();
+  const [deleteDepot] = useDeleteDepotMutation();
 
   const deleteDepotHandler = async (id: string) => {
     changeModalState(false);
-    const variables = {
-      data: {
-        id: id,
-      },
-    };
     try {
-      await deleteDepot(variables);
+      await deleteDepot({
+        variables: {
+          data: {
+            id: id,
+          },
+        },
+      });
     } catch {}
   };
 

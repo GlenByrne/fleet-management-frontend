@@ -1,9 +1,5 @@
-query GetDrivers(
-  $data: DriversInOrganisationInput!
-  $first: Int
-  $after: String
-) {
-  driversInOrganisation(data: $data, first: $first, after: $after) {
+query GetUpcomingCVRT($data: UpcomingCVRTInput!, $first: Int, $last: Int) {
+  upcomingCVRT(data: $data, first: $first, last: $last) {
     pageInfo {
       endCursor
       hasNextPage
@@ -11,22 +7,10 @@ query GetDrivers(
     edges {
       cursor
       node {
-        user {
-          id
-          name
-          email
-          infringements {
-            id
-            description
-            dateOccured
-            status
-          }
-        }
-        role
-        depot {
-          id
-          name
-        }
+        id
+        registration
+        cvrt
+        type
       }
     }
   }

@@ -1,13 +1,10 @@
 import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import SideNav from '@/components/organisms/SideNav';
 import {
-  useGetInfringementsQuery,
-  useGetDriversQuery,
   UpdateInfringementInput,
   InfringementStatus,
   Infringement,
 } from '@/generated/graphql';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import InfringementTemplate from 'src/templates/InfringementTemplate';
 import CreateInfringementModal from './addInfringement/CreateInfringementModal';
@@ -17,23 +14,6 @@ import UpdateInfringementModal from './updateInfringement/UpdateInfringementModa
 import UpdateInfringementStatusModal from './updateInfringementStatus/UpdateInfringementStatusModal';
 
 const InfringementPage = () => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-
-  const [infringements, refetchInfringements] = useGetInfringementsQuery({
-    variables: {
-      first: 10,
-    },
-  });
-
-  const [drivers, refetchDrivers] = useGetDriversQuery({
-    variables: {
-      data: {
-        organisationId,
-      },
-    },
-  });
-
   const [addInfringementModalState, setAddInfringementModalState] =
     useState(false);
   const [updateInfringementModalState, setUpdateInfringementModalState] =
@@ -103,7 +83,6 @@ const InfringementPage = () => {
       content={
         <>
           <CreateInfringementModal
-            drivers={drivers}
             modalState={addInfringementModalState}
             changeModalState={changeAddInfringementModalState}
           />
@@ -123,7 +102,6 @@ const InfringementPage = () => {
             changeModalState={changeDeleteInfringementModalState}
           />
           <InfringementList
-            infringementList={infringements}
             changeAddInfringementModalState={changeAddInfringementModalState}
             changeDeleteInfringementModalState={
               changeDeleteInfringementModalState

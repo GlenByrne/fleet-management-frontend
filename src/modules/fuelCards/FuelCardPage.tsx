@@ -1,12 +1,7 @@
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
-import {
-  FuelCard,
-  UpdateFuelCardInput,
-  useGetFuelCardsQuery,
-} from '@/generated/graphql';
-import { useRouter } from 'next/router';
-import React, { FormEvent, FormEventHandler, useState } from 'react';
+import { FuelCard, UpdateFuelCardInput } from '@/generated/graphql';
+import { useState } from 'react';
 import FuelCardTemplate from 'src/templates/FuelCardTemplate';
 import CreateFuelCardModal from './addFuelCardModal/CreateFuelCardModal';
 import DeleteFuelCardModal from './deleteFuelCardModal/DeleteFuelCardModal';
@@ -14,15 +9,6 @@ import FuelCardList from './fuelCardList/FuelCardList';
 import UpdateFuelCardModal from './updateFuelCardModal/UpdateFuelCardModal';
 
 const FuelCardPage = () => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-  const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
-  const [pageVariables, setPageVariables] = useState([
-    {
-      first: 5,
-      after: '',
-    },
-  ]);
   const [addFuelCardModalState, setAddFuelCardModalState] = useState(false);
   const [updateFuelCardModalState, setUpdateFuelCardModalState] =
     useState(false);
@@ -62,30 +48,6 @@ const FuelCardPage = () => {
     setMobileMenuOpen(newState);
   };
 
-  const [fuelCards, refetchFuelCards] = useGetFuelCardsQuery({
-    variables: {
-      ...pageVariables,
-      data: {
-        organisationId,
-      },
-    },
-  });
-
-  const searchSubmitHandler: FormEventHandler = (e) => {
-    e.preventDefault();
-    refetchFuelCards({
-      ...pageVariables,
-      data: {
-        searchCriteria: searchCriteria,
-        organisationId,
-      },
-    });
-  };
-
-  const changeSearchCriteria = (event: FormEvent<HTMLInputElement>) => {
-    setSearchCriteria(event.currentTarget.value);
-  };
-
   return (
     <FuelCardTemplate
       header={
@@ -119,21 +81,12 @@ const FuelCardPage = () => {
             modalState={deleteFuelCardModalState}
             changeModalState={changeDeleteFuelCardModalState}
           />
-          {pageVariables.map((variables, i) => (
-            <FuelCardList
-              key={'' + variables.after}
-              variables={variables}
-              isLastPage={i === pageVariables.length - 1}
-              onLoadMore={(after: string) =>
-                setPageVariables([...pageVariables, { after, first: 10 }])
-              }
-              fuelCardsList={fuelCards}
-              changeAddFuelCardModalState={changeAddFuelCardModalState}
-              changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
-              changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}
-              changeCurrentFuelCard={changeCurrentFuelCard}
-            />
-          ))}
+          <FuelCardList
+            changeAddFuelCardModalState={changeAddFuelCardModalState}
+            changeDeleteFuelCardModalState={changeDeleteFuelCardModalState}
+            changeUpdateFuelCardModalState={changeUpdateFuelCardModalState}
+            changeCurrentFuelCard={changeCurrentFuelCard}
+          />
         </>
       }
     />
