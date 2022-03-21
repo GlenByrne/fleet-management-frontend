@@ -1,14 +1,14 @@
+import { LocationMarkerIcon } from '@heroicons/react/solid';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { format } from 'date-fns';
 import DefectsButton from '@/components/atoms/Button/DefectsButton';
 import DeleteButton from '@/components/atoms/Button/DeleteButton';
 import EditButton from '@/components/atoms/Button/EditButton';
 import { Vehicle } from '@/generated/graphql';
 import { dateStatus } from '@/utilities/dateStatus';
 import { getDateClassNames } from '@/utilities/getDateClassName';
-import { LocationMarkerIcon } from '@heroicons/react/solid';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { format } from 'date-fns';
 
 type VehicleListItemProps = {
   vehicle: Vehicle;
@@ -20,7 +20,7 @@ type VehicleListItemProps = {
   changeUpdateVehicleTachoCalibrationModalState: (newState: boolean) => void;
 };
 
-const VehicleListItem = ({
+function VehicleListItem({
   vehicle,
   changeCurrentVehicle,
   changeDeleteVehicleModalState,
@@ -28,7 +28,7 @@ const VehicleListItem = ({
   changeUpdateVehicleCVRTModalState,
   changeUpdateVehicleThirteenWeekModalState,
   changeUpdateVehicleTachoCalibrationModalState,
-}: VehicleListItemProps) => {
+}: VehicleListItemProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -137,6 +137,6 @@ const VehicleListItem = ({
       </Link>
     </li>
   );
-};
+}
 
 export default VehicleListItem;

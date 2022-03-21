@@ -3,7 +3,7 @@ type InputLabelProps = {
   htmlFor: string;
 };
 
-const InputLabel = ({ label, htmlFor }: InputLabelProps) => {
+function InputLabel({ label, htmlFor }: InputLabelProps) {
   return (
     <label
       className="block text-sm font-medium text-gray-700"
@@ -12,6 +12,6 @@ const InputLabel = ({ label, htmlFor }: InputLabelProps) => {
       {label}
     </label>
   );
-};
+}
 
 export default InputLabel;

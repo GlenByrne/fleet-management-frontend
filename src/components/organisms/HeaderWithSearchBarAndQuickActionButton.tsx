@@ -1,13 +1,12 @@
+import { Menu, Transition } from '@headlessui/react';
+import { useRouter } from 'next/router';
+import { Fragment } from 'react';
 import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/atoms/Button/ProfileIconButton';
-import SearchBar from '@/components/molecules/Inputs/SearchBar';
 import { UserNavbarOption } from '@/constants/types';
 import { useLogoutMutation } from '@/generated/graphql';
-import { getAccessToken, setAccessToken, setIsLoggedIn } from '@/pages/_app';
-import { Menu, Transition } from '@headlessui/react';
-import { useRouter } from 'next/router';
-import { FormEvent, FormEventHandler, Fragment } from 'react';
+import { setAccessToken, setIsLoggedIn } from '@/pages/_app';
 import CirclularAddButton from '../atoms/Button/CirclularAddButton';
 
 type HeaderWithSearchbarAndQuickActionButtonProps = {
@@ -18,13 +17,13 @@ type HeaderWithSearchbarAndQuickActionButtonProps = {
   quickActionLabel: string;
 };
 
-const HeaderWithSearchBarAndQuickActionButton = ({
+function HeaderWithSearchBarAndQuickActionButton({
   setMobileMenuOpen,
   // searchSubmitHandler,
   // changeSearchCriteria,
   quickAction,
   quickActionLabel,
-}: HeaderWithSearchbarAndQuickActionButtonProps) => {
+}: HeaderWithSearchbarAndQuickActionButtonProps) {
   const router = useRouter();
   const [logOut] = useLogoutMutation();
 
@@ -86,6 +85,6 @@ const HeaderWithSearchBarAndQuickActionButton = ({
       </div>
     </header>
   );
-};
+}
 
 export default HeaderWithSearchBarAndQuickActionButton;

@@ -1,14 +1,14 @@
+import TollTagTemplate from 'src/templates/TollTagTemplate';
+import React, { useState } from 'react';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import { UpdateTollTagInput, TollTag } from '@/generated/graphql';
-import React, { useState } from 'react';
-import TollTagTemplate from 'src/templates/TollTagTemplate';
 import CreateTollTagModal from './addTollTag/CreateTollTagModal';
 import DeleteTollTagModal from './deleteTollTag/DeleteTollTagModal';
 import TollTagList from './tollTagList/TollTagList';
 import UpdateTollTagModal from './updateTollTag/UpdateTollTagModal';
 
-const TollTagPage = () => {
+function TollTagPage() {
   const [addTollTagModalState, setAddTollTagModalState] = useState(false);
   const [updateTollTagModalState, setUpdateTollTagModalState] = useState(false);
   const [deleteTollTagModalState, setDeleteTollTagModalState] = useState(false);
@@ -88,6 +88,6 @@ const TollTagPage = () => {
       }
     />
   );
-};
+}
 
 export default TollTagPage;

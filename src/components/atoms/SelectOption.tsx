@@ -1,13 +1,13 @@
-import { Option } from '@/constants/types';
-import classNames from '@/utilities/classNames';
 import { Listbox } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/solid';
+import { Option } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 
 type SelectOptionProps = {
   option: Option;
 };
 
-const SelectOption = ({ option }: SelectOptionProps) => {
+function SelectOption({ option }: SelectOptionProps) {
   return (
     <Listbox.Option
       key={option.value}
@@ -44,6 +44,6 @@ const SelectOption = ({ option }: SelectOptionProps) => {
       )}
     </Listbox.Option>
   );
-};
+}
 
 export default SelectOption;

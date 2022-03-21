@@ -4,7 +4,7 @@ type EditButtonProps = {
   onClick: () => void;
 };
 
-const EditButton = ({ onClick }: EditButtonProps) => {
+function EditButton({ onClick }: EditButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -13,6 +13,6 @@ const EditButton = ({ onClick }: EditButtonProps) => {
       <PencilIcon className="h-6 w-6" aria-hidden="true" />
     </button>
   );
-};
+}
 
 export default EditButton;

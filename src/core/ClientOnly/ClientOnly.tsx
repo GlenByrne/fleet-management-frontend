@@ -4,7 +4,7 @@ type ClientOnlyProps = {
   children: ReactNode;
 };
 
-const ClientOnly = ({ children, ...delegated }: ClientOnlyProps) => {
+function ClientOnly({ children, ...delegated }: ClientOnlyProps) {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -15,7 +15,8 @@ const ClientOnly = ({ children, ...delegated }: ClientOnlyProps) => {
     return null;
   }
 
+  // eslint-disable-next-line react/jsx-props-no-spreading
   return <div {...delegated}>{children}</div>;
-};
+}
 
 export default ClientOnly;

@@ -8,7 +8,7 @@ type DefectTemplateProps = {
   content: ReactNode;
 };
 
-const DefectTemplate = ({ header, sidebar, content }: DefectTemplateProps) => {
+function DefectTemplate({ header, sidebar, content }: DefectTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -37,6 +37,6 @@ const DefectTemplate = ({ header, sidebar, content }: DefectTemplateProps) => {
       </div>
     </div>
   );
-};
+}
 
 export default DefectTemplate;

@@ -8,12 +8,12 @@ type ModalProps = {
   setModalState: (status: boolean) => void;
 };
 
-const Modal = ({
+function Modal({
   children,
   modalState,
   cancelButtonRef,
   setModalState,
-}: ModalProps) => {
+}: ModalProps) {
   return (
     <Transition.Root show={modalState} as={Fragment}>
       <Dialog
@@ -57,6 +57,6 @@ const Modal = ({
       </Dialog>
     </Transition.Root>
   );
-};
+}
 
 export default Modal;

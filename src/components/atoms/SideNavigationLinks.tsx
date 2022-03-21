@@ -1,13 +1,13 @@
-import { NavbarOption } from '@/constants/types';
-import classNames from '@/utilities/classNames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { NavbarOption } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 
 type SideNavigationLinkProps = {
   link: NavbarOption;
 };
 
-const SideNavigationLinks = ({ link }: SideNavigationLinkProps) => {
+function SideNavigationLinks({ link }: SideNavigationLinkProps) {
   const router = useRouter();
 
   return (
@@ -34,6 +34,6 @@ const SideNavigationLinks = ({ link }: SideNavigationLinkProps) => {
       </a>
     </Link>
   );
-};
+}
 
 export default SideNavigationLinks;

@@ -1,22 +1,22 @@
 import { TruckIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
+import { useRouter } from 'next/router';
+import { useState, FormEvent, FormEventHandler, MutableRefObject } from 'react';
+import { useForm } from 'react-hook-form';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
-import { useRouter } from 'next/router';
 import { useAddFuelCardMutation } from '@/generated/graphql';
-import { useState, FormEvent, FormEventHandler, MutableRefObject } from 'react';
-import { useForm } from 'react-hook-form';
 
 type AddFuelCardFormProps = {
   changeModalState: (newState: boolean) => void;
   cancelButtonRef: MutableRefObject<null>;
 };
 
-const AddFuelCardForm = ({
+function AddFuelCardForm({
   changeModalState,
   cancelButtonRef,
-}: AddFuelCardFormProps) => {
+}: AddFuelCardFormProps) {
   const { register, handleSubmit } = useForm();
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
@@ -75,7 +75,7 @@ const AddFuelCardForm = ({
                   type="text"
                   value={cardNumber}
                   onChange={changeCardNumber}
-                  required={true}
+                  required
                   {...re}
                 />
               </div>
@@ -87,7 +87,7 @@ const AddFuelCardForm = ({
                   type="text"
                   value={cardProvider}
                   onChange={changeCardProvider}
-                  required={true}
+                  required
                 />
               </div>
             </div>
@@ -103,6 +103,6 @@ const AddFuelCardForm = ({
       </form>
     </div>
   );
-};
+}
 
 export default AddFuelCardForm;

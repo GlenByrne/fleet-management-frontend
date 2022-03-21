@@ -23,9 +23,9 @@ export default function Example({
   const filteredItems =
     query === ''
       ? options
-      : options.filter((item) => {
-          return item.label.toLowerCase().includes(query.toLowerCase());
-        });
+      : options.filter((item) =>
+          item.label.toLowerCase().includes(query.toLowerCase())
+        );
 
   return (
     <Combobox as="div" value={selected} onChange={onChange}>

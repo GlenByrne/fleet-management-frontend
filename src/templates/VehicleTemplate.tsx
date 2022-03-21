@@ -8,11 +8,7 @@ type VehicleTemplateProps = {
   content: ReactNode;
 };
 
-const VehicleTemplate = ({
-  header,
-  sidebar,
-  content,
-}: VehicleTemplateProps) => {
+function VehicleTemplate({ header, sidebar, content }: VehicleTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -41,6 +37,6 @@ const VehicleTemplate = ({
       </div>
     </div>
   );
-};
+}
 
 export default VehicleTemplate;

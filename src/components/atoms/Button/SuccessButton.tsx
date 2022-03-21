@@ -3,7 +3,7 @@ type SuccessButtonProps = {
   type: 'button' | 'submit' | 'reset' | undefined;
 };
 
-const SuccessButton = ({ text, type }: SuccessButtonProps) => {
+function SuccessButton({ text, type }: SuccessButtonProps) {
   return (
     <button
       type={type}
@@ -12,6 +12,6 @@ const SuccessButton = ({ text, type }: SuccessButtonProps) => {
       {text}
     </button>
   );
-};
+}
 
 export default SuccessButton;

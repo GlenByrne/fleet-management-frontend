@@ -1,14 +1,14 @@
+import React, { useState } from 'react';
+import DepotTemplate from 'src/templates/DepotTemplate';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import { UpdateDepotInput, Depot } from '@/generated/graphql';
-import React, { useState } from 'react';
-import DepotTemplate from 'src/templates/DepotTemplate';
 import CreateDepotModal from './addDepot/CreateDepotModal';
 import DeleteDepotModal from './deleteDepot/DeleteDepotModal';
 import DepotList from './depotList/DepotList';
 import UpdateDepotModal from './updateDepot/UpdateDepotModal';
 
-const DepotPage = () => {
+function DepotPage() {
   const [addDepotModalState, setAddDepotModalState] = useState(false);
   const [updateDepotModalState, setUpdateDepotModalState] = useState(false);
   const [deleteDepotModalState, setDeleteDepotModalState] = useState(false);
@@ -85,6 +85,6 @@ const DepotPage = () => {
       }
     />
   );
-};
+}
 
 export default DepotPage;

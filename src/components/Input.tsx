@@ -1,7 +1,7 @@
+import { ChangeEventHandler } from 'react';
 import InputForm from '@/components/atoms/Forms/InputForm';
 import InputLabel from '@/components/atoms/InputLabel';
 import OptionalFormText from '@/components/atoms/OptionalFormText';
-import { ChangeEventHandler } from 'react';
 
 type InputProps = {
   label: string;
@@ -13,7 +13,7 @@ type InputProps = {
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
-const Input = ({
+function Input({
   label,
   name,
   type,
@@ -21,7 +21,7 @@ const Input = ({
   required,
   value,
   onChange,
-}: InputProps) => {
+}: InputProps) {
   return (
     <>
       <div className="flex justify-between">
@@ -42,6 +42,6 @@ const Input = ({
       </div>
     </>
   );
-};
+}
 
 export default Input;

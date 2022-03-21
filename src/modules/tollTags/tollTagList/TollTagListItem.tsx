@@ -1,8 +1,7 @@
+import Link from 'next/link';
 import DeleteButton from '@/components/atoms/Button/DeleteButton';
 import EditButton from '@/components/atoms/Button/EditButton';
 import { TollTag } from '@/generated/graphql';
-import Link from 'next/link';
-import React from 'react';
 
 type TollTagListItemProps = {
   tollTag: TollTag;
@@ -11,12 +10,12 @@ type TollTagListItemProps = {
   changeUpdateTollTagModalState: (newState: boolean) => void;
 };
 
-const TollTagListItem = ({
+function TollTagListItem({
   tollTag,
   changeCurrentTollTag,
   changeDeleteTollTagModalState,
   changeUpdateTollTagModalState,
-}: TollTagListItemProps) => {
+}: TollTagListItemProps) {
   return (
     <li>
       <Link href="#">
@@ -53,6 +52,6 @@ const TollTagListItem = ({
       </Link>
     </li>
   );
-};
+}
 
 export default TollTagListItem;

@@ -8,7 +8,7 @@ type DepotTemplateProps = {
   content: ReactNode;
 };
 
-const DepotTemplate = ({ header, sidebar, content }: DepotTemplateProps) => {
+function DepotTemplate({ header, sidebar, content }: DepotTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -37,6 +37,6 @@ const DepotTemplate = ({ header, sidebar, content }: DepotTemplateProps) => {
       </div>
     </div>
   );
-};
+}
 
 export default DepotTemplate;

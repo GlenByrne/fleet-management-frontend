@@ -1,9 +1,9 @@
-import DeleteButton from '@/components/atoms/Button/DeleteButton';
-import EditButton from '@/components/atoms/Button/EditButton';
-import { User, UsersInOrganisationPayload } from '@/generated/graphql';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import React from 'react';
+import DeleteButton from '@/components/atoms/Button/DeleteButton';
+import EditButton from '@/components/atoms/Button/EditButton';
+import { UsersInOrganisationPayload } from '@/generated/graphql';
 
 type UserListItemProps = {
   user: UsersInOrganisationPayload;
@@ -12,12 +12,12 @@ type UserListItemProps = {
   changeUpdateUserModalState: (newState: boolean) => void;
 };
 
-const UserListItem = ({
+function UserListItem({
   user,
   changeCurrentUser,
   changeRemoveUserModalState,
   changeUpdateUserModalState,
-}: UserListItemProps) => {
+}: UserListItemProps) {
   return (
     <li>
       <Link href="#">
@@ -61,6 +61,6 @@ const UserListItem = ({
       </Link>
     </li>
   );
-};
+}
 
 export default UserListItem;

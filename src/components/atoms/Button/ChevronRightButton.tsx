@@ -6,11 +6,11 @@ type ChevronRightButtonProps = {
   className: string;
 };
 
-const ChevronRightButton = ({
+function ChevronRightButton({
   onClick,
   disabled,
   className,
-}: ChevronRightButtonProps) => {
+}: ChevronRightButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -21,6 +21,6 @@ const ChevronRightButton = ({
       <ChevronRightIcon className="h-5 w-5 text-gray-600" />
     </button>
   );
-};
+}
 
 export default ChevronRightButton;

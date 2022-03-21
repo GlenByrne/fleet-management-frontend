@@ -1,8 +1,6 @@
-import DepotPage from '@/modules/depots/DepotPage';
 import { NextPage } from 'next';
+import DepotPage from '@/modules/depots/DepotPage';
 
-const Depots: NextPage = () => {
-  return <DepotPage />;
-};
+const Depots: NextPage = () => <DepotPage />;
 
 export default Depots;

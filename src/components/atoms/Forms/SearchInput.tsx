@@ -4,7 +4,7 @@ type SearchInputProps = {
   onChange: (event: FormEvent<HTMLInputElement>) => void;
 };
 
-const SearchInput = ({ onChange }: SearchInputProps) => {
+function SearchInput({ onChange }: SearchInputProps) {
   return (
     <input
       name="search-field"
@@ -15,6 +15,6 @@ const SearchInput = ({ onChange }: SearchInputProps) => {
       onChange={onChange}
     />
   );
-};
+}
 
 export default SearchInput;

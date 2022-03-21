@@ -10,7 +10,7 @@ type InputFormProps = {
   required: boolean;
 };
 
-const InputForm = ({
+function InputForm({
   type,
   name,
   id,
@@ -18,7 +18,7 @@ const InputForm = ({
   value,
   onChange,
   required,
-}: InputFormProps) => {
+}: InputFormProps) {
   return (
     <input
       type={type}
@@ -31,6 +31,6 @@ const InputForm = ({
       required={required}
     />
   );
-};
+}
 
 export default InputForm;

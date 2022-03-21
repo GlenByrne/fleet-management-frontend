@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { FormEvent, FormEventHandler, useState } from 'react';
 import { useLoginMutation } from '@/generated/graphql';
 import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
-import { FormEvent, FormEventHandler, useState } from 'react';
 import { setAccessToken, setIsLoggedIn } from '@/pages/_app';
 
-const LoginForm = () => {
+function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -143,6 +143,6 @@ const LoginForm = () => {
       </div>
     </>
   );
-};
+}
 
 export default LoginForm;

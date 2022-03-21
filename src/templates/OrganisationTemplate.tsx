@@ -9,12 +9,12 @@ type OrganisationTemplateProps = {
   rightColumn: ReactNode;
 };
 
-const OrganisationTemplate = ({
+function OrganisationTemplate({
   header,
   createModal,
   leftColumn,
   rightColumn,
-}: OrganisationTemplateProps) => {
+}: OrganisationTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -42,7 +42,7 @@ const OrganisationTemplate = ({
                   <div className="min-w-0 flex-1 bg-white xl:flex">
                     <div className="bg-white lg:min-w-0 lg:flex-1">
                       <div className="h-full py-6 px-4 sm:px-6 lg:px-8">
-                        {/* Start main area*/}
+                        {/* Start main area */}
                         <div
                           className="relative h-full"
                           style={{ minHeight: '36rem' }}
@@ -77,6 +77,6 @@ const OrganisationTemplate = ({
       </div>
     </div>
   );
-};
+}
 
 export default OrganisationTemplate;

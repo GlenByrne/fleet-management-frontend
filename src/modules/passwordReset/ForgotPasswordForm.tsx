@@ -1,8 +1,8 @@
-import { useForgotPasswordMutation } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import React, { FormEvent, FormEventHandler, useState } from 'react';
+import { useForgotPasswordMutation } from '@/generated/graphql';
 
-const ForgotPasswordForm = () => {
+function ForgotPasswordForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
 
@@ -18,7 +18,7 @@ const ForgotPasswordForm = () => {
     forgotPassword({
       variables: {
         data: {
-          email: email,
+          email,
         },
       },
     });
@@ -87,6 +87,6 @@ const ForgotPasswordForm = () => {
       </div>
     </>
   );
-};
+}
 
 export default ForgotPasswordForm;

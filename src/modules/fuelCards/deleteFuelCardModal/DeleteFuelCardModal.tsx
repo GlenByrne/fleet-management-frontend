@@ -1,7 +1,6 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 import {
   UpdateFuelCardInput,
   useDeleteFuelCardMutation,
@@ -17,11 +16,11 @@ type DeleteFuelCardModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const DeleteFuelCardModal = ({
+function DeleteFuelCardModal({
   currentFuelCard,
   modalState,
   changeModalState,
-}: DeleteFuelCardModalProps) => {
+}: DeleteFuelCardModalProps) {
   const [deleteFuelCard] = useDeleteFuelCardMutation();
 
   const deleteCardHandler = async (id: string) => {
@@ -30,7 +29,7 @@ const DeleteFuelCardModal = ({
       await deleteFuelCard({
         variables: {
           data: {
-            id: id,
+            id,
           },
         },
       });
@@ -82,6 +81,6 @@ const DeleteFuelCardModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default DeleteFuelCardModal;

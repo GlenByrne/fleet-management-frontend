@@ -8,11 +8,11 @@ type InfringementTemplateProps = {
   content: ReactNode;
 };
 
-const InfringementTemplate = ({
+function InfringementTemplate({
   header,
   sidebar,
   content,
-}: InfringementTemplateProps) => {
+}: InfringementTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -41,6 +41,6 @@ const InfringementTemplate = ({
       </div>
     </div>
   );
-};
+}
 
 export default InfringementTemplate;

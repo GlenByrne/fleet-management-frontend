@@ -4,7 +4,7 @@ type DeleteButtonProps = {
   onClick: () => void;
 };
 
-const DeleteButton = ({ onClick }: DeleteButtonProps) => {
+function DeleteButton({ onClick }: DeleteButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -13,6 +13,6 @@ const DeleteButton = ({ onClick }: DeleteButtonProps) => {
       <TrashIcon className="h-6 w-6" aria-hidden="true" />
     </button>
   );
-};
+}
 
 export default DeleteButton;

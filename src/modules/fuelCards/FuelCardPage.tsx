@@ -1,14 +1,14 @@
+import { useState } from 'react';
+import FuelCardTemplate from 'src/templates/FuelCardTemplate';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import { FuelCard, UpdateFuelCardInput } from '@/generated/graphql';
-import { useState } from 'react';
-import FuelCardTemplate from 'src/templates/FuelCardTemplate';
 import CreateFuelCardModal from './addFuelCardModal/CreateFuelCardModal';
 import DeleteFuelCardModal from './deleteFuelCardModal/DeleteFuelCardModal';
 import FuelCardList from './fuelCardList/FuelCardList';
 import UpdateFuelCardModal from './updateFuelCardModal/UpdateFuelCardModal';
 
-const FuelCardPage = () => {
+function FuelCardPage() {
   const [addFuelCardModalState, setAddFuelCardModalState] = useState(false);
   const [updateFuelCardModalState, setUpdateFuelCardModalState] =
     useState(false);
@@ -91,6 +91,6 @@ const FuelCardPage = () => {
       }
     />
   );
-};
+}
 
 export default FuelCardPage;

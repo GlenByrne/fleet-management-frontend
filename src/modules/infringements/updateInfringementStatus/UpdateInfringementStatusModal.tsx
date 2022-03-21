@@ -1,11 +1,11 @@
-import Modal from '@/components/atoms/Modal';
+import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/solid';
+import { useRef, FormEventHandler } from 'react';
 import {
   UpdateInfringementInput,
   useUpdateInfringementStatusMutation,
 } from '@/generated/graphql';
-import { Dialog } from '@headlessui/react';
-import { TruckIcon } from '@heroicons/react/solid';
-import { useRef, FormEventHandler } from 'react';
+import Modal from '@/components/atoms/Modal';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
 import CancelButton from '@/components/atoms/Button/CancelButton';
 
@@ -15,11 +15,11 @@ type UpdateInfringementStatusModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const UpdateInfringementStatusModal = ({
+function UpdateInfringementStatusModal({
   currentInfringement,
   modalState,
   changeModalState,
-}: UpdateInfringementStatusModalProps) => {
+}: UpdateInfringementStatusModalProps) {
   const [updateStatus] = useUpdateInfringementStatusMutation();
 
   const submitHandler: FormEventHandler = async (e) => {
@@ -75,6 +75,6 @@ const UpdateInfringementStatusModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateInfringementStatusModal;

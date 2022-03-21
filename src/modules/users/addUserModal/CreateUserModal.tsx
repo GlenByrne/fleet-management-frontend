@@ -10,7 +10,6 @@ import { TruckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import {
   DepotEdge,
-  GetDepotsQuery,
   Role,
   useGetDepotsQuery,
   useInviteUserToOrganisationMutation,
@@ -52,10 +51,10 @@ const getRoleOptions = () => {
   return options;
 };
 
-const CreateUserModal = ({
+function CreateUserModal({
   modalState,
   changeModalState,
-}: CreateUserModalProps) => {
+}: CreateUserModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -105,7 +104,7 @@ const CreateUserModal = ({
       await inviteUserToOrganisation({
         variables: {
           data: {
-            email: email,
+            email,
             organisationId,
             depotId: depot.value != null ? depot.value : '',
             role: role.value != null ? (role.value as Role) : Role.User,
@@ -122,15 +121,15 @@ const CreateUserModal = ({
   };
 
   if (loading) {
-    return <div></div>;
+    return <div />;
   }
 
   if (error) {
-    return <div></div>;
+    return <div />;
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
   return (
@@ -160,7 +159,7 @@ const CreateUserModal = ({
                     type="email"
                     value={email}
                     onChange={changeEmail}
-                    required={true}
+                    required
                   />
                 </div>
 
@@ -204,6 +203,6 @@ const CreateUserModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default CreateUserModal;

@@ -1,18 +1,10 @@
-import HeaderNoSearchBarOrQuickAction from '@/components/organisms/HeaderNoSearchBarOrQuickAction';
-import SideNav from '@/components/organisms/SideNav';
-import {
-  useGetUpcomingThirteenWeekQuery,
-  useGetUpcomingTachoCalibrationQuery,
-} from '@/generated/graphql';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import DashboardTemplate from 'src/templates/DashboardTemplate';
+import HeaderNoSearchBarOrQuickAction from '@/components/organisms/HeaderNoSearchBarOrQuickAction';
+import SideNav from '@/components/organisms/SideNav';
 import MainDashboard from './mainDashboard/MainDashboard';
 
-const DashboardPage = () => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-
+function DashboardPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const changeMobileMenuOpenState = (newState: boolean) => {
@@ -35,6 +27,6 @@ const DashboardPage = () => {
       content={<MainDashboard />}
     />
   );
-};
+}
 
 export default DashboardPage;

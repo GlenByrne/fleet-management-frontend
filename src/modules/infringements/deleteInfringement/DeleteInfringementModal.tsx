@@ -15,11 +15,11 @@ type DeleteInfringementModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const DeleteInfringementModal = ({
+function DeleteInfringementModal({
   currentInfringement,
   modalState,
   changeModalState,
-}: DeleteInfringementModalProps) => {
+}: DeleteInfringementModalProps) {
   const [deleteInfringement] = useDeleteInfringementMutation();
 
   const deleteTagHandler = async (id: string) => {
@@ -28,7 +28,7 @@ const DeleteInfringementModal = ({
       await deleteInfringement({
         variables: {
           data: {
-            id: id,
+            id,
           },
         },
       });
@@ -78,6 +78,6 @@ const DeleteInfringementModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default DeleteInfringementModal;

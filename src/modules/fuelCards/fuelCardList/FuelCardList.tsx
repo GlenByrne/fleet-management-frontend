@@ -1,10 +1,9 @@
+import { FormEvent, FormEventHandler, useState } from 'react';
+import { useRouter } from 'next/router';
 import { FuelCard, useGetFuelCardsQuery } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
-import InView from 'react-intersection-observer';
 import FuelCardListItem from './FuelCardListItem';
-import { FormEvent, FormEventHandler, useState } from 'react';
-import { useRouter } from 'next/router';
 
 type FuelCardListProps = {
   changeCurrentFuelCard: (fuelCard: FuelCard) => void;
@@ -13,12 +12,12 @@ type FuelCardListProps = {
   changeUpdateFuelCardModalState: (newState: boolean) => void;
 };
 
-const FuelCardList = ({
+function FuelCardList({
   changeCurrentFuelCard,
   changeAddFuelCardModalState,
   changeDeleteFuelCardModalState,
   changeUpdateFuelCardModalState,
-}: FuelCardListProps) => {
+}: FuelCardListProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -37,7 +36,7 @@ const FuelCardList = ({
     refetch({
       first: 5,
       data: {
-        searchCriteria: searchCriteria,
+        searchCriteria,
         organisationId,
       },
     });
@@ -56,16 +55,14 @@ const FuelCardList = ({
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
-  const { hasNextPage } = data.fuelCards.pageInfo;
-
-  const fuelCards = data.fuelCards;
+  const { fuelCards } = data;
 
   return fuelCards.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul className="divide-y divide-gray-200">
         {fuelCards.edges.map((fuelCard) => (
           <FuelCardListItem
             key={fuelCard.node.id}
@@ -84,6 +81,6 @@ const FuelCardList = ({
       text="Add a new fuel card"
     />
   );
-};
+}
 
 export default FuelCardList;

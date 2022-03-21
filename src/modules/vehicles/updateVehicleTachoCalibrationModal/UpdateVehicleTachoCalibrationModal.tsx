@@ -1,10 +1,10 @@
+import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/solid';
+import { useRef, useState, FormEventHandler } from 'react';
 import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
 import { VehicleUpdateModalItem } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
 import { useUpdateVehicleTachoCalibrationMutation } from '@/generated/graphql';
-import { Dialog } from '@headlessui/react';
-import { TruckIcon } from '@heroicons/react/solid';
-import { useRef, useState, FormEventHandler } from 'react';
 
 type UpdateVehicleTachoCalibrationModalProps = {
   currentVehicle: VehicleUpdateModalItem;
@@ -12,11 +12,11 @@ type UpdateVehicleTachoCalibrationModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const UpdateVehicleTachoCalibrationModal = ({
+function UpdateVehicleTachoCalibrationModal({
   currentVehicle,
   modalState,
   changeModalState,
-}: UpdateVehicleTachoCalibrationModalProps) => {
+}: UpdateVehicleTachoCalibrationModalProps) {
   const [updateTachoCalibration] = useUpdateVehicleTachoCalibrationMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
@@ -28,7 +28,7 @@ const UpdateVehicleTachoCalibrationModal = ({
         variables: {
           data: {
             id: currentVehicle.id,
-            completionDate: completionDate,
+            completionDate,
           },
         },
       });
@@ -63,7 +63,7 @@ const UpdateVehicleTachoCalibrationModal = ({
                     name="completionDate"
                     selected={completionDate}
                     onChange={setCompletionDate}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -89,6 +89,6 @@ const UpdateVehicleTachoCalibrationModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateVehicleTachoCalibrationModal;

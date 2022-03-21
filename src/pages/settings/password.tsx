@@ -1,8 +1,6 @@
-import PasswordSettingsPage from '@/modules/settings/passwordSettings/PasswordSettingsPage';
 import { NextPage } from 'next';
+import PasswordSettingsPage from '@/modules/settings/passwordSettings/PasswordSettingsPage';
 
-const Password: NextPage = () => {
-  return <PasswordSettingsPage />;
-};
+const Password: NextPage = () => <PasswordSettingsPage />;
 
 export default Password;

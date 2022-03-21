@@ -1,10 +1,10 @@
+import React, { useEffect, useState } from 'react';
 import Loading from '@/components/atoms/Loading';
 import { getAccessToken } from '@/pages/_app';
-import React, { useEffect, useState } from 'react';
 import AlreadyLoggedIn from './AlreadyLoggedIn';
 import LoginForm from './LoginForm';
 
-const LoginPage = () => {
+function LoginPage() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -23,13 +23,7 @@ const LoginPage = () => {
     return <Loading />;
   }
 
-  return loggedIn ? (
-    <AlreadyLoggedIn />
-  ) : (
-    <>
-      <LoginForm />
-    </>
-  );
-};
+  return loggedIn ? <AlreadyLoggedIn /> : <LoginForm />;
+}
 
 export default LoginPage;

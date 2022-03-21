@@ -7,7 +7,6 @@ import {
 } from 'react';
 import { Dialog } from '@headlessui/react';
 import { TruckIcon } from '@heroicons/react/outline';
-import { useRouter } from 'next/router';
 import {
   UpdateFuelCardInput,
   useUpdateFuelCardMutation,
@@ -23,11 +22,11 @@ type UpdateFuelCardModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const UpdateFuelCardModal = ({
+function UpdateFuelCardModal({
   currentFuelCard,
   modalState,
   changeModalState,
-}: UpdateFuelCardModalProps) => {
+}: UpdateFuelCardModalProps) {
   const [cardNumber, setCardNumber] = useState('');
   const [cardProvider, setCardProvider] = useState('');
 
@@ -91,7 +90,7 @@ const UpdateFuelCardModal = ({
                     type="text"
                     value={cardNumber}
                     onChange={changeCardNumber}
-                    required={true}
+                    required
                   />
                 </div>
 
@@ -102,7 +101,7 @@ const UpdateFuelCardModal = ({
                     type="text"
                     value={cardProvider}
                     onChange={changeCardProvider}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -119,6 +118,6 @@ const UpdateFuelCardModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateFuelCardModal;

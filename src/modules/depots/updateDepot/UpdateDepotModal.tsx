@@ -7,12 +7,7 @@ import {
   useRef,
   FormEventHandler,
 } from 'react';
-import { useRouter } from 'next/router';
-import {
-  GetVehiclesDocument,
-  UpdateDepotInput,
-  useUpdateDepotMutation,
-} from '@/generated/graphql';
+import { UpdateDepotInput, useUpdateDepotMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import ModalFormInput from '@/components/molecules/Inputs/ModalFormInput';
 import SuccessButton from '@/components/atoms/Button/SuccessButton';
@@ -24,11 +19,11 @@ type UpdateDepotModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const UpdateDepotModal = ({
+function UpdateDepotModal({
   currentDepot,
   modalState,
   changeModalState,
-}: UpdateDepotModalProps) => {
+}: UpdateDepotModalProps) {
   const [name, setName] = useState('');
 
   useEffect(() => {
@@ -87,7 +82,7 @@ const UpdateDepotModal = ({
                     type="text"
                     value={name}
                     onChange={changeName}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -104,6 +99,6 @@ const UpdateDepotModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateDepotModal;

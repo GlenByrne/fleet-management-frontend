@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import UserTemplate from 'src/templates/UserTemplate';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import { UserUpdateModalItem } from '@/constants/types';
@@ -6,10 +8,8 @@ import RemoveUserModal from '@/modules/users/deleteUserModal/RemoveUserModal';
 import UpdateUserModal from '@/modules/users/updateUserModal/UpdateUserModal';
 import UserList from '@/modules/users/userList/UserList';
 import { Role, UsersInOrganisationPayload } from '@/generated/graphql';
-import React, { useState } from 'react';
-import UserTemplate from 'src/templates/UserTemplate';
 
-const UserPage = () => {
+function UserPage() {
   const [inviteUserModalState, setInviteUserModalState] = useState(false);
   const [updateUserModalState, setUpdateUserModalState] = useState(false);
   const [removeUserModalState, setRemoveUserModalState] = useState(false);
@@ -96,6 +96,6 @@ const UserPage = () => {
       }
     />
   );
-};
+}
 
 export default UserPage;

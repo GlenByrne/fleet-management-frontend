@@ -1,8 +1,8 @@
+import Link from 'next/link';
+import React from 'react';
 import DeleteButton from '@/components/atoms/Button/DeleteButton';
 import EditButton from '@/components/atoms/Button/EditButton';
 import { FuelCard } from '@/generated/graphql';
-import Link from 'next/link';
-import React from 'react';
 
 type FuelCardListItemProps = {
   fuelCard: FuelCard;
@@ -11,12 +11,12 @@ type FuelCardListItemProps = {
   changeUpdateFuelCardModalState: (newState: boolean) => void;
 };
 
-const FuelCardListItem = ({
+function FuelCardListItem({
   fuelCard,
   changeCurrentFuelCard,
   changeDeleteFuelCardModalState,
   changeUpdateFuelCardModalState,
-}: FuelCardListItemProps) => {
+}: FuelCardListItemProps) {
   return (
     <li>
       <Link href="#">
@@ -53,6 +53,6 @@ const FuelCardListItem = ({
       </Link>
     </li>
   );
-};
+}
 
 export default FuelCardListItem;

@@ -5,8 +5,8 @@ import {
   KeyIcon,
   UserCircleIcon,
 } from '@heroicons/react/solid';
-import classNames from '@/utilities/classNames';
 import Link from 'next/link';
+import classNames from '@/utilities/classNames';
 
 const navigation = [
   {
@@ -28,9 +28,7 @@ type PasswordSettingsTemplateProps = {
   children: ReactNode;
 };
 
-const PasswordSettingsTemplate = ({
-  children,
-}: PasswordSettingsTemplateProps) => {
+function PasswordSettingsTemplate({ children }: PasswordSettingsTemplateProps) {
   const router = useRouter();
 
   return (
@@ -67,6 +65,6 @@ const PasswordSettingsTemplate = ({
       <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">{children}</div>
     </div>
   );
-};
+}
 
 export default PasswordSettingsTemplate;

@@ -3,7 +3,7 @@ type DangerButtonProps = {
   text: string;
 };
 
-const DangerButton = ({ onClick, text }: DangerButtonProps) => {
+function DangerButton({ onClick, text }: DangerButtonProps) {
   return (
     <button
       type="button"
@@ -13,6 +13,6 @@ const DangerButton = ({ onClick, text }: DangerButtonProps) => {
       {text}
     </button>
   );
-};
+}
 
 export default DangerButton;

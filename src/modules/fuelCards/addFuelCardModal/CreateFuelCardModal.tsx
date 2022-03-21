@@ -7,10 +7,10 @@ type CreateFuelCardModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const CreateFuelCardModal = ({
+function CreateFuelCardModal({
   modalState,
   changeModalState,
-}: CreateFuelCardModalProps) => {
+}: CreateFuelCardModalProps) {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -25,6 +25,6 @@ const CreateFuelCardModal = ({
       />
     </Modal>
   );
-};
+}
 
 export default CreateFuelCardModal;

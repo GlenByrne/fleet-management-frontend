@@ -1,13 +1,13 @@
+import { format } from 'date-fns';
 import { Vehicle } from '@/generated/graphql';
 import { dateStatus } from '@/utilities/dateStatus';
 import { getDateClassNamesDashboard } from '@/utilities/getDateClassNamesDashboard';
-import { format } from 'date-fns';
 
 type UpcomingCvrtListItemProps = {
   vehicle: Vehicle;
 };
 
-const UpcomingCvrtListItem = ({ vehicle }: UpcomingCvrtListItemProps) => {
+function UpcomingCvrtListItem({ vehicle }: UpcomingCvrtListItemProps) {
   return (
     <li>
       <a href="#" className="block hover:bg-gray-50">
@@ -40,6 +40,6 @@ const UpcomingCvrtListItem = ({ vehicle }: UpcomingCvrtListItemProps) => {
       </a>
     </li>
   );
-};
+}
 
 export default UpcomingCvrtListItem;

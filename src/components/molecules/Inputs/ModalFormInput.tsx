@@ -1,7 +1,7 @@
+import { ChangeEventHandler } from 'react';
 import InputForm from '@/components/atoms/Forms/InputForm';
 import InputLabel from '@/components/atoms/InputLabel';
 import OptionalFormText from '@/components/atoms/OptionalFormText';
-import { ChangeEventHandler } from 'react';
 
 type ModalFormInputProps = {
   label: string;
@@ -13,7 +13,7 @@ type ModalFormInputProps = {
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
-const ModalFormInput = ({
+function ModalFormInput({
   label,
   name,
   type,
@@ -21,7 +21,7 @@ const ModalFormInput = ({
   required,
   value,
   onChange,
-}: ModalFormInputProps) => {
+}: ModalFormInputProps) {
   return (
     <>
       <div className="flex justify-between">
@@ -41,6 +41,6 @@ const ModalFormInput = ({
       </div>
     </>
   );
-};
+}
 
 export default ModalFormInput;

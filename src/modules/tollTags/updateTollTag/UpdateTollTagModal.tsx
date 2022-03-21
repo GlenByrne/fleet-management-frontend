@@ -23,11 +23,11 @@ type UpdateTollTagModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const UpdateTollTagModal = ({
+function UpdateTollTagModal({
   currentTollTag,
   modalState,
   changeModalState,
-}: UpdateTollTagModalProps) => {
+}: UpdateTollTagModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -94,7 +94,7 @@ const UpdateTollTagModal = ({
                     type="text"
                     value={tagNumber}
                     onChange={changeTagNumber}
-                    required={true}
+                    required
                   />
                 </div>
 
@@ -105,7 +105,7 @@ const UpdateTollTagModal = ({
                     type="text"
                     value={tagProvider}
                     onChange={changeTagProvider}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -122,6 +122,6 @@ const UpdateTollTagModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateTollTagModal;

@@ -1,14 +1,13 @@
+import { useRouter } from 'next/router';
 import Loading from '@/components/atoms/Loading';
 import {
   useGetUpcomingCvrtQuery,
-  Vehicle,
   VehicleEdge,
   VehicleType,
 } from '@/generated/graphql';
-import { useRouter } from 'next/router';
 import UpcomingCvrtListItem from './UpcomingCvrtListItem';
 
-const UpcomingCvrtList = () => {
+function UpcomingCvrtList() {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -16,7 +15,7 @@ const UpcomingCvrtList = () => {
     variables: {
       first: 10,
       data: {
-        organisationId: organisationId,
+        organisationId,
       },
     },
   });
@@ -54,7 +53,7 @@ const UpcomingCvrtList = () => {
               Vans
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {vans.map((vehicle) => (
               <UpcomingCvrtListItem
                 key={vehicle.node.id}
@@ -69,7 +68,7 @@ const UpcomingCvrtList = () => {
               Trucks
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {trucks.map((vehicle) => (
               <UpcomingCvrtListItem
                 key={vehicle.node.id}
@@ -84,7 +83,7 @@ const UpcomingCvrtList = () => {
               Trailers
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {trailers.map((vehicle) => (
               <UpcomingCvrtListItem
                 key={vehicle.node.id}
@@ -96,6 +95,6 @@ const UpcomingCvrtList = () => {
       </div>
     </div>
   );
-};
+}
 
 export default UpcomingCvrtList;

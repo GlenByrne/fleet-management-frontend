@@ -1,8 +1,6 @@
-import RegistrationForm from '@/modules/registration/RegistrationForm';
 import { NextPage } from 'next';
+import RegistrationForm from '@/modules/registration/RegistrationForm';
 
-const Register: NextPage = () => {
-  return <RegistrationForm />;
-};
+const Register: NextPage = () => <RegistrationForm />;
 
 export default Register;

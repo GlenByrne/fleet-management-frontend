@@ -1,12 +1,12 @@
-import { UsersOnOrganisations } from '@/generated/graphql';
 import Link from 'next/link';
 import React from 'react';
+import { UsersOnOrganisations } from '@/generated/graphql';
 
 type OrganisationListItemProps = {
   organisation: UsersOnOrganisations;
 };
 
-const OrganisationListItem = ({ organisation }: OrganisationListItemProps) => {
+function OrganisationListItem({ organisation }: OrganisationListItemProps) {
   return (
     <li key={organisation.organisation.id}>
       <Link
@@ -14,7 +14,7 @@ const OrganisationListItem = ({ organisation }: OrganisationListItemProps) => {
       >
         <a className="block hover:bg-gray-50">
           <div className="px-4 py-4 sm:px-6">
-            <div className="flex items-center justify-between"></div>
+            <div className="flex items-center justify-between" />
             <div className="mt-2 sm:flex sm:justify-between">
               <div className="sm:flex">
                 <p className="flex items-center text-sm text-gray-500">
@@ -30,6 +30,6 @@ const OrganisationListItem = ({ organisation }: OrganisationListItemProps) => {
       </Link>
     </li>
   );
-};
+}
 
 export default OrganisationListItem;

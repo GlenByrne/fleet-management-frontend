@@ -8,11 +8,11 @@ type DashboardTemplateProps = {
   content: ReactNode;
 };
 
-const DashboardTemplate = ({
+function DashboardTemplate({
   header,
   sidebar,
   content,
-}: DashboardTemplateProps) => {
+}: DashboardTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -41,6 +41,6 @@ const DashboardTemplate = ({
       </div>
     </div>
   );
-};
+}
 
 export default DashboardTemplate;

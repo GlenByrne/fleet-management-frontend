@@ -15,11 +15,6 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import Router from 'next/router';
-import {
-  RefreshAccessTokenDocument,
-  StrictTypedTypePolicies,
-  User,
-} from '@/generated/graphql';
 import { print } from 'graphql';
 import { Client, ClientOptions, createClient } from 'graphql-ws';
 import {
@@ -27,6 +22,11 @@ import {
   relayStylePagination,
 } from '@apollo/client/utilities';
 import { useMemo } from 'react';
+import {
+  RefreshAccessTokenDocument,
+  StrictTypedTypePolicies,
+  User,
+} from '@/generated/graphql';
 
 export const successAlertStateVar = makeVar(false);
 export const successTextVar = makeVar('');
@@ -49,16 +49,16 @@ export const createGraphqlClient = () => {
     }
 
     public request(operation: Operation): Observable<FetchResult> {
-      return new Observable((sink) => {
-        return this.client.subscribe<FetchResult>(
+      return new Observable((sink) =>
+        this.client.subscribe<FetchResult>(
           { ...operation, query: print(operation.query) },
           {
             next: sink.next.bind(sink),
             complete: sink.complete.bind(sink),
             error: sink.error.bind(sink),
           }
-        );
-      });
+        )
+      );
     }
   }
 
@@ -127,14 +127,11 @@ export const createGraphqlClient = () => {
     pendingRequests = [];
   };
 
-  const getNewToken = async () => {
-    return await client
-      .mutate({ mutation: RefreshAccessTokenDocument })
-      .then((response) => {
-        const { accessToken } = response.data.refreshAccessToken;
-        accessTokenVar(accessToken);
-      });
-  };
+  const getNewToken = async () =>
+    client.mutate({ mutation: RefreshAccessTokenDocument }).then((response) => {
+      const { accessToken } = response.data.refreshAccessToken;
+      accessTokenVar(accessToken);
+    });
 
   const errorLink = onError(({ graphQLErrors, operation, forward }) => {
     if (graphQLErrors) {
@@ -164,15 +161,13 @@ export const createGraphqlClient = () => {
 
                 return forward(operation);
               });
-            } else {
-              return fromPromise(
-                new Promise<void>((resolve) => {
-                  addPendingRequest(() => resolve());
-                })
-              ).flatMap(() => {
-                return forward(operation);
-              });
             }
+            return fromPromise(
+              new Promise<void>((resolve) => {
+                addPendingRequest(() => resolve());
+              })
+            ).flatMap(() => forward(operation));
+
           default:
             errorTextVar(err.message);
             errorAlertStateVar(true);
@@ -210,25 +205,25 @@ export const createGraphqlClient = () => {
 };
 
 export function initializeApollo(initialState: any = null) {
-  const _apolloClient = apolloClient ?? createGraphqlClient();
+  const apolloClientComplete = apolloClient ?? createGraphqlClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client,
   // the initial state gets hydrated here
   if (initialState) {
     // Get existing cache, loaded during client side data fetching
-    const existingCache = _apolloClient.extract();
+    const existingCache = apolloClientComplete.extract();
 
     // Restore the cache using the data passed from
     // getStaticProps/getServerSideProps combined with the existing cached data
-    _apolloClient.cache.restore({ ...existingCache, ...initialState });
+    apolloClientComplete.cache.restore({ ...existingCache, ...initialState });
   }
 
   // For SSG and SSR always create a new Apollo Client
-  if (typeof window === 'undefined') return _apolloClient;
+  if (typeof window === 'undefined') return apolloClientComplete;
 
   // Create the Apollo Client once in the client
-  if (!apolloClient) apolloClient = _apolloClient;
-  return _apolloClient;
+  if (!apolloClient) apolloClient = apolloClientComplete;
+  return apolloClientComplete;
 }
 
 export function useApollo(initialState: any) {

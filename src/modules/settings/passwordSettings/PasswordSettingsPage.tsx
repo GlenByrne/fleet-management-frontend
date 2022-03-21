@@ -1,14 +1,14 @@
+import PasswordSettingsTemplate from 'src/templates/PasswordSettingsTemplate';
+import { useRouter } from 'next/router';
+import React, { FormEvent, FormEventHandler, useState } from 'react';
 import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
 import {
   useLogoutMutation,
   useChangePasswordMutation,
 } from '@/generated/graphql';
 import { setAccessToken } from '@/pages/_app';
-import { useRouter } from 'next/router';
-import React, { FormEvent, FormEventHandler, useState } from 'react';
-import PasswordSettingsTemplate from 'src/templates/PasswordSettingsTemplate';
 
-const PasswordSettingsPage = () => {
+function PasswordSettingsPage() {
   const router = useRouter();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -86,6 +86,6 @@ const PasswordSettingsPage = () => {
       </div>
     </PasswordSettingsTemplate>
   );
-};
+}
 
 export default PasswordSettingsPage;

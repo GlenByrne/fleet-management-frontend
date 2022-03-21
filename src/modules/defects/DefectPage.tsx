@@ -1,14 +1,14 @@
+import React, { useState } from 'react';
+import DefectTemplate from 'src/templates/DefectTemplate';
 import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import SideNav from '@/components/organisms/SideNav';
 import { Defect, DefectStatus } from '@/generated/graphql';
-import React, { useState } from 'react';
-import DefectTemplate from 'src/templates/DefectTemplate';
 import CreateDefectModal from './addDefect/CreateDefectModal';
 import DefectList from './defectList/DefectList';
 import DeleteDefectModal from './deleteDefect/DeleteDefectModal';
 import UpdateDefectModal from './updateDefect/UpdateDefectModal';
 
-const DefectPage = () => {
+function DefectPage() {
   const [addDefectModalState, setAddDefectModalState] = useState(false);
   const [updateDefectModalState, setUpdateDefectModalState] = useState(false);
   const [deleteDefectModalState, setDeleteDefectModalState] = useState(false);
@@ -92,6 +92,6 @@ const DefectPage = () => {
       }
     />
   );
-};
+}
 
 export default DefectPage;

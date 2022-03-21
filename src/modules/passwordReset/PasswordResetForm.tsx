@@ -1,9 +1,9 @@
-import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
-import { useResetPasswordMutation } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import React, { FormEvent, FormEventHandler, useState } from 'react';
+import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
+import { useResetPasswordMutation } from '@/generated/graphql';
 
-const PasswordResetForm = () => {
+function PasswordResetForm() {
   const router = useRouter();
   const token = String(router.query.passwordResetId);
   const [password, setPassword] = useState('');
@@ -76,6 +76,6 @@ const PasswordResetForm = () => {
       </div>
     </>
   );
-};
+}
 
 export default PasswordResetForm;

@@ -40,11 +40,11 @@ const getDefectStatusOptions = () => {
   return options;
 };
 
-const UpdateDefectModal = ({
+function UpdateDefectModal({
   currentDefect,
   modalState,
   changeModalState,
-}: UpdateDefectModalProps) => {
+}: UpdateDefectModalProps) {
   const [statusOptions, setStatusOptions] = useState(getDefectStatusOptions());
 
   const [description, setDescription] = useState('');
@@ -115,7 +115,7 @@ const UpdateDefectModal = ({
                     type="text"
                     value={description}
                     onChange={changeDescription}
-                    required={true}
+                    required
                   />
                 </div>
 
@@ -142,6 +142,6 @@ const UpdateDefectModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateDefectModal;

@@ -12,11 +12,11 @@ type DeleteDefectModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const DeleteDefectModal = ({
+function DeleteDefectModal({
   currentDefect,
   modalState,
   changeModalState,
-}: DeleteDefectModalProps) => {
+}: DeleteDefectModalProps) {
   const [deleteDefect] = useDeleteDefectMutation();
 
   const deleteDefectHandler = async (id: string) => {
@@ -25,7 +25,7 @@ const DeleteDefectModal = ({
       await deleteDefect({
         variables: {
           data: {
-            id: id,
+            id,
           },
         },
       });
@@ -75,6 +75,6 @@ const DeleteDefectModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default DeleteDefectModal;

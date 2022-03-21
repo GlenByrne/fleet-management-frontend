@@ -8,11 +8,7 @@ type TollTagTemplateProps = {
   content: ReactNode;
 };
 
-const TollTagTemplate = ({
-  header,
-  sidebar,
-  content,
-}: TollTagTemplateProps) => {
+function TollTagTemplate({ header, sidebar, content }: TollTagTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -41,6 +37,6 @@ const TollTagTemplate = ({
       </div>
     </div>
   );
-};
+}
 
 export default TollTagTemplate;

@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import InfringementTemplate from 'src/templates/InfringementTemplate';
 import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import SideNav from '@/components/organisms/SideNav';
 import {
@@ -5,15 +7,13 @@ import {
   InfringementStatus,
   Infringement,
 } from '@/generated/graphql';
-import React, { useState } from 'react';
-import InfringementTemplate from 'src/templates/InfringementTemplate';
 import CreateInfringementModal from './addInfringement/CreateInfringementModal';
 import DeleteInfringementModal from './deleteInfringement/DeleteInfringementModal';
 import InfringementList from './infringementList/InfringementList';
 import UpdateInfringementModal from './updateInfringement/UpdateInfringementModal';
 import UpdateInfringementStatusModal from './updateInfringementStatus/UpdateInfringementStatusModal';
 
-const InfringementPage = () => {
+function InfringementPage() {
   const [addInfringementModalState, setAddInfringementModalState] =
     useState(false);
   const [updateInfringementModalState, setUpdateInfringementModalState] =
@@ -118,6 +118,6 @@ const InfringementPage = () => {
       }
     />
   );
-};
+}
 
 export default InfringementPage;

@@ -1,12 +1,12 @@
+import { Menu } from '@headlessui/react';
 import { UserNavbarOption } from '@/constants/types';
 import classNames from '@/utilities/classNames';
-import { Menu } from '@headlessui/react';
 
 type ProfileDropdownMenuItemProps = {
   item: UserNavbarOption;
 };
 
-const ProfileDropdownMenuItem = ({ item }: ProfileDropdownMenuItemProps) => {
+function ProfileDropdownMenuItem({ item }: ProfileDropdownMenuItemProps) {
   return (
     <Menu.Item>
       {({ active }) => (
@@ -22,6 +22,6 @@ const ProfileDropdownMenuItem = ({ item }: ProfileDropdownMenuItemProps) => {
       )}
     </Menu.Item>
   );
-};
+}
 
 export default ProfileDropdownMenuItem;

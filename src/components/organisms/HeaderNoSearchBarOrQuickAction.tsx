@@ -1,20 +1,20 @@
+import { Menu, Transition } from '@headlessui/react';
+import { useRouter } from 'next/router';
+import { Fragment } from 'react';
 import MobileMenuHamburgerButton from '@/components/atoms/MobileMenuHamburgerButton';
 import ProfileDropdownMenuItem from '@/components/atoms/ProfileDropdownMenuItem';
 import ProfileIconButton from '@/components/atoms/Button/ProfileIconButton';
 import { UserNavbarOption } from '@/constants/types';
 import { useLogoutMutation } from '@/generated/graphql';
-import { getAccessToken, setAccessToken, setIsLoggedIn } from '@/pages/_app';
-import { Menu, Transition } from '@headlessui/react';
-import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { setAccessToken, setIsLoggedIn } from '@/pages/_app';
 
 type HeaderNoSearchbarOrQuickActionButtonProps = {
   setMobileMenuOpen: (newState: boolean) => void;
 };
 
-const HeaderNoSearchBarOrQuickAction = ({
+function HeaderNoSearchBarOrQuickAction({
   setMobileMenuOpen,
-}: HeaderNoSearchbarOrQuickActionButtonProps) => {
+}: HeaderNoSearchbarOrQuickActionButtonProps) {
   const router = useRouter();
   const [logOut] = useLogoutMutation();
 
@@ -38,7 +38,7 @@ const HeaderNoSearchBarOrQuickAction = ({
       <div className="relative z-10 flex h-16 shrink-0 border-b border-gray-200 bg-white shadow-sm">
         <MobileMenuHamburgerButton setMobileMenuOpen={setMobileMenuOpen} />
         <div className="flex flex-1 justify-between px-4 sm:px-6">
-          <div className="flex flex-1"></div>
+          <div className="flex flex-1" />
 
           <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
             {/* Profile dropdown */}
@@ -65,6 +65,6 @@ const HeaderNoSearchBarOrQuickAction = ({
       </div>
     </header>
   );
-};
+}
 
 export default HeaderNoSearchBarOrQuickAction;

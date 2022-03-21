@@ -8,11 +8,7 @@ type FuelCardTemplateProps = {
   content: ReactNode;
 };
 
-const FuelCardTemplate = ({
-  header,
-  sidebar,
-  content,
-}: FuelCardTemplateProps) => {
+function FuelCardTemplate({ header, sidebar, content }: FuelCardTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -41,6 +37,6 @@ const FuelCardTemplate = ({
       </div>
     </div>
   );
-};
+}
 
 export default FuelCardTemplate;

@@ -45,11 +45,11 @@ const getRoleOptions = () => {
   return options;
 };
 
-const UpdateUserModal = ({
+function UpdateUserModal({
   currentUser,
   modalState,
   changeModalState,
-}: UpdateUserModalProps) => {
+}: UpdateUserModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -113,15 +113,15 @@ const UpdateUserModal = ({
   };
 
   if (loading) {
-    return <div></div>;
+    return <div />;
   }
 
   if (error) {
-    return <div></div>;
+    return <div />;
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
   return (
@@ -177,6 +177,6 @@ const UpdateUserModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateUserModal;

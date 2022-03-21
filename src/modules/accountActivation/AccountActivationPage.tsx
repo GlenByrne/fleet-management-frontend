@@ -1,11 +1,11 @@
-import Loading from '@/components/atoms/Loading';
-import { useActivateAccountMutation } from '@/generated/graphql';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import Loading from '@/components/atoms/Loading';
+import { useActivateAccountMutation } from '@/generated/graphql';
 import TokenInvalid from './TokenInvalid';
 import TokenValid from './TokenValid';
 
-const AccountActivationPage = () => {
+function AccountActivationPage() {
   const [activating, setActivating] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const router = useRouter();
@@ -32,7 +32,7 @@ const AccountActivationPage = () => {
       setActivating(false);
     }
 
-    if (token != 'undefined') {
+    if (token !== 'undefined') {
       handleAccountActivation();
     }
   }, [activateAccount, token]);
@@ -42,6 +42,6 @@ const AccountActivationPage = () => {
   }
 
   return isValid ? <TokenValid /> : <TokenInvalid />;
-};
+}
 
 export default AccountActivationPage;

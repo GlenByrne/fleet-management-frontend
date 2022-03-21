@@ -1,11 +1,11 @@
-import DeleteButton from '@/components/atoms/Button/DeleteButton';
-import EditButton from '@/components/atoms/Button/EditButton';
-import { Infringement, InfringementStatus } from '@/generated/graphql';
-import { getInfringementClassNames } from '@/utilities/getInfringementClassNames';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import React from 'react';
+import DeleteButton from '@/components/atoms/Button/DeleteButton';
+import EditButton from '@/components/atoms/Button/EditButton';
+import { Infringement, InfringementStatus } from '@/generated/graphql';
+import { getInfringementClassNames } from '@/utilities/getInfringementClassNames';
 
 type InfringementListItemProps = {
   infringement: Infringement;
@@ -15,13 +15,13 @@ type InfringementListItemProps = {
   changeUpdateInfringementStatusModalState: (newState: boolean) => void;
 };
 
-const InfringementListItem = ({
+function InfringementListItem({
   infringement,
   changeCurrentInfringement,
   changeDeleteInfringementModalState,
   changeUpdateInfringementModalState,
   changeUpdateInfringementStatusModalState,
-}: InfringementListItemProps) => {
+}: InfringementListItemProps) {
   return (
     <li>
       <Link href="#">
@@ -80,6 +80,6 @@ const InfringementListItem = ({
       </Link>
     </li>
   );
-};
+}
 
 export default InfringementListItem;

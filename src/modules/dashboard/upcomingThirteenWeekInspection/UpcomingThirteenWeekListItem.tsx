@@ -1,15 +1,15 @@
+import { format } from 'date-fns';
 import { Vehicle } from '@/generated/graphql';
 import { dateStatus } from '@/utilities/dateStatus';
 import { getDateClassNamesDashboard } from '@/utilities/getDateClassNamesDashboard';
-import { format } from 'date-fns';
 
 type UpcomingThirteenWeekListItemProps = {
   vehicle: Vehicle;
 };
 
-const UpcomingThirteenWeekListItem = ({
+function UpcomingThirteenWeekListItem({
   vehicle,
-}: UpcomingThirteenWeekListItemProps) => {
+}: UpcomingThirteenWeekListItemProps) {
   return (
     <li>
       <a href="#" className="block hover:bg-gray-50">
@@ -45,6 +45,6 @@ const UpcomingThirteenWeekListItem = ({
       </a>
     </li>
   );
-};
+}
 
 export default UpcomingThirteenWeekListItem;

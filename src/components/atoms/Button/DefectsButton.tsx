@@ -4,7 +4,7 @@ type DefectsButtonProps = {
   onClick: () => void;
 };
 
-const DefectsButton = ({ onClick }: DefectsButtonProps) => {
+function DefectsButton({ onClick }: DefectsButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -13,6 +13,6 @@ const DefectsButton = ({ onClick }: DefectsButtonProps) => {
       <ExclamationIcon className="h-6 w-6" aria-hidden="true" />
     </button>
   );
-};
+}
 
 export default DefectsButton;

@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import VehicleTemplate from 'src/templates/VehicleTemplate';
 import HeaderWithSearchBarAndQuickActionButton from '@/components/organisms/HeaderWithSearchBarAndQuickActionButton';
 import SideNav from '@/components/organisms/SideNav';
 import { VehicleUpdateModalItem } from '@/constants/types';
@@ -5,24 +7,14 @@ import CreateVehicleModal from '@/modules/vehicles/addVehicleModal/CreateVehicle
 import DeleteVehicleModal from '@/modules/vehicles/deleteVehicleModal/DeleteVehicleModal';
 import UpdateVehicleModal from '@/modules/vehicles/updateVehicleModal/UpdateVehicleModal';
 import VehicleList from '@/modules/vehicles/vehicleList/VehicleList';
-import { Vehicle, useGetVehiclesQuery, VehicleType } from '@/generated/graphql';
-import { useRouter } from 'next/router';
-import React, { FormEvent, FormEventHandler, useState } from 'react';
-import VehicleTemplate from 'src/templates/VehicleTemplate';
+import { Vehicle, VehicleType } from '@/generated/graphql';
 
-const VehiclePage = () => {
+function VehiclePage() {
   const [addVehicleModalState, setAddVehicleModalState] = useState(false);
   const [updateVehicleModalState, setUpdateVehicleModalState] = useState(false);
-  const [updateVehicleCVRTModalState, setUpdateVehicleCVRTModalState] =
-    useState(false);
-  const [
-    updateVehicleThirteenWeekModalState,
-    setUpdateVehicleThirteenWeekModalState,
-  ] = useState(false);
-  const [
-    updateVehicleTachoCalibrationModalState,
-    setUpdateVehicleTachoCalibrationModalState,
-  ] = useState(false);
+  const [, setUpdateVehicleCVRTModalState] = useState(false);
+  const [, setUpdateVehicleThirteenWeekModalState] = useState(false);
+  const [, setUpdateVehicleTachoCalibrationModalState] = useState(false);
 
   const [deleteVehicleModalState, setDeleteVehicleModalState] = useState(false);
 
@@ -158,6 +150,6 @@ const VehiclePage = () => {
       }
     />
   );
-};
+}
 
 export default VehiclePage;

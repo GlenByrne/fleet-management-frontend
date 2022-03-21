@@ -8,7 +8,7 @@ const ErrorAlertContext = createContext({
 });
 ErrorAlertContext.displayName = 'ErrorAlertContext';
 
-const ErrorAlertProvider = () => {
+function ErrorAlertProvider() {
   const [alertState, setAlertState] = useState(false);
   const [alertText, setAlertText] = useState('');
 
@@ -24,8 +24,8 @@ const ErrorAlertProvider = () => {
   return (
     <ErrorAlertContext.Provider
       value={{
-        alertState: alertState,
-        alertText: alertText,
+        alertState,
+        alertText,
       }}
     >
       {/* Global notification live region, render this permanently at the end of the document */}
@@ -78,6 +78,6 @@ const ErrorAlertProvider = () => {
       </div>
     </ErrorAlertContext.Provider>
   );
-};
+}
 
 export default ErrorNotification;

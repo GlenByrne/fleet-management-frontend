@@ -8,7 +8,7 @@ type UserTemplateProps = {
   content: ReactNode;
 };
 
-const UserTemplate = ({ header, sidebar, content }: UserTemplateProps) => {
+function UserTemplate({ header, sidebar, content }: UserTemplateProps) {
   return (
     <div className="flex h-screen">
       <Head>
@@ -37,6 +37,6 @@ const UserTemplate = ({ header, sidebar, content }: UserTemplateProps) => {
       </div>
     </div>
   );
-};
+}
 
 export default UserTemplate;

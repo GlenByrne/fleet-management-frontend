@@ -5,7 +5,7 @@ type SelectLabelProps = {
   label: string;
 };
 
-const SelectLabel = ({ htmlFor, label }: SelectLabelProps) => {
+function SelectLabel({ htmlFor, label }: SelectLabelProps) {
   return (
     <Listbox.Label
       className="block text-sm font-medium text-gray-700"
@@ -14,6 +14,6 @@ const SelectLabel = ({ htmlFor, label }: SelectLabelProps) => {
       {label}
     </Listbox.Label>
   );
-};
+}
 
 export default SelectLabel;

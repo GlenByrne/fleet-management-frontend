@@ -1,9 +1,9 @@
-import DeleteButton from '@/components/atoms/Button/DeleteButton';
-import EditButton from '@/components/atoms/Button/EditButton';
-import { Defect } from '@/generated/graphql';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import React from 'react';
+import DeleteButton from '@/components/atoms/Button/DeleteButton';
+import EditButton from '@/components/atoms/Button/EditButton';
+import { Defect } from '@/generated/graphql';
 
 type DefectListItemProps = {
   defect: Defect;
@@ -12,12 +12,12 @@ type DefectListItemProps = {
   changeUpdateDefectModalState: (newState: boolean) => void;
 };
 
-const DefectListItem = ({
+function DefectListItem({
   defect,
   changeCurrentDefect,
   changeDeleteDefectModalState,
   changeUpdateDefectModalState,
-}: DefectListItemProps) => {
+}: DefectListItemProps) {
   return (
     <li>
       <Link href="#">
@@ -67,6 +67,6 @@ const DefectListItem = ({
       </Link>
     </li>
   );
-};
+}
 
 export default DefectListItem;

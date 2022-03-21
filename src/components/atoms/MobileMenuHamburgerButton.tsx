@@ -4,9 +4,9 @@ type MobileMenuHamburgerButtonProps = {
   setMobileMenuOpen: (newState: boolean) => void;
 };
 
-const MobileMenuHamburgerButton = ({
+function MobileMenuHamburgerButton({
   setMobileMenuOpen,
-}: MobileMenuHamburgerButtonProps) => {
+}: MobileMenuHamburgerButtonProps) {
   return (
     <button
       type="button"
@@ -17,6 +17,6 @@ const MobileMenuHamburgerButton = ({
       <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
     </button>
   );
-};
+}
 
 export default MobileMenuHamburgerButton;

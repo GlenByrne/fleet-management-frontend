@@ -13,10 +13,10 @@ type CreateDepotModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const CreateDepotModal = ({
+function CreateDepotModal({
   modalState,
   changeModalState,
-}: CreateDepotModalProps) => {
+}: CreateDepotModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -74,7 +74,7 @@ const CreateDepotModal = ({
                     type="text"
                     value={name}
                     onChange={changeName}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -91,6 +91,6 @@ const CreateDepotModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default CreateDepotModal;

@@ -2,7 +2,7 @@ import { Transition } from '@headlessui/react';
 import { CheckCircleIcon, XIcon } from '@heroicons/react/solid';
 import { Fragment, useEffect, useState } from 'react';
 
-const SuccessNotification = () => {
+function SuccessNotification() {
   const [alertState, setAlertState] = useState(false);
   const [alertText, setAlertText] = useState<string | null>(null);
 
@@ -67,6 +67,6 @@ const SuccessNotification = () => {
       </div>
     </>
   );
-};
+}
 
 export default SuccessNotification;

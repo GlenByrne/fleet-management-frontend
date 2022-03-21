@@ -1,7 +1,7 @@
 import React from 'react';
 import AccountSettingsTemplate from 'src/templates/AccountSettingsTemplate';
 
-const AccountSettingsPage = () => {
+function AccountSettingsPage() {
   return (
     <AccountSettingsTemplate>
       <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
@@ -446,6 +446,6 @@ const AccountSettingsPage = () => {
       </div>
     </AccountSettingsTemplate>
   );
-};
+}
 
 export default AccountSettingsPage;

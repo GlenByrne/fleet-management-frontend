@@ -12,10 +12,10 @@ type CreateOrganisationModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const CreateOrganisationModal = ({
+function CreateOrganisationModal({
   modalState,
   changeModalState,
-}: CreateOrganisationModalProps) => {
+}: CreateOrganisationModalProps) {
   const [name, setName] = useState('');
 
   const cancelButtonRef = useRef(null);
@@ -71,7 +71,7 @@ const CreateOrganisationModal = ({
                     type="text"
                     value={name}
                     onChange={changeName}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -88,6 +88,6 @@ const CreateOrganisationModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default CreateOrganisationModal;

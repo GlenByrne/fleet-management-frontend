@@ -1,14 +1,14 @@
-import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import React, { useState } from 'react';
 import OrganisationTemplate from 'src/templates/OrganisationTemplate';
+import HeaderWithQuickActionNoSearchBar from '@/components/organisms/HeaderWithQuickActionNoSearchBar';
 import CreateOrganisationModal from './addOrganisation/CreateOrganisationModal';
 import OrganisationList from './organisationList/OrganisationList';
 import OrganisationInviteList from './organistationInviteList/OrganisationInviteList';
 
-const OrganisationPage = () => {
+function OrganisationPage() {
   const [addOrganisationModalState, setAddOrganisationModalState] =
     useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [, setMobileMenuOpen] = useState(false);
 
   const changeAddOrganisationModalState = (newState: boolean) => {
     setAddOrganisationModalState(newState);
@@ -41,6 +41,6 @@ const OrganisationPage = () => {
       rightColumn={<OrganisationInviteList />}
     />
   );
-};
+}
 
 export default OrganisationPage;

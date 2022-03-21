@@ -5,10 +5,10 @@ type ShowPasswordButtonProps = {
   changeShowPasswordState: (newState: boolean) => void;
 };
 
-const ShowPasswordButton = ({
+function ShowPasswordButton({
   showPassword,
   changeShowPasswordState,
-}: ShowPasswordButtonProps) => {
+}: ShowPasswordButtonProps) {
   return (
     <button
       type="button"
@@ -22,6 +22,6 @@ const ShowPasswordButton = ({
       )}
     </button>
   );
-};
+}
 
 export default ShowPasswordButton;

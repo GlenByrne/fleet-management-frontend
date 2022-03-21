@@ -3,10 +3,7 @@ type DatePickerSelectButtonProps = {
   name: string;
 };
 
-const DatePickerSelectButton = ({
-  text,
-  name,
-}: DatePickerSelectButtonProps) => {
+function DatePickerSelectButton({ text, name }: DatePickerSelectButtonProps) {
   return (
     <button
       type="button"
@@ -16,6 +13,6 @@ const DatePickerSelectButton = ({
       {text}
     </button>
   );
-};
+}
 
 export default DatePickerSelectButton;

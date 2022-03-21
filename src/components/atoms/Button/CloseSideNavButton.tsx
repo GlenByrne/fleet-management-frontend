@@ -4,7 +4,7 @@ type CloseSideNavButtonProps = {
   onClick: () => void;
 };
 
-const CloseSideNavButton = ({ onClick }: CloseSideNavButtonProps) => {
+function CloseSideNavButton({ onClick }: CloseSideNavButtonProps) {
   return (
     <button
       type="button"
@@ -15,6 +15,6 @@ const CloseSideNavButton = ({ onClick }: CloseSideNavButtonProps) => {
       <span className="sr-only">Close sidebar</span>
     </button>
   );
-};
+}
 
 export default CloseSideNavButton;

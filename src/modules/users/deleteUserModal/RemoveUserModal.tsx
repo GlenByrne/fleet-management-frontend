@@ -9,18 +9,16 @@ import CancelButton from '@/components/atoms/Button/CancelButton';
 import DangerButton from '@/components/atoms/Button/DangerButton';
 
 type RemoveUserModalProps = {
-  searchCriteria: string | null;
   currentUser: UserUpdateModalItem;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
-const RemoveUserModal = ({
-  searchCriteria,
+function RemoveUserModal({
   currentUser,
   modalState,
   changeModalState,
-}: RemoveUserModalProps) => {
+}: RemoveUserModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -84,6 +82,6 @@ const RemoveUserModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default RemoveUserModal;

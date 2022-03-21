@@ -1,7 +1,7 @@
+import { useRouter } from 'next/router';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { Defect, useGetVehicleDefectsQuery } from '@/generated/graphql';
-import { useRouter } from 'next/router';
 import DefectListItem from './DefectListItem';
 
 type DefectListProps = {
@@ -11,12 +11,12 @@ type DefectListProps = {
   changeUpdateDefectModalState: (newState: boolean) => void;
 };
 
-const DefectList = ({
+function DefectList({
   changeCurrentDefect,
   changeAddDefectModalState,
   changeDeleteDefectModalState,
   changeUpdateDefectModalState,
-}: DefectListProps) => {
+}: DefectListProps) {
   const router = useRouter();
   const vehicleId = String(router.query.vehicleId);
   const organisationId = String(router.query.organisationId);
@@ -39,14 +39,14 @@ const DefectList = ({
   }
 
   if (!data) {
-    <div></div>;
+    <div />;
   }
 
   const defects = data?.defectsForVehicle;
 
   return defects?.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul className="divide-y divide-gray-200">
         {defects?.edges.map((defect) => (
           <DefectListItem
             key={defect?.id}
@@ -65,6 +65,6 @@ const DefectList = ({
       text="Add a new defect"
     />
   );
-};
+}
 
 export default DefectList;

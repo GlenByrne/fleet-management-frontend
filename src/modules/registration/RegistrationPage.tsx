@@ -1,8 +1,8 @@
 import RegistrationForm from '@/modules/registration/RegistrationForm';
 import React from 'react';
 
-const RegistrationPage = () => {
+function RegistrationPage() {
   return <RegistrationForm />;
-};
+}
 
 export default RegistrationPage;

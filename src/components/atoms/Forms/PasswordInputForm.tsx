@@ -10,7 +10,7 @@ type PasswordInputFormProps = {
   required: boolean;
 };
 
-const PasswordInputForm = ({
+function PasswordInputForm({
   type,
   name,
   id,
@@ -18,7 +18,7 @@ const PasswordInputForm = ({
   value,
   onChange,
   required,
-}: PasswordInputFormProps) => {
+}: PasswordInputFormProps) {
   return (
     <input
       type={type}
@@ -31,6 +31,6 @@ const PasswordInputForm = ({
       required={required}
     />
   );
-};
+}
 
 export default PasswordInputForm;

@@ -100,11 +100,11 @@ const getVehicleTypeOptions = () => {
   return options;
 };
 
-const UpdateVehicleModal = ({
+function UpdateVehicleModal({
   modalState,
   changeModalState,
   currentVehicle,
-}: UpdateVehicleModalProps) => {
+}: UpdateVehicleModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -444,6 +444,6 @@ const UpdateVehicleModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateVehicleModal;

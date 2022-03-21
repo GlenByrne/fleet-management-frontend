@@ -5,7 +5,7 @@ type CancelButtonProps = {
   ref: LegacyRef<HTMLButtonElement> | undefined;
 };
 
-const CancelButton = ({ onClick, ref }: CancelButtonProps) => {
+function CancelButton({ onClick, ref }: CancelButtonProps) {
   return (
     <button
       type="button"
@@ -16,6 +16,6 @@ const CancelButton = ({ onClick, ref }: CancelButtonProps) => {
       Cancel
     </button>
   );
-};
+}
 
 export default CancelButton;

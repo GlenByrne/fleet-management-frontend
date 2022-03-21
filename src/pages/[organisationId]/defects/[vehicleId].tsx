@@ -1,8 +1,6 @@
-import DefectPage from '@/modules/defects/DefectPage';
 import { NextPage } from 'next';
+import DefectPage from '@/modules/defects/DefectPage';
 
-const Defects: NextPage = () => {
-  return <DefectPage />;
-};
+const Defects: NextPage = () => <DefectPage />;
 
 export default Defects;

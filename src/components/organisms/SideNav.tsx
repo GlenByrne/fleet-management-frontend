@@ -21,7 +21,7 @@ type SideNavProps = {
   setMobileMenuOpen: (newState: boolean) => void;
 };
 
-const SideNav = ({ mobileMenuOpen, setMobileMenuOpen }: SideNavProps) => {
+function SideNav({ mobileMenuOpen, setMobileMenuOpen }: SideNavProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -141,6 +141,6 @@ const SideNav = ({ mobileMenuOpen, setMobileMenuOpen }: SideNavProps) => {
       </Transition.Root>
     </>
   );
-};
+}
 
 export default SideNav;

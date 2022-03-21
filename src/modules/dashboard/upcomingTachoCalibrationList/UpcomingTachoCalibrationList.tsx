@@ -1,13 +1,13 @@
+import { useRouter } from 'next/router';
 import Loading from '@/components/atoms/Loading';
 import {
   useGetUpcomingTachoCalibrationQuery,
   VehicleEdge,
   VehicleType,
 } from '@/generated/graphql';
-import { useRouter } from 'next/router';
 import UpcomingTachoCalibrationListItem from './UpcomingTachoCalibrationListItem';
 
-const UpcomingTachoCalibrationList = () => {
+function UpcomingTachoCalibrationList() {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -15,7 +15,7 @@ const UpcomingTachoCalibrationList = () => {
     variables: {
       first: 10,
       data: {
-        organisationId: organisationId,
+        organisationId,
       },
     },
   });
@@ -54,7 +54,7 @@ const UpcomingTachoCalibrationList = () => {
               Vans
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {vans.map((vehicle) => (
               <UpcomingTachoCalibrationListItem
                 key={vehicle.node.id}
@@ -69,7 +69,7 @@ const UpcomingTachoCalibrationList = () => {
               Trucks
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {trucks.map((vehicle) => (
               <UpcomingTachoCalibrationListItem
                 key={vehicle.node.id}
@@ -84,7 +84,7 @@ const UpcomingTachoCalibrationList = () => {
               Trailers
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {trailers.map((vehicle) => (
               <UpcomingTachoCalibrationListItem
                 key={vehicle.node.id}
@@ -96,6 +96,6 @@ const UpcomingTachoCalibrationList = () => {
       </div>
     </div>
   );
-};
+}
 
 export default UpcomingTachoCalibrationList;

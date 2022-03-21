@@ -1,4 +1,4 @@
-const Logo = () => {
+function Logo() {
   return (
     <img
       className="h-8 w-auto"
@@ -6,6 +6,6 @@ const Logo = () => {
       alt="Workflow"
     />
   );
-};
+}
 
 export default Logo;

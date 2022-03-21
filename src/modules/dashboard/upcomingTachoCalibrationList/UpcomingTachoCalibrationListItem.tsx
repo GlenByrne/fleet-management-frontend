@@ -1,15 +1,15 @@
+import { format } from 'date-fns';
 import { Vehicle } from '@/generated/graphql';
 import { dateStatus } from '@/utilities/dateStatus';
 import { getDateClassNamesDashboard } from '@/utilities/getDateClassNamesDashboard';
-import { format } from 'date-fns';
 
 type UpcomingTachoCalibrationListItemProps = {
   vehicle: Vehicle;
 };
 
-const UpcomingTachoCalibrationListItem = ({
+function UpcomingTachoCalibrationListItem({
   vehicle,
-}: UpcomingTachoCalibrationListItemProps) => {
+}: UpcomingTachoCalibrationListItemProps) {
   return (
     <li>
       <a href="#" className="block hover:bg-gray-50">
@@ -42,6 +42,6 @@ const UpcomingTachoCalibrationListItem = ({
       </a>
     </li>
   );
-};
+}
 
 export default UpcomingTachoCalibrationListItem;

@@ -1,9 +1,7 @@
-import InputForm from '@/components/atoms/Forms/InputForm';
+import { ChangeEventHandler, useState } from 'react';
 import InputLabel from '@/components/atoms/InputLabel';
 import PasswordInputForm from '@/components/atoms/Forms/PasswordInputForm';
 import ShowPasswordButton from '@/components/atoms/Button/ShowPasswordButton';
-import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
-import { ChangeEventHandler, useState } from 'react';
 
 type PasswordInputProps = {
   password: string;
@@ -11,7 +9,7 @@ type PasswordInputProps = {
   label: string;
 };
 
-const PasswordInput = ({ password, onChange, label }: PasswordInputProps) => {
+function PasswordInput({ password, onChange, label }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const changeShowPasswordState = (newState: boolean) => {
@@ -38,6 +36,6 @@ const PasswordInput = ({ password, onChange, label }: PasswordInputProps) => {
       </div>
     </>
   );
-};
+}
 
 export default PasswordInput;

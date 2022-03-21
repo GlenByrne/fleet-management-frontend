@@ -1,8 +1,8 @@
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { TollTag, useGetTollTagsQuery } from '@/generated/graphql';
-import { useRouter } from 'next/router';
-import { FormEvent, FormEventHandler, useState } from 'react';
 import TollTagListItem from './TollTagListItem';
 
 type TollTagListProps = {
@@ -12,12 +12,12 @@ type TollTagListProps = {
   changeUpdateTollTagModalState: (newState: boolean) => void;
 };
 
-const TollTagList = ({
+function TollTagList({
   changeCurrentTollTag,
   changeAddTollTagModalState,
   changeDeleteTollTagModalState,
   changeUpdateTollTagModalState,
-}: TollTagListProps) => {
+}: TollTagListProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -83,6 +83,6 @@ const TollTagList = ({
       text="Add a new toll tag"
     />
   );
-};
+}
 
 export default TollTagList;

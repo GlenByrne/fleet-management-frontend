@@ -1,8 +1,8 @@
+import Link from 'next/link';
+import React from 'react';
 import DeleteButton from '@/components/atoms/Button/DeleteButton';
 import EditButton from '@/components/atoms/Button/EditButton';
 import { Depot } from '@/generated/graphql';
-import Link from 'next/link';
-import React from 'react';
 
 type DepotListItemProps = {
   depot: Depot;
@@ -11,12 +11,12 @@ type DepotListItemProps = {
   changeUpdateDepotModalState: (newState: boolean) => void;
 };
 
-const DepotListItem = ({
+function DepotListItem({
   depot,
   changeCurrentDepot,
   changeDeleteDepotModalState,
   changeUpdateDepotModalState,
-}: DepotListItemProps) => {
+}: DepotListItemProps) {
   return (
     <li>
       <Link href="#">
@@ -53,6 +53,6 @@ const DepotListItem = ({
       </Link>
     </li>
   );
-};
+}
 
 export default DepotListItem;

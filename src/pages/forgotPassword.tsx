@@ -1,8 +1,6 @@
-import ForgotPasswordPage from '@/modules/passwordReset/ForgotPasswordPage';
 import { NextPage } from 'next';
+import ForgotPasswordPage from '@/modules/passwordReset/ForgotPasswordPage';
 
-const ForgotPassword: NextPage = () => {
-  return <ForgotPasswordPage />;
-};
+const ForgotPassword: NextPage = () => <ForgotPasswordPage />;
 
 export default ForgotPassword;

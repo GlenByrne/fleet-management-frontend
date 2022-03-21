@@ -1,13 +1,13 @@
+import { useRouter } from 'next/router';
 import Loading from '@/components/atoms/Loading';
 import {
   useGetUpcomingThirteenWeekQuery,
   VehicleEdge,
   VehicleType,
 } from '@/generated/graphql';
-import { useRouter } from 'next/router';
 import UpcomingThirteenWeekListItem from './UpcomingThirteenWeekListItem';
 
-const UpcomingThirteenWeekList = () => {
+function UpcomingThirteenWeekList() {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -15,7 +15,7 @@ const UpcomingThirteenWeekList = () => {
     variables: {
       first: 10,
       data: {
-        organisationId: organisationId,
+        organisationId,
       },
     },
   });
@@ -54,7 +54,7 @@ const UpcomingThirteenWeekList = () => {
               Vans
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {vans.map((vehicle) => (
               <UpcomingThirteenWeekListItem
                 key={vehicle.node.id}
@@ -69,7 +69,7 @@ const UpcomingThirteenWeekList = () => {
               Trucks
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {trucks.map((vehicle) => (
               <UpcomingThirteenWeekListItem
                 key={vehicle.node.id}
@@ -84,7 +84,7 @@ const UpcomingThirteenWeekList = () => {
               Trailers
             </h3>
           </div>
-          <ul role="list" className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200">
             {trailers.map((vehicle) => (
               <UpcomingThirteenWeekListItem
                 key={vehicle.node.id}
@@ -96,6 +96,6 @@ const UpcomingThirteenWeekList = () => {
       </div>
     </div>
   );
-};
+}
 
 export default UpcomingThirteenWeekList;

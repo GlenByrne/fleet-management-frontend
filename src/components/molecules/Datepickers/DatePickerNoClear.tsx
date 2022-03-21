@@ -15,13 +15,13 @@ type DatePickProps = {
   onChange: (value: SetStateAction<Date>) => void;
 };
 
-const DatePickerNoClear = ({
+function DatePickerNoClear({
   label,
   name,
   selected,
   required,
   onChange,
-}: DatePickProps) => {
+}: DatePickProps) {
   return (
     <ReactDatePicker
       selected={selected}
@@ -80,6 +80,6 @@ const DatePickerNoClear = ({
       )}
     />
   );
-};
+}
 
 export default DatePickerNoClear;

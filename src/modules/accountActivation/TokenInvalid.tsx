@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const TokenInvalid = () => {
+function TokenInvalid() {
   const router = useRouter();
 
   return (
@@ -44,6 +44,6 @@ const TokenInvalid = () => {
       </main>
     </div>
   );
-};
+}
 
 export default TokenInvalid;

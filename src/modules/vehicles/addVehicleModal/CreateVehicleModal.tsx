@@ -84,10 +84,10 @@ const getVehicleTypeOptions = () => {
   return options;
 };
 
-const CreateVehicleModal = ({
+function CreateVehicleModal({
   modalState,
   changeModalState,
-}: CreateVehicleModalProps) => {
+}: CreateVehicleModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -497,6 +497,6 @@ const CreateVehicleModal = ({
       </Modal>
     </>
   );
-};
+}
 
 export default CreateVehicleModal;

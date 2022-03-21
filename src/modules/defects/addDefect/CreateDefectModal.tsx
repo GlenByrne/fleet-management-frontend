@@ -13,10 +13,10 @@ type CreateDefectModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const CreateDefectModal = ({
+function CreateDefectModal({
   modalState,
   changeModalState,
-}: CreateDefectModalProps) => {
+}: CreateDefectModalProps) {
   const router = useRouter();
   const vehicleId = String(router.query.id);
 
@@ -38,7 +38,7 @@ const CreateDefectModal = ({
         variables: {
           data: {
             description: description != null ? description : '',
-            vehicleId: vehicleId,
+            vehicleId,
           },
         },
       });
@@ -74,7 +74,7 @@ const CreateDefectModal = ({
                     type="text"
                     value={description}
                     onChange={changeDescription}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -91,6 +91,6 @@ const CreateDefectModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default CreateDefectModal;

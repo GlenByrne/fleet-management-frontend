@@ -6,14 +6,14 @@ type FormProps = {
   children: ReactNode;
 };
 
-const Form = ({ onSubmit, children }: FormProps) => {
+function Form({ onSubmit, children }: FormProps) {
   const { handleSubmit, register } = useForm();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {Array.isArray(children)
-        ? children.map((child) => {
-            return child.props.name
+        ? children.map((child) =>
+            child.props.name
               ? createElement(child.type, {
                   ...{
                     ...child.props,
@@ -21,11 +21,11 @@ const Form = ({ onSubmit, children }: FormProps) => {
                     key: child.props.name,
                   },
                 })
-              : child;
-          })
+              : child
+          )
         : children}
     </form>
   );
-};
+}
 
 export default Form;

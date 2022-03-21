@@ -1,12 +1,11 @@
 import { Portal } from '@headlessui/react';
-import { ReactNode } from 'react';
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 
 type CalendarContainerProps = {
   children: ReactNode;
 };
 
-const CalendarContainer = ({ children }: CalendarContainerProps) => {
+function CalendarContainer({ children }: CalendarContainerProps) {
   const popperElRef = useRef(null);
 
   return (
@@ -14,6 +13,6 @@ const CalendarContainer = ({ children }: CalendarContainerProps) => {
       <div ref={popperElRef}>{children}</div>
     </Portal>
   );
-};
+}
 
 export default CalendarContainer;

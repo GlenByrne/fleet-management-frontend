@@ -13,10 +13,10 @@ type CreateTollTagModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const CreateTollTagModal = ({
+function CreateTollTagModal({
   modalState,
   changeModalState,
-}: CreateTollTagModalProps) => {
+}: CreateTollTagModalProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
 
@@ -83,7 +83,7 @@ const CreateTollTagModal = ({
                     type="text"
                     value={tagNumber}
                     onChange={changeTagNumber}
-                    required={true}
+                    required
                   />
                 </div>
 
@@ -94,7 +94,7 @@ const CreateTollTagModal = ({
                     type="text"
                     value={tagProvider}
                     onChange={changeTagProvider}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -111,6 +111,6 @@ const CreateTollTagModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default CreateTollTagModal;

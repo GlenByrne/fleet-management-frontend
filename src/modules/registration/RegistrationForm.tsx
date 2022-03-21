@@ -1,10 +1,10 @@
-import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
-import { useRegisterMutation } from '@/generated/graphql';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FormEvent, FormEventHandler, useState } from 'react';
+import { useRegisterMutation } from '@/generated/graphql';
+import PasswordInput from '@/components/molecules/Inputs/PasswordInput';
 
-const RegistrationForm = () => {
+function RegistrationForm() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,9 +25,9 @@ const RegistrationForm = () => {
       await register({
         variables: {
           data: {
-            name: name,
-            email: email,
-            password: password,
+            name,
+            email,
+            password,
           },
         },
       });
@@ -142,6 +142,6 @@ const RegistrationForm = () => {
       </div>
     </>
   );
-};
+}
 
 export default RegistrationForm;

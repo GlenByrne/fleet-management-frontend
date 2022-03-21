@@ -41,11 +41,11 @@ const getInfringementStatuseOptions = () => {
   return options;
 };
 
-const UpdateInfringementModal = ({
+function UpdateInfringementModal({
   currentInfringement,
   modalState,
   changeModalState,
-}: UpdateInfringementModalProps) => {
+}: UpdateInfringementModalProps) {
   const [statusOptions, setStatusOptions] = useState(
     getInfringementStatuseOptions()
   );
@@ -83,8 +83,8 @@ const UpdateInfringementModal = ({
         variables: {
           data: {
             id: currentInfringement.id,
-            description: description,
-            dateOccured: dateOccured,
+            description,
+            dateOccured,
             status: status.value as InfringementStatus,
           },
         },
@@ -119,7 +119,7 @@ const UpdateInfringementModal = ({
                     type="text"
                     value={description}
                     onChange={changeDescription}
-                    required={true}
+                    required
                   />
                 </div>
 
@@ -129,7 +129,7 @@ const UpdateInfringementModal = ({
                     name="dateOccured"
                     selected={dateOccured}
                     onChange={setDateOccured}
-                    required={true}
+                    required
                   />
                 </div>
 
@@ -156,6 +156,6 @@ const UpdateInfringementModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateInfringementModal;

@@ -1,10 +1,10 @@
+import { Dialog } from '@headlessui/react';
+import { TruckIcon } from '@heroicons/react/solid';
+import { useRef, useState, FormEventHandler } from 'react';
 import DatePickerNoClear from '@/components/molecules/Datepickers/DatePickerNoClear';
 import { VehicleUpdateModalItem } from '@/constants/types';
 import Modal from '@/components/atoms/Modal';
 import { useUpdateVehicleCvrtMutation } from '@/generated/graphql';
-import { Dialog } from '@headlessui/react';
-import { TruckIcon } from '@heroicons/react/solid';
-import { useRef, useState, FormEventHandler } from 'react';
 
 type UpdateVehicleCVRTModalProps = {
   currentVehicle: VehicleUpdateModalItem;
@@ -12,11 +12,11 @@ type UpdateVehicleCVRTModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const UpdateVehicleCVRTModal = ({
+function UpdateVehicleCVRTModal({
   currentVehicle,
   modalState,
   changeModalState,
-}: UpdateVehicleCVRTModalProps) => {
+}: UpdateVehicleCVRTModalProps) {
   const [updateCVRT] = useUpdateVehicleCvrtMutation();
   const [completionDate, setCompletionDate] = useState<Date>(new Date());
 
@@ -62,7 +62,7 @@ const UpdateVehicleCVRTModal = ({
                     name="completionDate"
                     selected={completionDate}
                     onChange={setCompletionDate}
-                    required={true}
+                    required
                   />
                 </div>
               </div>
@@ -88,6 +88,6 @@ const UpdateVehicleCVRTModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default UpdateVehicleCVRTModal;

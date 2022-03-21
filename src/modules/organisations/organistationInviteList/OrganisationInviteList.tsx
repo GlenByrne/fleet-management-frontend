@@ -1,13 +1,13 @@
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import Loading from '@/components/atoms/Loading';
 import {
   useGetUsersOrganisationInvitesQuery,
   UsersOnOrganisations,
 } from '@/generated/graphql';
-import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 import OrganisationInviteListItem from './OrganisationInviteListItem';
 
-const OrganisationInviteList = () => {
+function OrganisationInviteList() {
   const { data, loading, error, fetchMore } =
     useGetUsersOrganisationInvitesQuery({
       variables: {
@@ -36,7 +36,7 @@ const OrganisationInviteList = () => {
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
   const invites = data.usersOrganisationInvites;
@@ -44,7 +44,7 @@ const OrganisationInviteList = () => {
 
   return invites.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul className="divide-y divide-gray-200">
         {invites.edges.map((invite) => (
           <OrganisationInviteListItem
             key={invite.node.organisation.id}
@@ -61,6 +61,6 @@ const OrganisationInviteList = () => {
   ) : (
     <h2>No Invites</h2>
   );
-};
+}
 
 export default OrganisationInviteList;

@@ -4,7 +4,7 @@ type NoListItemButtonProps = {
   text: string;
 };
 
-const NoListItemButton = ({ onClick, d, text }: NoListItemButtonProps) => {
+function NoListItemButton({ onClick, d, text }: NoListItemButtonProps) {
   return (
     <button
       type="button"
@@ -31,6 +31,6 @@ const NoListItemButton = ({ onClick, d, text }: NoListItemButtonProps) => {
       </span>
     </button>
   );
-};
+}
 
 export default NoListItemButton;

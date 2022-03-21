@@ -1,7 +1,6 @@
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Dialog } from '@headlessui/react';
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 import { UpdateDepotInput, useDeleteDepotMutation } from '@/generated/graphql';
 import Modal from '@/components/atoms/Modal';
 import CancelButton from '@/components/atoms/Button/CancelButton';
@@ -13,11 +12,11 @@ type DeleteDepotModalProps = {
   changeModalState: (newState: boolean) => void;
 };
 
-const DeleteDepotModal = ({
+function DeleteDepotModal({
   currentDepot,
   modalState,
   changeModalState,
-}: DeleteDepotModalProps) => {
+}: DeleteDepotModalProps) {
   const [deleteDepot] = useDeleteDepotMutation();
 
   const deleteDepotHandler = async (id: string) => {
@@ -26,7 +25,7 @@ const DeleteDepotModal = ({
       await deleteDepot({
         variables: {
           data: {
-            id: id,
+            id,
           },
         },
       });
@@ -78,6 +77,6 @@ const DeleteDepotModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default DeleteDepotModal;

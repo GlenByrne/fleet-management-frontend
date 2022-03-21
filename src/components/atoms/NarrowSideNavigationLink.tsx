@@ -1,13 +1,13 @@
-import { NavbarOption } from '@/constants/types';
-import classNames from '@/utilities/classNames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { NavbarOption } from '@/constants/types';
+import classNames from '@/utilities/classNames';
 
 type NarrowSideNavigationLinkProps = {
   link: NavbarOption;
 };
 
-const NarrowSideNavigationLink = ({ link }: NarrowSideNavigationLinkProps) => {
+function NarrowSideNavigationLink({ link }: NarrowSideNavigationLinkProps) {
   const router = useRouter();
 
   return (
@@ -34,6 +34,6 @@ const NarrowSideNavigationLink = ({ link }: NarrowSideNavigationLinkProps) => {
       </a>
     </Link>
   );
-};
+}
 
 export default NarrowSideNavigationLink;

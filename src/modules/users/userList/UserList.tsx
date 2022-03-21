@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 import {
   useGetUsersInOrganisationQuery,
   UsersInOrganisationPayload,
@@ -5,8 +7,6 @@ import {
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import UsersListItem from '@/modules/users/userList/UserListItem';
-import { useRouter } from 'next/router';
-import { FormEvent, FormEventHandler, useState } from 'react';
 
 type UserListProps = {
   changeCurrentUser: (user: UsersInOrganisationPayload) => void;
@@ -15,12 +15,12 @@ type UserListProps = {
   changeUpdateUserModalState: (newState: boolean) => void;
 };
 
-const UserList = ({
+function UserList({
   changeCurrentUser,
   changeInviteUserModalState,
   changeRemoveUserModalState,
   changeUpdateUserModalState,
-}: UserListProps) => {
+}: UserListProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -43,7 +43,7 @@ const UserList = ({
     refetch({
       first: 5,
       data: {
-        searchCriteria: searchCriteria,
+        searchCriteria,
         organisationId,
       },
     });
@@ -58,14 +58,14 @@ const UserList = ({
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
   const users = data.usersInOrganisation;
 
   return users.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul className="divide-y divide-gray-200">
         {users.edges.map((user) => (
           <UsersListItem
             key={user.node.user.id}
@@ -84,6 +84,6 @@ const UserList = ({
       text="Invite user to your organisation"
     />
   );
-};
+}
 
 export default UserList;

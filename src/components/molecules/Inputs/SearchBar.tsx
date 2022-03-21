@@ -1,13 +1,13 @@
-import SearchInput from '@/components/atoms/Forms/SearchInput';
 import { SearchIcon } from '@heroicons/react/solid';
 import { FormEvent, FormEventHandler } from 'react';
+import SearchInput from '@/components/atoms/Forms/SearchInput';
 
 type SearchBarProps = {
   onSubmit: FormEventHandler<Element>;
   changeSearchCriteria: (event: FormEvent<HTMLInputElement>) => void;
 };
 
-const SearchBar = ({ onSubmit, changeSearchCriteria }: SearchBarProps) => {
+function SearchBar({ onSubmit, changeSearchCriteria }: SearchBarProps) {
   return (
     <form onSubmit={onSubmit} className="flex w-full md:ml-0">
       <label htmlFor="search-field" className="sr-only">
@@ -21,6 +21,6 @@ const SearchBar = ({ onSubmit, changeSearchCriteria }: SearchBarProps) => {
       </div>
     </form>
   );
-};
+}
 
 export default SearchBar;

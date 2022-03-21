@@ -7,6 +7,7 @@ import InputLabel from '@/components/atoms/InputLabel';
 import ChevronLeftButton from '@/components/atoms/Button/ChevronLeftButton';
 import ChevronRightButton from '@/components/atoms/Button/ChevronRightButton';
 import DatePickerSelectButton from '@/components/atoms/Button/DatePickerSelectButton';
+
 type DatePickProps = {
   label: string;
   name: string;
@@ -15,20 +16,20 @@ type DatePickProps = {
   onChange: (value: SetStateAction<Date | null>) => void;
 };
 
-const DatePicker = ({
+function DatePicker({
   label,
   name,
   selected,
   required,
   onChange,
-}: DatePickProps) => {
+}: DatePickProps) {
   return (
     <ReactDatePicker
       selected={selected}
       onChange={(date: Date) => onChange(date)}
       startDate={selected}
       required={required}
-      isClearable={true}
+      isClearable
       placeholderText="None"
       nextMonthButtonLabel=">"
       previousMonthButtonLabel="<"
@@ -81,6 +82,6 @@ const DatePicker = ({
       )}
     />
   );
-};
+}
 
 export default DatePicker;

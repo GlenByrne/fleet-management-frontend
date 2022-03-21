@@ -5,7 +5,7 @@ type CircularAddButtonProps = {
   label: string;
 };
 
-const CirclularAddButton = ({ onClick, label }: CircularAddButtonProps) => {
+function CirclularAddButton({ onClick, label }: CircularAddButtonProps) {
   return (
     <button
       type="button"
@@ -16,6 +16,6 @@ const CirclularAddButton = ({ onClick, label }: CircularAddButtonProps) => {
       <span className="sr-only">{label}</span>
     </button>
   );
-};
+}
 
 export default CirclularAddButton;

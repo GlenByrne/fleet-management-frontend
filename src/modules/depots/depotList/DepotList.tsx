@@ -1,9 +1,8 @@
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import { Depot, useGetDepotsQuery } from '@/generated/graphql';
-import { useRouter } from 'next/router';
-import { FormEvent, FormEventHandler, useState } from 'react';
-import InView from 'react-intersection-observer';
 import DepotListItem from './DepotListItem';
 
 type DepotListProps = {
@@ -13,12 +12,12 @@ type DepotListProps = {
   changeUpdateDepotModalState: (newState: boolean) => void;
 };
 
-const DepotList = ({
+function DepotList({
   changeCurrentDepot,
   changeAddDepotModalState,
   changeDeleteDepotModalState,
   changeUpdateDepotModalState,
-}: DepotListProps) => {
+}: DepotListProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -41,7 +40,7 @@ const DepotList = ({
     refetch({
       first: 10,
       data: {
-        searchCriteria: searchCriteria,
+        searchCriteria,
         organisationId,
       },
     });
@@ -56,12 +55,12 @@ const DepotList = ({
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
   const { hasNextPage } = data.depots.pageInfo;
 
-  const depots = data.depots;
+  const { depots } = data;
 
   return depots.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
@@ -95,6 +94,6 @@ const DepotList = ({
       text="Add a new depot"
     />
   );
-};
+}
 
 export default DepotList;

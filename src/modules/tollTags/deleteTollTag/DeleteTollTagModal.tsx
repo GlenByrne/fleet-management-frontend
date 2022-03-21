@@ -11,21 +11,16 @@ import CancelButton from '@/components/atoms/Button/CancelButton';
 import DangerButton from '@/components/atoms/Button/DangerButton';
 
 type DeleteTollTagModalProps = {
-  searchCriteria: string | null;
   currentTollTag: UpdateTollTagInput;
   modalState: boolean;
   changeModalState: (newState: boolean) => void;
 };
 
-const DeleteTollTagModal = ({
-  searchCriteria,
+function DeleteTollTagModal({
   currentTollTag,
   modalState,
   changeModalState,
-}: DeleteTollTagModalProps) => {
-  const router = useRouter();
-  const organisationId = String(router.query.organisationId);
-
+}: DeleteTollTagModalProps) {
   const [deleteTollTag] = useDeleteTollTagMutation();
 
   const deleteTagHandler = async (id: string) => {
@@ -34,7 +29,7 @@ const DeleteTollTagModal = ({
       await deleteTollTag({
         variables: {
           data: {
-            id: id,
+            id,
           },
         },
       });
@@ -86,6 +81,6 @@ const DeleteTollTagModal = ({
       </div>
     </Modal>
   );
-};
+}
 
 export default DeleteTollTagModal;

@@ -14,13 +14,13 @@ type ModalFormSelectProps = {
   onChange: (value: SetStateAction<Option>) => void;
 };
 
-const ModalFormSelect = ({
+function ModalFormSelect({
   label,
   name,
   options,
   selected,
   onChange,
-}: ModalFormSelectProps) => {
+}: ModalFormSelectProps) {
   const popperElRef = useRef(null);
   const [targetElement, setTargetElement] = useState<HTMLDivElement | null>(
     null
@@ -99,6 +99,6 @@ const ModalFormSelect = ({
       </div>
     </Listbox>
   );
-};
+}
 
 export default ModalFormSelect;

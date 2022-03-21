@@ -1,20 +1,20 @@
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import {
   useGetUsersOrganisationsQuery,
   UsersOnOrganisations,
 } from '@/generated/graphql';
-import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 import OrganisationListItem from './OrganisationListItem';
 
 type OrganisationListProps = {
   changeAddOrganisationModalState: (newState: boolean) => void;
 };
 
-const OrganisationList = ({
+function OrganisationList({
   changeAddOrganisationModalState,
-}: OrganisationListProps) => {
+}: OrganisationListProps) {
   const { data, loading, error, fetchMore } = useGetUsersOrganisationsQuery({
     variables: {
       first: 10,
@@ -42,7 +42,7 @@ const OrganisationList = ({
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
   const organisations = data.usersOrganisations;
@@ -50,7 +50,7 @@ const OrganisationList = ({
 
   return organisations.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul className="divide-y divide-gray-200">
         {organisations.edges.map((organisation) => (
           <OrganisationListItem
             key={organisation.node.organisation.id}
@@ -71,6 +71,6 @@ const OrganisationList = ({
       text="Add a new toll tag"
     />
   );
-};
+}
 
 export default OrganisationList;

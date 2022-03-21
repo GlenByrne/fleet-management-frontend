@@ -1,10 +1,9 @@
+import { useRouter } from 'next/router';
+import { FormEvent, FormEventHandler, useState } from 'react';
 import { useGetVehiclesQuery, Vehicle } from '@/generated/graphql';
 import Loading from '@/components/atoms/Loading';
 import NoListItemButton from '@/components/atoms/NoListItemButton';
 import VehicleListItem from '@/modules/vehicles/vehicleList/VehicleListItem';
-import InView from 'react-intersection-observer';
-import { useRouter } from 'next/router';
-import { FormEvent, FormEventHandler, useState } from 'react';
 
 type VehicleListProps = {
   changeCurrentVehicle: (vehicle: Vehicle) => void;
@@ -16,7 +15,7 @@ type VehicleListProps = {
   changeUpdateVehicleTachoCalibrationModalState: (newState: boolean) => void;
 };
 
-const VehicleList = ({
+function VehicleList({
   changeCurrentVehicle,
   changeAddVehicleModalState,
   changeDeleteVehicleModalState,
@@ -24,7 +23,7 @@ const VehicleList = ({
   changeUpdateVehicleCVRTModalState,
   changeUpdateVehicleThirteenWeekModalState,
   changeUpdateVehicleTachoCalibrationModalState,
-}: VehicleListProps) => {
+}: VehicleListProps) {
   const router = useRouter();
   const organisationId = String(router.query.organisationId);
   const [searchCriteria, setSearchCriteria] = useState<string | null>(null);
@@ -47,7 +46,7 @@ const VehicleList = ({
     refetch({
       first: 5,
       data: {
-        searchCriteria: searchCriteria,
+        searchCriteria,
         organisationId,
       },
     });
@@ -62,17 +61,15 @@ const VehicleList = ({
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
-  const { hasNextPage } = data.vehicles.pageInfo;
-
-  const vehicles = data.vehicles;
+  const { vehicles } = data;
 
   return vehicles.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
-        {vehicles.edges.map((vehicle) => {
+      <ul className="divide-y divide-gray-200">
+        {vehicles.edges.map((vehicle) => (
           <VehicleListItem
             key={vehicle.node.id}
             vehicle={vehicle.node as Vehicle}
@@ -88,20 +85,9 @@ const VehicleList = ({
             changeUpdateVehicleTachoCalibrationModalState={
               changeUpdateVehicleTachoCalibrationModalState
             }
-          />;
-        })}
+          />
+        ))}
       </ul>
-      {/* <InView
-        onChange={() => {
-          if (hasNextPage == true) {
-            onLoadMore(vehicles.pageInfo.endCursor as string);
-          }
-        }}
-      >
-        {({ inView, ref }) => (
-          <div ref={ref}>{hasNextPage && inView && <Loading />}</div>
-        )}
-      </InView> */}
     </div>
   ) : (
     <NoListItemButton
@@ -110,6 +96,6 @@ const VehicleList = ({
       text="Add a new vehicle"
     />
   );
-};
+}
 
 export default VehicleList;

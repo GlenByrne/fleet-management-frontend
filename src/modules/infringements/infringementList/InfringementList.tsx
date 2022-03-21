@@ -11,13 +11,13 @@ type InfringementListProps = {
   changeUpdateInfringementStatusModalState: (newState: boolean) => void;
 };
 
-const InfringementList = ({
+function InfringementList({
   changeCurrentInfringement,
   changeAddInfringementModalState,
   changeDeleteInfringementModalState,
   changeUpdateInfringementModalState,
   changeUpdateInfringementStatusModalState,
-}: InfringementListProps) => {
+}: InfringementListProps) {
   const { data, loading, error } = useGetInfringementsQuery({
     variables: {
       first: 10,
@@ -33,14 +33,14 @@ const InfringementList = ({
   }
 
   if (!data) {
-    return <div></div>;
+    return <div />;
   }
 
-  const infringements = data.infringements;
+  const { infringements } = data;
 
   return infringements?.edges.length > 0 ? (
     <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul className="divide-y divide-gray-200">
         {infringements?.edges.map((infringement) => (
           <InfringementListItem
             key={infringement.node.id}
@@ -66,6 +66,6 @@ const InfringementList = ({
       text="Add a new infringement"
     />
   );
-};
+}
 
 export default InfringementList;

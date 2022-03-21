@@ -1,6 +1,6 @@
 import { DateStatus } from '@/constants/types';
 
-export const dateStatus = (value: any | null) => {
+const dateStatus = (value: any | null) => {
   if (value == null) {
     return DateStatus.NONE;
   }
@@ -14,9 +14,11 @@ export const dateStatus = (value: any | null) => {
 
   if (dayDifference > 14) {
     return DateStatus.NOT_SOON;
-  } else if (dayDifference <= 14 && dayDifference >= 0) {
-    return DateStatus.UPCOMING_NEXT_14_DAYS;
-  } else {
-    return DateStatus.OUT_OF_DATE;
   }
+  if (dayDifference <= 14 && dayDifference >= 0) {
+    return DateStatus.UPCOMING_NEXT_14_DAYS;
+  }
+  return DateStatus.OUT_OF_DATE;
 };
+
+export default dateStatus;
